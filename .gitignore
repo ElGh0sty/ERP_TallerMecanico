@@ -1,18 +1,4 @@
-﻿# == Carpetas de Compilación (Ignora lo que el antivirus borra) ==
-[Bb]in/
+﻿[Bb]in/
 [Oo]bj/
-
-# == Archivos de Visual Studio ==
 .vs/
 *.user
-*.suo
-*.userosscache
-*.sln.docstates
-
-# == Base de Datos Local (Solo se sube el Script .sql, no estos) ==
-*.mdf
-*.ldf
-
-# == Archivos temporales ==
-*.tmp
-*.log
