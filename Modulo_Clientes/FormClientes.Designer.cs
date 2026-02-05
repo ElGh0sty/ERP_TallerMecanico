@@ -63,7 +63,7 @@
             this.btnCatalogo.Name = "btnCatalogo";
             this.btnCatalogo.Size = new System.Drawing.Size(372, 169);
             this.btnCatalogo.TabIndex = 12;
-            this.btnCatalogo.Text = "Catalogo de Servicios";
+            this.btnCatalogo.Text = "Catalogo de Registrados";
             this.btnCatalogo.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnCatalogo.UseVisualStyleBackColor = false;
             // 
@@ -82,6 +82,7 @@
             this.btnRegistrarVe.Text = "Registrar Vehiculo";
             this.btnRegistrarVe.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnRegistrarVe.UseVisualStyleBackColor = false;
+            this.btnRegistrarVe.Click += new System.EventHandler(this.btnRegistrarVe_Click);
             // 
             // btnRegistrar
             // 
