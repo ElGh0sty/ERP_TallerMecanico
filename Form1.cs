@@ -15,11 +15,16 @@ namespace PROYECTOMECANICO
     {
         private Form formularioActivo = null;
         private string rolUsuario;
+        private string usuarioActual;
 
-        public Form1(string rol) 
+        public Form1(string rol, string usuario) 
         {
             InitializeComponent();
             this.rolUsuario = rol;
+            this.usuarioActual = usuario;
+
+            lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario}";
+            
         }
 
         private void AbrirFormularioHijo(Form formularioHijo)

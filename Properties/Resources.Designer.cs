@@ -153,6 +153,26 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap car_23964 {
+            get {
+                object obj = ResourceManager.GetObject("car_23964", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap file_document_new_contract_icon_131249 {
+            get {
+                object obj = ResourceManager.GetObject("file_document_new_contract_icon_131249", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap istockphoto_1892179107_612x612 {
             get {
                 object obj = ResourceManager.GetObject("istockphoto-1892179107-612x612", resourceCulture);
@@ -213,6 +233,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap search_find_magnify_icon_131253 {
+            get {
+                object obj = ResourceManager.GetObject("search_find_magnify_icon_131253", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap unnamed {
             get {
                 object obj = ResourceManager.GetObject("unnamed", resourceCulture);
@@ -236,6 +266,16 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap unnamed__1_1 {
             get {
                 object obj = ResourceManager.GetObject("unnamed (1)1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap user_account_person_avatar_icon_131248 {
+            get {
+                object obj = ResourceManager.GetObject("user_account_person_avatar_icon_131248", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
