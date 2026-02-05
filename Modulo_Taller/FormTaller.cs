@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PROYECTOMECANICO.Modulo_Clientes;
 
 namespace PROYECTOMECANICO.Modulo_Taller
 {
@@ -15,6 +16,15 @@ namespace PROYECTOMECANICO.Modulo_Taller
         public FormTaller()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormOrdenTrabajo());
+            }
         }
     }
 }
