@@ -8,7 +8,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
     public partial class FormRegVehi : Form
     {
         Conexion con = new Conexion();
-        DataTable dtClientes; // Lo guardamos a nivel de clase para buscar en él
+        DataTable dtClientes; 
 
         public FormRegVehi()
         {
@@ -24,7 +24,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             try
             {
                 con.Abrir();
-                // Traemos todos los datos que necesitamos mostrar automáticamente
                 string query = "SELECT id, nombre, tipo_documento, numero_documento FROM Clientes ORDER BY nombre ASC";
                 SqlDataAdapter da = new SqlDataAdapter(query, con.leer);
                 dtClientes = new DataTable();
@@ -66,15 +65,12 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         }
 
 
-        // ESTO HACE LA MAGIA: Se dispara cuando eliges un cliente
         private void cmbDuenio_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbDuenio.SelectedIndex != -1 && dtClientes != null)
             {
-                // Obtenemos la fila seleccionada del DataTable
                 DataRowView clienteSeleccionado = (DataRowView)cmbDuenio.SelectedItem;
 
-                // Llenamos los TextBox automáticamente con los nombres exactos de tu tabla Clientes
                 txtTipoDoc.Text = clienteSeleccionado["tipo_documento"].ToString();
                 txtDocumento.Text = clienteSeleccionado["numero_documento"].ToString();
             }
@@ -105,7 +101,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             try
             {
                 con.Abrir();
-                // Añadimos chasis_vin a tu INSERT
                 string sql = @"
 INSERT INTO Vehiculos
 (cliente_id, placa, marca, modelo, tipo, [año], chasis_vin, kilometraje_actual)
@@ -134,7 +129,6 @@ VALUES
 
         private void Limpiar()
         {
-            // Limpia todo para el siguiente registro
             foreach (Control c in this.Controls) { if (c is TextBox) (c as TextBox).Clear(); }
             cmbDuenio.SelectedIndex = -1;
         }

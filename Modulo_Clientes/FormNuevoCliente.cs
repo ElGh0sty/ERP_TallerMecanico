@@ -14,7 +14,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         public FormNuevoCliente()
         {
             InitializeComponent();
-            // Evita errores visuales del ComboBox
             dgvNuevo.DataError += (s, e) => { e.ThrowException = false; };
             CargarBaseDeDatosCompleta();
         }
@@ -29,10 +28,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 adaptador = new SqlDataAdapter(query, con.leer);
                 SqlCommandBuilder builder = new SqlCommandBuilder(adaptador);
 
-                // FORZAMOS la generación de comandos de SQL
                 builder.GetInsertCommand();
                 builder.GetUpdateCommand();
-                builder.GetDeleteCommand(); // Esto es lo que faltaba para que borre en SQL
+                builder.GetDeleteCommand(); 
 
                 dtClientes = new DataTable();
                 adaptador.Fill(dtClientes);
@@ -41,7 +39,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 dgvNuevo.AutoGenerateColumns = false;
                 dgvNuevo.DataSource = dtClientes;
 
-                // 1. Columna de Botón Eliminar (Estética y funcional)
                 DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
                 btnEliminar.Name = "btnEliminar";
                 btnEliminar.HeaderText = "Acción";
@@ -49,7 +46,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 btnEliminar.UseColumnTextForButtonValue = true;
                 dgvNuevo.Columns.Add(btnEliminar);
 
-                // 2. Columna ComboBox para Tipo Doc
                 DataGridViewComboBoxColumn colCombo = new DataGridViewComboBoxColumn();
                 colCombo.DataPropertyName = "tipo_documento";
                 colCombo.HeaderText = "Tipo Doc.";
@@ -58,7 +54,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 colCombo.FlatStyle = FlatStyle.Flat;
                 dgvNuevo.Columns.Add(colCombo);
 
-                // 3. Resto de columnas de texto
                 dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "numero_documento", HeaderText = "Número Doc.", Name = "numero_documento" });
                 dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nombre", HeaderText = "Nombre Completo", Name = "nombre" });
                 dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "telefono", HeaderText = "Teléfono", Name = "telefono" });
@@ -74,10 +69,8 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             finally { con.Cerrar(); }
         }
 
-        // EVENTO PARA ELIMINAR: Haz doble clic en el DataGridView en el diseñador y elige el evento CellContentClick
         private void dgvNuevo_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Verificamos que sea la columna del botón "btnEliminar"
             if (dgvNuevo.Columns[e.ColumnIndex].Name == "btnEliminar" && e.RowIndex >= 0)
             {
                 if (dgvNuevo.Rows[e.RowIndex].IsNewRow) return;
@@ -88,11 +81,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 {
                     try
                     {
-                        // 1. Obtenemos la fila vinculada al DataTable y la borramos
                         DataRowView filaActual = (DataRowView)dgvNuevo.Rows[e.RowIndex].DataBoundItem;
                         filaActual.Row.Delete();
 
-                        // 2. Sincronizamos INMEDIATAMENTE con la base de datos
                         con.Abrir();
                         adaptador.Update(dtClientes);
                         con.Cerrar();

@@ -16,9 +16,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarCatalogoVehiculos();
         }
 
-        // =========================
-        // 1️⃣ CARGAR CATÁLOGO
-        // =========================
+        
         private void CargarCatalogoVehiculos(string filtro = "")
         {
             try
@@ -65,17 +63,13 @@ ORDER BY c.nombre, v.placa";
             }
         }
 
-        // =========================
-        // 🔍 2️⃣ BUSCAR
-        // =========================
+        
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarCatalogoVehiculos(txtBuscar.Text.Trim());
         }
 
-        // =========================
-        // ✏️ 3️⃣ EDITAR (DOBLE CLICK)
-        // =========================
+        //Esta es una prueba no esta ACTIVA
         private void dgvVehiculos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -84,18 +78,16 @@ ORDER BY c.nombre, v.placa";
                 dgvVehiculos.Rows[e.RowIndex].Cells["vehiculo_id"].Value
             );
 
-            // Abrimos el formulario de registro en modo edición
+            
             FormRegVehi frm = new FormRegVehi();
-            frm.Tag = vehiculoId; // Pasamos el ID
+            frm.Tag = vehiculoId; 
             frm.ShowDialog();
 
-            // Refrescar al cerrar
+            
             CargarCatalogoVehiculos(txtBuscar.Text.Trim());
         }
 
-        // =========================
-        // ❌ 4️⃣ ELIMINAR
-        // =========================
+        
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvVehiculos.SelectedRows.Count == 0)

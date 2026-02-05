@@ -10,8 +10,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         Conexion con = new Conexion();
         DataTable dtVehiculos;
 
-        // ⚠️ AJUSTA ESTE ID AL USUARIO LOGUEADO
-        long recepcionistaId = 9; // admin
+        long recepcionistaId = 9; 
 
         public FormOrden()
         {
@@ -20,7 +19,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarMecanicos();
         }
 
-        // ================== VEHÍCULOS ==================
         private void CargarVehiculos()
         {
             try
@@ -61,7 +59,6 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
 
         private void cmbVehiculo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // 🔒 Protección total
             if (cmbVehiculo.SelectedItem == null)
                 return;
 
@@ -78,7 +75,6 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
         }
 
 
-        // ================== MECÁNICOS ==================
         private void CargarMecanicos()
         {
             try
@@ -108,12 +104,10 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
             }
         }
 
-        // ================== NOMBRE ORDEN ==================
         private void GenerarNombreOrden()
         {
             try
             {
-                // 🔒 Protección REAL
                 if (cmbVehiculo.SelectedValue == null)
                     return;
 
@@ -147,7 +141,6 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
         }
 
 
-        // ================== GUARDAR ORDEN ==================
         private void btnGuardarOrden_Click(object sender, EventArgs e)
         {
             if (cmbVehiculo.SelectedIndex == -1 ||

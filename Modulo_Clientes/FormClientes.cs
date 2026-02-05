@@ -27,7 +27,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             Form1 objetoPadre = (Form1)this.ParentForm;
             if (objetoPadre != null)
             {
-                // Abrimos el formulario donde realmente estará el Grid
                 objetoPadre.AbrirFormularioEnPanel(new FormNuevoCliente());
             }
         }
