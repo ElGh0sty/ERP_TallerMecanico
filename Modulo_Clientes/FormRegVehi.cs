@@ -99,16 +99,18 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 return;
             }
 
+            int kilometraje = 0;
+            int.TryParse(txtKilometraje.Text, out kilometraje);
+
             try
             {
                 con.Abrir();
                 // Añadimos chasis_vin a tu INSERT
                 string sql = @"
 INSERT INTO Vehiculos
-(cliente_id, placa, marca, modelo, tipo, [año], chasis_vin)
+(cliente_id, placa, marca, modelo, tipo, [año], chasis_vin, kilometraje_actual)
 VALUES
-(@cliente_id, @placa, @marca, @modelo, @tipo, @anio, @chasis)";
-
+(@cliente_id, @placa, @marca, @modelo, @tipo, @anio, @chasis, @kilometraje)";
 
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
 
@@ -116,14 +118,14 @@ VALUES
                 cmd.Parameters.Add("@placa", SqlDbType.Char, 8).Value = txtPlaca.Text.Trim().ToUpper();
                 cmd.Parameters.Add("@marca", SqlDbType.NVarChar, 255).Value = txtMarca.Text.Trim();
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar, 255).Value = txtModelo.Text.Trim();
-                cmd.Parameters.Add("@tipo", SqlDbType.NVarChar, 10)
-                              .Value = cmbTipoVehiculo.SelectedValue;
+                cmd.Parameters.Add("@tipo", SqlDbType.NVarChar, 10).Value = cmbTipoVehiculo.SelectedValue;
                 cmd.Parameters.Add("@anio", SqlDbType.Int).Value = int.Parse(txtAño.Text);
                 cmd.Parameters.Add("@chasis", SqlDbType.NVarChar, 17).Value = txtChasis.Text.Trim().ToUpper();
+                cmd.Parameters.Add("@kilometraje", SqlDbType.Int).Value = kilometraje;
 
                 cmd.ExecuteNonQuery();
 
-                MessageBox.Show("¡Vehículo y Chasis registrados con éxito!");
+                MessageBox.Show("¡Vehículo registrado!");
                 Limpiar();
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
@@ -136,6 +138,12 @@ VALUES
             foreach (Control c in this.Controls) { if (c is TextBox) (c as TextBox).Clear(); }
             cmbDuenio.SelectedIndex = -1;
         }
+
+        private void txtKilometraje_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                e.Handled = true;
+        }   
 
         private void txtModelo_TextChanged(object sender, EventArgs e)
         {

@@ -50,6 +50,7 @@
             this.btnOrden.Text = "Generar Orden de Trabajo";
             this.btnOrden.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnOrden.UseVisualStyleBackColor = false;
+            this.btnOrden.Click += new System.EventHandler(this.btnOrden_Click);
             // 
             // btnCatalogo
             // 

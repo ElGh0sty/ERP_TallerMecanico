@@ -40,14 +40,16 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnGuardarVehiculo = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtDocumento = new System.Windows.Forms.TextBox();
+            this.txtTipoDoc = new System.Windows.Forms.TextBox();
             this.txtChasis = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtTipoDoc = new System.Windows.Forms.TextBox();
-            this.txtDocumento = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.cmbTipoVehiculo = new System.Windows.Forms.ComboBox();
+            this.txtKilometraje = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,7 +154,7 @@
             this.btnGuardarVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardarVehiculo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardarVehiculo.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarVehiculo.Location = new System.Drawing.Point(670, 413);
+            this.btnGuardarVehiculo.Location = new System.Drawing.Point(673, 487);
             this.btnGuardarVehiculo.Name = "btnGuardarVehiculo";
             this.btnGuardarVehiculo.Size = new System.Drawing.Size(145, 62);
             this.btnGuardarVehiculo.TabIndex = 10;
@@ -173,6 +175,46 @@
             this.panel1.Size = new System.Drawing.Size(908, 143);
             this.panel1.TabIndex = 11;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(625, 27);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(246, 30);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Numero de Documento:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(332, 27);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(210, 30);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Tipo de Documento:";
+            // 
+            // txtDocumento
+            // 
+            this.txtDocumento.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDocumento.Location = new System.Drawing.Point(644, 73);
+            this.txtDocumento.Name = "txtDocumento";
+            this.txtDocumento.Size = new System.Drawing.Size(218, 29);
+            this.txtDocumento.TabIndex = 15;
+            // 
+            // txtTipoDoc
+            // 
+            this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTipoDoc.Location = new System.Drawing.Point(337, 73);
+            this.txtTipoDoc.Name = "txtTipoDoc";
+            this.txtTipoDoc.Size = new System.Drawing.Size(218, 29);
+            this.txtTipoDoc.TabIndex = 14;
+            // 
             // txtChasis
             // 
             this.txtChasis.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -190,46 +232,6 @@
             this.label6.Size = new System.Drawing.Size(139, 30);
             this.label6.TabIndex = 13;
             this.label6.Text = "Chasis / VIN: ";
-            // 
-            // txtTipoDoc
-            // 
-            this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTipoDoc.Location = new System.Drawing.Point(337, 73);
-            this.txtTipoDoc.Name = "txtTipoDoc";
-            this.txtTipoDoc.Size = new System.Drawing.Size(218, 29);
-            this.txtTipoDoc.TabIndex = 14;
-            // 
-            // txtDocumento
-            // 
-            this.txtDocumento.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDocumento.Location = new System.Drawing.Point(644, 73);
-            this.txtDocumento.Name = "txtDocumento";
-            this.txtDocumento.Size = new System.Drawing.Size(218, 29);
-            this.txtDocumento.TabIndex = 15;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(332, 27);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(210, 30);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Tipo de Documento:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(625, 27);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(246, 30);
-            this.label8.TabIndex = 16;
-            this.label8.Text = "Numero de Documento:";
             // 
             // label9
             // 
@@ -250,11 +252,32 @@
             this.cmbTipoVehiculo.Size = new System.Drawing.Size(215, 29);
             this.cmbTipoVehiculo.TabIndex = 15;
             // 
+            // txtKilometraje
+            // 
+            this.txtKilometraje.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilometraje.Location = new System.Drawing.Point(52, 531);
+            this.txtKilometraje.MaxLength = 7;
+            this.txtKilometraje.Name = "txtKilometraje";
+            this.txtKilometraje.Size = new System.Drawing.Size(216, 29);
+            this.txtKilometraje.TabIndex = 16;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(47, 487);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(193, 30);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Kilometraje Actual:";
+            // 
             // FormRegVehi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.txtKilometraje);
             this.Controls.Add(this.cmbTipoVehiculo);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label6);
@@ -303,5 +326,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cmbTipoVehiculo;
+        private System.Windows.Forms.TextBox txtKilometraje;
+        private System.Windows.Forms.Label label10;
     }
 }
