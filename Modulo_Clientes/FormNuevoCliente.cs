@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using PROYECTOMECANICO.Seguridad;
+
 
 namespace PROYECTOMECANICO.Modulo_Clientes
 {
@@ -10,12 +12,14 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         SqlDataAdapter adaptador;
         DataTable dtClientes;
         Conexion con = new Conexion();
+        private string rolUsuario;
 
-        public FormNuevoCliente()
+        public FormNuevoCliente(string rol)
         {
             InitializeComponent();
             dgvNuevo.DataError += (s, e) => { e.ThrowException = false; };
             CargarBaseDeDatosCompleta();
+            rolUsuario = rol;
         }
 
         private void CargarBaseDeDatosCompleta()

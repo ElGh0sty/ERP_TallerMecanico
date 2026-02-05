@@ -49,17 +49,17 @@ namespace PROYECTOMECANICO
 
         private void btnTaller_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller(rolUsuario));
         }
 
         private void btnInventario_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario(rolUsuario));
         }
 
         private void btnFacturacion_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion(rolUsuario));
         }
 
         private void btnPersonal_Click(object sender, EventArgs e)
@@ -88,7 +88,15 @@ namespace PROYECTOMECANICO
         }
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Clientes.FormClientes());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Clientes.FormClientes(rolUsuario));
         }
+
+        private bool TienePermiso(params string[] rolesPermitidos)
+        {
+            return rolesPermitidos.Contains(rolUsuario);
+        }
+
+        
+
     }
 }

@@ -8,13 +8,15 @@ namespace PROYECTOMECANICO.Modulo_Taller
     public partial class FormOrdenTrabajo : Form
     {
         Conexion con = new Conexion();
+        private string rolUsuario;
 
-        public FormOrdenTrabajo()
+        public FormOrdenTrabajo(string rolUsuario)
         {
             InitializeComponent();
             CargarOrdenes();
             CargarEstados();
             EstiloGrid();
+            this.rolUsuario = rolUsuario;
         }
 
         private void CargarOrdenes()

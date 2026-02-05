@@ -41,14 +41,12 @@ namespace PROYECTOMECANICO
 
                 if (leer.Read())
                 {
-                    // Extraemos los datos usando los nombres exactos de tu consulta SELECT
-                    string userLogueado = leer["nombre_usuario"].ToString(); // De la tabla Usuarios
-                    string rolNombre = leer["nombre"].ToString();           // De la tabla Roles
+                    string userLogueado = leer["nombre_usuario"].ToString(); 
+                    string rolNombre = leer["nombre"].ToString();           
 
                     MessageBox.Show("¡Bienvenido " + userLogueado + "!", "Acceso Concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // PASO CLAVE: Enviamos ambos datos al Form1
-                    Form1 principal = new Form1(userLogueado, rolNombre);
+                    Form1 principal = new Form1(rolNombre, userLogueado);
                     principal.Show();
                     this.Hide();
                 }

@@ -8,14 +8,15 @@ namespace PROYECTOMECANICO.Modulo_Clientes
     public partial class FormRegVehi : Form
     {
         Conexion con = new Conexion();
-        DataTable dtClientes; 
-
-        public FormRegVehi()
+        DataTable dtClientes;
+        private string rolUsuario;
+        public FormRegVehi(string rolUsuario)
         {
             InitializeComponent();
             CargarClientesCompleto();
             CargarTiposVehiculo();
             cmbDuenio.SelectedIndexChanged += new EventHandler(cmbDuenio_SelectedIndexChanged);
+            this.rolUsuario = rolUsuario;
         }
 
 

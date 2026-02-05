@@ -10,13 +10,15 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         Conexion con = new Conexion();
         DataTable dtVehiculos;
 
-        long recepcionistaId = 9; 
+        long recepcionistaId = 9;
+        private string rolUsuario;
 
-        public FormOrden()
+        public FormOrden(string rolUsuario)
         {
             InitializeComponent();
             CargarVehiculos();
             CargarMecanicos();
+            this.rolUsuario = rolUsuario;
         }
 
         private void CargarVehiculos()

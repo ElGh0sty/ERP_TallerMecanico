@@ -9,11 +9,13 @@ namespace PROYECTOMECANICO.Modulo_Clientes
     {
         Conexion con = new Conexion();
         DataTable dtVehiculos;
+        private string rolUsuario;
 
-        public FormCatalogo()
+        public FormCatalogo(string rol)
         {
             InitializeComponent();
             CargarCatalogoVehiculos();
+            rolUsuario = rol;
         }
 
         
@@ -79,7 +81,7 @@ ORDER BY c.nombre, v.placa";
             );
 
             
-            FormRegVehi frm = new FormRegVehi();
+            FormRegVehi frm = new FormRegVehi(rolUsuario);
             frm.Tag = vehiculoId; 
             frm.ShowDialog();
 
