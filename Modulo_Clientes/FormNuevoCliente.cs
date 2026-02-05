@@ -7,95 +7,120 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 {
     public partial class FormNuevoCliente : Form
     {
+        SqlDataAdapter adaptador;
+        DataTable dtClientes;
         Conexion con = new Conexion();
 
         public FormNuevoCliente()
         {
             InitializeComponent();
-            ConfigurarGridReal();
+            // Evita errores visuales del ComboBox
+            dgvNuevo.DataError += (s, e) => { e.ThrowException = false; };
+            CargarBaseDeDatosCompleta();
         }
 
-        private void ConfigurarGridReal()
+        private void CargarBaseDeDatosCompleta()
         {
-            
+            try
+            {
+                con.Abrir();
+                string query = "SELECT id, tipo_documento, numero_documento, nombre, direccion, telefono, email FROM Clientes";
 
-            // 1. Crear el ComboBox para Tipo de Documento
-            DataGridViewComboBoxColumn comboTipo = new DataGridViewComboBoxColumn();
-            comboTipo.Name = "tipo_documento";
-            comboTipo.HeaderText = "Tipo Doc.";
-            // Agrega aquí las opciones EXACTAS que permite tu base de datos
-            comboTipo.Items.Add("Cédula");
-            comboTipo.Items.Add("RUC");
-            comboTipo.Items.Add("Pasaporte");
-            dgvNuevo.Columns.Add(comboTipo);
+                adaptador = new SqlDataAdapter(query, con.leer);
+                SqlCommandBuilder builder = new SqlCommandBuilder(adaptador);
 
-            // 2. Resto de columnas normales
-            dgvNuevo.Columns.Add("numero_documento", "Número Doc.");
-            dgvNuevo.Columns.Add("nombre", "Nombre Completo");
-            dgvNuevo.Columns.Add("telefono", "Teléfono");
-            dgvNuevo.Columns.Add("email", "Email");
-            dgvNuevo.Columns.Add("direccion", "Dirección");
+                // FORZAMOS la generación de comandos de SQL
+                builder.GetInsertCommand();
+                builder.GetUpdateCommand();
+                builder.GetDeleteCommand(); // Esto es lo que faltaba para que borre en SQL
 
-            dgvNuevo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvNuevo.AllowUserToAddRows = true;
+                dtClientes = new DataTable();
+                adaptador.Fill(dtClientes);
+
+                dgvNuevo.Columns.Clear();
+                dgvNuevo.AutoGenerateColumns = false;
+                dgvNuevo.DataSource = dtClientes;
+
+                // 1. Columna de Botón Eliminar (Estética y funcional)
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.Name = "btnEliminar";
+                btnEliminar.HeaderText = "Acción";
+                btnEliminar.Text = "Eliminar";
+                btnEliminar.UseColumnTextForButtonValue = true;
+                dgvNuevo.Columns.Add(btnEliminar);
+
+                // 2. Columna ComboBox para Tipo Doc
+                DataGridViewComboBoxColumn colCombo = new DataGridViewComboBoxColumn();
+                colCombo.DataPropertyName = "tipo_documento";
+                colCombo.HeaderText = "Tipo Doc.";
+                colCombo.Name = "tipo_documento";
+                colCombo.Items.AddRange(new string[] { "Cédula", "RUC", "Pasaporte" });
+                colCombo.FlatStyle = FlatStyle.Flat;
+                dgvNuevo.Columns.Add(colCombo);
+
+                // 3. Resto de columnas de texto
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "numero_documento", HeaderText = "Número Doc.", Name = "numero_documento" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nombre", HeaderText = "Nombre Completo", Name = "nombre" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "telefono", HeaderText = "Teléfono", Name = "telefono" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "email", HeaderText = "Email", Name = "email" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "direccion", HeaderText = "Dirección", Name = "direccion" });
+
+                dgvNuevo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos: " + ex.Message);
+            }
+            finally { con.Cerrar(); }
+        }
+
+        // EVENTO PARA ELIMINAR: Haz doble clic en el DataGridView en el diseñador y elige el evento CellContentClick
+        private void dgvNuevo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verificamos que sea la columna del botón "btnEliminar"
+            if (dgvNuevo.Columns[e.ColumnIndex].Name == "btnEliminar" && e.RowIndex >= 0)
+            {
+                if (dgvNuevo.Rows[e.RowIndex].IsNewRow) return;
+
+                DialogResult result = MessageBox.Show("¿Eliminar este cliente permanentemente de la base de datos?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        // 1. Obtenemos la fila vinculada al DataTable y la borramos
+                        DataRowView filaActual = (DataRowView)dgvNuevo.Rows[e.RowIndex].DataBoundItem;
+                        filaActual.Row.Delete();
+
+                        // 2. Sincronizamos INMEDIATAMENTE con la base de datos
+                        con.Abrir();
+                        adaptador.Update(dtClientes);
+                        con.Cerrar();
+
+                        MessageBox.Show("Eliminado con éxito de la base de datos.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al eliminar: " + ex.Message);
+                    }
+                }
+            }
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
+                dgvNuevo.EndEdit();
                 con.Abrir();
-                int filasInsertadas = 0;
-
-                foreach (DataGridViewRow fila in dgvNuevo.Rows)
-                {
-                    // Saltamos la fila vacía del final
-                    if (fila.IsNewRow) continue;
-
-                    // Validamos que al menos tenga el número de documento para no insertar basura
-                    if (fila.Cells["numero_documento"].Value == null) continue;
-
-                    string sql = @"INSERT INTO Clientes (tipo_documento, numero_documento, nombre, telefono, email, direccion) 
-                                   VALUES (@tipo, @num, @nom, @tel, @mail, @dir)";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, con.leer))
-                    {
-                        cmd.Parameters.AddWithValue("@tipo", fila.Cells["tipo_documento"].Value ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@num", fila.Cells["numero_documento"].Value ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@nom", fila.Cells["nombre"].Value ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@tel", fila.Cells["telefono"].Value ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@mail", fila.Cells["email"].Value ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@dir", fila.Cells["direccion"].Value ?? DBNull.Value);
-
-                        cmd.ExecuteNonQuery();
-                        filasInsertadas++;
-                    }
-                }
-
-                if (filasInsertadas > 0)
-                {
-                    MessageBox.Show($"Se registraron {filasInsertadas} clientes con éxito.", "ERP Taller");
-                    VolverAlMenu();
-                }
-                else
-                {
-                    MessageBox.Show("No hay datos válidos para registrar.");
-                }
+                int cambios = adaptador.Update(dtClientes);
+                if (cambios > 0) MessageBox.Show("¡Datos sincronizados!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error de SQL: " + ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
-            finally
-            {
-                con.Cerrar();
-            }
-        }
-
-        private void VolverAlMenu()
-        {
-            Form1 principal = (Form1)this.ParentForm;
-            if (principal != null) principal.AbrirFormularioEnPanel(new FormClientes());
+            finally { con.Cerrar(); }
         }
     }
 }

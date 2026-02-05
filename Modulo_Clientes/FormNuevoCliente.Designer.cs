@@ -41,6 +41,7 @@
             this.dgvNuevo.Name = "dgvNuevo";
             this.dgvNuevo.Size = new System.Drawing.Size(838, 367);
             this.dgvNuevo.TabIndex = 0;
+            this.dgvNuevo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNuevo_CellContentClick);
             // 
             // btnGuardar
             // 
