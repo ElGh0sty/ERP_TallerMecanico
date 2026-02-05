@@ -66,6 +66,7 @@
             this.btnCatalogo.Text = "Catalogo de Registrados";
             this.btnCatalogo.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnCatalogo.UseVisualStyleBackColor = false;
+            this.btnCatalogo.Click += new System.EventHandler(this.btnCatalogo_Click);
             // 
             // btnRegistrarVe
             // 

@@ -41,5 +41,15 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 objetoPadre.AbrirFormularioEnPanel(new FormRegVehi());
             }
         }
+
+        private void btnCatalogo_Click(object sender, EventArgs e)
+        {
+            Form1 objetoPadre = (Form1)this.ParentForm;
+
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormCatalogo());
+            }
+        }
     }
 }
