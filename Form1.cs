@@ -22,7 +22,6 @@ namespace PROYECTOMECANICO
 
         private void AbrirFormularioHijo(Form formularioHijo)
         {
-            // Limpiamos el panel 6
             if (this.panel6.Controls.Count > 0)
             {
                 this.panel6.Controls.Clear();
@@ -31,14 +30,14 @@ namespace PROYECTOMECANICO
             formularioActivo = formularioHijo;
             formularioHijo.TopLevel = false;
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
+
+            // ESTO ES LO NUEVO:
+            formularioHijo.Size = this.panel6.ClientSize; // Fuerza el tamaño al área interna del panel
             formularioHijo.Dock = DockStyle.Fill;
 
             this.panel6.Controls.Add(formularioHijo);
             this.panel6.Tag = formularioHijo;
-
-            // Aseguramos que el panel6 esté por encima de otros paneles decorativos
             this.panel6.BringToFront();
-
             formularioHijo.Show();
         }
 
