@@ -127,6 +127,9 @@
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Clientes\FormCatalogo.resx">
+      <DependentUpon>FormCatalogo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Clientes\FormClientes.resx">
       <DependentUpon>FormClientes.cs</DependentUpon>
     </EmbeddedResource>
