@@ -83,6 +83,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _3592824_airplane_airplane_mode_general_office_plane_transport_travel_107771 {
+            get {
+                object obj = ResourceManager.GetObject("3592824-airplane-airplane-mode-general-office-plane-transport-travel_107771", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _3592841_cog_gear_general_machine_office_setting_settings_107765 {
             get {
                 object obj = ResourceManager.GetObject("3592841-cog-gear-general-machine-office-setting-settings_107765", resourceCulture);
@@ -103,6 +113,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _3592856_general_group_office_personal_relation_team_team_structure_107770 {
+            get {
+                object obj = ResourceManager.GetObject("3592856-general-group-office-personal-relation-team-team-structure_107770", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _3592861_bag_briefcase_business_bag_documents_bag_general_office_portfolio_107789 {
             get {
                 object obj = ResourceManager.GetObject("3592861-bag-briefcase-business-bag-documents-bag-general-office-portfolio_107789", resourceCulture);
@@ -113,9 +133,119 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _3592864_general_graph_increase_office_rise_statistics_success_107790 {
+            get {
+                object obj = ResourceManager.GetObject("3592864-general-graph-increase-office-rise-statistics-success_107790", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _3592864_general_graph_increase_office_rise_statistics_success_1077901 {
+            get {
+                object obj = ResourceManager.GetObject("3592864-general-graph-increase-office-rise-statistics-success_1077901", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap istockphoto_1892179107_612x612 {
+            get {
+                object obj = ResourceManager.GetObject("istockphoto-1892179107-612x612", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap muscular_car_service_worker_repairing_vehicle {
+            get {
+                object obj = ResourceManager.GetObject("muscular-car-service-worker-repairing-vehicle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap muscular_car_service_worker_repairing_vehicle1 {
+            get {
+                object obj = ResourceManager.GetObject("muscular-car-service-worker-repairing-vehicle1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap muscular_car_service_worker_repairing_vehicle12 {
+            get {
+                object obj = ResourceManager.GetObject("muscular-car-service-worker-repairing-vehicle12", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pngwing_com {
             get {
                 object obj = ResourceManager.GetObject("pngwing.com", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pngwing1 {
+            get {
+                object obj = ResourceManager.GetObject("pngwing1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap unnamed {
+            get {
+                object obj = ResourceManager.GetObject("unnamed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap unnamed__1_ {
+            get {
+                object obj = ResourceManager.GetObject("unnamed (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap unnamed__1_1 {
+            get {
+                object obj = ResourceManager.GetObject("unnamed (1)1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WhatsApp_Image_2026_02_04_at_9_58_32_PM {
+            get {
+                object obj = ResourceManager.GetObject("WhatsApp Image 2026-02-04 at 9.58.32 PM", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

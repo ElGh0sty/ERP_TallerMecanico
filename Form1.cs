@@ -17,7 +17,6 @@ namespace PROYECTOMECANICO
         public Form1()
         {
             InitializeComponent();
-            // Si quieres que inicie con algo en el panel gris al abrirse:
         }
 
         private void AbrirFormularioHijo(Form formularioHijo)
@@ -31,8 +30,7 @@ namespace PROYECTOMECANICO
             formularioHijo.TopLevel = false;
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
 
-            // ESTO ES LO NUEVO:
-            formularioHijo.Size = this.panel6.ClientSize; // Fuerza el tamaño al área interna del panel
+            formularioHijo.Size = this.panel6.ClientSize;
             formularioHijo.Dock = DockStyle.Fill;
 
             this.panel6.Controls.Add(formularioHijo);
@@ -48,7 +46,6 @@ namespace PROYECTOMECANICO
 
         private void btnTaller_Click(object sender, EventArgs e)
         {
-            // Usamos la ruta completa: Proyecto.Carpeta.Subcarpeta.Clase
             AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Taller.FormTaller());
         }
 
@@ -62,9 +59,9 @@ namespace PROYECTOMECANICO
             AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion());
         }
 
-        private void btnUsuario_Click(object sender, EventArgs e)
+        private void btnPersonal_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new Modulo_Config.FormUsuario());
+            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Personal.FormPersonal());
         }
 
         private void btnConfiguracion_Click(object sender, EventArgs e)
@@ -80,6 +77,15 @@ namespace PROYECTOMECANICO
         private void panel6_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
+        }
+        private void btnClientes_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Clientes.FormClientes());
         }
     }
 }

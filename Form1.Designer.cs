@@ -29,19 +29,22 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnUsuario = new System.Windows.Forms.Button();
-            this.btnConfiguracion = new System.Windows.Forms.Button();
-            this.btnFacturacion = new System.Windows.Forms.Button();
-            this.btnInventario = new System.Windows.Forms.Button();
-            this.btnTaller = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.btnPersonal = new System.Windows.Forms.Button();
+            this.btnConfiguracion = new System.Windows.Forms.Button();
+            this.btnClientes = new System.Windows.Forms.Button();
+            this.btnInicio = new System.Windows.Forms.Button();
+            this.btnFacturacion = new System.Windows.Forms.Button();
+            this.btnInventario = new System.Windows.Forms.Button();
+            this.btnTaller = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -50,8 +53,11 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.panel1.Controls.Add(this.btnUsuario);
+            this.panel1.Controls.Add(this.btnPersonal);
             this.panel1.Controls.Add(this.btnConfiguracion);
+            this.panel1.Controls.Add(this.panel7);
+            this.panel1.Controls.Add(this.btnClientes);
+            this.panel1.Controls.Add(this.btnInicio);
             this.panel1.Controls.Add(this.btnFacturacion);
             this.panel1.Controls.Add(this.btnInventario);
             this.panel1.Controls.Add(this.btnTaller);
@@ -65,96 +71,6 @@
             this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.panel1.Size = new System.Drawing.Size(276, 700);
             this.panel1.TabIndex = 0;
-            // 
-            // btnUsuario
-            // 
-            this.btnUsuario.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUsuario.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnUsuario.FlatAppearance.BorderSize = 0;
-            this.btnUsuario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUsuario.Image = global::PROYECTOMECANICO.Properties.Resources._3592853_align_employee_general_human_human_list_list_member_107786;
-            this.btnUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUsuario.Location = new System.Drawing.Point(15, 556);
-            this.btnUsuario.Name = "btnUsuario";
-            this.btnUsuario.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnUsuario.Size = new System.Drawing.Size(246, 72);
-            this.btnUsuario.TabIndex = 7;
-            this.btnUsuario.Text = "  Usuario";
-            this.btnUsuario.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnUsuario.UseVisualStyleBackColor = true;
-            this.btnUsuario.Click += new System.EventHandler(this.btnUsuario_Click);
-            // 
-            // btnConfiguracion
-            // 
-            this.btnConfiguracion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfiguracion.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnConfiguracion.FlatAppearance.BorderSize = 0;
-            this.btnConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConfiguracion.Image = global::PROYECTOMECANICO.Properties.Resources._3592841_cog_gear_general_machine_office_setting_settings_107765;
-            this.btnConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnConfiguracion.Location = new System.Drawing.Point(15, 628);
-            this.btnConfiguracion.Name = "btnConfiguracion";
-            this.btnConfiguracion.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnConfiguracion.Size = new System.Drawing.Size(246, 72);
-            this.btnConfiguracion.TabIndex = 6;
-            this.btnConfiguracion.Text = "  Configuracion";
-            this.btnConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnConfiguracion.UseVisualStyleBackColor = true;
-            this.btnConfiguracion.Click += new System.EventHandler(this.btnConfiguracion_Click);
-            // 
-            // btnFacturacion
-            // 
-            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnFacturacion.FlatAppearance.BorderSize = 0;
-            this.btnFacturacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources._3592861_bag_briefcase_business_bag_documents_bag_general_office_portfolio_107789;
-            this.btnFacturacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFacturacion.Location = new System.Drawing.Point(15, 258);
-            this.btnFacturacion.Name = "btnFacturacion";
-            this.btnFacturacion.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
-            this.btnFacturacion.TabIndex = 5;
-            this.btnFacturacion.Text = "  Facturacion";
-            this.btnFacturacion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnFacturacion.UseVisualStyleBackColor = true;
-            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
-            // 
-            // btnInventario
-            // 
-            this.btnInventario.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInventario.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnInventario.FlatAppearance.BorderSize = 0;
-            this.btnInventario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInventario.Image = global::PROYECTOMECANICO.Properties.Resources._3592814_document_general_letter_note_office_page_paper_107776;
-            this.btnInventario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInventario.Location = new System.Drawing.Point(15, 186);
-            this.btnInventario.Name = "btnInventario";
-            this.btnInventario.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnInventario.Size = new System.Drawing.Size(246, 72);
-            this.btnInventario.TabIndex = 4;
-            this.btnInventario.Text = "  Inventario";
-            this.btnInventario.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnInventario.UseVisualStyleBackColor = true;
-            this.btnInventario.Click += new System.EventHandler(this.btnInventario_Click);
-            // 
-            // btnTaller
-            // 
-            this.btnTaller.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTaller.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnTaller.FlatAppearance.BorderSize = 0;
-            this.btnTaller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTaller.Image = global::PROYECTOMECANICO.Properties.Resources._3592819_general_graph_office_overview_part_pie_chart_portion_107739;
-            this.btnTaller.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaller.Location = new System.Drawing.Point(15, 114);
-            this.btnTaller.Name = "btnTaller";
-            this.btnTaller.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnTaller.Size = new System.Drawing.Size(246, 72);
-            this.btnTaller.TabIndex = 3;
-            this.btnTaller.Text = "  Taller";
-            this.btnTaller.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTaller.UseVisualStyleBackColor = true;
-            this.btnTaller.Click += new System.EventHandler(this.btnTaller_Click);
             // 
             // panel4
             // 
@@ -204,17 +120,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Taller Mecanico";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::PROYECTOMECANICO.Properties.Resources.pngwing_com;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(85, 85);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.White;
@@ -231,6 +136,146 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(924, 642);
             this.panel6.TabIndex = 2;
+            // 
+            // panel7
+            // 
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel7.Location = new System.Drawing.Point(15, 687);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(246, 13);
+            this.panel7.TabIndex = 10;
+            // 
+            // btnPersonal
+            // 
+            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnPersonal.FlatAppearance.BorderSize = 0;
+            this.btnPersonal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPersonal.Image = global::PROYECTOMECANICO.Properties.Resources._3592856_general_group_office_personal_relation_team_team_structure_107770;
+            this.btnPersonal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPersonal.Location = new System.Drawing.Point(15, 543);
+            this.btnPersonal.Name = "btnPersonal";
+            this.btnPersonal.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnPersonal.Size = new System.Drawing.Size(246, 72);
+            this.btnPersonal.TabIndex = 12;
+            this.btnPersonal.Text = "  Personal";
+            this.btnPersonal.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPersonal.UseVisualStyleBackColor = true;
+            this.btnPersonal.Click += new System.EventHandler(this.btnPersonal_Click);
+            // 
+            // btnConfiguracion
+            // 
+            this.btnConfiguracion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfiguracion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnConfiguracion.FlatAppearance.BorderSize = 0;
+            this.btnConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfiguracion.Image = global::PROYECTOMECANICO.Properties.Resources._3592841_cog_gear_general_machine_office_setting_settings_107765;
+            this.btnConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConfiguracion.Location = new System.Drawing.Point(15, 615);
+            this.btnConfiguracion.Name = "btnConfiguracion";
+            this.btnConfiguracion.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnConfiguracion.Size = new System.Drawing.Size(246, 72);
+            this.btnConfiguracion.TabIndex = 11;
+            this.btnConfiguracion.Text = "  Ajustes";
+            this.btnConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnConfiguracion.UseVisualStyleBackColor = true;
+            this.btnConfiguracion.Click += new System.EventHandler(this.btnConfiguracion_Click);
+            // 
+            // btnClientes
+            // 
+            this.btnClientes.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClientes.FlatAppearance.BorderSize = 0;
+            this.btnClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClientes.Image = global::PROYECTOMECANICO.Properties.Resources._3592824_airplane_airplane_mode_general_office_plane_transport_travel_107771;
+            this.btnClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClientes.Location = new System.Drawing.Point(15, 178);
+            this.btnClientes.Name = "btnClientes";
+            this.btnClientes.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnClientes.Size = new System.Drawing.Size(246, 72);
+            this.btnClientes.TabIndex = 9;
+            this.btnClientes.Text = "  Clientes";
+            this.btnClientes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnClientes.UseVisualStyleBackColor = true;
+            // 
+            // btnInicio
+            // 
+            this.btnInicio.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInicio.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInicio.FlatAppearance.BorderSize = 0;
+            this.btnInicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInicio.Image = global::PROYECTOMECANICO.Properties.Resources._3592864_general_graph_increase_office_rise_statistics_success_1077901;
+            this.btnInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInicio.Location = new System.Drawing.Point(15, 114);
+            this.btnInicio.Name = "btnInicio";
+            this.btnInicio.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnInicio.Size = new System.Drawing.Size(246, 72);
+            this.btnInicio.TabIndex = 8;
+            this.btnInicio.Text = "  Inicio";
+            this.btnInicio.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnInicio.UseVisualStyleBackColor = true;
+            this.btnInicio.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnFacturacion
+            // 
+            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFacturacion.FlatAppearance.BorderSize = 0;
+            this.btnFacturacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources._3592861_bag_briefcase_business_bag_documents_bag_general_office_portfolio_107789;
+            this.btnFacturacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnFacturacion.Location = new System.Drawing.Point(15, 412);
+            this.btnFacturacion.Name = "btnFacturacion";
+            this.btnFacturacion.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
+            this.btnFacturacion.TabIndex = 5;
+            this.btnFacturacion.Text = "  Facturacion";
+            this.btnFacturacion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnFacturacion.UseVisualStyleBackColor = true;
+            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
+            // 
+            // btnInventario
+            // 
+            this.btnInventario.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInventario.FlatAppearance.BorderSize = 0;
+            this.btnInventario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInventario.Image = global::PROYECTOMECANICO.Properties.Resources._3592814_document_general_letter_note_office_page_paper_107776;
+            this.btnInventario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInventario.Location = new System.Drawing.Point(15, 334);
+            this.btnInventario.Name = "btnInventario";
+            this.btnInventario.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnInventario.Size = new System.Drawing.Size(246, 72);
+            this.btnInventario.TabIndex = 4;
+            this.btnInventario.Text = "  Inventario";
+            this.btnInventario.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnInventario.UseVisualStyleBackColor = true;
+            this.btnInventario.Click += new System.EventHandler(this.btnInventario_Click);
+            // 
+            // btnTaller
+            // 
+            this.btnTaller.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTaller.FlatAppearance.BorderSize = 0;
+            this.btnTaller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTaller.Image = global::PROYECTOMECANICO.Properties.Resources._3592819_general_graph_office_overview_part_pie_chart_portion_107739;
+            this.btnTaller.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTaller.Location = new System.Drawing.Point(15, 256);
+            this.btnTaller.Name = "btnTaller";
+            this.btnTaller.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnTaller.Size = new System.Drawing.Size(246, 72);
+            this.btnTaller.TabIndex = 3;
+            this.btnTaller.Text = "  Taller";
+            this.btnTaller.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTaller.UseVisualStyleBackColor = true;
+            this.btnTaller.Click += new System.EventHandler(this.btnTaller_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PROYECTOMECANICO.Properties.Resources.unnamed__1_1;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(85, 85);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Form1
             // 
@@ -263,8 +308,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnUsuario;
-        private System.Windows.Forms.Button btnConfiguracion;
         private System.Windows.Forms.Button btnFacturacion;
         private System.Windows.Forms.Button btnInventario;
         private System.Windows.Forms.Button btnTaller;
@@ -273,6 +316,11 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button btnInicio;
+        private System.Windows.Forms.Button btnClientes;
+        private System.Windows.Forms.Button btnPersonal;
+        private System.Windows.Forms.Button btnConfiguracion;
+        private System.Windows.Forms.Panel panel7;
     }
 }
 
