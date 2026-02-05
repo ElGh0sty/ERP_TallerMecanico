@@ -27,24 +27,19 @@ namespace PROYECTOMECANICO
             
         }
 
-        private void AbrirFormularioHijo(Form formularioHijo)
+        public void AbrirFormularioEnPanel(object formularioHijo)
         {
             if (this.panel6.Controls.Count > 0)
-            {
-                this.panel6.Controls.Clear();
-            }
+                this.panel6.Controls.RemoveAt(0);
 
-            formularioActivo = formularioHijo;
-            formularioHijo.TopLevel = false;
-            formularioHijo.FormBorderStyle = FormBorderStyle.None;
+            Form fh = formularioHijo as Form;
+            fh.TopLevel = false;
+            fh.FormBorderStyle = FormBorderStyle.None;
+            fh.Dock = DockStyle.Fill;
 
-            formularioHijo.Size = this.panel6.ClientSize;
-            formularioHijo.Dock = DockStyle.Fill;
-
-            this.panel6.Controls.Add(formularioHijo);
-            this.panel6.Tag = formularioHijo;
-            this.panel6.BringToFront();
-            formularioHijo.Show();
+            this.panel6.Controls.Add(fh);
+            this.panel6.Tag = fh;
+            fh.Show();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -54,27 +49,27 @@ namespace PROYECTOMECANICO
 
         private void btnTaller_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Taller.FormTaller());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller());
         }
 
         private void btnInventario_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Inventario.FormInventario());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario());
         }
 
         private void btnFacturacion_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion());
         }
 
         private void btnPersonal_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Personal.FormPersonal());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Personal.FormPersonal());
         }
 
         private void btnConfiguracion_Click(object sender, EventArgs e)
         {
-           AbrirFormularioHijo(new Modulo_Config.FormConfiguracion());
+           AbrirFormularioEnPanel(new Modulo_Config.FormConfiguracion());
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -89,11 +84,11 @@ namespace PROYECTOMECANICO
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
         }
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new PROYECTOMECANICO.Modulo_Clientes.FormClientes());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Clientes.FormClientes());
         }
     }
 }

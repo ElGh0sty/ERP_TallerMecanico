@@ -21,5 +21,15 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         {
 
         }
+
+        private void btnRegistrar_Click(object sender, EventArgs e)
+        {
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                // Abrimos el formulario donde realmente estará el Grid
+                objetoPadre.AbrirFormularioEnPanel(new FormNuevoCliente());
+            }
+        }
     }
 }

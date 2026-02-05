@@ -334,13 +334,13 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button btnInicio;
         private System.Windows.Forms.Button btnClientes;
         private System.Windows.Forms.Button btnPersonal;
         private System.Windows.Forms.Button btnConfiguracion;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label lblSesion;
+        public System.Windows.Forms.Panel panel6;
     }
 }
 

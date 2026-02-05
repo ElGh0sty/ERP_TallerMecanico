@@ -65,6 +65,12 @@
     <Compile Include="Modulo_Clientes\FormClientes.Designer.cs">
       <DependentUpon>FormClientes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Clientes\FormNuevoCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Clientes\FormNuevoCliente.Designer.cs">
+      <DependentUpon>FormNuevoCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Config\FormConfiguracion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Clientes\FormClientes.resx">
       <DependentUpon>FormClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Clientes\FormNuevoCliente.resx">
+      <DependentUpon>FormNuevoCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormFacturacion.resx">
       <DependentUpon>FormFacturacion.cs</DependentUpon>
@@ -167,6 +176,17 @@
     <Content Include=".gitignore">
       <Generator>SettingsSingleFileGenerator</Generator>
     </Content>
+    <None Include="Resources\insurance_shield_protection_file_folder_real_estate_finance_icon_141986.png" />
+    <None Include="Resources\finance_money_coin_bill_cash_payment_icon_141995.png" />
+    <None Include="Resources\computer_monitor_pc_hardware_screen_icon_142007.png" />
+    <None Include="Resources\copier_copy_scan_scanner_computer_hardware_icon_141988.png" />
+    <None Include="Resources\finance_receipt_dollar_calculator_payment_money_icon_142011.png" />
+    <None Include="Resources\transfer_man_employee_user_avatar_arrow_refresh_icon_141997.png" />
+    <None Include="Resources\confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996.png" />
+    <None Include="Resources\confirm_shipping_ecommerce_logistic_box_package_icon_142005.png" />
+    <None Include="Resources\help_blind_medical_granting_offering_donation_eye_icon_251230.png" />
+    <None Include="Resources\adoption_protection_kid_child_care_orphan_icon_251222.png" />
+    <None Include="Resources\teaching_workshop_training_technical_free_icon_251190.png" />
     <None Include="Resources\search_find_magnify_icon_131253.png" />
     <None Include="Resources\file_document_new_contract_icon_131249.png" />
     <None Include="Resources\car_23964.png" />

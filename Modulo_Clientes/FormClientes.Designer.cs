@@ -29,75 +29,76 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormClientes));
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnOrden = new System.Windows.Forms.Button();
+            this.btnCatalogo = new System.Windows.Forms.Button();
+            this.btnRegistrarVe = new System.Windows.Forms.Button();
+            this.btnRegistrar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button4
+            // btnOrden
             // 
-            this.button4.BackColor = System.Drawing.Color.Gold;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Image = global::PROYECTOMECANICO.Properties.Resources.search_find_magnify_icon_131253;
-            this.button4.Location = new System.Drawing.Point(457, 253);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(343, 137);
-            this.button4.TabIndex = 13;
-            this.button4.Text = "Generar Orden de Trabajo";
-            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.button4.UseVisualStyleBackColor = false;
+            this.btnOrden.BackColor = System.Drawing.Color.Gold;
+            this.btnOrden.FlatAppearance.BorderSize = 0;
+            this.btnOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOrden.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOrden.ForeColor = System.Drawing.Color.White;
+            this.btnOrden.Image = global::PROYECTOMECANICO.Properties.Resources.search_find_magnify_icon_131253;
+            this.btnOrden.Location = new System.Drawing.Point(496, 268);
+            this.btnOrden.Name = "btnOrden";
+            this.btnOrden.Size = new System.Drawing.Size(372, 169);
+            this.btnOrden.TabIndex = 13;
+            this.btnOrden.Text = "Generar Orden de Trabajo";
+            this.btnOrden.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnOrden.UseVisualStyleBackColor = false;
             // 
-            // button3
+            // btnCatalogo
             // 
-            this.button3.BackColor = System.Drawing.Color.Orchid;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = global::PROYECTOMECANICO.Properties.Resources.file_document_new_contract_icon_131249;
-            this.button3.Location = new System.Drawing.Point(83, 253);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(343, 137);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "Catalogo de Servicios";
-            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnCatalogo.BackColor = System.Drawing.Color.Orchid;
+            this.btnCatalogo.FlatAppearance.BorderSize = 0;
+            this.btnCatalogo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCatalogo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCatalogo.ForeColor = System.Drawing.Color.White;
+            this.btnCatalogo.Image = global::PROYECTOMECANICO.Properties.Resources.file_document_new_contract_icon_131249;
+            this.btnCatalogo.Location = new System.Drawing.Point(43, 268);
+            this.btnCatalogo.Name = "btnCatalogo";
+            this.btnCatalogo.Size = new System.Drawing.Size(372, 169);
+            this.btnCatalogo.TabIndex = 12;
+            this.btnCatalogo.Text = "Catalogo de Servicios";
+            this.btnCatalogo.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnCatalogo.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // btnRegistrarVe
             // 
-            this.button2.BackColor = System.Drawing.Color.LightSalmon;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Image = global::PROYECTOMECANICO.Properties.Resources.car_23964;
-            this.button2.Location = new System.Drawing.Point(457, 91);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(343, 137);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Registrar Vehiculo";
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.button2.UseVisualStyleBackColor = false;
+            this.btnRegistrarVe.BackColor = System.Drawing.Color.LightSalmon;
+            this.btnRegistrarVe.FlatAppearance.BorderSize = 0;
+            this.btnRegistrarVe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegistrarVe.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRegistrarVe.ForeColor = System.Drawing.Color.White;
+            this.btnRegistrarVe.Image = global::PROYECTOMECANICO.Properties.Resources.car_23964;
+            this.btnRegistrarVe.Location = new System.Drawing.Point(496, 40);
+            this.btnRegistrarVe.Name = "btnRegistrarVe";
+            this.btnRegistrarVe.Size = new System.Drawing.Size(372, 169);
+            this.btnRegistrarVe.TabIndex = 11;
+            this.btnRegistrarVe.Text = "Registrar Vehiculo";
+            this.btnRegistrarVe.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnRegistrarVe.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // btnRegistrar
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::PROYECTOMECANICO.Properties.Resources.user_account_person_avatar_icon_131248;
-            this.button1.Location = new System.Drawing.Point(83, 91);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(343, 137);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Registrar Nuevo Cliente";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnRegistrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnRegistrar.FlatAppearance.BorderSize = 0;
+            this.btnRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegistrar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRegistrar.ForeColor = System.Drawing.Color.White;
+            this.btnRegistrar.Image = global::PROYECTOMECANICO.Properties.Resources.user_account_person_avatar_icon_131248;
+            this.btnRegistrar.Location = new System.Drawing.Point(43, 40);
+            this.btnRegistrar.Name = "btnRegistrar";
+            this.btnRegistrar.Size = new System.Drawing.Size(372, 169);
+            this.btnRegistrar.TabIndex = 10;
+            this.btnRegistrar.Text = "Registrar Nuevo Cliente";
+            this.btnRegistrar.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnRegistrar.UseVisualStyleBackColor = false;
+            this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
             // 
             // FormClientes
             // 
@@ -105,10 +106,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnOrden);
+            this.Controls.Add(this.btnCatalogo);
+            this.Controls.Add(this.btnRegistrarVe);
+            this.Controls.Add(this.btnRegistrar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormClientes";
@@ -119,9 +120,9 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnRegistrar;
+        private System.Windows.Forms.Button btnRegistrarVe;
+        private System.Windows.Forms.Button btnCatalogo;
+        private System.Windows.Forms.Button btnOrden;
     }
 }

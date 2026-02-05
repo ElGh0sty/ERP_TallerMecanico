@@ -153,6 +153,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap adoption_protection_kid_child_care_orphan_icon_251222 {
+            get {
+                object obj = ResourceManager.GetObject("adoption_protection_kid_child_care_orphan_icon_251222", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap car_23964 {
             get {
                 object obj = ResourceManager.GetObject("car_23964", resourceCulture);
@@ -163,9 +173,89 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap computer_monitor_pc_hardware_screen_icon_142007 {
+            get {
+                object obj = ResourceManager.GetObject("computer_monitor_pc_hardware_screen_icon_142007", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap confirm_shipping_ecommerce_logistic_box_package_icon_142005 {
+            get {
+                object obj = ResourceManager.GetObject("confirm_shipping_ecommerce_logistic_box_package_icon_142005", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996 {
+            get {
+                object obj = ResourceManager.GetObject("confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap copier_copy_scan_scanner_computer_hardware_icon_141988 {
+            get {
+                object obj = ResourceManager.GetObject("copier_copy_scan_scanner_computer_hardware_icon_141988", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap file_document_new_contract_icon_131249 {
             get {
                 object obj = ResourceManager.GetObject("file_document_new_contract_icon_131249", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap finance_money_coin_bill_cash_payment_icon_141995 {
+            get {
+                object obj = ResourceManager.GetObject("finance_money_coin_bill_cash_payment_icon_141995", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap finance_receipt_dollar_calculator_payment_money_icon_142011 {
+            get {
+                object obj = ResourceManager.GetObject("finance_receipt_dollar_calculator_payment_money_icon_142011", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap help_blind_medical_granting_offering_donation_eye_icon_251230 {
+            get {
+                object obj = ResourceManager.GetObject("help_blind_medical_granting_offering_donation_eye_icon_251230", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap insurance_shield_protection_file_folder_real_estate_finance_icon_141986 {
+            get {
+                object obj = ResourceManager.GetObject("insurance_shield_protection_file_folder_real_estate_finance_icon_141986", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -236,6 +326,26 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap search_find_magnify_icon_131253 {
             get {
                 object obj = ResourceManager.GetObject("search_find_magnify_icon_131253", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap teaching_workshop_training_technical_free_icon_251190 {
+            get {
+                object obj = ResourceManager.GetObject("teaching_workshop_training_technical_free_icon_251190", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap transfer_man_employee_user_avatar_arrow_refresh_icon_141997 {
+            get {
+                object obj = ResourceManager.GetObject("transfer_man_employee_user_avatar_arrow_refresh_icon_141997", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
