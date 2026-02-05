@@ -85,6 +85,7 @@
             this.btnIniciarSesion.TabIndex = 12;
             this.btnIniciarSesion.Text = "Inicia Sesion";
             this.btnIniciarSesion.UseVisualStyleBackColor = false;
+            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click);
             // 
             // panel3
             // 

@@ -14,9 +14,12 @@ namespace PROYECTOMECANICO
     public partial class Form1 : Form
     {
         private Form formularioActivo = null;
-        public Form1()
+        private string rolUsuario;
+
+        public Form1(string rol) 
         {
             InitializeComponent();
+            this.rolUsuario = rol;
         }
 
         private void AbrirFormularioHijo(Form formularioHijo)
