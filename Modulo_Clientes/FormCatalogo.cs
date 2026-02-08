@@ -10,15 +10,21 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         Conexion con = new Conexion();
         DataTable dtVehiculos;
         private string rolUsuario;
+        private Form1 formPrincipal;
 
-        public FormCatalogo(string rol)
+        public FormCatalogo(Form1 principal, string rol)
         {
             InitializeComponent();
-            CargarCatalogoVehiculos();
+
+            formPrincipal = principal;
             rolUsuario = rol;
+
+            CargarCatalogoVehiculos();
         }
 
-        
+
+
+
         private void CargarCatalogoVehiculos(string filtro = "")
         {
             try
@@ -52,8 +58,14 @@ ORDER BY c.nombre, v.placa";
 
                 dgvVehiculos.DataSource = dtVehiculos;
 
-                dgvVehiculos.Columns["vehiculo_id"].Visible = false;
-                dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                if (dgvVehiculos.Columns.Contains("vehiculo_id"))
+                    dgvVehiculos.Columns["vehiculo_id"].Visible = false;
+                AgregarBotonesAccionGrid();
+                EstilizarGridCompleto();
+                ConfigurarColumnasGrid();
+                EstilizarBotonesAccionGrid();
+
+
             }
             catch (Exception ex)
             {
@@ -72,54 +84,47 @@ ORDER BY c.nombre, v.placa";
         }
 
         //Esta es una prueba no esta ACTIVA
-        private void dgvVehiculos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+
+        private void EliminarVehiculo(long vehiculoId)
         {
-            if (e.RowIndex < 0) return;
-
-            long vehiculoId = Convert.ToInt64(
-                dgvVehiculos.Rows[e.RowIndex].Cells["vehiculo_id"].Value
-            );
-
-            
-            FormRegVehi frm = new FormRegVehi(rolUsuario);
-            frm.Tag = vehiculoId; 
-            frm.ShowDialog();
-
-            
-            CargarCatalogoVehiculos(txtBuscar.Text.Trim());
-        }
-
-        
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (dgvVehiculos.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Seleccione un vehículo.");
-                return;
-            }
-
-            long vehiculoId = Convert.ToInt64(
-                dgvVehiculos.SelectedRows[0].Cells["vehiculo_id"].Value
-            );
-
-            DialogResult r = MessageBox.Show(
-                "¿Está seguro de eliminar este registro?",
-                "Confirmar",
+            if (MessageBox.Show(
+                "¿Seguro que deseas eliminar este vehículo?\nEsta acción no se puede deshacer.",
+                "Confirmar eliminación",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (r != DialogResult.Yes) return;
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
 
             try
             {
                 con.Abrir();
-                string sql = "DELETE FROM Vehiculos WHERE id = @id";
-                SqlCommand cmd = new SqlCommand(sql, con.leer);
-                cmd.Parameters.AddWithValue("@id", vehiculoId);
-                cmd.ExecuteNonQuery();
 
-                MessageBox.Show("Vehículo eliminado.");
+                // ✅ Validar si tiene órdenes asociadas
+                string sqlValida = "SELECT COUNT(*) FROM OrdenesTrabajo WHERE vehiculo_id = @id";
+                SqlCommand cmdValida = new SqlCommand(sqlValida, con.leer);
+                cmdValida.Parameters.AddWithValue("@id", vehiculoId);
+
+                int cantOT = Convert.ToInt32(cmdValida.ExecuteScalar());
+
+                if (cantOT > 0)
+                {
+                    MessageBox.Show(
+                        "No se puede eliminar este vehículo porque tiene órdenes de trabajo registradas.\n" +
+                        "Si necesitas removerlo, primero elimina o reasigna sus órdenes.",
+                        "Acción no permitida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                // ✅ Si no tiene órdenes, se elimina
+                string sqlDel = "DELETE FROM Vehiculos WHERE id = @id";
+                SqlCommand cmd = new SqlCommand(sqlDel, con.leer);
+                cmd.Parameters.AddWithValue("@id", vehiculoId);
+
+                int filas = cmd.ExecuteNonQuery();
+
+                MessageBox.Show(filas > 0 ? "✅ Vehículo eliminado correctamente." : "No se encontró el vehículo.");
                 CargarCatalogoVehiculos(txtBuscar.Text.Trim());
             }
             catch (Exception ex)
@@ -131,6 +136,173 @@ ORDER BY c.nombre, v.placa";
                 con.Cerrar();
             }
         }
+
+
+        private void EditarVehiculo(long vehiculoId)
+        {
+            formPrincipal.AbrirFormularioEnPanel(new FormRegVehi(formPrincipal, rolUsuario, vehiculoId));
+        }
+
+
+        // =======================
+        // ESTILO GENERAL DEL GRID
+        // =======================
+        private void EstilizarGridCompleto()
+        {
+            dgvVehiculos.AllowUserToAddRows = false;
+            dgvVehiculos.AllowUserToDeleteRows = false;
+            dgvVehiculos.AllowUserToResizeRows = false;
+            dgvVehiculos.ReadOnly = true;
+
+            dgvVehiculos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVehiculos.MultiSelect = false;
+            dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvVehiculos.RowHeadersVisible = false;
+            dgvVehiculos.BorderStyle = BorderStyle.None;
+            dgvVehiculos.BackgroundColor = System.Drawing.Color.White;
+
+            dgvVehiculos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvVehiculos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvVehiculos.GridColor = System.Drawing.Color.FromArgb(230, 230, 230);
+
+            dgvVehiculos.EnableHeadersVisualStyles = false;
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(24, 24, 28);
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvVehiculos.ColumnHeadersHeight = 40;
+
+            dgvVehiculos.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dgvVehiculos.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(35, 35, 35);
+            dgvVehiculos.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgvVehiculos.DefaultCellStyle.Padding = new Padding(8, 3, 8, 3);
+
+            dgvVehiculos.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(247, 247, 250);
+
+            dgvVehiculos.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 235, 255);
+            dgvVehiculos.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(10, 10, 10);
+
+            dgvVehiculos.RowTemplate.Height = 38;
+        }
+
+        // =======================
+        // CONFIGURACIÓN COLUMNAS
+        // =======================
+        private void ConfigurarColumnasGrid()
+        {
+            // Ocultar ID (debe existir aunque esté oculto)
+            if (dgvVehiculos.Columns.Contains("vehiculo_id"))
+                dgvVehiculos.Columns["vehiculo_id"].Visible = false;
+
+            // Headers más bonitos (ajusta según tus columnas reales)
+            if (dgvVehiculos.Columns.Contains("cliente")) dgvVehiculos.Columns["cliente"].HeaderText = "Cliente";
+            if (dgvVehiculos.Columns.Contains("placa")) dgvVehiculos.Columns["placa"].HeaderText = "Placa";
+            if (dgvVehiculos.Columns.Contains("marca")) dgvVehiculos.Columns["marca"].HeaderText = "Marca";
+            if (dgvVehiculos.Columns.Contains("modelo")) dgvVehiculos.Columns["modelo"].HeaderText = "Modelo";
+            if (dgvVehiculos.Columns.Contains("tipo")) dgvVehiculos.Columns["tipo"].HeaderText = "Tipo";
+            if (dgvVehiculos.Columns.Contains("año")) dgvVehiculos.Columns["año"].HeaderText = "Año";
+            if (dgvVehiculos.Columns.Contains("kilometraje_actual")) dgvVehiculos.Columns["kilometraje_actual"].HeaderText = "Km";
+        }
+
+        // =======================
+        // BOTONES EDITAR/ELIMINAR
+        // =======================
+        private void AgregarBotonesAccionGrid()
+        {
+            // Evitar duplicados al recargar
+            if (!dgvVehiculos.Columns.Contains("btnEditar"))
+            {
+                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                btnEditar.Name = "btnEditar";
+                btnEditar.HeaderText = "";
+                btnEditar.Text = "Editar";
+                btnEditar.UseColumnTextForButtonValue = true;
+                btnEditar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                btnEditar.Width = 80;
+                dgvVehiculos.Columns.Add(btnEditar);
+            }
+
+            if (!dgvVehiculos.Columns.Contains("btnEliminar"))
+            {
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.Name = "btnEliminar";
+                btnEliminar.HeaderText = "";
+                btnEliminar.Text = "Eliminar";
+                btnEliminar.UseColumnTextForButtonValue = true;
+                btnEliminar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                btnEliminar.Width = 95;
+                dgvVehiculos.Columns.Add(btnEliminar);
+            }
+        }
+
+        private void EstilizarBotonesAccionGrid()
+        {
+            if (dgvVehiculos.Columns.Contains("btnEditar"))
+            {
+                var c = dgvVehiculos.Columns["btnEditar"] as DataGridViewButtonColumn;
+                c.FlatStyle = FlatStyle.Flat;
+                c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                c.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(230, 242, 255);
+                c.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(0, 84, 166);
+                c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(210, 230, 255);
+                c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(0, 60, 120);
+                c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+                c.Width = 80;
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
+
+            if (dgvVehiculos.Columns.Contains("btnEliminar"))
+            {
+                var c = dgvVehiculos.Columns["btnEliminar"] as DataGridViewButtonColumn;
+                c.FlatStyle = FlatStyle.Flat;
+                c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                c.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(255, 235, 235);
+                c.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(160, 0, 0);
+                c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(255, 210, 210);
+                c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(120, 0, 0);
+                c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+                c.Width = 95;
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
+        }
+
+        // (Opcional) suaviza el render de botones
+        private void dgvVehiculos_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string colName = dgvVehiculos.Columns[e.ColumnIndex].Name;
+            if (colName == "btnEditar" || colName == "btnEliminar")
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                e.Handled = true;
+            }
+        }
+
+        // =======================
+        // CLICK EN BOTONES DEL GRID
+        // =======================
+        private void dgvVehiculos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string colName = dgvVehiculos.Columns[e.ColumnIndex].Name;
+
+            // Asegúrate de que tu columna ID se llame "vehiculo_id"
+            long vehiculoId = Convert.ToInt64(dgvVehiculos.Rows[e.RowIndex].Cells["vehiculo_id"].Value);
+
+            if (colName == "btnEditar")
+            {
+                EditarVehiculo(vehiculoId);   // ✅ TU funcionalidad
+            }
+            else if (colName == "btnEliminar")
+            {
+                EliminarVehiculo(vehiculoId); // ✅ TU funcionalidad
+            }
+        }
+
+
     }
 }
 

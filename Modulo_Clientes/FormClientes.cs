@@ -64,7 +64,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             if (objetoPadre != null)
             {
-                objetoPadre.AbrirFormularioEnPanel(new FormRegVehi(rolUsuario));
+                objetoPadre.AbrirFormularioEnPanel(new FormRegVehi(objetoPadre, rolUsuario));
+
+
             }
         }
 
@@ -84,7 +86,8 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             if (objetoPadre != null)
             {
-                objetoPadre.AbrirFormularioEnPanel(new FormCatalogo(rolUsuario));
+                objetoPadre.AbrirFormularioEnPanel(new FormCatalogo(objetoPadre, rolUsuario));
+
             }
         }
 

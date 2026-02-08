@@ -9,14 +9,41 @@ namespace PROYECTOMECANICO.Modulo_Clientes
     {
         Conexion con = new Conexion();
         DataTable dtClientes;
+
+        private Form1 formPrincipal;
+        private long? vehiculoIdEditar = null;
         private string rolUsuario;
-        public FormRegVehi(string rolUsuario)
+
+
+        // ✅ Constructor para REGISTRAR NUEVO
+        public FormRegVehi(Form1 principal, string rolUsuario)
         {
             InitializeComponent();
+            formPrincipal = principal;
+            this.rolUsuario = rolUsuario;
+
             CargarClientesCompleto();
             CargarTiposVehiculo();
-            cmbDuenio.SelectedIndexChanged += new EventHandler(cmbDuenio_SelectedIndexChanged);
+
+            cmbDuenio.SelectedIndexChanged += cmbDuenio_SelectedIndexChanged;
+        }
+
+        // ✅ Constructor para EDITAR (recibe el ID del vehículo)
+        public FormRegVehi(Form1 principal, string rolUsuario, long vehiculoId)
+        {
+            InitializeComponent();
+            formPrincipal = principal;
             this.rolUsuario = rolUsuario;
+            vehiculoIdEditar = vehiculoId;
+
+            CargarClientesCompleto();
+            CargarTiposVehiculo();
+
+            cmbDuenio.SelectedIndexChanged += cmbDuenio_SelectedIndexChanged;
+
+            CargarVehiculoParaEditar(vehiculoId);
+
+            btnGuardarVehiculo.Text = "Guardar edición"; 
         }
 
 
@@ -65,10 +92,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             }
         }
 
-
         private void cmbDuenio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbDuenio.SelectedIndex != -1 && dtClientes != null)
+            if (cmbDuenio.SelectedIndex != -1 && dtClientes != null && cmbDuenio.SelectedItem is DataRowView)
             {
                 DataRowView clienteSeleccionado = (DataRowView)cmbDuenio.SelectedItem;
 
@@ -79,6 +105,57 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             {
                 txtTipoDoc.Clear();
                 txtDocumento.Clear();
+            }
+        }
+
+        // ✅ Carga los datos del vehículo (para editar)
+        private void CargarVehiculoParaEditar(long vehiculoId)
+        {
+            try
+            {
+                con.Abrir();
+
+                string sql = @"
+SELECT 
+    cliente_id, placa, marca, modelo, tipo, [año], chasis_vin, kilometraje_actual
+FROM Vehiculos
+WHERE id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@id", vehiculoId);
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        // ⚠️ Primero se setean combos (ya cargados)
+                        cmbDuenio.SelectedValue = Convert.ToInt64(dr["cliente_id"]);
+                        cmbTipoVehiculo.SelectedValue = dr["tipo"].ToString();
+
+                        txtPlaca.Text = dr["placa"].ToString();
+                        txtMarca.Text = dr["marca"].ToString();
+                        txtModelo.Text = dr["modelo"].ToString();
+                        txtAño.Text = dr["año"].ToString();
+                        txtChasis.Text = dr["chasis_vin"].ToString();
+                        txtKilometraje.Text = dr["kilometraje_actual"].ToString();
+
+                        // Cambiar texto del botón (opcional)
+                        btnGuardarVehiculo.Text = "Guardar cambios";
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontró el vehículo para editar.");
+                        vehiculoIdEditar = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando vehículo: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
             }
         }
 
@@ -96,17 +173,45 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 return;
             }
 
+            if (!int.TryParse(txtAño.Text.Trim(), out int anio))
+            {
+                MessageBox.Show("Ingrese un año válido.");
+                return;
+            }
+
             int kilometraje = 0;
-            int.TryParse(txtKilometraje.Text, out kilometraje);
+            int.TryParse(txtKilometraje.Text.Trim(), out kilometraje);
 
             try
             {
                 con.Abrir();
-                string sql = @"
+
+                string sql;
+
+                if (vehiculoIdEditar == null)
+                {
+                    // ✅ INSERT
+                    sql = @"
 INSERT INTO Vehiculos
 (cliente_id, placa, marca, modelo, tipo, [año], chasis_vin, kilometraje_actual)
 VALUES
 (@cliente_id, @placa, @marca, @modelo, @tipo, @anio, @chasis, @kilometraje)";
+                }
+                else
+                {
+                    // ✅ UPDATE
+                    sql = @"
+UPDATE Vehiculos SET
+    cliente_id = @cliente_id,
+    placa = @placa,
+    marca = @marca,
+    modelo = @modelo,
+    tipo = @tipo,
+    [año] = @anio,
+    chasis_vin = @chasis,
+    kilometraje_actual = @kilometraje
+WHERE id = @id";
+                }
 
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
 
@@ -115,34 +220,54 @@ VALUES
                 cmd.Parameters.Add("@marca", SqlDbType.NVarChar, 255).Value = txtMarca.Text.Trim();
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar, 255).Value = txtModelo.Text.Trim();
                 cmd.Parameters.Add("@tipo", SqlDbType.NVarChar, 10).Value = cmbTipoVehiculo.SelectedValue;
-                cmd.Parameters.Add("@anio", SqlDbType.Int).Value = int.Parse(txtAño.Text);
+                cmd.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
                 cmd.Parameters.Add("@chasis", SqlDbType.NVarChar, 17).Value = txtChasis.Text.Trim().ToUpper();
                 cmd.Parameters.Add("@kilometraje", SqlDbType.Int).Value = kilometraje;
 
+                if (vehiculoIdEditar != null)
+                    cmd.Parameters.Add("@id", SqlDbType.BigInt).Value = vehiculoIdEditar.Value;
+
                 cmd.ExecuteNonQuery();
 
-                MessageBox.Show("¡Vehículo registrado!");
-                Limpiar();
-            }
+                if (vehiculoIdEditar == null)
+                {
+                    MessageBox.Show("¡Vehículo registrado!");
+                    Limpiar();
+                }
+                else
+                {
+                    MessageBox.Show("✅ Cambios guardados correctamente.");
+
+                    // ✅ volver al catálogo y cerrar este form (porque reemplaza el panel)
+                    formPrincipal.AbrirFormularioEnPanel(new FormCatalogo(formPrincipal, rolUsuario));
+                }
+
+
+            }   
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
             finally { con.Cerrar(); }
         }
 
         private void Limpiar()
         {
-            foreach (Control c in this.Controls) { if (c is TextBox) (c as TextBox).Clear(); }
+            foreach (Control c in this.Controls)
+            {
+                if (c is TextBox) (c as TextBox).Clear();
+            }
             cmbDuenio.SelectedIndex = -1;
+            cmbTipoVehiculo.SelectedIndex = -1;
         }
 
         private void txtKilometraje_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
                 e.Handled = true;
-        }   
+        }
 
         private void txtModelo_TextChanged(object sender, EventArgs e)
         {
-
+            // vacío
         }
     }
 }
+
