@@ -205,6 +205,11 @@ VALUES
             txtNombreOrden.Clear();
             txtDescripcion.Clear();
         }
+
+        private void txtNombreOrden_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

@@ -44,6 +44,7 @@
             this.btnGuardarOrden = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.cmbMecanico = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,7 +96,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
@@ -111,7 +112,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label5.BackColor = System.Drawing.Color.LightSlateGray;
             this.label5.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(603, 129);
@@ -123,7 +124,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label4.BackColor = System.Drawing.Color.LightSlateGray;
             this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(603, 24);
@@ -135,7 +136,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label3.BackColor = System.Drawing.Color.LightSlateGray;
             this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(341, 129);
@@ -147,7 +148,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label2.BackColor = System.Drawing.Color.LightSlateGray;
             this.label2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(341, 24);
@@ -159,7 +160,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label1.BackColor = System.Drawing.Color.LightSlateGray;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(50, 24);
@@ -171,11 +172,12 @@
             // txtNombreOrden
             // 
             this.txtNombreOrden.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombreOrden.Location = new System.Drawing.Point(55, 334);
+            this.txtNombreOrden.Location = new System.Drawing.Point(55, 307);
             this.txtNombreOrden.Name = "txtNombreOrden";
             this.txtNombreOrden.ReadOnly = true;
             this.txtNombreOrden.Size = new System.Drawing.Size(480, 29);
             this.txtNombreOrden.TabIndex = 20;
+            this.txtNombreOrden.TextChanged += new System.EventHandler(this.txtNombreOrden_TextChanged);
             // 
             // txtDescripcion
             // 
@@ -207,26 +209,39 @@
             this.label6.BackColor = System.Drawing.SystemColors.Control;
             this.label6.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.label6.Location = new System.Drawing.Point(616, 280);
+            this.label6.Location = new System.Drawing.Point(603, 303);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(205, 30);
+            this.label6.Size = new System.Drawing.Size(209, 30);
             this.label6.TabIndex = 29;
-            this.label6.Text = "Mecanico Asignado:";
+            this.label6.Text = "Asigna un Mecanico:";
             // 
             // cmbMecanico
             // 
             this.cmbMecanico.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbMecanico.FormattingEnabled = true;
-            this.cmbMecanico.Location = new System.Drawing.Point(608, 334);
+            this.cmbMecanico.Location = new System.Drawing.Point(608, 358);
             this.cmbMecanico.Name = "cmbMecanico";
             this.cmbMecanico.Size = new System.Drawing.Size(215, 29);
             this.cmbMecanico.TabIndex = 28;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.SystemColors.Control;
+            this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.label7.Location = new System.Drawing.Point(50, 373);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(354, 30);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "Descripcion de la Orden de Trabajo:";
             // 
             // FormOrden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnGuardarOrden);
             this.Controls.Add(this.cmbMecanico);
@@ -265,5 +280,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cmbMecanico;
+        private System.Windows.Forms.Label label7;
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Drawing.Drawing2D;
 
 namespace PROYECTOMECANICO
 {
@@ -24,7 +24,8 @@ namespace PROYECTOMECANICO
             this.usuarioActual = usuario;
 
             lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario}";
-            
+            BotonRedondo(btnCerrarSesion, 7);
+
         }
 
         public void AbrirFormularioEnPanel(object formularioHijo)
@@ -96,7 +97,44 @@ namespace PROYECTOMECANICO
             return rolesPermitidos.Contains(rolUsuario);
         }
 
-        
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            DialogResult r = MessageBox.Show(
+                "¿Deseas cerrar sesión?",
+                "Cerrar Sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (r == DialogResult.Yes)
+            {
+                FormLogin login = new FormLogin();
+                login.Show();
+
+                this.Close();
+            }
+        }
+
+        private void BotonRedondo(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+
+            // Esquinas redondeadas
+            path.AddArc(new Rectangle(0, 0, radio, radio), 180, 90);
+            path.AddArc(new Rectangle(btn.Width - radio, 0, radio, radio), 270, 90);
+            path.AddArc(new Rectangle(btn.Width - radio, btn.Height - radio, radio, radio), 0, 90);
+            path.AddArc(new Rectangle(0, btn.Height - radio, radio, radio), 90, 90);
+
+            path.CloseFigure();
+
+            btn.Region = new Region(path);
+
+            // Extra visual
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+        }
+
 
     }
 }
