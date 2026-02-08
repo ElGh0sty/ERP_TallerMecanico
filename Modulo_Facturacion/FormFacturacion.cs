@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PROYECTOMECANICO.Seguridad;
+using System.Drawing.Drawing2D;
+
 
 namespace PROYECTOMECANICO.Modulo_Facturacion
 {
@@ -19,6 +21,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         {
             InitializeComponent();
             this.rolUsuario = rolUsuario;
+            AplicarBotonesRedondos();
         }
 
         private bool PuedeUsarEsteModulo()
@@ -81,5 +84,35 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 return;
             }
         }
+
+        private void AplicarBotonesRedondos()
+        {
+            BotonRedondo(button1, 20);
+            BotonRedondo(button2, 20);
+            BotonRedondo(button3, 20);
+            BotonRedondo(button4, 20);
+        }
+
+
+        private void BotonRedondo(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+
+            // Esquinas redondeadas
+            path.AddArc(new Rectangle(0, 0, radio, radio), 180, 90);
+            path.AddArc(new Rectangle(btn.Width - radio, 0, radio, radio), 270, 90);
+            path.AddArc(new Rectangle(btn.Width - radio, btn.Height - radio, radio, radio), 0, 90);
+            path.AddArc(new Rectangle(0, btn.Height - radio, radio, radio), 90, 90);
+
+            path.CloseFigure();
+
+            btn.Region = new Region(path);
+
+            // Extra visual
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+        }
+
     }
 }
