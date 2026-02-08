@@ -32,7 +32,8 @@ SELECT
     c.nombre AS cliente,
     u.nombre_usuario AS mecanico,
     ot.fecha_ingreso,
-    ot.estado
+    ot.estado,
+    ot.descripcion
 FROM OrdenesTrabajo ot
 INNER JOIN Vehiculos v ON ot.vehiculo_id = v.id
 INNER JOIN Clientes c ON v.cliente_id = c.id
@@ -44,6 +45,9 @@ ORDER BY ot.fecha_ingreso DESC";
                 da.Fill(dt);
 
                 dgvOrdenes.DataSource = dt;
+                if (dgvOrdenes.Columns.Contains("descripcion"))
+                    dgvOrdenes.Columns["descripcion"].Visible = false;
+
             }
             catch (Exception ex)
             {
@@ -117,6 +121,19 @@ ORDER BY ot.fecha_ingreso DESC";
                 con.Cerrar();
             }
         }
+        private void dgvOrdenes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var valor = dgvOrdenes.Rows[e.RowIndex].Cells["descripcion"].Value;
+                rtbDescripcion.Text = (valor == null || valor == DBNull.Value) ? "" : valor.ToString();
+            }
+        }
+
+
+
+
+
     }
 }
 

@@ -39,9 +39,11 @@ FROM Vehiculos v
 INNER JOIN Clientes c ON v.cliente_id = c.id";
 
 
+
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 dtVehiculos = new DataTable();
                 da.Fill(dtVehiculos);
+
 
                 cmbVehiculo.DataSource = dtVehiculos;
                 cmbVehiculo.DisplayMember = "vehiculo_mostrar";
@@ -159,18 +161,24 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
 
                 string sql = @"
 INSERT INTO OrdenesTrabajo
-(vehiculo_id, mecanico_id, recepcionista_id, fecha_ingreso, estado)
+(vehiculo_id, recepcionista_id, mecanico_id, fecha_ingreso, estado, descripcion)
 VALUES
-(@vehiculo, @mecanico, @recepcionista, GETDATE(), @estado)";
+(@vehiculo_id, @recepcionista_id, @mecanico_id, GETDATE(), @estado, @descripcion)";
+
+
+
 
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
 
-                cmd.Parameters.Add("@vehiculo", SqlDbType.BigInt).Value = cmbVehiculo.SelectedValue;
-                cmd.Parameters.Add("@mecanico", SqlDbType.BigInt).Value = cmbMecanico.SelectedValue;
-                cmd.Parameters.Add("@recepcionista", SqlDbType.BigInt).Value = recepcionistaId;
-                cmd.Parameters.Add("@estado", SqlDbType.NVarChar).Value = "Ingresado";
+                cmd.Parameters.Add("@vehiculo_id", SqlDbType.BigInt).Value = cmbVehiculo.SelectedValue;
+                cmd.Parameters.Add("@recepcionista_id", SqlDbType.BigInt).Value = recepcionistaId;
+                cmd.Parameters.Add("@mecanico_id", SqlDbType.BigInt).Value = cmbMecanico.SelectedValue;
+
+                cmd.Parameters.Add("@estado", SqlDbType.NVarChar, 20).Value = "Ingresado";
+                cmd.Parameters.Add("@descripcion", SqlDbType.NVarChar).Value = txtDescripcion.Text.Trim();
 
                 cmd.ExecuteNonQuery();
+
 
                 MessageBox.Show("✅ Orden de trabajo creada correctamente");
                 LimpiarFormulario();
