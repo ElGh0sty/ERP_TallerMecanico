@@ -142,6 +142,9 @@
   <data name="confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="tools2_102885" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tools2_102885.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="user_account_person_avatar_icon_131248" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user_account_person_avatar_icon_131248.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,14 +166,23 @@
   <data name="3592814-document-general-letter-note-office-page-paper_107776" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592814-document-general-letter-note-office-page-paper_107776.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="agent_102942" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\agent_102942.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="unnamed (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unnamed (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="istockphoto-1892179107-612x612" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\istockphoto-1892179107-612x612.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="box-open_102904" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\box-open_102904.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="file_document_new_contract_icon_131249" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\file_document_new_contract_icon_131249.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-female_102881" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-female_102881.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="confirm_shipping_ecommerce_logistic_box_package_icon_142005" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\confirm_shipping_ecommerce_logistic_box_package_icon_142005.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -184,8 +196,11 @@
   <data name="unnamed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unnamed.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="layout_102871" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\layout_102871.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="insurance_shield_protection_file_folder_real_estate_finance_icon_141986" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\insurance_shield_protection_file_folder_real_estate_finance_icon_141986.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="transfer_man_employee_user_avatar_arrow_refresh_icon_141997" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\transfer_man_employee_user_avatar_arrow_refresh_icon_141997.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -196,8 +211,14 @@
   <data name="3592819-general-graph-office-overview-part-pie-chart-portion_107739" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592819-general-graph-office-overview-part-pie-chart-portion_107739.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="laptop-content_102849" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\laptop-content_102849.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="search_find_magnify_icon_131253" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\search_find_magnify_icon_131253.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="finance_receipt_dollar_calculator_payment_money_icon_142011" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\finance_receipt_dollar_calculator_payment_money_icon_142011.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -211,13 +232,13 @@
   <data name="computer_monitor_pc_hardware_screen_icon_142007" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\computer_monitor_pc_hardware_screen_icon_142007.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="3592853-align-employee-general-human-human-list-list-member_107786" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592853-align-employee-general-human-human-list-list-member_107786.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="insurance_shield_protection_file_folder_real_estate_finance_icon_141986" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\insurance_shield_protection_file_folder_real_estate_finance_icon_141986.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="configurations_102859" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configurations_102859.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

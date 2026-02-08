@@ -213,6 +213,13 @@
     <Content Include=".gitignore">
       <Generator>SettingsSingleFileGenerator</Generator>
     </Content>
+    <None Include="Resources\configurations_102859.png" />
+    <None Include="Resources\agent_102942.png" />
+    <None Include="Resources\layout_102871.png" />
+    <None Include="Resources\box-open_102904.png" />
+    <None Include="Resources\tools2_102885.png" />
+    <None Include="Resources\user-female_102881.png" />
+    <None Include="Resources\laptop-content_102849.png" />
     <None Include="Resources\insurance_shield_protection_file_folder_real_estate_finance_icon_141986.png" />
     <None Include="Resources\finance_money_coin_bill_cash_payment_icon_141995.png" />
     <None Include="Resources\computer_monitor_pc_hardware_screen_icon_142007.png" />

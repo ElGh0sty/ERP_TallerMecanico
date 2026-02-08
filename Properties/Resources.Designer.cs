@@ -163,6 +163,26 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap agent_102942 {
+            get {
+                object obj = ResourceManager.GetObject("agent_102942", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap box_open_102904 {
+            get {
+                object obj = ResourceManager.GetObject("box-open_102904", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap car_23964 {
             get {
                 object obj = ResourceManager.GetObject("car_23964", resourceCulture);
@@ -176,6 +196,16 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap computer_monitor_pc_hardware_screen_icon_142007 {
             get {
                 object obj = ResourceManager.GetObject("computer_monitor_pc_hardware_screen_icon_142007", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap configurations_102859 {
+            get {
+                object obj = ResourceManager.GetObject("configurations_102859", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,6 +303,26 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap laptop_content_102849 {
+            get {
+                object obj = ResourceManager.GetObject("laptop-content_102849", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap layout_102871 {
+            get {
+                object obj = ResourceManager.GetObject("layout_102871", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap muscular_car_service_worker_repairing_vehicle {
             get {
                 object obj = ResourceManager.GetObject("muscular-car-service-worker-repairing-vehicle", resourceCulture);
@@ -343,6 +393,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap tools2_102885 {
+            get {
+                object obj = ResourceManager.GetObject("tools2_102885", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap transfer_man_employee_user_avatar_arrow_refresh_icon_141997 {
             get {
                 object obj = ResourceManager.GetObject("transfer_man_employee_user_avatar_arrow_refresh_icon_141997", resourceCulture);
@@ -386,6 +446,16 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap user_account_person_avatar_icon_131248 {
             get {
                 object obj = ResourceManager.GetObject("user_account_person_avatar_icon_131248", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap user_female_102881 {
+            get {
+                object obj = ResourceManager.GetObject("user-female_102881", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

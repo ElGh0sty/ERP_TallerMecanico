@@ -36,11 +36,12 @@
             // dgvNuevo
             // 
             this.dgvNuevo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNuevo.Location = new System.Drawing.Point(26, 32);
+            this.dgvNuevo.Location = new System.Drawing.Point(12, 12);
             this.dgvNuevo.Name = "dgvNuevo";
-            this.dgvNuevo.Size = new System.Drawing.Size(838, 367);
+            this.dgvNuevo.Size = new System.Drawing.Size(884, 387);
             this.dgvNuevo.TabIndex = 0;
             this.dgvNuevo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNuevo_CellContentClick);
+            this.dgvNuevo.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvNuevo_CellPainting);
             // 
             // btnGuardar
             // 
@@ -49,9 +50,9 @@
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(26, 405);
+            this.btnGuardar.Location = new System.Drawing.Point(721, 420);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(143, 55);
+            this.btnGuardar.Size = new System.Drawing.Size(175, 74);
             this.btnGuardar.TabIndex = 1;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
