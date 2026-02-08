@@ -64,6 +64,8 @@ ORDER BY c.nombre, v.placa";
                 EstilizarGridCompleto();
                 ConfigurarColumnasGrid();
                 EstilizarBotonesAccionGrid();
+                
+
 
 
             }
@@ -156,7 +158,10 @@ ORDER BY c.nombre, v.placa";
 
             dgvVehiculos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVehiculos.MultiSelect = false;
-            dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVehiculos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvVehiculos.ScrollBars = ScrollBars.Both;
+            dgvVehiculos.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
 
             dgvVehiculos.RowHeadersVisible = false;
             dgvVehiculos.BorderStyle = BorderStyle.None;
@@ -169,11 +174,11 @@ ORDER BY c.nombre, v.placa";
             dgvVehiculos.EnableHeadersVisualStyles = false;
             dgvVehiculos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(24, 24, 28);
             dgvVehiculos.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
-            dgvVehiculos.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dgvVehiculos.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
             dgvVehiculos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvVehiculos.ColumnHeadersHeight = 40;
+            dgvVehiculos.ColumnHeadersHeight = 45;
 
-            dgvVehiculos.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dgvVehiculos.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11.5F);
             dgvVehiculos.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(35, 35, 35);
             dgvVehiculos.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             dgvVehiculos.DefaultCellStyle.Padding = new Padding(8, 3, 8, 3);
@@ -183,7 +188,7 @@ ORDER BY c.nombre, v.placa";
             dgvVehiculos.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 235, 255);
             dgvVehiculos.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(10, 10, 10);
 
-            dgvVehiculos.RowTemplate.Height = 38;
+            dgvVehiculos.RowTemplate.Height = 45;
         }
 
         // =======================
@@ -205,6 +210,8 @@ ORDER BY c.nombre, v.placa";
             if (dgvVehiculos.Columns.Contains("kilometraje_actual")) dgvVehiculos.Columns["kilometraje_actual"].HeaderText = "Km";
         }
 
+        
+
         // =======================
         // BOTONES EDITAR/ELIMINAR
         // =======================
@@ -219,7 +226,7 @@ ORDER BY c.nombre, v.placa";
                 btnEditar.Text = "Editar";
                 btnEditar.UseColumnTextForButtonValue = true;
                 btnEditar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                btnEditar.Width = 80;
+                btnEditar.Width = 95;
                 dgvVehiculos.Columns.Add(btnEditar);
             }
 
@@ -248,7 +255,7 @@ ORDER BY c.nombre, v.placa";
                 c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(210, 230, 255);
                 c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(0, 60, 120);
                 c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-                c.Width = 80;
+                c.Width = 95;
                 c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             }
 
