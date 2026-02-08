@@ -72,7 +72,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             try
             {
                 con.Abrir();
-                string sql = "SELECT nombre FROM TiposVehiculo WHERE activo = 1 ORDER BY nombre";
+                string sql = "SELECT nombre FROM TiposVehiculo WHERE activo = 1 ORDER BY id";
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
