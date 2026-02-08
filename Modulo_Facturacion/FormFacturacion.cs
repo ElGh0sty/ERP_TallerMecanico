@@ -23,7 +23,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
         private bool PuedeUsarEsteModulo()
         {
-            return Permisos.TienePermiso(rolUsuario, "CLIENTES");
+            return Permisos.TienePermiso(rolUsuario, "FACTURACION");
         }
 
         private void button1_Click(object sender, EventArgs e)

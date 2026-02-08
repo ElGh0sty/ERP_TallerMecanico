@@ -23,7 +23,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private bool PuedeUsarEsteModulo()
         {
-            return Permisos.TienePermiso(rolUsuario, "CLIENTES");
+            return Permisos.TienePermiso(rolUsuario, "INVENTARIO");
         }
         private void label1_Click(object sender, EventArgs e)
         {
