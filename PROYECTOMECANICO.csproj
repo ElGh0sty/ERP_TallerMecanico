@@ -131,6 +131,12 @@
     <Compile Include="Modulo_Taller\FormTaller.Designer.cs">
       <DependentUpon>FormTaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Taller\FormTrabajoProductos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Taller\FormTrabajoProductos.Designer.cs">
+      <DependentUpon>FormTrabajoProductos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\Permisos.cs" />
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Taller\FormTaller.resx">
       <DependentUpon>FormTaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Taller\FormTrabajoProductos.resx">
+      <DependentUpon>FormTrabajoProductos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -213,6 +222,7 @@
     <Content Include=".gitignore">
       <Generator>SettingsSingleFileGenerator</Generator>
     </Content>
+    <None Include="Resources\offering_granting_charity_property_donation_land_icon_251183.png" />
     <None Include="Resources\configurations_102859.png" />
     <None Include="Resources\agent_102942.png" />
     <None Include="Resources\layout_102871.png" />

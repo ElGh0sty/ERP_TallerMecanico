@@ -60,6 +60,12 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 );
                 return;
             }
+
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormTrabajoProductos(rolUsuario));
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -81,6 +87,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             BotonRedondo(button1, 30);
                 BotonRedondo(button2, 30);
                 BotonRedondo(button3, 30);
+            BotonRedondo(button4, 30);
 
         }
 
@@ -105,5 +112,20 @@ namespace PROYECTOMECANICO.Modulo_Taller
             btn.FlatAppearance.BorderSize = 0;
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            
+        }
     }
 }

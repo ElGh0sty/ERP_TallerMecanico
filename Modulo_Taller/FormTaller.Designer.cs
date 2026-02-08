@@ -28,10 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Goldenrod;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = global::PROYECTOMECANICO.Properties.Resources.help_blind_medical_granting_offering_donation_eye_icon_251230;
+            this.button4.Location = new System.Drawing.Point(43, 268);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(372, 169);
+            this.button4.TabIndex = 17;
+            this.button4.Text = "Novedades ";
+            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -40,12 +58,12 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = global::PROYECTOMECANICO.Properties.Resources.help_blind_medical_granting_offering_donation_eye_icon_251230;
-            this.button3.Location = new System.Drawing.Point(43, 254);
+            this.button3.Image = global::PROYECTOMECANICO.Properties.Resources.offering_granting_charity_property_donation_land_icon_251183;
+            this.button3.Location = new System.Drawing.Point(490, 268);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(372, 169);
             this.button3.TabIndex = 16;
-            this.button3.Text = "Novedades ";
+            this.button3.Text = "Historial de Estados";
             this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -62,7 +80,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(372, 169);
             this.button2.TabIndex = 15;
-            this.button2.Text = "Estado de Orden de Trabajo";
+            this.button2.Text = "Asignacion de Trabajos y Productos en OT";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -90,6 +108,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -105,5 +124,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button4;
     }
 }

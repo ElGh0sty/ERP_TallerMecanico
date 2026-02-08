@@ -142,6 +142,9 @@
   <data name="confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\confirm_smartphone_phone_checkmark_shipping_box_package_icon_141996.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="configurations_102859" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configurations_102859.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tools2_102885" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tools2_102885.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -190,6 +193,9 @@
   <data name="adoption_protection_kid_child_care_orphan_icon_251222" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\adoption_protection_kid_child_care_orphan_icon_251222.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="finance_money_coin_bill_cash_payment_icon_141995" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\finance_money_coin_bill_cash_payment_icon_141995.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -217,9 +223,6 @@
   <data name="search_find_magnify_icon_131253" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\search_find_magnify_icon_131253.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="finance_receipt_dollar_calculator_payment_money_icon_142011" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\finance_receipt_dollar_calculator_payment_money_icon_142011.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -232,13 +235,13 @@
   <data name="computer_monitor_pc_hardware_screen_icon_142007" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\computer_monitor_pc_hardware_screen_icon_142007.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="3592853-align-employee-general-human-human-list-list-member_107786" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592853-align-employee-general-human-human-list-list-member_107786.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="configurations_102859" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\configurations_102859.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="offering_granting_charity_property_donation_land_icon_251183" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\offering_granting_charity_property_donation_land_icon_251183.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
