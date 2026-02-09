@@ -56,6 +56,67 @@ namespace PROYECTOMECANICO.Modulo_Taller
             dgvNovedades.CellFormatting += DgvNovedades_CellFormatting;
         }
 
+        private void dgvNovedades_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            if (dgvNovedades.Columns[e.ColumnIndex].Name == "btnEliminar")
+            {
+                long novedadId = Convert.ToInt64(dgvNovedades.Rows[e.RowIndex].Cells["id"].Value);
+
+                
+                string estadoTxt = dgvNovedades.Rows[e.RowIndex].Cells["estado_cliente"].Value?.ToString() ?? "";
+
+                EliminarNovedad(novedadId, estadoTxt);
+            }
+        }
+
+        private void EliminarNovedad(long novedadId, string estadoTxt)
+        {
+            if (!estadoTxt.Contains("Pendiente"))
+            {
+                MessageBox.Show(
+                    "No se puede eliminar una novedad que ya fue respondida (Aceptada/Rechazada).\n" +
+                    "Si fue Aceptada, probablemente ya generó un extra en la orden.",
+                    "Acción no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (MessageBox.Show(
+                "¿Seguro que deseas eliminar esta novedad?\nEsta acción no se puede deshacer.",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                con.Abrir();
+
+                string sql = "DELETE FROM Novedades WHERE id = @id";
+                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@id", novedadId);
+
+                int filas = cmd.ExecuteNonQuery();
+
+                MessageBox.Show(filas > 0 ? "Novedad eliminada." : "No se encontró la novedad.");
+                CargarNovedades();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar novedad: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
+        }
+
+
+
         private void DgvNovedades_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (dgvNovedades.Rows.Count == 0) return;
@@ -149,6 +210,8 @@ ORDER BY fecha DESC;";
                 da.Fill(dt);
 
                 dgvNovedades.DataSource = dt;
+                AgregarBotonEliminarNovedad();
+
                 if (dgvNovedades.Columns.Contains("id"))
                     dgvNovedades.Columns["id"].Visible = false;
                 if (dgvNovedades.Columns.Contains("descripcion"))
@@ -257,7 +320,7 @@ VALUES
 
                 cmd.ExecuteNonQuery();
 
-                MessageBox.Show("✅ Novedad registrada (pendiente).");
+                MessageBox.Show("Novedad registrada (pendiente).");
                 Limpiar();
                 BloquearEdicion();
                 CargarNovedades();
@@ -438,6 +501,31 @@ VALUES
             btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btn.Height = 40;
         }
+
+        private void AgregarBotonEliminarNovedad()
+        {
+            if (dgvNovedades.Columns.Contains("btnEliminar"))
+                return;
+
+            DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.HeaderText = "";
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.UseColumnTextForButtonValue = true;
+            btnEliminar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            btnEliminar.Width = 90;
+
+            dgvNovedades.Columns.Add(btnEliminar);
+
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 235);
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.ForeColor = Color.FromArgb(160, 0, 0);
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 210, 210);
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.SelectionForeColor = Color.FromArgb(120, 0, 0);
+            dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        }
+
 
 
     }

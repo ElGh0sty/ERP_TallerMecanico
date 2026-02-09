@@ -69,6 +69,7 @@
             this.dgvNovedades.Name = "dgvNovedades";
             this.dgvNovedades.Size = new System.Drawing.Size(908, 265);
             this.dgvNovedades.TabIndex = 2;
+            this.dgvNovedades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNovedades_CellContentClick);
             // 
             // txtDescripcion
             // 

@@ -182,15 +182,60 @@ ORDER BY ot.fecha_ingreso DESC";
                 MessageBox.Show(filas > 0 ? "✅ Orden eliminada." : "No se encontró la orden.");
                 CargarOrdenes(); 
             }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 547)
+                {
+                    int tareas = 0, items = 0, novedades = 0;
+
+                    try
+                    {
+                        tareas = ContarDependencias("OrdenesTrabajo_Tareas", "orden_id", ordenId);
+                        items = ContarDependencias("OrdenesTrabajo_Items", "orden_id", ordenId);
+                        novedades = ContarDependencias("Novedades", "orden_trabajo_id", ordenId);
+                    }
+                    catch
+                    {
+                    }
+
+                    string detalle = "";
+                    if (tareas > 0) detalle += $"• Tiene {tareas} tarea(s) asignada(s)\n";
+                    if (items > 0) detalle += $"• Tiene {items} producto(s)/servicio(s) asignado(s)\n";
+                    if (novedades > 0) detalle += $"• Tiene {novedades} novedad(es) registrada(s)\n";
+
+                    if (string.IsNullOrWhiteSpace(detalle))
+                        detalle = "• Tiene registros relacionados (tareas / productos / novedades).";
+
+                    MessageBox.Show(
+                        "No se puede eliminar esta orden de trabajo porque ya tiene información asociada.\n\n" +
+                        detalle +
+                        "\nPrimero elimina/retira esos registros o crea una orden nueva.",
+                        "No se puede eliminar",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                MessageBox.Show("Error SQL al eliminar orden: " + ex.Message);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al eliminar orden: " + ex.Message);
             }
-            finally
+
+        }
+
+        private int ContarDependencias(string tabla, string columnaFk, long ordenId)
+        {
+            string sql = $"SELECT COUNT(*) FROM {tabla} WHERE {columnaFk} = @id";
+            using (SqlCommand cmd = new SqlCommand(sql, con.leer))
             {
-                con.Cerrar();
+                cmd.Parameters.AddWithValue("@id", ordenId);
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
+
 
         private void EstilizarGridOrdenes()
         {
