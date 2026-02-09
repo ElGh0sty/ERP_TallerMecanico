@@ -119,6 +119,12 @@
     <Compile Include="Modulo_Personal\FormPersonal.Designer.cs">
       <DependentUpon>FormPersonal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Taller\FormNovedades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Taller\FormNovedades.Designer.cs">
+      <DependentUpon>FormNovedades.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Taller\FormOrdenTrabajo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormInventario.resx">
       <DependentUpon>FormInventario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Taller\FormNovedades.resx">
+      <DependentUpon>FormNovedades.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Taller\FormOrdenTrabajo.resx">
       <DependentUpon>FormOrdenTrabajo.cs</DependentUpon>

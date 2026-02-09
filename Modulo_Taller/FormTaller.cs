@@ -126,8 +126,13 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 );
                 return;
             }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormNovedades(usuarioId, rolUsuario));
+            }
 
-            
+
         }
     }
 }

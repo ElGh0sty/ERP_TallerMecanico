@@ -18,16 +18,18 @@ namespace PROYECTOMECANICO
         private string usuarioActual;
         private readonly long usuarioId;
 
-        public Form1(string rol, string usuario) 
+        public Form1(long usuarioId, string rol, string usuario)
         {
             InitializeComponent();
+
+            this.usuarioId = usuarioId;   
             this.rolUsuario = rol;
             this.usuarioActual = usuario;
 
             lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario}";
             BotonRedondo(btnCerrarSesion, 7);
-
         }
+
 
         public void AbrirFormularioEnPanel(object formularioHijo)
         {

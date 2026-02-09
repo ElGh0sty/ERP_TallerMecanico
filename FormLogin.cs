@@ -13,7 +13,6 @@ namespace PROYECTOMECANICO
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            // 1. Validar campos vacíos
             if (string.IsNullOrEmpty(txtUsuario.Text) || string.IsNullOrEmpty(txtContraseña.Text))
             {
                 MessageBox.Show("Por favor, ingrese usuario y contraseña.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -25,13 +24,14 @@ namespace PROYECTOMECANICO
             {
                 objetoConexion.Abrir();
 
-                
-                string query = @"SELECT U.nombre_usuario, R.nombre 
-                         FROM Usuarios U 
-                         INNER JOIN Roles R ON U.rol_id = R.id 
-                         WHERE U.nombre_usuario = @user 
-                         AND U.contrasena = @pass 
-                         AND U.activo = 1";
+
+                string query = @"SELECT U.id, U.nombre_usuario, R.nombre 
+FROM Usuarios U 
+INNER JOIN Roles R ON U.rol_id = R.id 
+WHERE U.nombre_usuario = @user 
+AND U.contrasena = @pass 
+AND U.activo = 1";
+
 
                 SqlCommand comando = new SqlCommand(query, objetoConexion.leer);
                 comando.Parameters.AddWithValue("@user", txtUsuario.Text);
@@ -41,14 +41,15 @@ namespace PROYECTOMECANICO
 
                 if (leer.Read())
                 {
-                    string userLogueado = leer["nombre_usuario"].ToString(); 
-                    string rolNombre = leer["nombre"].ToString();           
+                    long userId = Convert.ToInt64(leer["id"]);  
 
-                    MessageBox.Show("¡Bienvenido " + userLogueado + "!", "Acceso Concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string userLogueado = leer["nombre_usuario"].ToString();
+                    string rolNombre = leer["nombre"].ToString();
 
-                    Form1 principal = new Form1(rolNombre, userLogueado);
+                    Form1 principal = new Form1(userId, rolNombre, userLogueado);
                     principal.Show();
                     this.Hide();
+
                 }
                 else
                 {
