@@ -211,6 +211,7 @@ ORDER BY fecha DESC;";
 
                 dgvNovedades.DataSource = dt;
                 AgregarBotonEliminarNovedad();
+                EstilizarBotonEliminarNovedad();
 
                 if (dgvNovedades.Columns.Contains("id"))
                     dgvNovedades.Columns["id"].Visible = false;
@@ -221,7 +222,11 @@ ORDER BY fecha DESC;";
                 if (dgvNovedades.Columns.Contains("requiere_presupuesto_extra"))
                     dgvNovedades.Columns["requiere_presupuesto_extra"].HeaderText = "Requiere Extra";
                 if (dgvNovedades.Columns.Contains("monto_extra"))
-                    dgvNovedades.Columns["monto_extra"].HeaderText = "Monto Extra";
+                {
+                    dgvNovedades.Columns["monto_extra"].DefaultCellStyle.Format = "N2";
+                    dgvNovedades.Columns["monto_extra"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+
                 if (dgvNovedades.Columns.Contains("estado_cliente"))
                     dgvNovedades.Columns["estado_cliente"].HeaderText = "Estado";
 
@@ -243,6 +248,7 @@ ORDER BY fecha DESC;";
 
                 if (estado == "Pendiente")
                     row.Cells["estado_cliente"].Value = "🔔 Pendiente";
+
                 else if (estado == "Aceptado")
                     row.Cells["estado_cliente"].Value = "✅ Aceptado";
                 else if (estado == "Rechazado")
@@ -457,31 +463,44 @@ VALUES
 
         private void EstilizarGrid()
         {
+            dgvNovedades.AllowUserToAddRows = false;
+            dgvNovedades.AllowUserToDeleteRows = false;
+            dgvNovedades.AllowUserToResizeRows = false;
+            dgvNovedades.ReadOnly = true;
+
+            dgvNovedades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvNovedades.MultiSelect = false;
+
+            dgvNovedades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvNovedades.RowHeadersVisible = false;
+
             dgvNovedades.BorderStyle = BorderStyle.None;
             dgvNovedades.BackgroundColor = Color.White;
 
-            dgvNovedades.EnableHeadersVisualStyles = false;
-            dgvNovedades.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 45, 60);
-            dgvNovedades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvNovedades.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 10, FontStyle.Bold);
-
-            dgvNovedades.DefaultCellStyle.Font =
-                new Font("Segoe UI", 9.5f);
-
-            dgvNovedades.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(220, 230, 241);
-
-            dgvNovedades.DefaultCellStyle.SelectionForeColor = Color.Black;
-
-            dgvNovedades.AlternatingRowsDefaultCellStyle.BackColor =
-                Color.FromArgb(245, 245, 245);
-
             dgvNovedades.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvNovedades.GridColor = Color.LightGray;
+            dgvNovedades.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvNovedades.GridColor = Color.FromArgb(230, 230, 230);
 
-            dgvNovedades.RowTemplate.Height = 35;
+            dgvNovedades.EnableHeadersVisualStyles = false;
+            dgvNovedades.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(24, 24, 28);
+            dgvNovedades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvNovedades.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvNovedades.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvNovedades.ColumnHeadersHeight = 40;
+
+            dgvNovedades.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvNovedades.DefaultCellStyle.ForeColor = Color.FromArgb(35, 35, 35);
+            dgvNovedades.DefaultCellStyle.BackColor = Color.White;
+            dgvNovedades.DefaultCellStyle.Padding = new Padding(8, 3, 8, 3);
+
+            dgvNovedades.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 247, 250);
+
+            dgvNovedades.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 235, 255);
+            dgvNovedades.DefaultCellStyle.SelectionForeColor = Color.FromArgb(10, 10, 10);
+
+            dgvNovedades.RowTemplate.Height = 38;
         }
+
 
         private void EstilizarBotones()
         {
@@ -525,6 +544,26 @@ VALUES
             dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.SelectionForeColor = Color.FromArgb(120, 0, 0);
             dgvNovedades.Columns["btnEliminar"].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         }
+
+        private void EstilizarBotonEliminarNovedad()
+        {
+            if (!dgvNovedades.Columns.Contains("btnEliminar")) return;
+
+            var c = dgvNovedades.Columns["btnEliminar"] as DataGridViewButtonColumn;
+            c.FlatStyle = FlatStyle.Flat;
+
+            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            c.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+
+            c.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 235);
+            c.DefaultCellStyle.ForeColor = Color.FromArgb(160, 0, 0);
+            c.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 210, 210);
+            c.DefaultCellStyle.SelectionForeColor = Color.FromArgb(120, 0, 0);
+
+            c.Width = 90;
+            c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        }
+
 
 
 
