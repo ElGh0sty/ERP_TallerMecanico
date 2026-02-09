@@ -34,10 +34,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             lstProductos.SelectedIndexChanged += lstProductos_SelectedIndexChanged;
 
             dgvTareas.CurrentCellDirtyStateChanged += dgvTareas_CurrentCellDirtyStateChanged;
-            dgvTareas.CellValueChanged += dgvTareas_CellValueChanged;
-            dgvTareas.CellContentClick += dgvTareas_CellContentClick;
-
-            dgvItems.CellContentClick += dgvItems_CellContentClick;
+            
 
             PrepararGrids();
             AplicarEstilos();
@@ -60,10 +57,10 @@ namespace PROYECTOMECANICO.Modulo_Taller
             EstilizarBoton(btnAgregarTarea, true);
             EstilizarBoton(btnAgregarProducto, true);
 
-            lblOrdenInfo.ForeColor = Color.FromArgb(35, 35, 35);
+            lblOrdenInfo.ForeColor = Color.White;
             lblOrdenInfo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
 
-            lblStock.ForeColor = Color.FromArgb(35, 35, 35);
+            lblStock.ForeColor = Color.White;
             lblStock.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
 
             txtTarea.Font = new Font("Segoe UI", 10.5F);
@@ -94,6 +91,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             tab.SizeMode = TabSizeMode.Fixed;
             tab.ItemSize = new Size(180, 42);
             tab.Appearance = TabAppearance.Normal;
+            
 
             tab.DrawItem -= tabControl1_DrawItem;
             tab.DrawItem += tabControl1_DrawItem;
@@ -219,7 +217,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             btn.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             btn.Height = Math.Max(btn.Height, 40);
 
-            Color baseColor = primario ? Color.FromArgb(30, 96, 210) : Color.FromArgb(80, 80, 80);
+            Color baseColor = primario ? Color.DarkSlateBlue : Color.FromArgb(60, 60, 60);
             Color hoverColor = primario ? Color.FromArgb(24, 80, 180) : Color.FromArgb(60, 60, 60);
 
             btn.BackColor = baseColor;
@@ -321,31 +319,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 dgvTareas.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
-        private void dgvTareas_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            if (dgvTareas.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn &&
-                dgvTareas.Columns[e.ColumnIndex].DataPropertyName == "completada")
-            {
-                long tareaId = Convert.ToInt64(dgvTareas.Rows[e.RowIndex].Cells["id"].Value);
-                bool completada = Convert.ToBoolean(dgvTareas.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-
-                try
-                {
-                    con.Abrir();
-                    SqlCommand cmd = new SqlCommand("UPDATE OrdenesTrabajo_Tareas SET completada=@c WHERE id=@id", con.leer);
-                    cmd.Parameters.AddWithValue("@c", completada);
-                    cmd.Parameters.AddWithValue("@id", tareaId);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al guardar estado: " + ex.Message);
-                }
-                finally { con.Cerrar(); }
-            }
-        }
+        
 
         private void CargarProductos()
         {
@@ -485,13 +459,15 @@ ORDER BY i.id DESC";
         private void dgvTareas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
             if (dgvTareas.Columns[e.ColumnIndex].Name != "btnEliminarTarea") return;
 
             if (!(dgvTareas.Rows[e.RowIndex].DataBoundItem is DataRowView rv)) return;
 
             long tareaId = Convert.ToInt64(rv["id"]);
 
-            if (MessageBox.Show("¿Eliminar esta tarea?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (MessageBox.Show("¿Eliminar esta tarea?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
             try
@@ -516,32 +492,8 @@ ORDER BY i.id DESC";
         }
 
 
-        private void dgvTareas_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            if (dgvTareas.Columns[e.ColumnIndex].Name != "btnEliminarTarea") return;
-
-            long tareaId = Convert.ToInt64(dgvTareas.Rows[e.RowIndex].Cells["id"].Value);
-
-            try
-            {
-                con.Abrir();
-                SqlCommand cmd = new SqlCommand("DELETE FROM OrdenesTrabajo_Tareas WHERE id=@id", con.leer);
-                cmd.Parameters.AddWithValue("@id", tareaId);
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al eliminar tarea: " + ex.Message);
-            }
-            finally
-            {
-                con.Cerrar();
-            }
-
-            CargarTareasDeOrden();
-        }
+        
 
 
         private long ObtenerProductoIdSeleccionado()
@@ -723,77 +675,7 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
         }
 
 
-        private void dgvItems_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            if (dgvItems.Columns[e.ColumnIndex].Name != "btnEliminarItem") return;
-
-            long itemId = Convert.ToInt64(dgvItems.Rows[e.RowIndex].Cells["id"].Value);
-
-            try
-            {
-                con.Abrir();
-                SqlTransaction tx = con.leer.BeginTransaction();
-
-                try
-                {
-                    SqlCommand cmdGet = new SqlCommand(
-                        "SELECT producto_id, cantidad FROM OrdenesTrabajo_Items WHERE id=@id",
-                        con.leer, tx
-                    );
-                    cmdGet.Parameters.AddWithValue("@id", itemId);
-
-                    long prodId;
-                    int cant;
-
-                    using (SqlDataReader dr = cmdGet.ExecuteReader())
-                    {
-                        if (!dr.Read())
-                        {
-                            tx.Rollback();
-                            return;
-                        }
-
-                        prodId = Convert.ToInt64(dr["producto_id"]);
-                        cant = Convert.ToInt32(Convert.ToDecimal(dr["cantidad"]));
-                    }
-
-                    SqlCommand cmdDel = new SqlCommand(
-                        "DELETE FROM OrdenesTrabajo_Items WHERE id=@id",
-                        con.leer, tx
-                    );
-                    cmdDel.Parameters.AddWithValue("@id", itemId);
-                    cmdDel.ExecuteNonQuery();
-
-                    SqlCommand cmdBack = new SqlCommand(
-                        "UPDATE Productos SET stock = ISNULL(stock,0) + @c WHERE id=@p",
-                        con.leer, tx
-                    );
-                    cmdBack.Parameters.AddWithValue("@c", cant);
-                    cmdBack.Parameters.AddWithValue("@p", prodId);
-                    cmdBack.ExecuteNonQuery();
-
-                    tx.Commit();
-                }
-                catch
-                {
-                    tx.Rollback();
-                    throw;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al eliminar item: " + ex.Message);
-            }
-            finally
-            {
-                con.Cerrar();
-            }
-
-            CargarProductos();
-            CargarItemsDeOrden();
-        }
+        
 
 
 
@@ -873,6 +755,16 @@ ORDER BY ot.id DESC";
 
             dgvTareas.Enabled = habilitar;
             dgvItems.Enabled = habilitar;
+        }
+
+        private void cmbOrdenes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
