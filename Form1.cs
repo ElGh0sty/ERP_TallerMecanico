@@ -16,6 +16,7 @@ namespace PROYECTOMECANICO
         private Form formularioActivo = null;
         private string rolUsuario;
         private string usuarioActual;
+        private readonly long usuarioId;
 
         public Form1(string rol, string usuario) 
         {
@@ -50,7 +51,7 @@ namespace PROYECTOMECANICO
 
         private void btnTaller_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller(rolUsuario));
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller(usuarioId ,rolUsuario));
         }
 
         private void btnInventario_Click(object sender, EventArgs e)

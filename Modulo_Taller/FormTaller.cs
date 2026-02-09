@@ -10,18 +10,20 @@ using System.Windows.Forms;
 using PROYECTOMECANICO.Modulo_Clientes;
 using PROYECTOMECANICO.Seguridad;
 using System.Drawing.Drawing2D;
-
+using System.Data.SqlClient;
 
 namespace PROYECTOMECANICO.Modulo_Taller
 {
     public partial class FormTaller : Form
     {
         private string rolUsuario;
+        private readonly long usuarioId;
 
-        public FormTaller(string rolUsuario)
+        public FormTaller( long usuarioActual, string rolUsuario)
         {
             InitializeComponent();
             this.rolUsuario = rolUsuario;
+            usuarioId = usuarioActual;
             AplicarBotonesRedondos();
         }
         private bool PuedeUsarEsteModulo()
@@ -64,7 +66,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             Form1 objetoPadre = (Form1)this.ParentForm;
             if (objetoPadre != null)
             {
-                objetoPadre.AbrirFormularioEnPanel(new FormTrabajoProductos(rolUsuario));
+                objetoPadre.AbrirFormularioEnPanel(new FormTrabajoProductos(usuarioId, rolUsuario));
             }
         }
 
