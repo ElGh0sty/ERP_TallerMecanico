@@ -180,7 +180,7 @@ ORDER BY ot.fecha_ingreso DESC";
                 int filas = cmd.ExecuteNonQuery();
 
                 MessageBox.Show(filas > 0 ? "✅ Orden eliminada." : "No se encontró la orden.");
-                CargarOrdenes(); // vuelve a cargar tu grid
+                CargarOrdenes(); 
             }
             catch (Exception ex)
             {

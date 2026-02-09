@@ -69,20 +69,17 @@ namespace PROYECTOMECANICO.Modulo_Taller
             if (dgvNovedades.Columns.Contains("requiere_presupuesto_extra"))
                 requiereExtra = Convert.ToBoolean(row.Cells["requiere_presupuesto_extra"].Value);
 
-            // 🔴 Pendiente + requiere extra => rojo (alerta)
             if (estado == "Pendiente" && requiereExtra)
             {
                 row.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 238);
                 row.DefaultCellStyle.ForeColor = Color.FromArgb(183, 28, 28);
                 row.DefaultCellStyle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
             }
-            // 🟢 Aceptado
             else if (estado == "Aceptado")
             {
                 row.DefaultCellStyle.BackColor = Color.FromArgb(232, 245, 233);
                 row.DefaultCellStyle.ForeColor = Color.FromArgb(27, 94, 32);
             }
-            // ⚫ Rechazado
             else if (estado == "Rechazado")
             {
                 row.DefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
@@ -96,7 +93,6 @@ namespace PROYECTOMECANICO.Modulo_Taller
             {
                 con.Abrir();
 
-                // Ajusta nombres si tu tabla Clientes o campo nombre se llama distinto.
                 string sql = @"
 SELECT 
     ot.id,
@@ -307,7 +303,6 @@ VALUES
                 {
                     try
                     {
-                        // 1) actualizar estado
                         string sqlUpdate = @"
 UPDATE Novedades
 SET estado_cliente = @estado, fecha_respuesta = GETDATE()
@@ -318,7 +313,6 @@ WHERE id = @id;";
                         cmd.Parameters.AddWithValue("@id", novedadId);
                         cmd.ExecuteNonQuery();
 
-                        // 2) si aceptado y requiere extra => agregar a items
                         if (nuevoEstado == "Aceptado" && requiereExtra)
                         {
                             if (montoExtra <= 0)
@@ -428,7 +422,7 @@ VALUES
 
         private void EstilizarBotones()
         {
-            EstiloBoton(btnNuevaNovedad, Color.DarkSlateBlue); // Amarillo alerta
+            EstiloBoton(btnNuevaNovedad, Color.DarkSlateBlue); // Azul del programa
             EstiloBoton(btnGuardar, Color.FromArgb(40, 167, 69));      // Verde guardar
             EstiloBoton(btnCancelar, Color.FromArgb(108, 117, 125));   // Gris cancelar
             EstiloBoton(btnAceptar, Color.FromArgb(0, 123, 255));      // Azul aceptar
