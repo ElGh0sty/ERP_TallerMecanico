@@ -442,6 +442,23 @@ ORDER BY i.id DESC";
                 cmd.Parameters.AddWithValue("@o", ordenIdActual);
                 cmd.Parameters.AddWithValue("@d", tarea);
                 cmd.ExecuteNonQuery();
+                try
+                {
+                    // Reabrimos con una mini transacción NO es necesario aquí.
+                    // Mejor: registrar directo sin tx (porque aquí no estás usando transacción)
+                    using (SqlCommand cmdH = new SqlCommand(
+                        "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                        con.leer))
+                    {
+                        cmdH.Parameters.AddWithValue("@orden_id", ordenIdActual);
+                        cmdH.Parameters.AddWithValue("@usuario_id", usuarioId);
+                        cmdH.Parameters.AddWithValue("@tipo_evento", "TAREA");
+                        cmdH.Parameters.AddWithValue("@titulo", "Tarea agregada");
+                        cmdH.Parameters.AddWithValue("@detalle", tarea);
+                        cmdH.ExecuteNonQuery();
+                    }
+                }
+                catch { /* no rompas el flujo */ }
             }
             catch (Exception ex)
             {
@@ -477,6 +494,21 @@ ORDER BY i.id DESC";
                 {
                     cmd.Parameters.AddWithValue("@id", tareaId);
                     cmd.ExecuteNonQuery();
+                    try
+                    {
+                        using (SqlCommand cmdH = new SqlCommand(
+                            "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                            con.leer))
+                        {
+                            cmdH.Parameters.AddWithValue("@orden_id", ordenIdActual);
+                            cmdH.Parameters.AddWithValue("@usuario_id", usuarioId);
+                            cmdH.Parameters.AddWithValue("@tipo_evento", "TAREA");
+                            cmdH.Parameters.AddWithValue("@titulo", "Tarea eliminada");
+                            cmdH.Parameters.AddWithValue("@detalle", $"ID tarea: {tareaId}");
+                            cmdH.ExecuteNonQuery();
+                        }
+                    }
+                    catch { }
                 }
             }
             catch (Exception ex)
@@ -568,7 +600,19 @@ WHERE id=@p;", con.leer, tx);
                     cmdUpd.Parameters.AddWithValue("@p", productoId);
                     cmdUpd.ExecuteNonQuery();
 
+                    
+
+                    string nombreProd = rv["nombre"].ToString();
+                    RegistrarHistorial(tx, ordenIdActual, usuarioId, "ITEM", "Producto agregado",
+                        $"{nombreProd} (ID {productoId}) - Cantidad: {cantidad}");
+
                     tx.Commit();
+
+                    // ✅ HISTORIAL: item agregado
+                    
+
+
+
                 }
                 catch
                 {
@@ -601,6 +645,16 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
             cmd.Parameters.AddWithValue("@u", usuarioId);
             cmd.Parameters.AddWithValue("@d", $"Falta stock producto {productoId}. Requerido {requerido}, disponible {stock}");
             cmd.ExecuteNonQuery();
+
+            RegistrarHistorial(
+                tx,
+                ordenIdActual,
+                usuarioId,
+                "NOVEDAD",
+                "Stock insuficiente",
+                $"ProductoID: {productoId}. Requerido: {requerido}. Disponible: {stock}"
+            );
+
         }
 
         private void dgvItems_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -652,6 +706,16 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                         cmdBack.Parameters.AddWithValue("@p", prodId);
                         cmdBack.ExecuteNonQuery();
                     }
+
+                    RegistrarHistorial(
+                        tx,
+                        ordenIdActual,
+                        usuarioId,
+                        "ITEM",
+                        "Producto eliminado",
+                        $"ItemID: {itemId}, ProductoID: {prodId}, Cantidad: {cantDec} (stock devuelto)"
+                    );
+
 
                     tx.Commit();
                 }
@@ -756,6 +820,24 @@ ORDER BY ot.id DESC";
             dgvTareas.Enabled = habilitar;
             dgvItems.Enabled = habilitar;
         }
+
+        private void RegistrarHistorial(SqlTransaction tx, long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
+        {
+            // No romper nada: si falla, no debe dañar el flujo (pero como estás en tx, aquí sí conviene fallar si quieres).
+            // Para tu caso: lo dejamos dentro de la misma transacción para que quede consistente.
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                con.leer, tx))
+            {
+                cmd.Parameters.AddWithValue("@orden_id", ordenId);
+                cmd.Parameters.AddWithValue("@usuario_id", (object)usuarioId ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@tipo_evento", tipo);
+                cmd.Parameters.AddWithValue("@titulo", titulo);
+                cmd.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         private void cmbOrdenes_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace PROYECTOMECANICO.Modulo_Taller
@@ -101,6 +102,17 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 cmd.Parameters.AddWithValue("@id", novedadId);
 
                 int filas = cmd.ExecuteNonQuery();
+
+                if (filas > 0)
+                {
+                    RegistrarHistorial(
+                        ordenIdActual,
+                        usuarioId,
+                        "NOVEDAD",
+                        "Novedad eliminada",
+                        $"Novedad #{novedadId} eliminada (pendiente)."
+                    );
+                }
 
                 MessageBox.Show(filas > 0 ? "Novedad eliminada." : "No se encontró la novedad.");
                 CargarNovedades();
@@ -325,6 +337,13 @@ VALUES
 
 
                 cmd.ExecuteNonQuery();
+                RegistrarHistorial(
+    ordenIdActual,
+    usuarioId,
+    "NOVEDAD",
+    "Novedad registrada",
+    $"Pendiente. Extra: {(requiereExtra ? "Sí" : "No")}. Monto: {(montoExtra.HasValue ? montoExtra.Value.ToString("N2") : "0.00")}. Desc: {desc}"
+);
 
                 MessageBox.Show("Novedad registrada (pendiente).");
                 Limpiar();
@@ -352,7 +371,7 @@ VALUES
             long novedadId = Convert.ToInt64(dgvNovedades.CurrentRow.Cells["id"].Value);
             string estadoActual = dgvNovedades.CurrentRow.Cells["estado_cliente"].Value?.ToString() ?? "";
 
-            if (estadoActual != "Pendiente")
+            if (!estadoActual.Contains("Pendiente"))
             {
                 MessageBox.Show("Esta novedad ya fue respondida.");
                 return;
@@ -391,6 +410,18 @@ WHERE id = @id;";
                                 "EXTRA: " + dgvNovedades.CurrentRow.Cells["descripcion"].Value?.ToString());
                         }
 
+                        cmd.ExecuteNonQuery();
+                        RegistrarHistorial(
+    tx,
+    ordenIdActual,
+    usuarioId,
+    "NOVEDAD",
+    "Respuesta a novedad",
+    $"Novedad #{novedadId} -> {nuevoEstado}. Desc: {dgvNovedades.CurrentRow.Cells["descripcion"].Value}"
+);
+
+
+
                         tx.Commit();
                     }
                     catch
@@ -428,6 +459,15 @@ VALUES
             cmd.Parameters.AddWithValue("@subtotal", monto);
 
             cmd.ExecuteNonQuery();
+
+            RegistrarHistorial(
+    tx,
+    ordenId,
+    usuarioId,
+    "ITEM",
+    "Extra agregado",
+    $"{descripcion} | Monto: {monto:N2}"
+);
         }
 
         private void HabilitarEdicion()
@@ -563,6 +603,44 @@ VALUES
             c.Width = 90;
             c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
         }
+
+        private void RegistrarHistorial(SqlTransaction tx, long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                con.leer, tx))
+            {
+                cmd.Parameters.AddWithValue("@orden_id", ordenId);
+                cmd.Parameters.AddWithValue("@usuario_id", (object)usuarioId ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@tipo_evento", tipo);
+                cmd.Parameters.AddWithValue("@titulo", titulo);
+                cmd.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void RegistrarHistorial(long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                    "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                    con.leer))
+                {
+                    cmd.Parameters.AddWithValue("@orden_id", ordenId);
+                    cmd.Parameters.AddWithValue("@usuario_id", (object)usuarioId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@tipo_evento", tipo);
+                    cmd.Parameters.AddWithValue("@titulo", titulo);
+                    cmd.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                // No romper flujo
+            }
+        }
+
 
 
 

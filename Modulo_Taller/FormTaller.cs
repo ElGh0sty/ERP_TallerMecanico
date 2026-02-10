@@ -46,7 +46,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             Form1 objetoPadre = (Form1)this.ParentForm;
             if (objetoPadre != null)
             {
-                objetoPadre.AbrirFormularioEnPanel(new FormOrdenTrabajo(rolUsuario));
+                objetoPadre.AbrirFormularioEnPanel(new FormOrdenTrabajo(usuarioId , rolUsuario));
             }
         }
 
@@ -81,6 +81,11 @@ namespace PROYECTOMECANICO.Modulo_Taller
                     MessageBoxIcon.Warning
                 );
                 return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormHistorial(usuarioId, rolUsuario));
             }
         }
 

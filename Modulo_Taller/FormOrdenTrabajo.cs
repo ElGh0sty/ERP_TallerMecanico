@@ -7,15 +7,18 @@ namespace PROYECTOMECANICO.Modulo_Taller
 {
     public partial class FormOrdenTrabajo : Form
     {
+        private readonly long usuarioId;
+
         Conexion con = new Conexion();
         private string rolUsuario;
 
-        public FormOrdenTrabajo(string rolUsuario)
+        public FormOrdenTrabajo(long usuarioId,string rolUsuario)
         {
             InitializeComponent();
             CargarOrdenes();
             CargarEstados();
             EstiloGrid();
+            this.usuarioId = usuarioId;
             this.rolUsuario = rolUsuario;
         }
 
@@ -109,8 +112,18 @@ ORDER BY ot.fecha_ingreso DESC";
 
                 cmd.Parameters.AddWithValue("@estado", nuevoEstado);
                 cmd.Parameters.AddWithValue("@id", ordenId);
+                string estadoAnterior = dgvOrdenes.SelectedRows[0].Cells["estado"].Value?.ToString() ?? "";
 
                 cmd.ExecuteNonQuery();
+
+                RegistrarHistorial(
+    ordenId,
+    usuarioId,
+    "ESTADO",
+    "Cambio de estado",
+    $"Estado: {estadoAnterior} -> {nuevoEstado}"
+);
+
 
                 MessageBox.Show("Estado actualizado correctamente");
                 CargarOrdenes();
@@ -233,6 +246,28 @@ ORDER BY ot.fecha_ingreso DESC";
             {
                 cmd.Parameters.AddWithValue("@id", ordenId);
                 return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
+
+        private void RegistrarHistorial(long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
+        {
+            try
+            {
+                using (SqlCommand cmdH = new SqlCommand(
+                    "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                    con.leer))
+                {
+                    cmdH.Parameters.AddWithValue("@orden_id", ordenId);
+                    cmdH.Parameters.AddWithValue("@usuario_id", (object)usuarioId ?? DBNull.Value);
+                    cmdH.Parameters.AddWithValue("@tipo_evento", tipo);
+                    cmdH.Parameters.AddWithValue("@titulo", titulo);
+                    cmdH.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
+                    cmdH.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                // no romper nada
             }
         }
 
