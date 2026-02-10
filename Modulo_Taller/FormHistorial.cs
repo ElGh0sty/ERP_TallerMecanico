@@ -24,6 +24,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
             ConfigurarFiltros();
             ConfigurarGrid();
             EstilizarGrid();
+            EstilizarBotonEliminarHistorial();
+
 
             CargarOrdenes();
             CargarHistorial(); 
@@ -32,9 +34,11 @@ namespace PROYECTOMECANICO.Modulo_Taller
             cmbOrdenes.SelectedIndexChanged += (s, e) => CargarHistorial();
             cmbTipo.SelectedIndexChanged += (s, e) => CargarHistorial();
             btnRefrescar.Click += (s, e) => CargarHistorial();
+            btnEliminarHistorial.Click += (s, e) => EliminarHistorialOrden();
+
         }
 
-       
+
         public FormHistorial()
         {
             InitializeComponent();
@@ -198,6 +202,71 @@ ORDER BY h.fecha DESC;";
                 con.Cerrar();
             }
         }
+
+        private void EliminarHistorialOrden()
+        {
+            if (ordenIdActual <= 0 || cmbOrdenes.SelectedValue == null)
+            {
+                MessageBox.Show("Selecciona una orden primero.", "Atención",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string otTexto = cmbOrdenes.Text; // "OT #... - placa - estado"
+
+            DialogResult r = MessageBox.Show(
+                "⚠️ Vas a eliminar TODO el historial de la orden seleccionada.\n\n" +
+                $"Orden: {otTexto}\n\n" +
+                "Esta acción NO se puede deshacer.\n\n" +
+                "¿Deseas continuar?",
+                "Confirmar eliminación de historial",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (r != DialogResult.Yes) return;
+
+            try
+            {
+                con.Abrir();
+
+                using (SqlCommand cmd = new SqlCommand(
+                    "DELETE FROM OrdenesTrabajo_Historial WHERE orden_id = @id", con.leer))
+                {
+                    cmd.Parameters.AddWithValue("@id", ordenIdActual);
+                    int filas = cmd.ExecuteNonQuery();
+
+                    MessageBox.Show(
+                        $"✅ Historial eliminado. Registros borrados: {filas}",
+                        "Listo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+
+                CargarHistorial();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar historial: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
+        }
+
+        private void EstilizarBotonEliminarHistorial()
+        {
+            btnEliminarHistorial.BackColor = Color.FromArgb(220, 53, 69);
+            btnEliminarHistorial.ForeColor = Color.White;
+            btnEliminarHistorial.FlatStyle = FlatStyle.Flat;
+            btnEliminarHistorial.FlatAppearance.BorderSize = 0;
+            btnEliminarHistorial.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            
+        }
+
+
 
         private void cmbOrdenes_SelectedIndexChanged(object sender, EventArgs e)
         {

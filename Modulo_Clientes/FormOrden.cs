@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -159,29 +159,45 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
             {
                 con.Abrir();
 
-                string sql = @"
+                using (SqlTransaction tx = con.leer.BeginTransaction())
+                {
+                    try
+                    {
+                        string estadoInicial = "Ingresado";
+
+                        string sql = @"
 INSERT INTO OrdenesTrabajo
 (vehiculo_id, recepcionista_id, mecanico_id, fecha_ingreso, estado, descripcion)
 VALUES
-(@vehiculo_id, @recepcionista_id, @mecanico_id, GETDATE(), @estado, @descripcion)";
+(@vehiculo_id, @recepcionista_id, @mecanico_id, GETDATE(), @estado, @descripcion);
 
+SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
 
+                        SqlCommand cmd = new SqlCommand(sql, con.leer, tx);
 
+                        cmd.Parameters.Add("@vehiculo_id", SqlDbType.BigInt).Value = cmbVehiculo.SelectedValue;
+                        cmd.Parameters.Add("@recepcionista_id", SqlDbType.BigInt).Value = recepcionistaId;
+                        cmd.Parameters.Add("@mecanico_id", SqlDbType.BigInt).Value = cmbMecanico.SelectedValue;
+                        cmd.Parameters.Add("@estado", SqlDbType.NVarChar, 20).Value = estadoInicial;
+                        cmd.Parameters.Add("@descripcion", SqlDbType.NVarChar).Value = txtDescripcion.Text.Trim();
 
-                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                        long ordenIdNueva = Convert.ToInt64(cmd.ExecuteScalar());
 
-                cmd.Parameters.Add("@vehiculo_id", SqlDbType.BigInt).Value = cmbVehiculo.SelectedValue;
-                cmd.Parameters.Add("@recepcionista_id", SqlDbType.BigInt).Value = recepcionistaId;
-                cmd.Parameters.Add("@mecanico_id", SqlDbType.BigInt).Value = cmbMecanico.SelectedValue;
+                        // ✅ Registrar historial: tipo ESTADO
+                        RegistrarHistorial(tx, ordenIdNueva, recepcionistaId,
+                            "ESTADO", "Orden creada", $"Estado inicial: {estadoInicial}");
 
-                cmd.Parameters.Add("@estado", SqlDbType.NVarChar, 20).Value = "Ingresado";
-                cmd.Parameters.Add("@descripcion", SqlDbType.NVarChar).Value = txtDescripcion.Text.Trim();
+                        tx.Commit();
 
-                cmd.ExecuteNonQuery();
-
-
-                MessageBox.Show("✅ Orden de trabajo creada correctamente");
-                LimpiarFormulario();
+                        MessageBox.Show("✅ Orden de trabajo creada correctamente");
+                        LimpiarFormulario();
+                    }
+                    catch
+                    {
+                        tx.Rollback();
+                        throw;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -192,6 +208,7 @@ VALUES
                 con.Cerrar();
             }
         }
+
 
         private void LimpiarFormulario()
         {
@@ -205,6 +222,22 @@ VALUES
             txtNombreOrden.Clear();
             txtDescripcion.Clear();
         }
+
+        private void RegistrarHistorial(SqlTransaction tx, long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
+        {
+            using (SqlCommand cmdH = new SqlCommand(
+                "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
+                con.leer, tx))
+            {
+                cmdH.Parameters.AddWithValue("@orden_id", ordenId);
+                cmdH.Parameters.AddWithValue("@usuario_id", (object)usuarioId ?? DBNull.Value);
+                cmdH.Parameters.AddWithValue("@tipo_evento", tipo);
+                cmdH.Parameters.AddWithValue("@titulo", titulo);
+                cmdH.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
+                cmdH.ExecuteNonQuery();
+            }
+        }
+
 
         private void txtNombreOrden_TextChanged(object sender, EventArgs e)
         {

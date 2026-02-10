@@ -199,13 +199,15 @@ ORDER BY ot.fecha_ingreso DESC";
             {
                 if (ex.Number == 547)
                 {
-                    int tareas = 0, items = 0, novedades = 0;
+                    int tareas = 0, items = 0, novedades = 0; int historial = 0;
 
                     try
                     {
                         tareas = ContarDependencias("OrdenesTrabajo_Tareas", "orden_id", ordenId);
                         items = ContarDependencias("OrdenesTrabajo_Items", "orden_id", ordenId);
                         novedades = ContarDependencias("Novedades", "orden_trabajo_id", ordenId);
+                        historial = ContarDependencias("OrdenesTrabajo_Historial", "orden_id", ordenId);
+
                     }
                     catch
                     {
@@ -215,6 +217,8 @@ ORDER BY ot.fecha_ingreso DESC";
                     if (tareas > 0) detalle += $"• Tiene {tareas} tarea(s) asignada(s)\n";
                     if (items > 0) detalle += $"• Tiene {items} producto(s)/servicio(s) asignado(s)\n";
                     if (novedades > 0) detalle += $"• Tiene {novedades} novedad(es) registrada(s)\n";
+                    if (historial > 0) detalle += $"• Tiene {historial} registro(s) en historial\n";
+
 
                     if (string.IsNullOrWhiteSpace(detalle))
                         detalle = "• Tiene registros relacionados (tareas / productos / novedades).";
