@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PROYECTOMECANICO.Modulo_Taller;
 using PROYECTOMECANICO.Seguridad;
-using System.Drawing.Drawing2D;
 
 
 namespace PROYECTOMECANICO.Modulo_Inventario
@@ -100,6 +101,11 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     MessageBoxIcon.Warning
                 );
                 return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormCalogProd());
             }
         }
 
