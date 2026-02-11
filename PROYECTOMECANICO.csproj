@@ -113,6 +113,12 @@
     <Compile Include="Modulo_Inventario\FormCalogProd.Designer.cs">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Inventario\FormGestProd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormGestProd.Designer.cs">
+      <DependentUpon>FormGestProd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Inventario\FormInventario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormCalogProd.resx">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inventario\FormGestProd.resx">
+      <DependentUpon>FormGestProd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormInventario.resx">
       <DependentUpon>FormInventario.cs</DependentUpon>
