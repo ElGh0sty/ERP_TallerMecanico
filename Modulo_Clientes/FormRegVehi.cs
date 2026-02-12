@@ -590,7 +590,7 @@ WHERE id = @id";
                 txtPlaca.Focus();
                 return false;
             }
-            txtPlaca.Text = placa; // normaliza
+            txtPlaca.Text = placa; 
 
 
             string marca = NormalizarTextoVehiculo(txtMarca.Text);

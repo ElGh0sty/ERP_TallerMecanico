@@ -17,7 +17,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
     public partial class FormInventario : Form
     {
         private string rolUsuario;
-
+        private readonly long usuarioId;
         public FormInventario(string rolUsuario)
         {
             InitializeComponent();
@@ -98,6 +98,11 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     MessageBoxIcon.Warning
                 );
                 return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormCompras(usuarioId));
             }
         }
 
