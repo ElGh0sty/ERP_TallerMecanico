@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace PROYECTOMECANICO.Modulo_Clientes
 {
@@ -33,8 +36,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             txtPlaca.KeyPress += Placa_KeyPress;
             txtChasis.KeyPress += Vin_KeyPress;
 
-
+            InicializarValidacionLive(); 
         }
+
 
 
 
@@ -50,8 +54,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             cmbDuenio.SelectedIndexChanged += cmbDuenio_SelectedIndexChanged;
 
-            CargarVehiculoParaEditar(vehiculoId);
-
             txtPlaca.CharacterCasing = CharacterCasing.Upper;
             txtChasis.CharacterCasing = CharacterCasing.Upper;
 
@@ -59,9 +61,13 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             txtPlaca.KeyPress += Placa_KeyPress;
             txtChasis.KeyPress += Vin_KeyPress;
 
+            InicializarValidacionLive(); 
 
-            btnGuardarVehiculo.Text = "Guardar edición"; 
+            CargarVehiculoParaEditar(vehiculoId);
+
+            btnGuardarVehiculo.Text = "Guardar edición";
         }
+
 
 
         private void CargarClientesCompleto()
@@ -178,6 +184,30 @@ WHERE id = @id";
 
         private void btnGuardarVehiculo_Click(object sender, EventArgs e)
         {
+            ValidarDuenioLive();
+            ValidarTipoLive();
+            ValidarPlacaLive();
+            ValidarMarcaLive();
+            ValidarModeloLive();
+            ValidarAnioLive();
+            ValidarVinLive();
+            ValidarKmLive();
+
+            if (!string.IsNullOrEmpty(errorProvider1.GetError(cmbDuenio)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(cmbTipoVehiculo)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtPlaca)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtMarca)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtModelo)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtAño)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtChasis)) ||
+                !string.IsNullOrEmpty(errorProvider1.GetError(txtKilometraje)))
+            {
+                MessageBox.Show("Corrige los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             if (!ValidarFormulario(out int anio, out int kilometraje))
                 return;
 
@@ -280,6 +310,250 @@ WHERE id = @id";
             
         }
 
+        private void MarcarOk(Control c)
+        {
+            c.BackColor = Color.White;
+            errorProvider1.SetError(c, "");
+        }
+
+        private void MarcarError(Control c, string msg)
+        {
+            c.BackColor = Color.FromArgb(255, 220, 220); 
+            errorProvider1.SetError(c, msg);
+        }
+
+
+        private void ValidarDuenioLive()
+        {
+            if (cmbDuenio.SelectedIndex == -1 || cmbDuenio.SelectedValue == null)
+                MarcarError(cmbDuenio, "Seleccione el dueño del vehículo.");
+            else
+                MarcarOk(cmbDuenio);
+        }
+
+        private void ValidarTipoLive()
+        {
+            if (cmbTipoVehiculo.SelectedIndex == -1 || cmbTipoVehiculo.SelectedValue == null)
+                MarcarError(cmbTipoVehiculo, "Seleccione un tipo de vehículo.");
+            else
+                MarcarOk(cmbTipoVehiculo);
+        }
+
+        private void ValidarPlacaLive()
+        {
+            string placa = NormalizarPlaca(txtPlaca.Text);
+
+            if (string.IsNullOrWhiteSpace(placa))
+            {
+                MarcarError(txtPlaca, "Ingrese la placa.");
+                return;
+            }
+
+            if (!EsPlacaEcuadorValida(placa))
+            {
+                MarcarError(txtPlaca, "Formato válido: ABC-123 o ABC-1234.");
+                return;
+            }
+
+            // Si es válida, actualiza el textbox con formato normalizado
+            if (txtPlaca.Text.Trim().ToUpper() != placa)
+                txtPlaca.Text = placa;
+
+            MarcarOk(txtPlaca);
+        }
+
+
+        private void ValidarMarcaLive()
+        {
+            string marca = NormalizarTextoVehiculo(txtMarca.Text);
+
+            // refleja normalización en UI sin molestar (solo si cambió)
+            if (txtMarca.Text != marca) txtMarca.Text = marca;
+
+            if (string.IsNullOrWhiteSpace(marca))
+            {
+                MarcarError(txtMarca, "Ingrese la marca.");
+                return;
+            }
+
+            if (marca.Length < 2 || marca.Length > 30)
+            {
+                MarcarError(txtMarca, "Marca: 2 a 30 caracteres.");
+                return;
+            }
+
+            // Caracteres permitidos
+            if (!Regex.IsMatch(marca, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-]+$"))
+            {
+                MarcarError(txtMarca, "Marca inválida (caracteres no permitidos).");
+                return;
+            }
+
+            // Debe tener al menos 2 letras (evita "12", "X1" si quieres permitir, baja a 1)
+            if (!TieneMinimoLetras(marca, 2))
+            {
+                MarcarError(txtMarca, "Marca inválida (muy corta o sin letras).");
+                return;
+            }
+
+            // Evitar basura tipo AAAAAA / ----- / 111111
+            if (EsTextoRepetidoBasura(marca))
+            {
+                MarcarError(txtMarca, "Marca inválida.");
+                return;
+            }
+
+            MarcarOk(txtMarca);
+        }
+
+        private void ValidarModeloLive()
+        {
+            string modelo = NormalizarTextoVehiculo(txtModelo.Text);
+
+            if (txtModelo.Text != modelo) txtModelo.Text = modelo;
+
+            if (string.IsNullOrWhiteSpace(modelo))
+            {
+                MarcarError(txtModelo, "Ingrese el modelo.");
+                return;
+            }
+
+            if (modelo.Length < 1 || modelo.Length > 40)
+            {
+                MarcarError(txtModelo, "Modelo: 1 a 40 caracteres.");
+                return;
+            }
+
+            // Modelo permite más cosas: / (ej: FZ/2.0), - (ej: CX-5)
+            if (!Regex.IsMatch(modelo, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-\/]+$"))
+            {
+                MarcarError(txtModelo, "Modelo inválido (caracteres no permitidos).");
+                return;
+            }
+
+            // Evitar basura repetida
+            if (EsTextoRepetidoBasura(modelo))
+            {
+                MarcarError(txtModelo, "Modelo inválido.");
+                return;
+            }
+
+            // (opcional) obliga a que tenga al menos 1 letra o 1 número (ya lo tiene por regex)
+            MarcarOk(txtModelo);
+        }
+
+
+
+        private void ValidarAnioLive()
+        {
+            if (!int.TryParse((txtAño.Text ?? "").Trim(), out int anio))
+            {
+                MarcarError(txtAño, "Ingrese un año válido.");
+                return;
+            }
+
+            int anioActual = DateTime.Now.Year;
+            if (anio < 1950 || anio > anioActual + 1)
+                MarcarError(txtAño, $"Año fuera de rango (1950 - {anioActual + 1}).");
+            else
+                MarcarOk(txtAño);
+        }
+
+        private void ValidarKmLive()
+        {
+            string kmTxt = (txtKilometraje.Text ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(kmTxt))
+            {
+                // Si quieres obligarlo, cámbialo a MarcarError(...)
+                MarcarOk(txtKilometraje);
+                return;
+            }
+
+            if (!int.TryParse(kmTxt, out int km) || km < 0 || km > 3000000)
+                MarcarError(txtKilometraje, "Kilometraje inválido (0 - 3,000,000).");
+            else
+                MarcarOk(txtKilometraje);
+        }
+
+
+
+
+        private void ValidarVinLive()
+        {
+            string vin = (txtChasis.Text ?? "").Trim().ToUpper();
+
+            if (string.IsNullOrWhiteSpace(vin))
+            {
+                MarcarError(txtChasis, "Ingrese el Chasis/VIN.");
+                return;
+            }
+
+            if (!EsVinValido(vin))
+            {
+                MarcarError(txtChasis, "VIN inválido: 17 caracteres, sin I/O/Q.");
+                return;
+            }
+
+            MarcarOk(txtChasis);
+        }
+
+
+        
+
+
+        private string NormalizarPlaca(string placa)
+        {
+            placa = (placa ?? "").Trim().ToUpper().Replace(" ", "");
+            // Si viene sin guión y cumple 3 letras + 3/4 números, lo normalizamos a ABC-1234
+            if (Regex.IsMatch(placa, @"^[A-Z]{3}\d{3,4}$"))
+                placa = placa.Substring(0, 3) + "-" + placa.Substring(3);
+            return placa;
+        }
+
+        private bool EsPlacaEcuadorValida(string placaNormalizada)
+        {
+            // Formatos aceptados: ABC-123 o ABC-1234
+            return Regex.IsMatch(placaNormalizada, @"^[A-Z]{3}-\d{3,4}$");
+        }
+
+        
+
+        private bool EsVinValido(string vin)
+        {
+            vin = (vin ?? "").Trim().ToUpper();
+
+            if (vin.Length != 17) return false;
+
+            // Solo alfanumérico
+            if (!Regex.IsMatch(vin, @"^[A-Z0-9]{17}$")) return false;
+
+            // VIN estándar: no permite I, O, Q
+            if (vin.Contains("I") || vin.Contains("O") || vin.Contains("Q")) return false;
+
+            return true;
+        }
+
+
+
+        private void InicializarValidacionLive()
+        {
+            errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            // Combos
+            cmbDuenio.SelectedIndexChanged += (s, e) => ValidarDuenioLive();
+            cmbTipoVehiculo.SelectedIndexChanged += (s, e) => ValidarTipoLive();
+
+            // Textos
+            txtPlaca.TextChanged += (s, e) => ValidarPlacaLive();
+            txtMarca.TextChanged += (s, e) => ValidarMarcaLive();
+            txtModelo.TextChanged += (s, e) => ValidarModeloLive();
+            txtAño.TextChanged += (s, e) => ValidarAnioLive();
+            txtChasis.TextChanged += (s, e) => ValidarVinLive();
+            txtKilometraje.TextChanged += (s, e) => ValidarKmLive();
+        }
+
+
         private bool ValidarFormulario(out int anio, out int kilometraje)
         {
             anio = 0;
@@ -302,36 +576,48 @@ WHERE id = @id";
             }
 
             // Placa (en tu BD es char(8) y no permite null según tu captura)
-            string placa = (txtPlaca.Text ?? "").Trim().ToUpper();
+            string placa = NormalizarPlaca(txtPlaca.Text);
+
             if (string.IsNullOrWhiteSpace(placa))
             {
                 MessageBox.Show("Ingrese la placa.");
                 txtPlaca.Focus();
                 return false;
             }
-            if (placa.Length < 6 || placa.Length > 8)
+            if (!EsPlacaEcuadorValida(placa))
             {
-                MessageBox.Show("La placa debe tener entre 6 y 8 caracteres.");
+                MessageBox.Show("Placa inválida. Formato válido: ABC-123 o ABC-1234.");
                 txtPlaca.Focus();
                 return false;
             }
+            txtPlaca.Text = placa; // normaliza
 
-            // Marca / Modelo (en tu BD permiten null, pero UX mejor pedirlos)
-            string marca = (txtMarca.Text ?? "").Trim();
-            if (marca.Length < 2)
+
+            string marca = NormalizarTextoVehiculo(txtMarca.Text);
+            if (txtMarca.Text != marca) txtMarca.Text = marca;
+
+            if (string.IsNullOrWhiteSpace(marca) || marca.Length < 2 || marca.Length > 30 ||
+                !Regex.IsMatch(marca, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-]+$") ||
+                !TieneMinimoLetras(marca, 2) ||
+                EsTextoRepetidoBasura(marca))
             {
                 MessageBox.Show("Ingrese una marca válida.");
                 txtMarca.Focus();
                 return false;
             }
 
-            string modelo = (txtModelo.Text ?? "").Trim();
-            if (modelo.Length < 1)
+            string modelo = NormalizarTextoVehiculo(txtModelo.Text);
+            if (txtModelo.Text != modelo) txtModelo.Text = modelo;
+
+            if (string.IsNullOrWhiteSpace(modelo) || modelo.Length < 1 || modelo.Length > 40 ||
+                !Regex.IsMatch(modelo, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-\/]+$") ||
+                EsTextoRepetidoBasura(modelo))
             {
                 MessageBox.Show("Ingrese un modelo válido.");
                 txtModelo.Focus();
                 return false;
             }
+
 
             // Año
             if (!int.TryParse((txtAño.Text ?? "").Trim(), out anio))
@@ -351,18 +637,20 @@ WHERE id = @id";
 
             // Chasis/VIN (en tu BD es nvarchar(17) y lo estás tratando como VIN)
             string vin = (txtChasis.Text ?? "").Trim().ToUpper();
+
             if (string.IsNullOrWhiteSpace(vin))
             {
                 MessageBox.Show("Ingrese el Chasis/VIN.");
                 txtChasis.Focus();
                 return false;
             }
-            if (vin.Length != 17)
+            if (!EsVinValido(vin))
             {
-                MessageBox.Show("El Chasis/VIN debe tener exactamente 17 caracteres.");
+                MessageBox.Show("VIN inválido: 17 caracteres alfanuméricos, sin I/O/Q.");
                 txtChasis.Focus();
                 return false;
             }
+
 
             // Kilometraje (en tu BD int NOT NULL)
             string kmTxt = (txtKilometraje.Text ?? "").Trim();
@@ -436,6 +724,35 @@ WHERE id = @id";
 
             if (!char.IsControl(e.KeyChar) && txtChasis.Text.Length >= 17)
                 e.Handled = true;
+        }
+
+        private string NormalizarTextoVehiculo(string s)
+        {
+            s = (s ?? "").Trim();
+
+            // colapsa espacios múltiples
+            s = Regex.Replace(s, @"\s+", " ");
+
+            // quita dobles guiones/ puntos repetidos excesivos
+            s = Regex.Replace(s, @"[-]{3,}", "--");
+            s = Regex.Replace(s, @"[.]{3,}", "..");
+
+            return s;
+        }
+
+        private bool EsTextoRepetidoBasura(string s)
+        {
+            s = (s ?? "").Trim();
+            if (s.Length < 4) return false;
+
+            // Todo el string es el mismo caracter (AAAAA, 11111, -----)
+            return s.All(ch => ch == s[0]);
+        }
+
+        private bool TieneMinimoLetras(string s, int minLetras)
+        {
+            int letras = Regex.Matches(s ?? "", @"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]").Count;
+            return letras >= minLetras;
         }
 
 
