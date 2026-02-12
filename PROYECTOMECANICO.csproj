@@ -113,17 +113,17 @@
     <Compile Include="Modulo_Inventario\FormCalogProd.Designer.cs">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modulo_Inventario\FormGestProd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo_Inventario\FormGestProd.Designer.cs">
-      <DependentUpon>FormGestProd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modulo_Inventario\FormInventario.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo_Inventario\FormInventario.Designer.cs">
       <DependentUpon>FormInventario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormKardex.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormKardex.Designer.cs">
+      <DependentUpon>FormKardex.cs</DependentUpon>
     </Compile>
     <Compile Include="Modulo_Personal\FormPersonal.cs">
       <SubType>Form</SubType>
@@ -191,11 +191,11 @@
     <EmbeddedResource Include="Modulo_Inventario\FormCalogProd.resx">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulo_Inventario\FormGestProd.resx">
-      <DependentUpon>FormGestProd.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormInventario.resx">
       <DependentUpon>FormInventario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inventario\FormKardex.resx">
+      <DependentUpon>FormKardex.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Taller\FormHistorial.resx">
       <DependentUpon>FormHistorial.cs</DependentUpon>
