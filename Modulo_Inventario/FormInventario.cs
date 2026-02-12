@@ -79,6 +79,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 );
                 return;
             }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(new FormProvee());
+            }
+
         }
 
         private void button4_Click(object sender, EventArgs e)

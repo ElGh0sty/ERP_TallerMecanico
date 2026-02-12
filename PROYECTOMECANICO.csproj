@@ -126,6 +126,18 @@
     <Compile Include="Modulo_Inventario\FormKardex.Designer.cs">
       <DependentUpon>FormKardex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Inventario\FormProvee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormProvee.Designer.cs">
+      <DependentUpon>FormProvee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormProveePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormProveePopup.Designer.cs">
+      <DependentUpon>FormProveePopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Personal\FormPersonal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +209,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormKardex.resx">
       <DependentUpon>FormKardex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inventario\FormProvee.resx">
+      <DependentUpon>FormProvee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inventario\FormProveePopup.resx">
+      <DependentUpon>FormProveePopup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Taller\FormHistorial.resx">
       <DependentUpon>FormHistorial.cs</DependentUpon>
