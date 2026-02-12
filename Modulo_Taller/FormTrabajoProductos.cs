@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace PROYECTOMECANICO.Modulo_Taller
+namespace PROYECTOMECANICO.Modulo_Taller    
 {
     public partial class FormTrabajoProductos : Form
     {
@@ -595,12 +595,20 @@ WHERE id=@p;", con.leer, tx);
                     cmdInsert.Parameters.AddWithValue("@c", Convert.ToDecimal(cantidad));
                     cmdInsert.ExecuteNonQuery();
 
-                    SqlCommand cmdUpd = new SqlCommand("UPDATE Productos SET stock = ISNULL(stock,0) - @c WHERE id=@p", con.leer, tx);
-                    cmdUpd.Parameters.AddWithValue("@c", cantidad);
-                    cmdUpd.Parameters.AddWithValue("@p", productoId);
-                    cmdUpd.ExecuteNonQuery();
+                    using (SqlCommand cmdK = new SqlCommand("dbo.sp_Kardex_RegistrarMovimiento", con.leer, tx))
+                    {
+                        cmdK.CommandType = CommandType.StoredProcedure;
+                        cmdK.Parameters.AddWithValue("@ProductoId", productoId);
+                        cmdK.Parameters.AddWithValue("@UsuarioId", usuarioId);
+                        cmdK.Parameters.AddWithValue("@TipoMovimiento", "SALIDA");
+                        cmdK.Parameters.AddWithValue("@Origen", "OT");
+                        cmdK.Parameters.AddWithValue("@ReferenciaId", ordenIdActual);
+                        cmdK.Parameters.AddWithValue("@Cantidad", cantidad);
+                        cmdK.Parameters.AddWithValue("@Fecha", DBNull.Value);
+                        cmdK.ExecuteNonQuery();
+                    }
 
-                    
+
 
                     string nombreProd = rv["nombre"].ToString();
                     RegistrarHistorial(tx, ordenIdActual, usuarioId, "ITEM", "Producto agregado",
@@ -608,7 +616,7 @@ WHERE id=@p;", con.leer, tx);
 
                     tx.Commit();
 
-                    // ✅ HISTORIAL: item agregado
+                    
                     
 
 
@@ -700,12 +708,21 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                         cmdDel.ExecuteNonQuery();
                     }
 
-                    using (SqlCommand cmdBack = new SqlCommand("UPDATE Productos SET stock = ISNULL(stock,0) + @c WHERE id=@p", con.leer, tx))
+                    int cantInt = Convert.ToInt32(cantDec);
+
+                    using (SqlCommand cmdK = new SqlCommand("dbo.sp_Kardex_RegistrarMovimiento", con.leer, tx))
                     {
-                        cmdBack.Parameters.AddWithValue("@c", cantDec);
-                        cmdBack.Parameters.AddWithValue("@p", prodId);
-                        cmdBack.ExecuteNonQuery();
+                        cmdK.CommandType = CommandType.StoredProcedure;
+                        cmdK.Parameters.AddWithValue("@ProductoId", prodId);
+                        cmdK.Parameters.AddWithValue("@UsuarioId", usuarioId);
+                        cmdK.Parameters.AddWithValue("@TipoMovimiento", "ENTRADA");
+                        cmdK.Parameters.AddWithValue("@Origen", "OT_DEVOLUCION");
+                        cmdK.Parameters.AddWithValue("@ReferenciaId", ordenIdActual);
+                        cmdK.Parameters.AddWithValue("@Cantidad", cantInt);
+                        cmdK.Parameters.AddWithValue("@Fecha", DBNull.Value);
+                        cmdK.ExecuteNonQuery();
                     }
+
 
                     RegistrarHistorial(
                         tx,

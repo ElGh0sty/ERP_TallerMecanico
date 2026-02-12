@@ -59,6 +59,7 @@
     <Compile Include="FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="KardexService.cs" />
     <Compile Include="Modulo_Clientes\FormCatalogo.cs">
       <SubType>Form</SubType>
     </Compile>

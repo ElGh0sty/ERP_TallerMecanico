@@ -238,13 +238,19 @@ ORDER BY nombre;";
 
                 string sql = @"
 SELECT
+    k.id AS kardex_id,
     k.fecha,
+    k.producto_id,
     p.nombre AS producto,
     k.tipo_movimiento,
     k.cantidad,
     u.nombre_usuario AS usuario,
     k.origen,
-    k.referencia_id
+    k.referencia_id,
+    CASE 
+        WHEN k.referencia_id IS NULL THEN k.origen
+        ELSE CONCAT(k.origen, ' #', k.referencia_id)
+    END AS documento
 FROM Kardex k
 INNER JOIN Productos p ON k.producto_id = p.id
 INNER JOIN Usuarios u ON k.usuario_id = u.id
@@ -252,7 +258,8 @@ WHERE
     (@prod = 0 OR k.producto_id = @prod)
     AND (@tipo = 'TODOS' OR k.tipo_movimiento = @tipo)
     AND k.fecha >= @desde AND k.fecha < @hasta
-ORDER BY k.fecha DESC;
+ORDER BY k.fecha DESC, k.id DESC;
+
 ";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con.leer))
@@ -378,10 +385,33 @@ ORDER BY k.fecha DESC;
             }
             if (dgvKardex.Columns.Contains("usuario"))
                 dgvKardex.Columns["usuario"].HeaderText = "Usuario";
-            if (dgvKardex.Columns.Contains("origen"))
-                dgvKardex.Columns["origen"].HeaderText = "Origen";
-            if (dgvKardex.Columns.Contains("referencia_id"))
-                dgvKardex.Columns["referencia_id"].HeaderText = "Ref.";
+            
+            if (dgvKardex.Columns.Contains("kardex_id"))
+                dgvKardex.Columns["kardex_id"].Visible = false;
+
+            if (dgvKardex.Columns.Contains("producto_id"))
+                dgvKardex.Columns["producto_id"].Visible = false;
+
+            if (dgvKardex.Columns.Contains("documento"))
+            {
+                dgvKardex.Columns["documento"].HeaderText = "Documento";
+                dgvKardex.Columns["documento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+
+            // Ocultar IDs (para que no ensucie la UI)
+            if (dgvKardex.Columns.Contains("kardex_id"))
+                dgvKardex.Columns["kardex_id"].Visible = false;
+
+            if (dgvKardex.Columns.Contains("producto_id"))
+                dgvKardex.Columns["producto_id"].Visible = false;
+
+            if (dgvKardex.Columns.Contains("documento"))
+            {
+                dgvKardex.Columns["documento"].HeaderText = "Documento";
+                dgvKardex.Columns["documento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
 
             // (opcional) centra tipo
             if (dgvKardex.Columns.Contains("tipo_movimiento"))
