@@ -132,6 +132,12 @@
     <Compile Include="Modulo_Inventario\FormKardex.Designer.cs">
       <DependentUpon>FormKardex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Inventario\FormProductoPopupcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inventario\FormProductoPopupcs.Designer.cs">
+      <DependentUpon>FormProductoPopupcs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Inventario\FormProvee.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormKardex.resx">
       <DependentUpon>FormKardex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inventario\FormProductoPopupcs.resx">
+      <DependentUpon>FormProductoPopupcs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormProvee.resx">
       <DependentUpon>FormProvee.cs</DependentUpon>

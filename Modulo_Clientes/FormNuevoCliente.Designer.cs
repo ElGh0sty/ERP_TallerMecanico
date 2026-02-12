@@ -35,6 +35,7 @@
             // 
             // dgvNuevo
             // 
+            this.dgvNuevo.AllowUserToAddRows = false;
             this.dgvNuevo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvNuevo.Location = new System.Drawing.Point(12, 12);
             this.dgvNuevo.Name = "dgvNuevo";

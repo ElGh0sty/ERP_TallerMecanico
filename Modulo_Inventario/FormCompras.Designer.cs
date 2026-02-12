@@ -46,6 +46,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnNuevoProducto = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCosto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -57,7 +58,7 @@
             this.cmbProveedor.FormattingEnabled = true;
             this.cmbProveedor.Location = new System.Drawing.Point(29, 33);
             this.cmbProveedor.Name = "cmbProveedor";
-            this.cmbProveedor.Size = new System.Drawing.Size(231, 29);
+            this.cmbProveedor.Size = new System.Drawing.Size(256, 29);
             this.cmbProveedor.TabIndex = 0;
             // 
             // txtFactura
@@ -72,7 +73,7 @@
             // 
             this.lblSubtotal.AutoSize = true;
             this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubtotal.Location = new System.Drawing.Point(46, 541);
+            this.lblSubtotal.Location = new System.Drawing.Point(41, 531);
             this.lblSubtotal.Name = "lblSubtotal";
             this.lblSubtotal.Size = new System.Drawing.Size(51, 21);
             this.lblSubtotal.TabIndex = 2;
@@ -82,7 +83,7 @@
             // 
             this.lblIVA.AutoSize = true;
             this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIVA.Location = new System.Drawing.Point(193, 541);
+            this.lblIVA.Location = new System.Drawing.Point(187, 531);
             this.lblIVA.Name = "lblIVA";
             this.lblIVA.Size = new System.Drawing.Size(54, 21);
             this.lblIVA.TabIndex = 3;
@@ -92,7 +93,7 @@
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.Location = new System.Drawing.Point(346, 541);
+            this.lblTotal.Location = new System.Drawing.Point(340, 531);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(54, 21);
             this.lblTotal.TabIndex = 4;
@@ -103,9 +104,8 @@
             this.txtBuscarProducto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuscarProducto.Location = new System.Drawing.Point(29, 71);
             this.txtBuscarProducto.Name = "txtBuscarProducto";
-            this.txtBuscarProducto.Size = new System.Drawing.Size(231, 29);
+            this.txtBuscarProducto.Size = new System.Drawing.Size(256, 29);
             this.txtBuscarProducto.TabIndex = 5;
-            this.txtBuscarProducto.TextChanged += new System.EventHandler(this.txtBuscarProducto_TextChanged);
             // 
             // lstProductos
             // 
@@ -114,9 +114,8 @@
             this.lstProductos.ItemHeight = 21;
             this.lstProductos.Location = new System.Drawing.Point(29, 97);
             this.lstProductos.Name = "lstProductos";
-            this.lstProductos.Size = new System.Drawing.Size(231, 109);
+            this.lstProductos.Size = new System.Drawing.Size(256, 109);
             this.lstProductos.TabIndex = 6;
-            this.lstProductos.SelectedIndexChanged += new System.EventHandler(this.lstProductos_SelectedIndexChanged);
             // 
             // lblStockSel
             // 
@@ -149,13 +148,14 @@
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItems.Location = new System.Drawing.Point(-2, 175);
             this.dgvItems.Name = "dgvItems";
+            this.dgvItems.ReadOnly = true;
             this.dgvItems.Size = new System.Drawing.Size(913, 302);
             this.dgvItems.TabIndex = 10;
             // 
             // btnAgregarItem
             // 
             this.btnAgregarItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarItem.Location = new System.Drawing.Point(703, 90);
+            this.btnAgregarItem.Location = new System.Drawing.Point(650, 90);
             this.btnAgregarItem.Name = "btnAgregarItem";
             this.btnAgregarItem.Size = new System.Drawing.Size(104, 61);
             this.btnAgregarItem.TabIndex = 11;
@@ -165,7 +165,7 @@
             // btnGuardarCompra
             // 
             this.btnGuardarCompra.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardarCompra.Location = new System.Drawing.Point(615, 521);
+            this.btnGuardarCompra.Location = new System.Drawing.Point(615, 511);
             this.btnGuardarCompra.Name = "btnGuardarCompra";
             this.btnGuardarCompra.Size = new System.Drawing.Size(104, 61);
             this.btnGuardarCompra.TabIndex = 12;
@@ -175,7 +175,7 @@
             // btnLimpiar
             // 
             this.btnLimpiar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLimpiar.Location = new System.Drawing.Point(752, 521);
+            this.btnLimpiar.Location = new System.Drawing.Point(752, 511);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(104, 61);
             this.btnLimpiar.TabIndex = 13;
@@ -221,12 +221,23 @@
             this.label3.TabIndex = 17;
             this.label3.Text = "Costo:";
             // 
+            // btnNuevoProducto
+            // 
+            this.btnNuevoProducto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevoProducto.Location = new System.Drawing.Point(771, 90);
+            this.btnNuevoProducto.Name = "btnNuevoProducto";
+            this.btnNuevoProducto.Size = new System.Drawing.Size(104, 61);
+            this.btnNuevoProducto.TabIndex = 18;
+            this.btnNuevoProducto.Text = "Nuevo Producto";
+            this.btnNuevoProducto.UseVisualStyleBackColor = true;
+            // 
             // FormCompras
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.btnNuevoProducto);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -276,5 +287,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnNuevoProducto;
     }
 }

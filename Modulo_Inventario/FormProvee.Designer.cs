@@ -41,7 +41,7 @@
             // txtBuscar
             // 
             this.txtBuscar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscar.Location = new System.Drawing.Point(17, 96);
+            this.txtBuscar.Location = new System.Drawing.Point(17, 76);
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.Size = new System.Drawing.Size(256, 33);
             this.txtBuscar.TabIndex = 0;
@@ -49,7 +49,7 @@
             // btnAgregar
             // 
             this.btnAgregar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregar.Location = new System.Drawing.Point(351, 86);
+            this.btnAgregar.Location = new System.Drawing.Point(351, 66);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(116, 51);
             this.btnAgregar.TabIndex = 1;
@@ -59,7 +59,7 @@
             // btnEditar
             // 
             this.btnEditar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditar.Location = new System.Drawing.Point(527, 86);
+            this.btnEditar.Location = new System.Drawing.Point(527, 66);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(116, 51);
             this.btnEditar.TabIndex = 2;
@@ -72,7 +72,7 @@
             this.lblTotal.BackColor = System.Drawing.Color.LightSlateGray;
             this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Location = new System.Drawing.Point(707, 99);
+            this.lblTotal.Location = new System.Drawing.Point(707, 79);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(61, 25);
             this.lblTotal.TabIndex = 4;
@@ -96,7 +96,7 @@
             this.label1.BackColor = System.Drawing.Color.LightSlateGray;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(12, 51);
+            this.label1.Location = new System.Drawing.Point(12, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 25);
             this.label1.TabIndex = 6;

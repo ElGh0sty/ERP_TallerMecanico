@@ -59,8 +59,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             chkActivo.Checked = true;
             chkEspecial.Checked = false;
 
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            
             MaximizeBox = false;
             MinimizeBox = false;
         }
@@ -196,7 +195,7 @@ VALUES
                         cmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Proveedor registrado ✅");
+                    MessageBox.Show("Proveedor registrado.");
                     DialogResult = DialogResult.OK;
                     Close();
                     return;
@@ -243,7 +242,7 @@ WHERE id=@id;";
                         cmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Proveedor actualizado ✅");
+                    MessageBox.Show("Proveedor actualizado.");
                     DialogResult = DialogResult.OK;
                     Close();
                 }

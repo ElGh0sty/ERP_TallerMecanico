@@ -10,16 +10,17 @@ namespace PROYECTOMECANICO.Modulo_Inventario
     public partial class FormCompras : Form
     {
         private readonly Conexion con = new Conexion();
-
-        private readonly long usuarioId; 
+        private readonly long usuarioId;
 
         private DataTable dtProveedores = new DataTable();
         private DataTable dtProductos = new DataTable();
         private DataTable dtItems = new DataTable();
 
         private long productoIdSeleccionado = 0;
-        private const decimal IVA_ECUADOR = 0.15m; 
+        private const decimal IVA_ECUADOR = 0.15m;
 
+        // DataTable para mostrar sugerencias en el ListBox (incluye “crear rápido”)
+        private DataTable dtSugerencias = new DataTable();
 
         public FormCompras(long usuarioId)
         {
@@ -27,6 +28,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             this.usuarioId = usuarioId;
 
             PrepararTablaItems();
+            PrepararTablaSugerencias();
             ConfigurarGrid();
             AplicarEstilos();
 
@@ -59,10 +61,10 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             btnGuardarCompra.Click += (s, e) => GuardarCompra();
             btnLimpiar.Click += (s, e) => LimpiarTodo();
 
-            dgvItems.CellClick += dgvItems_CellClick;
+            // ✅ BOTÓN NUEVO PRODUCTO
+            btnNuevoProducto.Click += (s, e) => AbrirPopupNuevoProducto(txtBuscarProducto.Text);
 
-            // IVA% opcional
-            
+            dgvItems.CellClick += dgvItems_CellClick;
 
             RecalcularTotales();
         }
@@ -94,6 +96,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             EstiloBoton(btnAgregarItem, Color.DarkSlateBlue);
             EstiloBoton(btnLimpiar, Color.FromArgb(60, 60, 60));
 
+            // Botón nuevo producto (estilo igual)
+            EstiloBoton(btnNuevoProducto, Color.FromArgb(40, 167, 69)); // verde
+
             // Listbox
             lstProductos.BorderStyle = BorderStyle.FixedSingle;
             lstProductos.BackColor = Color.White;
@@ -101,7 +106,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lstProductos.IntegralHeight = false;
             lstProductos.ItemHeight = 22;
 
-            // Labels totales (si quieres)
+            // Labels totales
             lblSubtotal.ForeColor = Color.FromArgb(40, 40, 40);
             lblIVA.ForeColor = Color.FromArgb(40, 40, 40);
             lblTotal.ForeColor = Color.FromArgb(15, 15, 15);
@@ -137,6 +142,15 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             dtItems.Columns.Add("cantidad", typeof(int));
             dtItems.Columns.Add("costo_unitario", typeof(decimal));
             dtItems.Columns.Add("subtotal", typeof(decimal));
+        }
+
+        private void PrepararTablaSugerencias()
+        {
+            dtSugerencias.Columns.Clear();
+            dtSugerencias.Columns.Add("id", typeof(long));
+            dtSugerencias.Columns.Add("nombre", typeof(string));
+            dtSugerencias.Columns.Add("stock", typeof(int));
+            dtSugerencias.Columns.Add("is_create", typeof(bool));
         }
 
         private void ConfigurarGrid()
@@ -218,7 +232,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             dgvItems.Columns["subtotal"].DefaultCellStyle.Format = "N4";
         }
 
-
         private void dgvItems_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -271,7 +284,8 @@ SELECT
     id,
     nombre,
     tipo,
-    ISNULL(stock,0) AS stock
+    ISNULL(stock,0) AS stock,
+    precio_costo
 FROM Productos
 ORDER BY nombre;";
 
@@ -287,64 +301,131 @@ ORDER BY nombre;";
             finally { con.Cerrar(); }
         }
 
+        // ---------------- Buscador + crear rápido ----------------
 
         private void FiltrarProductos(string texto)
         {
-            texto = (texto ?? "").Trim().Replace("'", "''");
+            texto = (texto ?? "").Trim();
 
-            // Si no hay texto, ocultamos lista
             if (texto.Length < 1)
             {
-                lstProductos.Visible = false;
-                lstProductos.DataSource = null;
-                productoIdSeleccionado = 0;
-                lblStockSel.Text = "Stock: -";
+                OcultarListaProductos();
                 return;
             }
 
-            // Filtrar productos por nombre o tipo
+            // Filtrar en dtProductos (sin meter texto directo en RowFilter para evitar temas con comillas)
             var dv = new DataView(dtProductos);
-            dv.RowFilter = $"nombre LIKE '%{texto}%' OR tipo LIKE '%{texto}%'";
 
-            // Si no hay resultados
-            if (dv.Count == 0)
+            string safe = texto.Replace("'", "''");
+            dv.RowFilter = $"nombre LIKE '%{safe}%' OR tipo LIKE '%{safe}%'";
+
+            dtSugerencias.Clear();
+
+            if (dv.Count > 0)
             {
-                lstProductos.Visible = false;
-                lstProductos.DataSource = null;
-                productoIdSeleccionado = 0;
-                lblStockSel.Text = "Stock: -";
-                return;
+                // mostrar solo nombres, pero conservando id/stock/is_create
+                foreach (DataRowView rv in dv)
+                {
+                    var r = dtSugerencias.NewRow();
+                    r["id"] = Convert.ToInt64(rv["id"]);
+                    r["nombre"] = rv["nombre"].ToString();
+                    r["stock"] = Convert.ToInt32(rv["stock"]);
+                    r["is_create"] = false;
+                    dtSugerencias.Rows.Add(r);
+                }
+            }
+            else
+            {
+                // ✅ Crear rápido
+                var r = dtSugerencias.NewRow();
+                r["id"] = 0L;
+                r["nombre"] = "➕ Crear producto: " + texto;
+                r["stock"] = 0;
+                r["is_create"] = true;
+                dtSugerencias.Rows.Add(r);
             }
 
             lstProductos.DisplayMember = "nombre";
             lstProductos.ValueMember = "id";
-            lstProductos.DataSource = dv;
+            lstProductos.DataSource = dtSugerencias;
 
-            // Mostrar lista debajo del textbox
+            MostrarListaDebajo();
+        }
+
+        private void MostrarListaDebajo()
+        {
             lstProductos.Visible = true;
             lstProductos.Left = txtBuscarProducto.Left;
             lstProductos.Top = txtBuscarProducto.Bottom + 2;
             lstProductos.Width = txtBuscarProducto.Width;
             lstProductos.BringToFront();
-
-            // Tamaño dinámico
-            lstProductos.Height = Math.Min(200, (dv.Count * 22) + 4);
+            lstProductos.Height = Math.Min(200, (dtSugerencias.Rows.Count * 22) + 4);
         }
 
+        private void OcultarListaProductos()
+        {
+            lstProductos.Visible = false;
+            lstProductos.DataSource = null;
+            productoIdSeleccionado = 0;
+            lblStockSel.Text = "Stock: -";
+        }
 
         private void ConfirmarProductoSeleccionado()
         {
             if (lstProductos.SelectedItem == null) return;
 
             var rv = (DataRowView)lstProductos.SelectedItem;
-            productoIdSeleccionado = Convert.ToInt64(rv["id"]);
+            bool isCreate = Convert.ToBoolean(rv["is_create"]);
 
+            if (isCreate)
+            {
+                // Extraer el texto original
+                string texto = (txtBuscarProducto.Text ?? "").Trim();
+                AbrirPopupNuevoProducto(texto);
+                return;
+            }
+
+            productoIdSeleccionado = Convert.ToInt64(rv["id"]);
             txtBuscarProducto.Text = rv["nombre"].ToString();
             lblStockSel.Text = $"Stock: {rv["stock"]}";
             lstProductos.Visible = false;
         }
 
-    
+        private void AbrirPopupNuevoProducto(string nombreSugerido)
+        {
+            using (var pop = new FormProductoPopup(nombreSugerido))
+            {
+                if (pop.ShowDialog(this) == DialogResult.OK)
+                {
+                    // Recargar lista de productos (para que aparezca el nuevo)
+                    CargarProductosBuscador();
+
+                    // Seleccionar automáticamente el producto recién creado
+                    productoIdSeleccionado = pop.ProductoCreadoId;
+                    txtBuscarProducto.Text = pop.ProductoCreadoNombre;
+
+                    lblStockSel.Text = "Stock: 0";
+
+                    // Ocultar lista
+                    lstProductos.Visible = false;
+                }
+            }
+        }
+
+
+        // ---------------- Items ----------------
+
+        private decimal? ObtenerCostoReferencia(long productoId)
+        {
+            var rows = dtProductos.Select($"id = {productoId}");
+            if (rows.Length == 0) return null;
+
+            object v = rows[0]["precio_costo"];
+            if (v == null || v == DBNull.Value) return null;
+
+            return Convert.ToDecimal(v);
+        }
+
         private void AgregarItem()
         {
             if (productoIdSeleccionado <= 0)
@@ -361,35 +442,46 @@ ORDER BY nombre;";
                 MessageBox.Show("Cantidad inválida.");
                 return;
             }
-            decimal minimo = 0.50m;
 
-            string nombre = txtBuscarProducto.Text.ToLower();
-
-            if (nombre.Contains("aceite")) minimo = 5;
-            if (nombre.Contains("filtro")) minimo = 2;
-            if (nombre.Contains("bujia")) minimo = 1;
-
-            if (costo < minimo)
+            if (costo <= 0)
             {
-                MessageBox.Show($"Precio demasiado bajo. Mínimo sugerido: ${minimo}");
+                MessageBox.Show("El costo debe ser mayor a 0.");
                 return;
             }
 
-            if (costo < 1)
+            // ✅ Validación realista: comparar contra costo previo (si existe)
+            decimal? costoRef = ObtenerCostoReferencia(productoIdSeleccionado);
+            if (costoRef.HasValue && costoRef.Value > 0)
             {
-                var r = MessageBox.Show(
-                    "El costo ingresado es muy bajo. ¿Estás seguro?",
-                    "Confirmar precio",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
+                decimal minOk = costoRef.Value * 0.50m; // 50% del anterior
+                decimal maxOk = costoRef.Value * 2.00m; // 200% del anterior
 
-                if (r == DialogResult.No)
-                    return;
+                if (costo < minOk || costo > maxOk)
+                {
+                    var r = MessageBox.Show(
+                        $"El costo ingresado (${costo:N4}) difiere mucho del costo registrado (${costoRef.Value:N4}).\n\n¿Deseas continuar?",
+                        "Confirmar costo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (r == DialogResult.No) return;
+                }
             }
-
-
-
+            else
+            {
+                // Si no hay referencia todavía, solo advertimos si es demasiado bajo
+                if (costo < 1m)
+                {
+                    var r = MessageBox.Show(
+                        "El costo ingresado es muy bajo. ¿Estás seguro?",
+                        "Confirmar costo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+                    if (r == DialogResult.No) return;
+                }
+            }
 
             // Si ya está, sumamos cantidad (y mantenemos el último costo)
             var existentes = dtItems.Select($"producto_id = {productoIdSeleccionado}");
@@ -412,11 +504,13 @@ ORDER BY nombre;";
                 dtItems.Rows.Add(r);
             }
 
+            // Limpiar selección de producto para el siguiente item
             productoIdSeleccionado = 0;
             txtBuscarProducto.Clear();
             lblStockSel.Text = "Stock: -";
             nudCantidad.Value = 1;
             nudCosto.Value = 0;
+            lstProductos.Visible = false;
 
             RecalcularTotales();
         }
@@ -426,9 +520,7 @@ ORDER BY nombre;";
             decimal subtotal = 0;
 
             foreach (DataRow row in dtItems.Rows)
-            {
                 subtotal += Convert.ToDecimal(row["subtotal"]);
-            }
 
             decimal iva = subtotal * IVA_ECUADOR;
             decimal total = subtotal + iva;
@@ -438,7 +530,7 @@ ORDER BY nombre;";
             lblTotal.Text = $"Total: {total:C2}";
         }
 
-
+        // ---------------- Guardado ----------------
 
         private void GuardarCompra()
         {
@@ -458,17 +550,12 @@ ORDER BY nombre;";
             string factura = (txtFactura.Text ?? "").Trim();
             DateTime fecha = dtFechaCompra.Value;
 
-            // Totales
             decimal subtotal = 0;
-
             foreach (DataRow row in dtItems.Rows)
-            {
                 subtotal += Convert.ToDecimal(row["subtotal"]);
-            }
 
             decimal ivaTotal = subtotal * IVA_ECUADOR;
             decimal totalCompra = subtotal + ivaTotal;
-
 
             try
             {
@@ -478,7 +565,6 @@ ORDER BY nombre;";
                 {
                     try
                     {
-                        // 1) Insert cabecera Compras
                         long compraId;
                         using (SqlCommand cmd = new SqlCommand(@"
 INSERT INTO Compras
@@ -493,12 +579,11 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer, tx))
                             cmd.Parameters.AddWithValue("@fecha", fecha);
                             cmd.Parameters.AddWithValue("@sub", subtotal);
                             cmd.Parameters.AddWithValue("@iva", ivaTotal);
-                            cmd.Parameters.AddWithValue("@tot", totalCompra);
+                            cmd.Parameters.AddWithValue("@total", totalCompra);
 
                             compraId = Convert.ToInt64(cmd.ExecuteScalar());
                         }
 
-                        // 2) por cada item: detalle + stock + kardex
                         foreach (DataRow r in dtItems.Rows)
                         {
                             long prodId = Convert.ToInt64(r["producto_id"]);
@@ -520,10 +605,12 @@ VALUES(@c, @p, @cant, @costo);", con.leer, tx))
                             // stock
                             using (SqlCommand cmdStock = new SqlCommand(@"
 UPDATE Productos
-SET stock = ISNULL(stock,0) + @cant
+SET stock = ISNULL(stock,0) + @cant,
+    precio_costo = @costo
 WHERE id = @p;", con.leer, tx))
                             {
                                 cmdStock.Parameters.AddWithValue("@cant", cant);
+                                cmdStock.Parameters.AddWithValue("@costo", costo);
                                 cmdStock.Parameters.AddWithValue("@p", prodId);
                                 cmdStock.ExecuteNonQuery();
                             }
@@ -541,12 +628,9 @@ VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
                             }
                         }
 
-
-
                         tx.Commit();
                         MessageBox.Show("✅ Compra guardada. Stock y Kardex actualizados.");
 
-                        // refresca cache de productos por stock
                         CargarProductosBuscador();
                         LimpiarTodo();
                     }
@@ -562,7 +646,6 @@ VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
 
                         MessageBox.Show("Error SQL: " + ex.Message);
                     }
-
                     catch (Exception ex)
                     {
                         tx.Rollback();
@@ -593,15 +676,9 @@ VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
             lblStockSel.Text = "Stock: -";
             RecalcularTotales();
         }
-
-        private void lstProductos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
+
+
+
+
