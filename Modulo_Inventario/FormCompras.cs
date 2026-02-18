@@ -18,8 +18,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private long productoIdSeleccionado = 0;
         private const decimal IVA_ECUADOR = 0.15m;
+        private bool _actualizandoLista = false;
 
-        // DataTable para mostrar sugerencias en el ListBox (incluye “crear rápido”)
+
         private DataTable dtSugerencias = new DataTable();
 
         public FormCompras(long usuarioId)
@@ -61,7 +62,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             btnGuardarCompra.Click += (s, e) => GuardarCompra();
             btnLimpiar.Click += (s, e) => LimpiarTodo();
 
-            // ✅ BOTÓN NUEVO PRODUCTO
             btnNuevoProducto.Click += (s, e) => AbrirPopupNuevoProducto(txtBuscarProducto.Text);
 
             dgvItems.CellClick += dgvItems_CellClick;
@@ -69,7 +69,11 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             RecalcularTotales();
         }
 
-        // ---------------- UI / Estilos ----------------
+        private void lstProductos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_actualizandoLista) return;
+        }
+
 
         private void AplicarEstilos()
         {
@@ -174,35 +178,41 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             {
                 Name = "producto",
                 DataPropertyName = "producto",
-                HeaderText = "Producto"
+                HeaderText = "Producto",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
 
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "cantidad",
                 DataPropertyName = "cantidad",
-                HeaderText = "Cant."
+                HeaderText = "Cant.",
+                Width = 70
             });
 
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "costo_unitario",
                 DataPropertyName = "costo_unitario",
-                HeaderText = "Costo U."
+                HeaderText = "Costo U.",
+                Width = 110
             });
 
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "subtotal",
                 DataPropertyName = "subtotal",
-                HeaderText = "Subtotal"
+                HeaderText = "Subtotal",
+                Width = 110
             });
 
             dgvItems.Columns.Add(new DataGridViewButtonColumn
             {
                 Name = "btnEliminar",
+                HeaderText = "",
                 Text = "Eliminar",
-                UseColumnTextForButtonValue = true
+                UseColumnTextForButtonValue = true,
+                Width = 90
             });
 
             dgvItems.DataSource = dtItems;
@@ -215,22 +225,57 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             dgvItems.BackgroundColor = Color.White;
 
             dgvItems.EnableHeadersVisualStyles = false;
+            dgvItems.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvItems.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(24, 24, 28);
             dgvItems.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvItems.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dgvItems.ColumnHeadersHeight = 40;
+            dgvItems.ColumnHeadersHeight = 42;
 
             dgvItems.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvItems.GridColor = Color.FromArgb(230, 230, 230);
 
-            dgvItems.DefaultCellStyle.Padding = new Padding(8, 3, 8, 3);
+            dgvItems.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvItems.DefaultCellStyle.Padding = new Padding(10, 4, 10, 4);
+            dgvItems.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 255);
+            dgvItems.DefaultCellStyle.SelectionForeColor = Color.Black;
+
             dgvItems.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 247, 250);
-            dgvItems.RowTemplate.Height = 38;
+            dgvItems.RowTemplate.Height = 40;
 
             dgvItems.Columns["cantidad"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvItems.Columns["costo_unitario"].DefaultCellStyle.Format = "N4";
             dgvItems.Columns["subtotal"].DefaultCellStyle.Format = "N4";
+
+            // Botón eliminar estilo
+            var btnCol = (DataGridViewButtonColumn)dgvItems.Columns["btnEliminar"];
+            btnCol.FlatStyle = FlatStyle.Flat;
+
+            dgvItems.CellPainting += (s, e) =>
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+                if (dgvItems.Columns[e.ColumnIndex].Name != "btnEliminar") return;
+
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                var r = e.CellBounds;
+                r.Inflate(-8, -8);
+
+                using (var b = new SolidBrush(Color.FromArgb(220, 53, 69))) // rojo tipo bootstrap
+                    e.Graphics.FillRectangle(b, r);
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    "Eliminar",
+                    dgvItems.Font,
+                    r,
+                    Color.White,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+                );
+
+                e.Handled = true;
+            };
         }
+
 
         private void dgvItems_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -244,7 +289,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             RecalcularTotales();
         }
 
-        // ---------------- Cargas ----------------
 
         private void CargarProveedores()
         {
@@ -301,7 +345,6 @@ ORDER BY nombre;";
             finally { con.Cerrar(); }
         }
 
-        // ---------------- Buscador + crear rápido ----------------
 
         private void FiltrarProductos(string texto)
         {
@@ -313,44 +356,54 @@ ORDER BY nombre;";
                 return;
             }
 
-            // Filtrar en dtProductos (sin meter texto directo en RowFilter para evitar temas con comillas)
-            var dv = new DataView(dtProductos);
+            _actualizandoLista = true;
 
-            string safe = texto.Replace("'", "''");
-            dv.RowFilter = $"nombre LIKE '%{safe}%' OR tipo LIKE '%{safe}%'";
-
-            dtSugerencias.Clear();
-
-            if (dv.Count > 0)
+            try
             {
-                // mostrar solo nombres, pero conservando id/stock/is_create
-                foreach (DataRowView rv in dv)
+                var sugerencias = dtSugerencias.Clone();
+
+                string safe = texto.Replace("'", "''");
+                var dv = new DataView(dtProductos);
+                dv.RowFilter = $"nombre LIKE '%{safe}%' OR tipo LIKE '%{safe}%'";
+
+                if (dv.Count > 0)
                 {
-                    var r = dtSugerencias.NewRow();
-                    r["id"] = Convert.ToInt64(rv["id"]);
-                    r["nombre"] = rv["nombre"].ToString();
-                    r["stock"] = Convert.ToInt32(rv["stock"]);
-                    r["is_create"] = false;
-                    dtSugerencias.Rows.Add(r);
+                    foreach (DataRowView rv in dv)
+                    {
+                        var r = sugerencias.NewRow();
+                        r["id"] = Convert.ToInt64(rv["id"]);
+                        r["nombre"] = rv["nombre"].ToString();
+                        r["stock"] = Convert.ToInt32(rv["stock"]);
+                        r["is_create"] = false;
+                        sugerencias.Rows.Add(r);
+                    }
                 }
+                else
+                {
+                    var r = sugerencias.NewRow();
+                    r["id"] = 0L;
+                    r["nombre"] = "➕ Crear producto: " + texto;
+                    r["stock"] = 0;
+                    r["is_create"] = true;
+                    sugerencias.Rows.Add(r);
+                }
+
+                dtSugerencias = sugerencias;
+
+                lstProductos.DataSource = null;
+                lstProductos.DisplayMember = "nombre";
+                lstProductos.ValueMember = "id";
+                lstProductos.DataSource = dtSugerencias;
+
+                MostrarListaDebajo();
             }
-            else
+            finally
             {
-                // ✅ Crear rápido
-                var r = dtSugerencias.NewRow();
-                r["id"] = 0L;
-                r["nombre"] = "➕ Crear producto: " + texto;
-                r["stock"] = 0;
-                r["is_create"] = true;
-                dtSugerencias.Rows.Add(r);
+                _actualizandoLista = false;
             }
-
-            lstProductos.DisplayMember = "nombre";
-            lstProductos.ValueMember = "id";
-            lstProductos.DataSource = dtSugerencias;
-
-            MostrarListaDebajo();
         }
+
+
 
         private void MostrarListaDebajo()
         {
@@ -372,24 +425,31 @@ ORDER BY nombre;";
 
         private void ConfirmarProductoSeleccionado()
         {
-            if (lstProductos.SelectedItem == null) return;
+            if (_actualizandoLista) return;
 
-            var rv = (DataRowView)lstProductos.SelectedItem;
-            bool isCreate = Convert.ToBoolean(rv["is_create"]);
+            var drv = lstProductos.SelectedItem as DataRowView;
+            if (drv == null) return;
+
+            bool isCreate = Convert.ToBoolean(drv["is_create"]);
+            long id = Convert.ToInt64(drv["id"]);
+            string nombre = drv["nombre"].ToString();
+            int stock = Convert.ToInt32(drv["stock"]);
 
             if (isCreate)
             {
-                // Extraer el texto original
                 string texto = (txtBuscarProducto.Text ?? "").Trim();
                 AbrirPopupNuevoProducto(texto);
                 return;
             }
 
-            productoIdSeleccionado = Convert.ToInt64(rv["id"]);
-            txtBuscarProducto.Text = rv["nombre"].ToString();
-            lblStockSel.Text = $"Stock: {rv["stock"]}";
+            productoIdSeleccionado = id;
+            txtBuscarProducto.Text = nombre;
+            lblStockSel.Text = $"Stock: {stock}";
             lstProductos.Visible = false;
         }
+
+
+
 
         private void AbrirPopupNuevoProducto(string nombreSugerido)
         {
@@ -397,23 +457,19 @@ ORDER BY nombre;";
             {
                 if (pop.ShowDialog(this) == DialogResult.OK)
                 {
-                    // Recargar lista de productos (para que aparezca el nuevo)
                     CargarProductosBuscador();
 
-                    // Seleccionar automáticamente el producto recién creado
                     productoIdSeleccionado = pop.ProductoCreadoId;
                     txtBuscarProducto.Text = pop.ProductoCreadoNombre;
 
                     lblStockSel.Text = "Stock: 0";
-
-                    // Ocultar lista
                     lstProductos.Visible = false;
                 }
             }
         }
 
 
-        // ---------------- Items ----------------
+
 
         private decimal? ObtenerCostoReferencia(long productoId)
         {
@@ -530,7 +586,6 @@ ORDER BY nombre;";
             lblTotal.Text = $"Total: {total:C2}";
         }
 
-        // ---------------- Guardado ----------------
 
         private void GuardarCompra()
         {
@@ -548,6 +603,14 @@ ORDER BY nombre;";
 
             long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
             string factura = (txtFactura.Text ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(factura))
+            {
+                MessageBox.Show("Debes ingresar el número de factura del proveedor.");
+                txtFactura.Focus();
+                return;
+            }
+
             DateTime fecha = dtFechaCompra.Value;
 
             decimal subtotal = 0;

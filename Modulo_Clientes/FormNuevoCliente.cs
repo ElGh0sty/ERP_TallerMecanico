@@ -38,7 +38,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
                 dtClientes = new DataTable();
                 adaptador.Fill(dtClientes);
-
+                
                 dgvNuevo.Columns.Clear();
                 dgvNuevo.AutoGenerateColumns = false;
                 dgvNuevo.DataSource = dtClientes;
@@ -88,7 +88,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             if (dgvNuevo.Columns[e.ColumnIndex].Name == "btnEliminar")
             {
-                // ✅ Tomar el ID desde el DataTable (aunque no exista columna visible)
+                //Tomar el ID desde el DataTable (aunque no exista columna visible)
                 DataRowView rowView = dgvNuevo.Rows[e.RowIndex].DataBoundItem as DataRowView;
 
                 if (rowView == null)
