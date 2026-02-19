@@ -31,6 +31,13 @@ namespace PROYECTOMECANICO
         }
 
 
+        private void ActualizarSesionConFormulario(Form fh)
+        {
+            string nombreForm = string.IsNullOrWhiteSpace(fh.Text) ? fh.Name : fh.Text;
+
+            lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario} \t Vista: {nombreForm}";
+        }
+
         public void AbrirFormularioEnPanel(object formularioHijo)
         {
             if (this.panel6.Controls.Count > 0)
@@ -43,6 +50,8 @@ namespace PROYECTOMECANICO
 
             this.panel6.Controls.Add(fh);
             this.panel6.Tag = fh;
+            ActualizarSesionConFormulario(fh);
+
             fh.Show();
         }
 

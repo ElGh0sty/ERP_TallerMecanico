@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.dgvNuevo = new System.Windows.Forms.DataGridView();
-            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnNuevoCliente = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNuevo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,31 +44,30 @@
             this.dgvNuevo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNuevo_CellContentClick);
             this.dgvNuevo.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvNuevo_CellPainting);
             // 
-            // btnGuardar
+            // btnNuevoCliente
             // 
-            this.btnGuardar.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnGuardar.FlatAppearance.BorderSize = 0;
-            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(721, 420);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(175, 74);
-            this.btnGuardar.TabIndex = 1;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            this.btnNuevoCliente.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.btnNuevoCliente.FlatAppearance.BorderSize = 0;
+            this.btnNuevoCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevoCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevoCliente.ForeColor = System.Drawing.Color.White;
+            this.btnNuevoCliente.Location = new System.Drawing.Point(721, 417);
+            this.btnNuevoCliente.Name = "btnNuevoCliente";
+            this.btnNuevoCliente.Size = new System.Drawing.Size(175, 74);
+            this.btnNuevoCliente.TabIndex = 2;
+            this.btnNuevoCliente.Text = "Agregar Cliente";
+            this.btnNuevoCliente.UseVisualStyleBackColor = false;
             // 
             // FormNuevoCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
-            this.Controls.Add(this.btnGuardar);
+            this.Controls.Add(this.btnNuevoCliente);
             this.Controls.Add(this.dgvNuevo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormNuevoCliente";
-            this.Text = "FormNuevoCliente";
+            this.Text = "Registrar Nuevo Cliente";
             ((System.ComponentModel.ISupportInitialize)(this.dgvNuevo)).EndInit();
             this.ResumeLayout(false);
 
@@ -77,6 +76,6 @@
         #endregion
 
         public System.Windows.Forms.DataGridView dgvNuevo;
-        public System.Windows.Forms.Button btnGuardar;
+        public System.Windows.Forms.Button btnNuevoCliente;
     }
 }

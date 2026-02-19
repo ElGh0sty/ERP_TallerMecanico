@@ -186,7 +186,7 @@
             this.Controls.Add(this.cmbOrdenes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormNovedades";
-            this.Text = "FormNovedades";
+            this.Text = "Novedades";
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).EndInit();
             this.ResumeLayout(false);

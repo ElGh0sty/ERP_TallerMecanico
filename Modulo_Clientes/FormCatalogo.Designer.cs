@@ -82,7 +82,7 @@
             this.Controls.Add(this.dgvVehiculos);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormCatalogo";
-            this.Text = "FormCatalogo";
+            this.Text = "Catalogo de Registrados";
             ((System.ComponentModel.ISupportInitialize)(this.dgvVehiculos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

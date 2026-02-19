@@ -30,31 +30,31 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lblOrdenInfo = new System.Windows.Forms.Label();
-            this.btnCargarOrden = new System.Windows.Forms.Button();
-            this.cmbOrdenes = new System.Windows.Forms.ComboBox();
             this.dgvTareas = new System.Windows.Forms.DataGridView();
-            this.btnAgregarTarea = new System.Windows.Forms.Button();
-            this.txtTarea = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lstProductos = new System.Windows.Forms.ListBox();
-            this.txtBuscarProducto = new System.Windows.Forms.TextBox();
-            this.dgvItems = new System.Windows.Forms.DataGridView();
-            this.btnAgregarProducto = new System.Windows.Forms.Button();
-            this.lblStock = new System.Windows.Forms.Label();
-            this.nudCantidad = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblOrdenInfo = new System.Windows.Forms.Label();
+            this.btnAgregarTarea = new System.Windows.Forms.Button();
+            this.btnCargarOrden = new System.Windows.Forms.Button();
+            this.txtTarea = new System.Windows.Forms.TextBox();
+            this.cmbOrdenes = new System.Windows.Forms.ComboBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dgvItems = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.lstProductos = new System.Windows.Forms.ListBox();
+            this.nudCantidad = new System.Windows.Forms.NumericUpDown();
+            this.txtBuscarProducto = new System.Windows.Forms.TextBox();
+            this.lblStock = new System.Windows.Forms.Label();
+            this.btnAgregarProducto = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).BeginInit();
+            this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -80,40 +80,6 @@
             this.tabPage1.Text = "Añadir Tareas";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lblOrdenInfo
-            // 
-            this.lblOrdenInfo.AutoSize = true;
-            this.lblOrdenInfo.BackColor = System.Drawing.Color.LightSlateGray;
-            this.lblOrdenInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOrdenInfo.ForeColor = System.Drawing.Color.White;
-            this.lblOrdenInfo.Location = new System.Drawing.Point(119, 52);
-            this.lblOrdenInfo.Name = "lblOrdenInfo";
-            this.lblOrdenInfo.Size = new System.Drawing.Size(159, 20);
-            this.lblOrdenInfo.TabIndex = 5;
-            this.lblOrdenInfo.Text = "Orden Seleccionada: -";
-            this.lblOrdenInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnCargarOrden
-            // 
-            this.btnCargarOrden.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCargarOrden.Location = new System.Drawing.Point(123, 172);
-            this.btnCargarOrden.Name = "btnCargarOrden";
-            this.btnCargarOrden.Size = new System.Drawing.Size(173, 70);
-            this.btnCargarOrden.TabIndex = 4;
-            this.btnCargarOrden.Text = "Cargar Orden";
-            this.btnCargarOrden.UseVisualStyleBackColor = true;
-            this.btnCargarOrden.Click += new System.EventHandler(this.btnCargarOrden_Click);
-            // 
-            // cmbOrdenes
-            // 
-            this.cmbOrdenes.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbOrdenes.FormattingEnabled = true;
-            this.cmbOrdenes.Location = new System.Drawing.Point(35, 96);
-            this.cmbOrdenes.Name = "cmbOrdenes";
-            this.cmbOrdenes.Size = new System.Drawing.Size(350, 33);
-            this.cmbOrdenes.TabIndex = 3;
-            this.cmbOrdenes.SelectedIndexChanged += new System.EventHandler(this.cmbOrdenes_SelectedIndexChanged);
-            // 
             // dgvTareas
             // 
             this.dgvTareas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -123,97 +89,6 @@
             this.dgvTareas.Size = new System.Drawing.Size(894, 266);
             this.dgvTareas.TabIndex = 2;
             this.dgvTareas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTareas_CellClick);
-            // 
-            // btnAgregarTarea
-            // 
-            this.btnAgregarTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarTarea.Location = new System.Drawing.Point(525, 172);
-            this.btnAgregarTarea.Name = "btnAgregarTarea";
-            this.btnAgregarTarea.Size = new System.Drawing.Size(173, 70);
-            this.btnAgregarTarea.TabIndex = 1;
-            this.btnAgregarTarea.Text = "Agregar tarea";
-            this.btnAgregarTarea.UseVisualStyleBackColor = true;
-            this.btnAgregarTarea.Click += new System.EventHandler(this.btnAgregarTarea_Click);
-            // 
-            // txtTarea
-            // 
-            this.txtTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTarea.Location = new System.Drawing.Point(454, 96);
-            this.txtTarea.Name = "txtTarea";
-            this.txtTarea.Size = new System.Drawing.Size(347, 33);
-            this.txtTarea.TabIndex = 0;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.dgvItems);
-            this.tabPage2.Controls.Add(this.panel2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(900, 577);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Añadir Productos";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // lstProductos
-            // 
-            this.lstProductos.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstProductos.FormattingEnabled = true;
-            this.lstProductos.ItemHeight = 21;
-            this.lstProductos.Location = new System.Drawing.Point(50, 104);
-            this.lstProductos.Name = "lstProductos";
-            this.lstProductos.Size = new System.Drawing.Size(347, 109);
-            this.lstProductos.TabIndex = 6;
-            this.lstProductos.SelectedIndexChanged += new System.EventHandler(this.lstProductos_SelectedIndexChanged);
-            // 
-            // txtBuscarProducto
-            // 
-            this.txtBuscarProducto.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarProducto.Location = new System.Drawing.Point(50, 65);
-            this.txtBuscarProducto.Name = "txtBuscarProducto";
-            this.txtBuscarProducto.Size = new System.Drawing.Size(347, 33);
-            this.txtBuscarProducto.TabIndex = 5;
-            // 
-            // dgvItems
-            // 
-            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvItems.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvItems.Location = new System.Drawing.Point(3, 3);
-            this.dgvItems.Name = "dgvItems";
-            this.dgvItems.ReadOnly = true;
-            this.dgvItems.Size = new System.Drawing.Size(894, 290);
-            this.dgvItems.TabIndex = 4;
-            this.dgvItems.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellClick);
-            // 
-            // btnAgregarProducto
-            // 
-            this.btnAgregarProducto.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarProducto.Location = new System.Drawing.Point(413, 126);
-            this.btnAgregarProducto.Name = "btnAgregarProducto";
-            this.btnAgregarProducto.Size = new System.Drawing.Size(180, 54);
-            this.btnAgregarProducto.TabIndex = 3;
-            this.btnAgregarProducto.Text = "Agregar Producto";
-            this.btnAgregarProducto.UseVisualStyleBackColor = true;
-            this.btnAgregarProducto.Click += new System.EventHandler(this.btnAgregarProducto_Click);
-            // 
-            // lblStock
-            // 
-            this.lblStock.AutoSize = true;
-            this.lblStock.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStock.ForeColor = System.Drawing.Color.White;
-            this.lblStock.Location = new System.Drawing.Point(182, 16);
-            this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(63, 25);
-            this.lblStock.TabIndex = 2;
-            this.lblStock.Text = "label1";
-            // 
-            // nudCantidad
-            // 
-            this.nudCantidad.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudCantidad.Location = new System.Drawing.Point(437, 66);
-            this.nudCantidad.Name = "nudCantidad";
-            this.nudCantidad.Size = new System.Drawing.Size(120, 33);
-            this.nudCantidad.TabIndex = 1;
             // 
             // panel1
             // 
@@ -243,6 +118,82 @@
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
+            // lblOrdenInfo
+            // 
+            this.lblOrdenInfo.AutoSize = true;
+            this.lblOrdenInfo.BackColor = System.Drawing.Color.LightSlateGray;
+            this.lblOrdenInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOrdenInfo.ForeColor = System.Drawing.Color.White;
+            this.lblOrdenInfo.Location = new System.Drawing.Point(119, 52);
+            this.lblOrdenInfo.Name = "lblOrdenInfo";
+            this.lblOrdenInfo.Size = new System.Drawing.Size(159, 20);
+            this.lblOrdenInfo.TabIndex = 5;
+            this.lblOrdenInfo.Text = "Orden Seleccionada: -";
+            this.lblOrdenInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnAgregarTarea
+            // 
+            this.btnAgregarTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarTarea.Location = new System.Drawing.Point(525, 172);
+            this.btnAgregarTarea.Name = "btnAgregarTarea";
+            this.btnAgregarTarea.Size = new System.Drawing.Size(173, 70);
+            this.btnAgregarTarea.TabIndex = 1;
+            this.btnAgregarTarea.Text = "Agregar tarea";
+            this.btnAgregarTarea.UseVisualStyleBackColor = true;
+            this.btnAgregarTarea.Click += new System.EventHandler(this.btnAgregarTarea_Click);
+            // 
+            // btnCargarOrden
+            // 
+            this.btnCargarOrden.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCargarOrden.Location = new System.Drawing.Point(123, 172);
+            this.btnCargarOrden.Name = "btnCargarOrden";
+            this.btnCargarOrden.Size = new System.Drawing.Size(173, 70);
+            this.btnCargarOrden.TabIndex = 4;
+            this.btnCargarOrden.Text = "Cargar Orden";
+            this.btnCargarOrden.UseVisualStyleBackColor = true;
+            this.btnCargarOrden.Click += new System.EventHandler(this.btnCargarOrden_Click);
+            // 
+            // txtTarea
+            // 
+            this.txtTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTarea.Location = new System.Drawing.Point(454, 96);
+            this.txtTarea.Name = "txtTarea";
+            this.txtTarea.Size = new System.Drawing.Size(347, 33);
+            this.txtTarea.TabIndex = 0;
+            // 
+            // cmbOrdenes
+            // 
+            this.cmbOrdenes.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbOrdenes.FormattingEnabled = true;
+            this.cmbOrdenes.Location = new System.Drawing.Point(35, 96);
+            this.cmbOrdenes.Name = "cmbOrdenes";
+            this.cmbOrdenes.Size = new System.Drawing.Size(350, 33);
+            this.cmbOrdenes.TabIndex = 3;
+            this.cmbOrdenes.SelectedIndexChanged += new System.EventHandler(this.cmbOrdenes_SelectedIndexChanged);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.dgvItems);
+            this.tabPage2.Controls.Add(this.panel2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(900, 577);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Añadir Productos";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dgvItems
+            // 
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItems.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvItems.Location = new System.Drawing.Point(3, 3);
+            this.dgvItems.Name = "dgvItems";
+            this.dgvItems.ReadOnly = true;
+            this.dgvItems.Size = new System.Drawing.Size(894, 290);
+            this.dgvItems.TabIndex = 4;
+            this.dgvItems.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellClick);
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSlateGray;
@@ -268,6 +219,55 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Elije la cantidad:";
             // 
+            // lstProductos
+            // 
+            this.lstProductos.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstProductos.FormattingEnabled = true;
+            this.lstProductos.ItemHeight = 21;
+            this.lstProductos.Location = new System.Drawing.Point(50, 104);
+            this.lstProductos.Name = "lstProductos";
+            this.lstProductos.Size = new System.Drawing.Size(347, 109);
+            this.lstProductos.TabIndex = 6;
+            this.lstProductos.SelectedIndexChanged += new System.EventHandler(this.lstProductos_SelectedIndexChanged);
+            // 
+            // nudCantidad
+            // 
+            this.nudCantidad.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudCantidad.Location = new System.Drawing.Point(437, 66);
+            this.nudCantidad.Name = "nudCantidad";
+            this.nudCantidad.Size = new System.Drawing.Size(120, 33);
+            this.nudCantidad.TabIndex = 1;
+            // 
+            // txtBuscarProducto
+            // 
+            this.txtBuscarProducto.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscarProducto.Location = new System.Drawing.Point(50, 65);
+            this.txtBuscarProducto.Name = "txtBuscarProducto";
+            this.txtBuscarProducto.Size = new System.Drawing.Size(347, 33);
+            this.txtBuscarProducto.TabIndex = 5;
+            // 
+            // lblStock
+            // 
+            this.lblStock.AutoSize = true;
+            this.lblStock.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStock.ForeColor = System.Drawing.Color.White;
+            this.lblStock.Location = new System.Drawing.Point(182, 16);
+            this.lblStock.Name = "lblStock";
+            this.lblStock.Size = new System.Drawing.Size(63, 25);
+            this.lblStock.TabIndex = 2;
+            this.lblStock.Text = "label1";
+            // 
+            // btnAgregarProducto
+            // 
+            this.btnAgregarProducto.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarProducto.Location = new System.Drawing.Point(413, 126);
+            this.btnAgregarProducto.Name = "btnAgregarProducto";
+            this.btnAgregarProducto.Size = new System.Drawing.Size(180, 54);
+            this.btnAgregarProducto.TabIndex = 3;
+            this.btnAgregarProducto.Text = "Agregar Producto";
+            this.btnAgregarProducto.UseVisualStyleBackColor = true;
+            this.btnAgregarProducto.Click += new System.EventHandler(this.btnAgregarProducto_Click);
+            // 
             // FormTrabajoProductos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -277,17 +277,17 @@
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormTrabajoProductos";
-            this.Text = "FormTrabajoProductos";
+            this.Text = "Asignar Trabajo y Productos";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).EndInit();
             this.ResumeLayout(false);
 
         }

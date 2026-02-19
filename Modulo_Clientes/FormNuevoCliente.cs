@@ -20,6 +20,8 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             dgvNuevo.DataError += (s, e) => { e.ThrowException = false; };
             CargarBaseDeDatosCompleta();
             rolUsuario = rol;
+            btnNuevoCliente.Click += (s, e) => AbrirPopupClienteNuevo();
+
         }
 
         private void CargarBaseDeDatosCompleta()
@@ -38,40 +40,43 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
                 dtClientes = new DataTable();
                 adaptador.Fill(dtClientes);
-                
+
                 dgvNuevo.Columns.Clear();
                 dgvNuevo.AutoGenerateColumns = false;
                 dgvNuevo.DataSource = dtClientes;
-                if (dgvNuevo.Columns.Contains("cliente_id"))
-                    dgvNuevo.Columns["cliente_id"].Visible = false;
 
-                EstilizarDataGridView();
+                // Columnas (solo lectura)
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "tipo_documento", HeaderText = "Tipo Doc.", Name = "tipo_documento" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "numero_documento", HeaderText = "Número Doc.", Name = "numero_documento" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nombre", HeaderText = "Nombre Completo", Name = "nombre" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "telefono", HeaderText = "Teléfono", Name = "telefono" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "email", HeaderText = "Email", Name = "email" });
+                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "direccion", HeaderText = "Dirección", Name = "direccion" });
 
-                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                // ✅ Botón Editar
+                var btnEditar = new DataGridViewButtonColumn();
+                btnEditar.Name = "btnEditar";
+                btnEditar.HeaderText = "";
+                btnEditar.Text = "Editar";
+                btnEditar.UseColumnTextForButtonValue = true;
+                btnEditar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                btnEditar.Width = 85;
+                dgvNuevo.Columns.Add(btnEditar);
+
+                // ✅ Botón Eliminar
+                var btnEliminar = new DataGridViewButtonColumn();
                 btnEliminar.Name = "btnEliminar";
                 btnEliminar.HeaderText = "";
                 btnEliminar.Text = "Eliminar";
                 btnEliminar.UseColumnTextForButtonValue = true;
                 btnEliminar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 btnEliminar.Width = 95;
-
                 dgvNuevo.Columns.Add(btnEliminar);
+
+                EstilizarDataGridView();
                 EstilizarBotonEliminarClientes();
+                EstilizarBotonEditarClientes(); // (te lo dejo abajo)
 
-
-                DataGridViewComboBoxColumn colCombo = new DataGridViewComboBoxColumn();
-                colCombo.DataPropertyName = "tipo_documento";
-                colCombo.HeaderText = "Tipo Doc.";
-                colCombo.Name = "tipo_documento";
-                colCombo.Items.AddRange(new string[] { "Cédula", "RUC", "Pasaporte" });
-                colCombo.FlatStyle = FlatStyle.Flat;
-                dgvNuevo.Columns.Add(colCombo);
-
-                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "numero_documento", HeaderText = "Número Doc.", Name = "numero_documento" });
-                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nombre", HeaderText = "Nombre Completo", Name = "nombre" });
-                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "telefono", HeaderText = "Teléfono", Name = "telefono" });
-                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "email", HeaderText = "Email", Name = "email" });
-                dgvNuevo.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "direccion", HeaderText = "Dirección", Name = "direccion" });
 
                 dgvNuevo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
@@ -86,21 +91,27 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         {
             if (e.RowIndex < 0) return;
 
-            if (dgvNuevo.Columns[e.ColumnIndex].Name == "btnEliminar")
+            var rowView = dgvNuevo.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (rowView == null)
             {
-                //Tomar el ID desde el DataTable (aunque no exista columna visible)
-                DataRowView rowView = dgvNuevo.Rows[e.RowIndex].DataBoundItem as DataRowView;
+                MessageBox.Show("No se pudo obtener el registro seleccionado.");
+                return;
+            }
 
-                if (rowView == null)
-                {
-                    MessageBox.Show("No se pudo obtener el registro seleccionado.");
-                    return;
-                }
+            long clienteId = Convert.ToInt64(rowView["cliente_id"]);
 
-                long clienteId = Convert.ToInt64(rowView["cliente_id"]);
+            string col = dgvNuevo.Columns[e.ColumnIndex].Name;
+
+            if (col == "btnEliminar")
+            {
                 EliminarCliente(clienteId);
             }
+            else if (col == "btnEditar")
+            {
+                AbrirPopupClienteEditar(clienteId);
+            }
         }
+
 
 
 
@@ -113,6 +124,48 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All);
                 e.Handled = true;
             }
+        }
+
+        private void AbrirPopupClienteNuevo()
+        {
+            using (var pop = new FormClientePopup())
+            {
+                if (pop.ShowDialog(this) == DialogResult.OK)
+                    CargarBaseDeDatosCompleta();
+            }
+        }
+
+        private void AbrirPopupClienteEditar(long clienteId)
+        {
+            using (var pop = new FormClientePopup(clienteId))
+            {
+                if (pop.ShowDialog(this) == DialogResult.OK)
+                    CargarBaseDeDatosCompleta();
+            }
+        }
+
+
+        private void EstilizarBotonEditarClientes()
+        {
+            if (!dgvNuevo.Columns.Contains("btnEditar")) return;
+
+            var c = dgvNuevo.Columns["btnEditar"] as DataGridViewButtonColumn;
+            if (c == null) return;
+
+            c.FlatStyle = FlatStyle.Flat;
+
+            c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+
+            // Azul suave
+            c.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(235, 245, 255);
+            c.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(0, 90, 160);
+
+            c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(210, 235, 255);
+            c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(0, 70, 130);
+
+            c.Width = 85;
+            c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
         }
 
 
@@ -421,18 +474,15 @@ WHERE v.cliente_id = @id";
 
         private void EstilizarDataGridView()
         {
-            // ✅ Permitir agregar y editar
-            dgvNuevo.AllowUserToAddRows = true;
-            dgvNuevo.AllowUserToDeleteRows = true;
-            dgvNuevo.ReadOnly = false;
+            dgvNuevo.AllowUserToAddRows = false;
+            dgvNuevo.AllowUserToDeleteRows = false;
+            dgvNuevo.ReadOnly = true;
 
             dgvNuevo.AllowUserToResizeRows = false;
-
-            dgvNuevo.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvNuevo.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvNuevo.MultiSelect = false;
 
-            // Scroll horizontal y vertical
-            dgvNuevo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvNuevo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNuevo.ScrollBars = ScrollBars.Both;
 
             dgvNuevo.RowHeadersVisible = false;
@@ -443,36 +493,27 @@ WHERE v.cliente_id = @id";
             dgvNuevo.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvNuevo.GridColor = System.Drawing.Color.FromArgb(230, 230, 230);
 
-            // Encabezado moderno
             dgvNuevo.EnableHeadersVisualStyles = false;
             dgvNuevo.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(24, 24, 28);
             dgvNuevo.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
             dgvNuevo.ColumnHeadersDefaultCellStyle.Font =
                 new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-
             dgvNuevo.ColumnHeadersHeight = 46;
 
-            // Texto grande
-            dgvNuevo.DefaultCellStyle.Font =
-                new System.Drawing.Font("Segoe UI", 11F);
-
+            dgvNuevo.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11F);
             dgvNuevo.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(35, 35, 35);
             dgvNuevo.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             dgvNuevo.DefaultCellStyle.Padding = new Padding(10, 3, 10, 3);
 
-            // Selección bonita
-            dgvNuevo.DefaultCellStyle.SelectionBackColor =
-                System.Drawing.Color.FromArgb(220, 235, 255);
+            dgvNuevo.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 235, 255);
+            dgvNuevo.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(10, 10, 10);
 
-            dgvNuevo.DefaultCellStyle.SelectionForeColor =
-                System.Drawing.Color.FromArgb(10, 10, 10);
-
-            // Filas alternadas suaves
             dgvNuevo.AlternatingRowsDefaultCellStyle.BackColor =
                 System.Drawing.Color.FromArgb(247, 247, 250);
 
             dgvNuevo.RowTemplate.Height = 44;
         }
+
 
         private void EstilizarBotonEliminarClientes()
         {

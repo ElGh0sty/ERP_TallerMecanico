@@ -109,7 +109,7 @@
             this.Controls.Add(this.dgvOrdenes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormOrdenTrabajo";
-            this.Text = "FormOrdenTrabajo";
+            this.Text = "Orden Trabajo";
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdenes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

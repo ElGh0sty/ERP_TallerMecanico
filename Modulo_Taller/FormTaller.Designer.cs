@@ -114,7 +114,7 @@
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormTaller";
-            this.Text = "FormTaller";
+            this.Text = "Modulo Taller";
             this.ResumeLayout(false);
 
         }
