@@ -589,6 +589,12 @@ ORDER BY nombre;";
 
         private void GuardarCompra()
         {
+            if (usuarioId <= 0)
+            {
+                MessageBox.Show("Error: Sesión inválida (usuarioId). Vuelve a iniciar sesión.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (cmbProveedor.SelectedValue == null || cmbProveedor.SelectedIndex == -1)
             {
                 MessageBox.Show("Selecciona un proveedor.");

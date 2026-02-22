@@ -67,7 +67,7 @@ namespace PROYECTOMECANICO
 
         private void btnInventario_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario(rolUsuario));
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario(usuarioId, rolUsuario));
         }
 
         private void btnFacturacion_Click(object sender, EventArgs e)

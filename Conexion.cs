@@ -13,7 +13,7 @@ namespace PROYECTOMECANICO
 
         public Conexion()
         {
-            leer.ConnectionString = cadena;
+            leer = new SqlConnection(cadena);
         }
 
         public void Abrir()
@@ -25,7 +25,10 @@ namespace PROYECTOMECANICO
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al abrir la base de datos: " + ex.Message);
+                MessageBox.Show("Error al abrir la base de datos:\n" + ex.Message,
+                    "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                throw;
             }
         }
 
@@ -38,7 +41,10 @@ namespace PROYECTOMECANICO
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cerrar la base de datos: " + ex.Message);
+                MessageBox.Show("Error al cerrar la base de datos:\n" + ex.Message,
+                    "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                throw;
             }
         }
     }

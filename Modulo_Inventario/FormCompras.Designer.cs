@@ -186,9 +186,9 @@
             // 
             this.dtFechaCompra.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtFechaCompra.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtFechaCompra.Location = new System.Drawing.Point(703, 33);
+            this.dtFechaCompra.Location = new System.Drawing.Point(683, 33);
             this.dtFechaCompra.Name = "dtFechaCompra";
-            this.dtFechaCompra.Size = new System.Drawing.Size(108, 29);
+            this.dtFechaCompra.Size = new System.Drawing.Size(117, 29);
             this.dtFechaCompra.TabIndex = 14;
             // 
             // label1
