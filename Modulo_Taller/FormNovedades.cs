@@ -641,9 +641,9 @@ VALUES
             }
         }
 
+        private void lblOrden_Click(object sender, EventArgs e)
+        {
 
-
-
-
+        }
     }
 }

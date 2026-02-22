@@ -61,6 +61,7 @@
             this.lblOrden.Size = new System.Drawing.Size(39, 13);
             this.lblOrden.TabIndex = 1;
             this.lblOrden.Text = "Orden:";
+            this.lblOrden.Click += new System.EventHandler(this.lblOrden_Click);
             // 
             // dgvNovedades
             // 

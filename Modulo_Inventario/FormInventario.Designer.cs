@@ -114,7 +114,7 @@
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormInventario";
-            this.Text = "FormInventario";
+            this.Text = "Modulo Inventario";
             this.ResumeLayout(false);
 
         }

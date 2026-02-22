@@ -86,7 +86,7 @@ WHERE id = @id;", con.leer))
             string email = (txtEmail.Text ?? "").Trim();
             string direccion = (txtDireccion.Text ?? "").Trim();
 
-            // ✅ Validaciones (las mismas que ya tenías)
+            //Validaciones 
             if (string.IsNullOrWhiteSpace(tipoDoc))
             { MessageBox.Show("Selecciona el Tipo de documento."); return; }
 
@@ -130,7 +130,7 @@ WHERE id = @id;", con.leer))
             {
                 con.Abrir();
 
-                // ✅ evitar duplicados por numero_documento (excepto si es el mismo en edición)
+                //  evitar duplicados por numero_documento (excepto si es el mismo en edición)
                 using (var cmdDup = new SqlCommand(@"
 SELECT COUNT(*) FROM Clientes
 WHERE numero_documento = @num AND (@id IS NULL OR id <> @id);", con.leer))
@@ -191,7 +191,7 @@ WHERE id=@id;", con.leer))
             finally { con.Cerrar(); }
         }
 
-        // ---------------- VALIDACIONES (copiadas) ----------------
+        // VALIDACIONES
 
         private string SoloDigitos(string s)
         {

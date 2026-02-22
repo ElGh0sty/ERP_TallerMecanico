@@ -258,7 +258,7 @@
             this.Controls.Add(this.dgvItems);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormCompras";
-            this.Text = "FormCompras";
+            this.Text = "Registro de Compras";
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCosto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();

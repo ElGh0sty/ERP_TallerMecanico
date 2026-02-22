@@ -39,8 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCatalogo)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -155,14 +155,6 @@
             this.panel1.Size = new System.Drawing.Size(908, 127);
             this.panel1.TabIndex = 10;
             // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.panel2.Location = new System.Drawing.Point(301, 5);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(402, 116);
-            this.panel2.TabIndex = 9;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -174,6 +166,14 @@
             this.label4.Size = new System.Drawing.Size(82, 21);
             this.label4.TabIndex = 10;
             this.label4.Text = "Buscador:";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel2.Location = new System.Drawing.Point(301, 5);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(402, 116);
+            this.panel2.TabIndex = 9;
             // 
             // FormCalogProd
             // 
@@ -192,7 +192,7 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormCalogProd";
-            this.Text = "FormCalogProd";
+            this.Text = "Catalogo de Productos";
             ((System.ComponentModel.ISupportInitialize)(this.dgvCatalogo)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

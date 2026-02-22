@@ -242,7 +242,7 @@
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormKardex";
-            this.Text = "FormKardex";
+            this.Text = "Kardex";
             this.Load += new System.EventHandler(this.FormKardex_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKardex)).EndInit();
             this.panel1.ResumeLayout(false);

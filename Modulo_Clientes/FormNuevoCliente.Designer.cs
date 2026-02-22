@@ -42,7 +42,6 @@
             this.dgvNuevo.Size = new System.Drawing.Size(884, 387);
             this.dgvNuevo.TabIndex = 0;
             this.dgvNuevo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNuevo_CellContentClick);
-            this.dgvNuevo.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvNuevo_CellPainting);
             // 
             // btnNuevoCliente
             // 
