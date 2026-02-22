@@ -5,18 +5,32 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PROYECTOMECANICO.Modulo_Clientes
 {
     public partial class FormRegVehi : Form
     {
-        Conexion con = new Conexion();
-        DataTable dtClientes;
+        private readonly Conexion con = new Conexion();
+        private DataTable dtClientes;
 
-        private Form1 formPrincipal;
+        private readonly Form1 formPrincipal;
         private long? vehiculoIdEditar = null;
-        private string rolUsuario;
+        private readonly string rolUsuario;
 
+        // ✅ Cliente seleccionado desde el buscador
+        private long clienteSeleccionadoId = 0;
+
+        // Item para ListBox
+        private class ClienteItem
+        {
+            public long Id { get; set; }
+            public string Nombre { get; set; }
+            public string TipoDoc { get; set; }
+            public string Documento { get; set; }
+            public override string ToString() => Nombre;
+        }
 
         public FormRegVehi(Form1 principal, string rolUsuario)
         {
@@ -27,7 +41,13 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
-            cmbDuenio.SelectedIndexChanged += cmbDuenio_SelectedIndexChanged;
+            // ✅ Eventos buscador
+            txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
+            lstClientes.Click += lstClientes_Click;
+            txtBuscarCliente.Leave += txtBuscarCliente_Leave;
+
+            // Para que el ListBox no quede “pegado” siempre visible
+            this.Click += (s, e) => lstClientes.Visible = false;
 
             txtPlaca.CharacterCasing = CharacterCasing.Upper;
             txtChasis.CharacterCasing = CharacterCasing.Upper;
@@ -36,11 +56,8 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             txtPlaca.KeyPress += Placa_KeyPress;
             txtChasis.KeyPress += Vin_KeyPress;
 
-            InicializarValidacionLive(); 
+            InicializarValidacionLive();
         }
-
-
-
 
         public FormRegVehi(Form1 principal, string rolUsuario, long vehiculoId)
         {
@@ -52,7 +69,10 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
-            cmbDuenio.SelectedIndexChanged += cmbDuenio_SelectedIndexChanged;
+            // ✅ Eventos buscador
+            txtBuscarCliente.ReadOnly = true; 
+
+            this.Click += (s, e) => lstClientes.Visible = false;
 
             txtPlaca.CharacterCasing = CharacterCasing.Upper;
             txtChasis.CharacterCasing = CharacterCasing.Upper;
@@ -61,14 +81,11 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             txtPlaca.KeyPress += Placa_KeyPress;
             txtChasis.KeyPress += Vin_KeyPress;
 
-            InicializarValidacionLive(); 
+            InicializarValidacionLive();
 
             CargarVehiculoParaEditar(vehiculoId);
-
             btnGuardarVehiculo.Text = "Guardar edición";
         }
-
-
 
         private void CargarClientesCompleto()
         {
@@ -80,14 +97,106 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 dtClientes = new DataTable();
                 da.Fill(dtClientes);
 
-                cmbDuenio.DataSource = dtClientes;
-                cmbDuenio.DisplayMember = "nombre";
-                cmbDuenio.ValueMember = "id";
-
-                cmbDuenio.SelectedIndex = -1;
+                // Estado inicial del buscador
+                lstClientes.Visible = false;
+                lstClientes.DisplayMember = "Nombre";
             }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
-            finally { con.Cerrar(); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando clientes: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
+        }
+
+        private void txtBuscarCliente_TextChanged(object sender, EventArgs e)
+        {
+            string texto = (txtBuscarCliente.Text ?? "").Trim();
+
+            // Si el usuario borra o escribe poco, ocultamos lista y limpiamos selección
+            if (texto.Length < 1)
+            {
+                lstClientes.Visible = false;
+                clienteSeleccionadoId = 0;
+                txtTipoDoc.Clear();
+                txtDocumento.Clear();
+                ValidarDuenioLive();
+                return;
+            }
+
+            // Si el usuario está escribiendo, invalidamos selección previa
+            clienteSeleccionadoId = 0;
+            txtTipoDoc.Clear();
+            txtDocumento.Clear();
+
+            if (dtClientes == null || dtClientes.Rows.Count == 0)
+            {
+                lstClientes.Visible = false;
+                return;
+            }
+
+            // Filtrado en memoria (rápido)
+            var resultados = dtClientes.AsEnumerable()
+                .Where(r =>
+                    (r["nombre"]?.ToString() ?? "")
+                    .IndexOf(texto, StringComparison.OrdinalIgnoreCase) >= 0)
+                .Take(20)
+                .Select(r => new ClienteItem
+                {
+                    Id = Convert.ToInt64(r["id"]),
+                    Nombre = r["nombre"]?.ToString(),
+                    TipoDoc = r["tipo_documento"]?.ToString(),
+                    Documento = r["numero_documento"]?.ToString()
+                })
+                .ToList();
+
+            lstClientes.DataSource = null;
+            lstClientes.Items.Clear();
+
+            if (resultados.Count == 0)
+            {
+                lstClientes.Visible = false;
+                return;
+            }
+
+            lstClientes.DataSource = resultados;
+
+            // Mostrar debajo del textbox (si quieres ajustar, lo haces en Designer)
+            lstClientes.Visible = true;
+            lstClientes.BringToFront();
+
+            ValidarDuenioLive();
+        }
+
+        private void lstClientes_Click(object sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItem is ClienteItem item)
+            {
+                clienteSeleccionadoId = item.Id;
+
+                // Poner nombre en textbox
+                txtBuscarCliente.TextChanged -= txtBuscarCliente_TextChanged;
+                txtBuscarCliente.Text = item.Nombre;
+                txtBuscarCliente.SelectionStart = txtBuscarCliente.Text.Length;
+                txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
+
+                // Llenar doc
+                txtTipoDoc.Text = item.TipoDoc;
+                txtDocumento.Text = item.Documento;
+
+                lstClientes.Visible = false;
+
+                ValidarDuenioLive();
+            }
+        }
+
+        private void txtBuscarCliente_Leave(object sender, EventArgs e)
+        {
+            // Si el foco pasa al listbox, no lo cierres inmediatamente
+            if (!lstClientes.Focused)
+                lstClientes.Visible = false;
         }
 
         private void CargarTiposVehiculo()
@@ -114,24 +223,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 con.Cerrar();
             }
         }
-
-        private void cmbDuenio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbDuenio.SelectedIndex != -1 && dtClientes != null && cmbDuenio.SelectedItem is DataRowView)
-            {
-                DataRowView clienteSeleccionado = (DataRowView)cmbDuenio.SelectedItem;
-
-                txtTipoDoc.Text = clienteSeleccionado["tipo_documento"].ToString();
-                txtDocumento.Text = clienteSeleccionado["numero_documento"].ToString();
-            }
-            else
-            {
-                txtTipoDoc.Clear();
-                txtDocumento.Clear();
-            }
-        }
-
-        // ✅ Carga los datos del vehículo (para editar)
         private void CargarVehiculoParaEditar(long vehiculoId)
         {
             try
@@ -151,8 +242,24 @@ WHERE id = @id";
                 {
                     if (dr.Read())
                     {
-                        // ⚠️ Primero se setean combos (ya cargados)
-                        cmbDuenio.SelectedValue = Convert.ToInt64(dr["cliente_id"]);
+                        // Cliente
+                        clienteSeleccionadoId = Convert.ToInt64(dr["cliente_id"]);
+
+                        // Buscar nombre del cliente en tu dtClientes
+                        if (dtClientes != null)
+                        {
+                            var row = dtClientes.AsEnumerable()
+                                .FirstOrDefault(r => Convert.ToInt64(r["id"]) == clienteSeleccionadoId);
+
+                            if (row != null)
+                            {
+                                txtBuscarCliente.Text = row["nombre"]?.ToString();
+                                txtTipoDoc.Text = row["tipo_documento"]?.ToString();
+                                txtDocumento.Text = row["numero_documento"]?.ToString();
+                            }
+                        }
+
+                        // Tipo
                         cmbTipoVehiculo.SelectedValue = dr["tipo"].ToString();
 
                         txtPlaca.Text = dr["placa"].ToString();
@@ -162,7 +269,6 @@ WHERE id = @id";
                         txtChasis.Text = dr["chasis_vin"].ToString();
                         txtKilometraje.Text = dr["kilometraje_actual"].ToString();
 
-                        // Cambiar texto del botón (opcional)
                         btnGuardarVehiculo.Text = "Guardar cambios";
                     }
                     else
@@ -193,7 +299,7 @@ WHERE id = @id";
             ValidarVinLive();
             ValidarKmLive();
 
-            if (!string.IsNullOrEmpty(errorProvider1.GetError(cmbDuenio)) ||
+            if (!string.IsNullOrEmpty(errorProvider1.GetError(txtBuscarCliente)) ||
                 !string.IsNullOrEmpty(errorProvider1.GetError(cmbTipoVehiculo)) ||
                 !string.IsNullOrEmpty(errorProvider1.GetError(txtPlaca)) ||
                 !string.IsNullOrEmpty(errorProvider1.GetError(txtMarca)) ||
@@ -259,7 +365,8 @@ WHERE id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
 
-                cmd.Parameters.Add("@cliente_id", SqlDbType.BigInt).Value = cmbDuenio.SelectedValue;
+                cmd.Parameters.Add("@cliente_id", SqlDbType.BigInt).Value = clienteSeleccionadoId;
+
                 cmd.Parameters.Add("@placa", SqlDbType.Char, 8).Value = placa;
                 cmd.Parameters.Add("@marca", SqlDbType.NVarChar, 255).Value = txtMarca.Text.Trim();
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar, 255).Value = txtModelo.Text.Trim();
@@ -295,8 +402,9 @@ WHERE id = @id";
             {
                 if (c is TextBox) (c as TextBox).Clear();
             }
-            cmbDuenio.SelectedIndex = -1;
+            clienteSeleccionadoId = 0;
             cmbTipoVehiculo.SelectedIndex = -1;
+            lstClientes.Visible = false;
         }
 
         private void txtKilometraje_KeyPress(object sender, KeyPressEventArgs e)
@@ -325,10 +433,10 @@ WHERE id = @id";
 
         private void ValidarDuenioLive()
         {
-            if (cmbDuenio.SelectedIndex == -1 || cmbDuenio.SelectedValue == null)
-                MarcarError(cmbDuenio, "Seleccione el dueño del vehículo.");
+            if (clienteSeleccionadoId == 0)
+                MarcarError(txtBuscarCliente, "Seleccione un cliente (de la lista).");
             else
-                MarcarOk(cmbDuenio);
+                MarcarOk(txtBuscarCliente);
         }
 
         private void ValidarTipoLive()
@@ -540,11 +648,11 @@ WHERE id = @id";
         {
             errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
-            // Combos
-            cmbDuenio.SelectedIndexChanged += (s, e) => ValidarDuenioLive();
+            
+            txtBuscarCliente.TextChanged += (s, e) => ValidarDuenioLive();
+
             cmbTipoVehiculo.SelectedIndexChanged += (s, e) => ValidarTipoLive();
 
-            // Textos
             txtPlaca.TextChanged += (s, e) => ValidarPlacaLive();
             txtMarca.TextChanged += (s, e) => ValidarMarcaLive();
             txtModelo.TextChanged += (s, e) => ValidarModeloLive();
@@ -559,13 +667,15 @@ WHERE id = @id";
             anio = 0;
             kilometraje = 0;
 
-            // Dueño
-            if (cmbDuenio.SelectedIndex == -1 || cmbDuenio.SelectedValue == null)
+            // Cliente seleccionado
+            if (clienteSeleccionadoId == 0)
             {
-                MessageBox.Show("Seleccione el dueño del vehículo.");
-                cmbDuenio.Focus();
+                MessageBox.Show("Seleccione un cliente desde la lista.");
+                txtBuscarCliente.Focus();
                 return false;
             }
+
+            
 
             // Tipo
             if (cmbTipoVehiculo.SelectedIndex == -1 || cmbTipoVehiculo.SelectedValue == null)
@@ -755,7 +865,10 @@ WHERE id = @id";
             return letras >= minLetras;
         }
 
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }
 

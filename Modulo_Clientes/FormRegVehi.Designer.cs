@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.cmbDuenio = new System.Windows.Forms.ComboBox();
             this.txtPlaca = new System.Windows.Forms.TextBox();
             this.txtMarca = new System.Windows.Forms.TextBox();
             this.txtModelo = new System.Windows.Forms.TextBox();
@@ -41,6 +40,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnGuardarVehiculo = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lstClientes = new System.Windows.Forms.ListBox();
+            this.txtBuscarCliente = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtDocumento = new System.Windows.Forms.TextBox();
@@ -57,15 +58,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmbDuenio
-            // 
-            this.cmbDuenio.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbDuenio.FormattingEnabled = true;
-            this.cmbDuenio.Location = new System.Drawing.Point(52, 73);
-            this.cmbDuenio.Name = "cmbDuenio";
-            this.cmbDuenio.Size = new System.Drawing.Size(215, 29);
-            this.cmbDuenio.TabIndex = 0;
             // 
             // txtPlaca
             // 
@@ -170,6 +162,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.Controls.Add(this.txtBuscarCliente);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.txtDocumento);
@@ -177,8 +170,27 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(908, 143);
+            this.panel1.Size = new System.Drawing.Size(908, 164);
             this.panel1.TabIndex = 11;
+            // 
+            // lstClientes
+            // 
+            this.lstClientes.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstClientes.FormattingEnabled = true;
+            this.lstClientes.ItemHeight = 21;
+            this.lstClientes.Location = new System.Drawing.Point(48, 101);
+            this.lstClientes.Name = "lstClientes";
+            this.lstClientes.Size = new System.Drawing.Size(220, 130);
+            this.lstClientes.TabIndex = 18;
+            this.lstClientes.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // txtBuscarCliente
+            // 
+            this.txtBuscarCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscarCliente.Location = new System.Drawing.Point(49, 73);
+            this.txtBuscarCliente.Name = "txtBuscarCliente";
+            this.txtBuscarCliente.Size = new System.Drawing.Size(218, 29);
+            this.txtBuscarCliente.TabIndex = 17;
             // 
             // label8
             // 
@@ -209,6 +221,7 @@
             this.txtDocumento.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDocumento.Location = new System.Drawing.Point(644, 73);
             this.txtDocumento.Name = "txtDocumento";
+            this.txtDocumento.ReadOnly = true;
             this.txtDocumento.Size = new System.Drawing.Size(218, 29);
             this.txtDocumento.TabIndex = 15;
             // 
@@ -217,6 +230,7 @@
             this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTipoDoc.Location = new System.Drawing.Point(337, 73);
             this.txtTipoDoc.Name = "txtTipoDoc";
+            this.txtTipoDoc.ReadOnly = true;
             this.txtTipoDoc.Size = new System.Drawing.Size(218, 29);
             this.txtTipoDoc.TabIndex = 14;
             // 
@@ -289,6 +303,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.lstClientes);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtKilometraje);
             this.Controls.Add(this.cmbTipoVehiculo);
@@ -300,13 +317,10 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtAño);
             this.Controls.Add(this.txtModelo);
             this.Controls.Add(this.txtMarca);
             this.Controls.Add(this.txtPlaca);
-            this.Controls.Add(this.cmbDuenio);
-            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormRegVehi";
             this.Text = "Registrar Vehiculo";
@@ -320,8 +334,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox cmbDuenio;
         private System.Windows.Forms.TextBox txtPlaca;
         private System.Windows.Forms.TextBox txtMarca;
         private System.Windows.Forms.TextBox txtModelo;
@@ -345,5 +357,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.ListBox lstClientes;
+        private System.Windows.Forms.TextBox txtBuscarCliente;
     }
 }
