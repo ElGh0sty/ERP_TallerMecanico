@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PROYECTOMECANICO.Modulo_Clientes;
 using PROYECTOMECANICO.Seguridad;
-using System.Drawing.Drawing2D;
 
 
 namespace PROYECTOMECANICO.Modulo_Facturacion
@@ -16,6 +17,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
     public partial class FormFacturacion : Form
     {
         private string rolUsuario;
+        private readonly long usuarioId;
 
         public FormFacturacion(string rolUsuario)
         {
@@ -40,6 +42,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                     MessageBoxIcon.Warning
                 );
                 return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(
+                    new FormGenFactu(usuarioId)
+                    );
             }
         }
 

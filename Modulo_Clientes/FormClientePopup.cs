@@ -8,7 +8,9 @@ namespace PROYECTOMECANICO.Modulo_Clientes
     public partial class FormClientePopup : Form
     {
         private readonly Conexion con = new Conexion();
-        private readonly long? _clienteId; 
+        private readonly long? _clienteId;
+        public long? ClienteIdCreado { get; private set; } = null;
+        public string NumDocCreado { get; private set; } = null;
 
         public FormClientePopup()
         {
@@ -151,6 +153,7 @@ WHERE numero_documento = @num AND (@id IS NULL OR id <> @id);", con.leer))
                     // INSERT
                     using (var cmd = new SqlCommand(@"
 INSERT INTO Clientes(tipo_documento, numero_documento, nombre, direccion, telefono, email)
+OUTPUT INSERTED.id
 VALUES(@t, @n, @nom, @dir, @tel, @em);", con.leer))
                     {
                         cmd.Parameters.AddWithValue("@t", tipoDoc);
@@ -159,7 +162,9 @@ VALUES(@t, @n, @nom, @dir, @tel, @em);", con.leer))
                         cmd.Parameters.AddWithValue("@dir", direccion);
                         cmd.Parameters.AddWithValue("@tel", telefono);
                         cmd.Parameters.AddWithValue("@em", email);
-                        cmd.ExecuteNonQuery();
+
+                        ClienteIdCreado = Convert.ToInt64(cmd.ExecuteScalar());
+                        NumDocCreado = numDoc;
                     }
                 }
                 else

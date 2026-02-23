@@ -108,6 +108,12 @@
     <Compile Include="Modulo_Facturacion\FormFacturacion.Designer.cs">
       <DependentUpon>FormFacturacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Facturacion\FormGenFactu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Facturacion\FormGenFactu.Designer.cs">
+      <DependentUpon>FormGenFactu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Inicio\FormInicio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormFacturacion.resx">
       <DependentUpon>FormFacturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Facturacion\FormGenFactu.resx">
+      <DependentUpon>FormGenFactu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormCalogProd.resx">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
