@@ -187,7 +187,7 @@
             // txtTipoDoc
             // 
             this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTipoDoc.Location = new System.Drawing.Point(83, 479);
+            this.txtTipoDoc.Location = new System.Drawing.Point(83, 420);
             this.txtTipoDoc.Name = "txtTipoDoc";
             this.txtTipoDoc.Size = new System.Drawing.Size(125, 29);
             this.txtTipoDoc.TabIndex = 11;
@@ -195,7 +195,7 @@
             // txtNombre
             // 
             this.txtNombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombre.Location = new System.Drawing.Point(83, 526);
+            this.txtNombre.Location = new System.Drawing.Point(83, 467);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(330, 29);
             this.txtNombre.TabIndex = 12;
@@ -203,7 +203,7 @@
             // txtDireccion
             // 
             this.txtDireccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDireccion.Location = new System.Drawing.Point(83, 568);
+            this.txtDireccion.Location = new System.Drawing.Point(83, 509);
             this.txtDireccion.Name = "txtDireccion";
             this.txtDireccion.Size = new System.Drawing.Size(331, 29);
             this.txtDireccion.TabIndex = 13;
@@ -211,7 +211,7 @@
             // txtNumDoc
             // 
             this.txtNumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumDoc.Location = new System.Drawing.Point(279, 479);
+            this.txtNumDoc.Location = new System.Drawing.Point(279, 420);
             this.txtNumDoc.Name = "txtNumDoc";
             this.txtNumDoc.Size = new System.Drawing.Size(133, 29);
             this.txtNumDoc.TabIndex = 14;
@@ -219,7 +219,7 @@
             // txtTelefono
             // 
             this.txtTelefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelefono.Location = new System.Drawing.Point(83, 617);
+            this.txtTelefono.Location = new System.Drawing.Point(83, 558);
             this.txtTelefono.Name = "txtTelefono";
             this.txtTelefono.Size = new System.Drawing.Size(125, 29);
             this.txtTelefono.TabIndex = 15;
@@ -227,15 +227,18 @@
             // txtEmail
             // 
             this.txtEmail.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(265, 617);
+            this.txtEmail.Location = new System.Drawing.Point(265, 558);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(149, 29);
             this.txtEmail.TabIndex = 16;
             // 
             // dgvItems
             // 
+            this.dgvItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvItems.Location = new System.Drawing.Point(537, 69);
+            this.dgvItems.Location = new System.Drawing.Point(539, 2);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.Size = new System.Drawing.Size(355, 374);
             this.dgvItems.TabIndex = 17;
@@ -243,7 +246,7 @@
             // btnAddItem
             // 
             this.btnAddItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddItem.Location = new System.Drawing.Point(538, 464);
+            this.btnAddItem.Location = new System.Drawing.Point(538, 382);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.Size = new System.Drawing.Size(88, 31);
             this.btnAddItem.TabIndex = 18;
@@ -253,7 +256,7 @@
             // btnDelItem
             // 
             this.btnDelItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelItem.Location = new System.Drawing.Point(655, 464);
+            this.btnDelItem.Location = new System.Drawing.Point(655, 382);
             this.btnDelItem.Name = "btnDelItem";
             this.btnDelItem.Size = new System.Drawing.Size(89, 31);
             this.btnDelItem.TabIndex = 19;
@@ -264,7 +267,7 @@
             // 
             this.cmbImpuesto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbImpuesto.FormattingEnabled = true;
-            this.cmbImpuesto.Location = new System.Drawing.Point(560, 563);
+            this.cmbImpuesto.Location = new System.Drawing.Point(560, 442);
             this.cmbImpuesto.Name = "cmbImpuesto";
             this.cmbImpuesto.Size = new System.Drawing.Size(137, 29);
             this.cmbImpuesto.TabIndex = 20;
@@ -273,7 +276,7 @@
             // 
             this.lblSubtotal.AutoSize = true;
             this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubtotal.Location = new System.Drawing.Point(779, 569);
+            this.lblSubtotal.Location = new System.Drawing.Point(779, 448);
             this.lblSubtotal.Name = "lblSubtotal";
             this.lblSubtotal.Size = new System.Drawing.Size(51, 21);
             this.lblSubtotal.TabIndex = 21;
@@ -283,7 +286,7 @@
             // 
             this.lblIVA.AutoSize = true;
             this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIVA.Location = new System.Drawing.Point(779, 599);
+            this.lblIVA.Location = new System.Drawing.Point(779, 478);
             this.lblIVA.Name = "lblIVA";
             this.lblIVA.Size = new System.Drawing.Size(54, 21);
             this.lblIVA.TabIndex = 22;
@@ -293,7 +296,7 @@
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.Location = new System.Drawing.Point(779, 636);
+            this.lblTotal.Location = new System.Drawing.Point(779, 515);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(54, 21);
             this.lblTotal.TabIndex = 23;
@@ -302,7 +305,7 @@
             // btnGenerarFactura
             // 
             this.btnGenerarFactura.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerarFactura.Location = new System.Drawing.Point(560, 681);
+            this.btnGenerarFactura.Location = new System.Drawing.Point(536, 505);
             this.btnGenerarFactura.Name = "btnGenerarFactura";
             this.btnGenerarFactura.Size = new System.Drawing.Size(89, 31);
             this.btnGenerarFactura.TabIndex = 24;
@@ -312,7 +315,7 @@
             // btnVistaPrevia
             // 
             this.btnVistaPrevia.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVistaPrevia.Location = new System.Drawing.Point(655, 681);
+            this.btnVistaPrevia.Location = new System.Drawing.Point(646, 505);
             this.btnVistaPrevia.Name = "btnVistaPrevia";
             this.btnVistaPrevia.Size = new System.Drawing.Size(89, 31);
             this.btnVistaPrevia.TabIndex = 25;
@@ -373,7 +376,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(5, 482);
+            this.label6.Location = new System.Drawing.Point(5, 423);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(80, 21);
             this.label6.TabIndex = 31;
@@ -383,7 +386,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(214, 482);
+            this.label7.Location = new System.Drawing.Point(214, 423);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 21);
             this.label7.TabIndex = 32;
@@ -393,7 +396,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(5, 529);
+            this.label8.Location = new System.Drawing.Point(5, 470);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 21);
             this.label8.TabIndex = 33;
@@ -403,7 +406,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(2, 570);
+            this.label9.Location = new System.Drawing.Point(2, 511);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(83, 21);
             this.label9.TabIndex = 34;
@@ -413,7 +416,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(2, 620);
+            this.label10.Location = new System.Drawing.Point(2, 561);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(78, 21);
             this.label10.TabIndex = 35;
@@ -423,7 +426,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(207, 620);
+            this.label11.Location = new System.Drawing.Point(207, 561);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(52, 21);
             this.label11.TabIndex = 36;
@@ -435,7 +438,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ClientSize = new System.Drawing.Size(896, 740);
+            this.ClientSize = new System.Drawing.Size(896, 621);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label8);
@@ -501,7 +504,6 @@
         private System.Windows.Forms.TextBox txtNumDoc;
         private System.Windows.Forms.TextBox txtTelefono;
         private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.Button btnAddItem;
         private System.Windows.Forms.Button btnDelItem;
         private System.Windows.Forms.ComboBox cmbImpuesto;
@@ -521,5 +523,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridView dgvItems;
     }
 }

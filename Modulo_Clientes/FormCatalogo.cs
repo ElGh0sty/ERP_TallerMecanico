@@ -119,7 +119,7 @@ ORDER BY c.nombre, v.placa";
                     return;
                 }
 
-                // ✅ Si no tiene órdenes, se elimina
+                // Si no tiene órdenes, se elimina
                 string sqlDel = "DELETE FROM Vehiculos WHERE id = @id";
                 SqlCommand cmd = new SqlCommand(sqlDel, con.leer);
                 cmd.Parameters.AddWithValue("@id", vehiculoId);
@@ -146,9 +146,6 @@ ORDER BY c.nombre, v.placa";
         }
 
 
-        // =======================
-        // ESTILO GENERAL DEL GRID
-        // =======================
         private void EstilizarGridCompleto()
         {
             dgvVehiculos.AllowUserToAddRows = false;
@@ -191,9 +188,6 @@ ORDER BY c.nombre, v.placa";
             dgvVehiculos.RowTemplate.Height = 45;
         }
 
-        // =======================
-        // CONFIGURACIÓN COLUMNAS
-        // =======================
         private void ConfigurarColumnasGrid()
         {
             // Ocultar ID (debe existir aunque esté oculto)
@@ -210,11 +204,7 @@ ORDER BY c.nombre, v.placa";
             if (dgvVehiculos.Columns.Contains("kilometraje_actual")) dgvVehiculos.Columns["kilometraje_actual"].HeaderText = "Km";
         }
 
-        
 
-        // =======================
-        // BOTONES EDITAR/ELIMINAR
-        // =======================
         private void AgregarBotonesAccionGrid()
         {
             // Evitar duplicados al recargar
@@ -274,7 +264,7 @@ ORDER BY c.nombre, v.placa";
             }
         }
 
-        // (Opcional) suaviza el render de botones
+        // suaviza el render de botones
         private void dgvVehiculos_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -287,9 +277,6 @@ ORDER BY c.nombre, v.placa";
             }
         }
 
-        // =======================
-        // CLICK EN BOTONES DEL GRID
-        // =======================
         private void dgvVehiculos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -301,11 +288,11 @@ ORDER BY c.nombre, v.placa";
 
             if (colName == "btnEditar")
             {
-                EditarVehiculo(vehiculoId);   // ✅ TU funcionalidad
+                EditarVehiculo(vehiculoId);   
             }
             else if (colName == "btnEliminar")
             {
-                EliminarVehiculo(vehiculoId); // ✅ TU funcionalidad
+                EliminarVehiculo(vehiculoId); 
             }
         }
 

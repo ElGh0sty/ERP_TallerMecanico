@@ -19,10 +19,11 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         private string rolUsuario;
         private readonly long usuarioId;
 
-        public FormFacturacion(string rolUsuario)
+        public FormFacturacion(long usuarioId, string rolUsuario)
         {
             InitializeComponent();
             this.rolUsuario = rolUsuario;
+            this.usuarioId = usuarioId;
             AplicarBotonesRedondos();
         }
 

@@ -72,7 +72,7 @@ namespace PROYECTOMECANICO
 
         private void btnFacturacion_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion(rolUsuario));
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion(usuarioId,rolUsuario));
         }
 
         private void btnPersonal_Click(object sender, EventArgs e)

@@ -45,7 +45,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         public FormGenFactu()
         {
             InitializeComponent();
-            InitCommon(0); // no usar para producción
+            InitCommon(usuarioId);
         }
 
         // Constructor real
@@ -53,12 +53,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         {
             InitializeComponent();
             InitCommon(usuarioId);
+            this.usuarioId = usuarioId;
+
         }
 
-        private void InitCommon(long userId)
+        private void InitCommon(long usuarioId)
         {
-            this.usuarioId = userId;
-
+            
             // Grid + tabla items
             PrepararTablaItems();
             ConfigurarGrid();
@@ -112,7 +113,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             RecalcularTotales();
         }
 
-        // ======================= MODO =======================
+        //  MODO 
         private void CambiarModo(bool desdeOT)
         {
             modoDesdeOT = desdeOT;
@@ -129,11 +130,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             RecalcularTotales();
         }
 
-        // ======================= ITEMS =======================
+        //  ITEMS 
         private void PrepararTablaItems()
         {
             dtItems = new DataTable();
-            dtItems.Columns.Add("descripcion", typeof(string));
+            
+            dtItems.Columns.Add("tipo_item", typeof(string));
+            dtItems.Columns.Add("nombre_item", typeof(string));
             dtItems.Columns.Add("cantidad", typeof(decimal));
             dtItems.Columns.Add("precio_unitario", typeof(decimal));
             dtItems.Columns.Add("subtotal", typeof(decimal));
@@ -143,10 +146,16 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
         private void ConfigurarGrid()
         {
-            dgvItems.AutoGenerateColumns = false;
             dgvItems.Columns.Clear();
+            dgvItems.AutoGenerateColumns = false;
 
-            dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Descripción", DataPropertyName = "descripcion" });
+            
+            // Opcional: tipo
+            dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tipo", DataPropertyName = "tipo_item" });
+
+            //Nombre real del producto/servicio
+            dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Nombre", DataPropertyName = "nombre_item" });
+
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Cant", DataPropertyName = "cantidad" });
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "P.Unit", DataPropertyName = "precio_unitario" });
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Subtotal", DataPropertyName = "subtotal", ReadOnly = true });
@@ -155,9 +164,25 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "servicio_id", DataPropertyName = "servicio_id", Visible = false });
         }
 
+        private bool ExisteFacturaParaOT(long otId)
+        {
+            try
+            {
+                con.Abrir();
+                using (var cmd = new SqlCommand(
+                    "SELECT COUNT(1) FROM dbo.Facturas WHERE orden_trabajo_id = @ot", con.leer))
+                {
+                    cmd.Parameters.Add("@ot", SqlDbType.BigInt).Value = otId;
+                    int c = Convert.ToInt32(cmd.ExecuteScalar());
+                    return c > 0;
+                }
+            }
+            finally { con.Cerrar(); }
+        }
+
         private void AgregarItemManual()
         {
-            dtItems.Rows.Add("Servicio / Producto", 1m, 0m, 0m, DBNull.Value, DBNull.Value);
+            dtItems.Rows.Add("Item", "Servicio / Producto", 1m, 0m, 0m, DBNull.Value, DBNull.Value);
             RecalcularTotales();
         }
 
@@ -183,7 +208,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             catch { /* ignore */ }
         }
 
-        // ======================= IMPUESTO / TOTALES =======================
+        //  IMPUESTO / TOTALES 
         private void CargarImpuestos()
         {
             try
@@ -244,7 +269,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             lblTotal.Text = $"Total: {total:0.00}";
         }
 
-        // ======================= OT =======================
+        //  OT 
         private class OTItem
         {
             public long Id { get; set; }
@@ -384,15 +409,28 @@ WHERE OT.id = @id";
                 con.Abrir();
                 string sql = @"
 SELECT 
-    COALESCE(descripcion, '') AS descripcion,
-    CAST(cantidad AS DECIMAL(18,2)) AS cantidad,
-    CAST(precio_unitario AS DECIMAL(18,2)) AS precio_unitario,
-    CAST(subtotal AS DECIMAL(18,2)) AS subtotal,
-    producto_id,
-    servicio_id
-FROM OrdenesTrabajo_Items
-WHERE orden_id = @orden
-ORDER BY id ASC";
+    CASE 
+        WHEN i.producto_id IS NOT NULL THEN 'Producto'
+        ELSE 'Servicio'
+    END AS tipo_item,
+
+    -- Nombre real:
+    -- 1) Si es producto: Productos.nombre
+    -- 2) Si no es producto: toma i.descripcion
+    -- 3) Si i.descripcion está vacío: usa OT.descripcion (de tu tabla OrdenesTrabajo)
+    COALESCE(p.nombre, NULLIF(LTRIM(RTRIM(i.descripcion)), ''), NULLIF(LTRIM(RTRIM(ot.descripcion)), ''), 'SERVICIO') AS nombre_item,
+
+    CAST(i.cantidad AS DECIMAL(18,2)) AS cantidad,
+    CAST(i.precio_unitario AS DECIMAL(18,2)) AS precio_unitario,
+    CAST(i.subtotal AS DECIMAL(18,2)) AS subtotal,
+
+    i.producto_id,
+    CAST(NULL AS BIGINT) AS servicio_id
+FROM OrdenesTrabajo_Items i
+INNER JOIN OrdenesTrabajo ot ON ot.id = i.orden_id
+LEFT JOIN Productos p ON p.id = i.producto_id
+WHERE i.orden_id = @orden
+ORDER BY i.id ASC";
 
                 dtItems.Clear();
                 using (var da = new SqlDataAdapter(sql, con.leer))
@@ -400,8 +438,9 @@ ORDER BY id ASC";
                     da.SelectCommand.Parameters.Add("@orden", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
                     da.Fill(dtItems);
                 }
-
                 RecalcularTotales();
+
+                
 
                 if (dtItems.Rows.Count == 0)
                     MessageBox.Show("Esta OT no tiene items todavía.");
@@ -413,7 +452,7 @@ ORDER BY id ASC";
             finally { con.Cerrar(); }
         }
 
-        // ======================= RECEPTOR =======================
+        //  RECEPTOR 
         private void ActualizarUIReceptor()
         {
             bool existente = rbClienteExistente.Checked;
@@ -621,10 +660,19 @@ WHERE id = @id";
             finally { con.Cerrar(); }
         }
 
-        // ======================= GUARDAR FACTURA =======================
+        //GUARDAR FACTURA 
         private void GenerarFactura()
         {
-            if (usuarioId <= 0)
+
+            if (modoDesdeOT && ordenTrabajoId.HasValue)
+            {
+                if (ExisteFacturaParaOT(ordenTrabajoId.Value))
+                {
+                    MessageBox.Show("Esta Orden de Trabajo ya tiene una factura generada. No se puede duplicar.");
+                    return;
+                }
+            }
+            if (usuarioId == 0)
             {
                 MessageBox.Show("Sesión inválida (usuarioId).");
                 return;
@@ -750,7 +798,7 @@ VALUES
                         tx.Commit();
 
                         facturaIdGenerada = facturaId;
-                        MessageBox.Show($"Factura generada ✅\nID: {facturaIdGenerada}\nSecuencial: {secuencialGenerado}");
+                        MessageBox.Show($"Factura generada \nID: {facturaIdGenerada}\nSecuencial: {secuencialGenerado}");
                     }
                     catch (Exception ex)
                     {
@@ -790,7 +838,7 @@ VALUES
             return digits;
         }
 
-        // ======================= PRINT =======================
+        //  PRINT 
         private void MostrarVistaPrevia()
         {
             if (dtItems == null || dtItems.Rows.Count == 0)
@@ -850,7 +898,9 @@ VALUES
 
             foreach (DataRow r in dtItems.Rows)
             {
-                string desc = r["descripcion"].ToString();
+                string desc = r.Table.Columns.Contains("nombre_item")
+    ? r["nombre_item"].ToString()
+    : r[""].ToString();
                 string cant = Convert.ToDecimal(r["cantidad"]).ToString("0.##");
                 string pu = Convert.ToDecimal(r["precio_unitario"]).ToString("0.00");
                 string sub = Convert.ToDecimal(r["subtotal"]).ToString("0.00");
