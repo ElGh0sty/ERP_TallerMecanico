@@ -9,11 +9,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
     {
         private readonly string _cs;
 
-        // ✅ Esto es lo que tu FormGenFactu espera
         public ItemPickResult Result { get; private set; }
 
-        // ✅ Ajusta ESTE nombre según tu tabla Productos (ver sección 3)
-        private const string PRODUCT_PRICE_COLUMN = "precio_pvp"; // <-- CAMBIA a: "precio_unitario" o el que tengas
+        private const string PRODUCT_PRICE_COLUMN = "precio_pvp"; 
 
         public FormItemPicker(PROYECTOMECANICO.Conexion con)
         {
@@ -25,7 +23,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnAgregar.Click += (s, e) => ElegirItem();
             btnCancelar.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; Close(); };
 
-            cmbTipo.SelectedIndex = 0; // Productos por defecto
+            cmbTipo.SelectedIndex = 0; 
             nudCantidad.Value = 1;
             CargarListado();
         }
@@ -43,7 +41,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
                 if (esProducto)
                 {
-                    // ✅ OJO: PRODUCT_PRICE_COLUMN debe existir en tu tabla Productos
                     sql = @"
 SELECT TOP 200
     id,
@@ -55,7 +52,6 @@ ORDER BY nombre ASC";
                 }
                 else
                 {
-                    // Ajusta nombres si tu tabla de servicios se llama diferente
                     sql = @"
 SELECT TOP 200
     id,

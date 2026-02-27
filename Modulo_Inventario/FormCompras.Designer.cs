@@ -56,7 +56,7 @@
             // 
             this.cmbProveedor.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbProveedor.FormattingEnabled = true;
-            this.cmbProveedor.Location = new System.Drawing.Point(29, 33);
+            this.cmbProveedor.Location = new System.Drawing.Point(29, 71);
             this.cmbProveedor.Name = "cmbProveedor";
             this.cmbProveedor.Size = new System.Drawing.Size(256, 29);
             this.cmbProveedor.TabIndex = 0;
@@ -64,7 +64,7 @@
             // txtFactura
             // 
             this.txtFactura.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFactura.Location = new System.Drawing.Point(406, 33);
+            this.txtFactura.Location = new System.Drawing.Point(29, 12);
             this.txtFactura.Name = "txtFactura";
             this.txtFactura.Size = new System.Drawing.Size(194, 29);
             this.txtFactura.TabIndex = 1;
@@ -102,7 +102,7 @@
             // txtBuscarProducto
             // 
             this.txtBuscarProducto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarProducto.Location = new System.Drawing.Point(29, 71);
+            this.txtBuscarProducto.Location = new System.Drawing.Point(29, 109);
             this.txtBuscarProducto.Name = "txtBuscarProducto";
             this.txtBuscarProducto.Size = new System.Drawing.Size(256, 29);
             this.txtBuscarProducto.TabIndex = 5;
@@ -112,7 +112,7 @@
             this.lstProductos.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstProductos.FormattingEnabled = true;
             this.lstProductos.ItemHeight = 21;
-            this.lstProductos.Location = new System.Drawing.Point(29, 97);
+            this.lstProductos.Location = new System.Drawing.Point(29, 135);
             this.lstProductos.Name = "lstProductos";
             this.lstProductos.Size = new System.Drawing.Size(256, 109);
             this.lstProductos.TabIndex = 6;
@@ -121,7 +121,7 @@
             // 
             this.lblStockSel.AutoSize = true;
             this.lblStockSel.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStockSel.Location = new System.Drawing.Point(291, 74);
+            this.lblStockSel.Location = new System.Drawing.Point(291, 116);
             this.lblStockSel.Name = "lblStockSel";
             this.lblStockSel.Size = new System.Drawing.Size(59, 21);
             this.lblStockSel.TabIndex = 7;
@@ -130,7 +130,7 @@
             // nudCantidad
             // 
             this.nudCantidad.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudCantidad.Location = new System.Drawing.Point(406, 108);
+            this.nudCantidad.Location = new System.Drawing.Point(374, 111);
             this.nudCantidad.Name = "nudCantidad";
             this.nudCantidad.Size = new System.Drawing.Size(74, 29);
             this.nudCantidad.TabIndex = 8;
@@ -138,7 +138,7 @@
             // nudCosto
             // 
             this.nudCosto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudCosto.Location = new System.Drawing.Point(526, 108);
+            this.nudCosto.Location = new System.Drawing.Point(475, 111);
             this.nudCosto.Name = "nudCosto";
             this.nudCosto.Size = new System.Drawing.Size(74, 29);
             this.nudCosto.TabIndex = 9;
@@ -155,7 +155,7 @@
             // btnAgregarItem
             // 
             this.btnAgregarItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarItem.Location = new System.Drawing.Point(650, 90);
+            this.btnAgregarItem.Location = new System.Drawing.Point(615, 71);
             this.btnAgregarItem.Name = "btnAgregarItem";
             this.btnAgregarItem.Size = new System.Drawing.Size(104, 61);
             this.btnAgregarItem.TabIndex = 11;
@@ -184,28 +184,33 @@
             // 
             // dtFechaCompra
             // 
+            this.dtFechaCompra.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dtFechaCompra.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtFechaCompra.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtFechaCompra.Location = new System.Drawing.Point(683, 33);
+            this.dtFechaCompra.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtFechaCompra.Location = new System.Drawing.Point(346, 24);
             this.dtFechaCompra.Name = "dtFechaCompra";
-            this.dtFechaCompra.Size = new System.Drawing.Size(117, 29);
-            this.dtFechaCompra.TabIndex = 14;
+            this.dtFechaCompra.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.dtFechaCompra.Size = new System.Drawing.Size(153, 29);
+            this.dtFechaCompra.TabIndex = 15;
+            this.dtFechaCompra.ValueChanged += new System.EventHandler(this.dtFechaCompra_ValueChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(402, 7);
+            this.label1.Location = new System.Drawing.Point(285, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 21);
+            this.label1.Size = new System.Drawing.Size(55, 21);
             this.label1.TabIndex = 15;
-            this.label1.Text = "Nº Factura:";
+            this.label1.Text = "Fecha:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(402, 76);
+            this.label2.Location = new System.Drawing.Point(370, 79);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(79, 21);
             this.label2.TabIndex = 16;
@@ -215,7 +220,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(521, 76);
+            this.label3.Location = new System.Drawing.Point(470, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 21);
             this.label3.TabIndex = 17;
@@ -224,7 +229,7 @@
             // btnNuevoProducto
             // 
             this.btnNuevoProducto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevoProducto.Location = new System.Drawing.Point(771, 90);
+            this.btnNuevoProducto.Location = new System.Drawing.Point(752, 71);
             this.btnNuevoProducto.Name = "btnNuevoProducto";
             this.btnNuevoProducto.Size = new System.Drawing.Size(104, 61);
             this.btnNuevoProducto.TabIndex = 18;

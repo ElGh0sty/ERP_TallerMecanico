@@ -26,6 +26,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
         public FormCompras(long usuarioId)
         {
             InitializeComponent();
+            txtFactura.Visible = false;
+            txtFactura.Enabled = false;
             this.usuarioId = usuarioId;
 
             PrepararTablaItems();
@@ -449,7 +451,11 @@ ORDER BY nombre;";
         }
 
 
-
+        private string GenerarNumeroCompraAuto()
+        {
+            // Formato: CMP + yyMMdd + HHmmss 
+            return "CMP" + DateTime.Now.ToString("yyMMddHHmmss");
+        }
 
         private void AbrirPopupNuevoProducto(string nombreSugerido)
         {
@@ -505,7 +511,6 @@ ORDER BY nombre;";
                 return;
             }
 
-            // ✅ Validación realista: comparar contra costo previo (si existe)
             decimal? costoRef = ObtenerCostoReferencia(productoIdSeleccionado);
             if (costoRef.HasValue && costoRef.Value > 0)
             {
@@ -608,7 +613,7 @@ ORDER BY nombre;";
             }
 
             long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
-            string factura = (txtFactura.Text ?? "").Trim();
+            string factura = GenerarNumeroCompraAuto();
 
             if (string.IsNullOrWhiteSpace(factura))
             {
@@ -744,6 +749,11 @@ VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
 
             lblStockSel.Text = "Stock: -";
             RecalcularTotales();
+        }
+
+        private void dtFechaCompra_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
