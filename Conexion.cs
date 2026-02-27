@@ -7,13 +7,34 @@ namespace PROYECTOMECANICO
 {
     public class Conexion
     {
-
         private string cadena = "Server=(localdb)\\MSSQLLocalDB;Database=TallerMecanico_ERP;Integrated Security=True";
+
         public SqlConnection leer = new SqlConnection();
+
+        public string CadenaConexion => cadena;
 
         public Conexion()
         {
             leer = new SqlConnection(cadena);
+        }
+
+
+        public string ConnectionString
+        {
+            get { return cadena; }
+        }
+        // NUEVO: crea una conexión NUEVA (no compartida)
+        public SqlConnection CrearConexion()
+        {
+            return new SqlConnection(cadena);
+        }
+
+        // NUEVO: crea y abre una conexión NUEVA (no compartida)
+        public SqlConnection CrearConexionAbierta()
+        {
+            var cn = new SqlConnection(cadena);
+            cn.Open();
+            return cn;
         }
 
         public void Abrir()
@@ -47,5 +68,20 @@ namespace PROYECTOMECANICO
                 throw;
             }
         }
+        public void ResetConnection()
+        {
+            try
+            {
+                if (leer != null)
+                {
+                    if (leer.State != ConnectionState.Closed) leer.Close();
+                    leer.Dispose();
+                }
+            }
+            catch { }
+
+            leer = new SqlConnection(cadena);
+        }
+        
     }
 }

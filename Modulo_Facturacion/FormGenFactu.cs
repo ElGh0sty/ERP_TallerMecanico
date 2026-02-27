@@ -1,10 +1,11 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using PROYECTOMECANICO.Modulo_Clientes;
 
@@ -37,29 +38,30 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         private string secuencialGenerado = "";
         private string claveAccesoGenerada = "";
 
+        // Timer búsqueda OT (Forms)
+        private readonly System.Windows.Forms.Timer _tmBuscarOT = new System.Windows.Forms.Timer();
+        private CancellationTokenSource _otCts;
+
         // Print
         private readonly PrintDocument printDoc = new PrintDocument();
         private readonly PrintPreviewDialog preview = new PrintPreviewDialog();
 
-        // Constructor para diseñador
+        // Constructor diseñador
         public FormGenFactu()
         {
             InitializeComponent();
-            InitCommon(usuarioId);
         }
 
         // Constructor real
         public FormGenFactu(long usuarioId)
         {
             InitializeComponent();
-            InitCommon(usuarioId);
             this.usuarioId = usuarioId;
-
+            InitCommon(usuarioId);
         }
 
         private void InitCommon(long usuarioId)
         {
-            
             // Grid + tabla items
             PrepararTablaItems();
             ConfigurarGrid();
@@ -76,65 +78,143 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             rbDesdeOT.Checked = true;
             rbClienteExistente.Checked = true;
 
-            // Eventos modo
-            rbDesdeOT.CheckedChanged += (s, e) => { if (rbDesdeOT.Checked) CambiarModo(true); };
-            rbVentaDirecta.CheckedChanged += (s, e) => { if (rbVentaDirecta.Checked) CambiarModo(false); };
+            //  OT: txtBuscarOT NO se habilita hasta que el modo OT esté activo
+            // (como rbDesdeOT es default true, inicia habilitado; si quieres que inicie apagado,
+            // cambia rbDesdeOT.Checked = false y rbVentaDirecta.Checked = true arriba).
+            CambiarModo(rbDesdeOT.Checked);
 
-            // OT
-            txtBuscarOT.TextChanged += (s, e) => BuscarOT();
+            // Eventos modo
+            rbDesdeOT.CheckedChanged += (s, e) =>
+            {
+                if (rbDesdeOT.Checked) CambiarModo(true);
+            };
+
+            rbVentaDirecta.CheckedChanged += (s, e) =>
+            {
+                if (rbVentaDirecta.Checked) CambiarModo(false);
+            };
+
+            // OT búsqueda (con debounce)
+            _tmBuscarOT.Interval = 350;
+            _tmBuscarOT.Tick += async (s, e) =>
+            {
+                _tmBuscarOT.Stop();
+                await BuscarOTAsync();
+            };
+
+            txtBuscarOT.TextChanged += (s, e) =>
+            {
+                if (!modoDesdeOT) return;
+                _tmBuscarOT.Stop();
+                _tmBuscarOT.Start();
+            };
+
+            lstOTResultados.SelectedIndexChanged += (s, e) => SeleccionarOT();
             lstOTResultados.Click += (s, e) => SeleccionarOT();
+
             btnCargarItemsOT.Click += (s, e) => CargarItemsOT();
 
             // Receptor
-            rbClienteExistente.CheckedChanged += (s, e) => { if (rbClienteExistente.Checked) ActualizarUIReceptor(); };
-            rbNuevoCliente.CheckedChanged += (s, e) => { if (rbNuevoCliente.Checked) ActualizarUIReceptor(); };
-            rbConsumidorFinal.CheckedChanged += (s, e) => { if (rbConsumidorFinal.Checked) SetConsumidorFinal(); };
+            rbConsumidorFinal.CheckedChanged += (s, e) =>
+            {
+                if (rbConsumidorFinal.Checked)
+                {
+                    SetConsumidorFinal();
+                }
+            };
+
+            rbClienteExistente.CheckedChanged += (s, e) =>
+            {
+                if (rbClienteExistente.Checked)
+                {
+                    if (snapTipoDoc == "CF") LimpiarSnapshotReceptor();
+                    ActualizarUIReceptor();
+                }
+            };
+
+            rbNuevoCliente.CheckedChanged += (s, e) =>
+            {
+                if (rbNuevoCliente.Checked)
+                {
+                    if (snapTipoDoc == "CF") LimpiarSnapshotReceptor();
+                    ActualizarUIReceptor();
+                }
+            };
 
             txtBuscarCliente.TextChanged += (s, e) => BuscarCliente();
             lstClientes.Click += (s, e) => SeleccionarCliente();
             btnNuevoCliente.Click += (s, e) => CrearClientePopup();
 
             // Items manuales
-            btnAddItem.Click += (s, e) => AgregarItemManual();
+            btnAddItem.Click += (s, e) => AgregarItemDesdeCatalogo();
             btnDelItem.Click += (s, e) => EliminarItemSeleccionado();
+
+            //  Mantener botones correctos según selección
+            dgvItems.SelectionChanged += (s, e) => ActualizarBotonesItems();
+            dgvItems.RowsAdded += (s, e) => ActualizarBotonesItems();
+            dgvItems.RowsRemoved += (s, e) => ActualizarBotonesItems();
 
             // Totales
             cmbImpuesto.SelectedIndexChanged += (s, e) => RecalcularTotales();
             dgvItems.CellEndEdit += (s, e) => { RecalcularSubtotalFila(e.RowIndex); RecalcularTotales(); };
-            dgvItems.RowsRemoved += (s, e) => RecalcularTotales();
 
-            // Acciones
-            btnGenerarFactura.Click += (s, e) => GenerarFactura();
+            // Acciones (sin Task.Run que toque UI)
+            btnGenerarFactura.Click += async (s, e) =>
+            {
+                btnGenerarFactura.Enabled = false;
+                Cursor = Cursors.WaitCursor;
+                try
+                {
+                    await GenerarFacturaAsync();
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                    btnGenerarFactura.Enabled = true;
+                }
+            };
+
             btnVistaPrevia.Click += (s, e) => MostrarVistaPrevia();
 
             // Estado inicial UI
-            CambiarModo(true);
             ActualizarUIReceptor();
             RecalcularTotales();
+            ActualizarBotonesItems();
         }
 
-        //  MODO 
+        //  MODO
         private void CambiarModo(bool desdeOT)
         {
             modoDesdeOT = desdeOT;
             ordenTrabajoId = null;
 
+            // txtBuscarOT solo activo si modo OT está activo
             txtBuscarOT.Enabled = desdeOT;
             btnCargarItemsOT.Enabled = desdeOT;
             lstOTResultados.Visible = false;
+            lstOTResultados.DataSource = null;
 
-            btnAddItem.Enabled = !desdeOT;
-            btnDelItem.Enabled = !desdeOT;
-
+            // Items manuales solo en venta directa
             dtItems.Clear();
             RecalcularTotales();
+
+            ActualizarBotonesItems();
         }
 
-        //  ITEMS 
+        private void ActualizarBotonesItems()
+        {
+            bool enVentaDirecta = !modoDesdeOT;
+
+            btnAddItem.Enabled = enVentaDirecta;
+            btnDelItem.Enabled = enVentaDirecta && dgvItems.CurrentRow != null && dgvItems.Rows.Count > 0;
+        }
+
+        
+        //ITEMS
         private void PrepararTablaItems()
         {
             dtItems = new DataTable();
-            
+
             dtItems.Columns.Add("tipo_item", typeof(string));
             dtItems.Columns.Add("nombre_item", typeof(string));
             dtItems.Columns.Add("cantidad", typeof(decimal));
@@ -149,13 +229,8 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             dgvItems.Columns.Clear();
             dgvItems.AutoGenerateColumns = false;
 
-            
-            // Opcional: tipo
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tipo", DataPropertyName = "tipo_item" });
-
-            //Nombre real del producto/servicio
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Nombre", DataPropertyName = "nombre_item" });
-
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Cant", DataPropertyName = "cantidad" });
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "P.Unit", DataPropertyName = "precio_unitario" });
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Subtotal", DataPropertyName = "subtotal", ReadOnly = true });
@@ -164,34 +239,23 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "servicio_id", DataPropertyName = "servicio_id", Visible = false });
         }
 
-        private bool ExisteFacturaParaOT(long otId)
-        {
-            try
-            {
-                con.Abrir();
-                using (var cmd = new SqlCommand(
-                    "SELECT COUNT(1) FROM dbo.Facturas WHERE orden_trabajo_id = @ot", con.leer))
-                {
-                    cmd.Parameters.Add("@ot", SqlDbType.BigInt).Value = otId;
-                    int c = Convert.ToInt32(cmd.ExecuteScalar());
-                    return c > 0;
-                }
-            }
-            finally { con.Cerrar(); }
-        }
-
         private void AgregarItemManual()
         {
+            if (modoDesdeOT) return;
             dtItems.Rows.Add("Item", "Servicio / Producto", 1m, 0m, 0m, DBNull.Value, DBNull.Value);
             RecalcularTotales();
+            ActualizarBotonesItems();
         }
 
         private void EliminarItemSeleccionado()
         {
+            if (modoDesdeOT) return;
+
             if (dgvItems.CurrentRow != null && dgvItems.CurrentRow.Index >= 0)
             {
                 dgvItems.Rows.RemoveAt(dgvItems.CurrentRow.Index);
                 RecalcularTotales();
+                ActualizarBotonesItems();
             }
         }
 
@@ -205,10 +269,41 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 decimal pu = Convert.ToDecimal(r["precio_unitario"]);
                 r["subtotal"] = Math.Round(cant * pu, 4);
             }
-            catch { /* ignore */ }
+            catch { }
         }
 
-        //  IMPUESTO / TOTALES 
+        private void AgregarItemDesdeCatalogo()
+        {
+            if (modoDesdeOT)
+            {
+                MessageBox.Show("En modo 'Desde OT' los ítems se cargan desde la orden de trabajo.");
+                return;
+            }
+
+            using (var pop = new PROYECTOMECANICO.Modulo_Facturacion.FormItemPicker(con))
+            {
+                if (pop.ShowDialog() != DialogResult.OK) return;
+                if (pop.Result == null) return;
+
+                var r = pop.Result;
+                decimal sub = Math.Round(r.Cantidad * r.PrecioUnitario, 4);
+
+                dtItems.Rows.Add(
+                    r.TipoItem,
+                    r.NombreItem,
+                    r.Cantidad,
+                    r.PrecioUnitario,
+                    sub,
+                    (object)r.ProductoId ?? DBNull.Value,
+                    (object)r.ServicioId ?? DBNull.Value
+                );
+
+                RecalcularTotales();
+            }
+        }
+
+        //  IMPUESTO / TOTALES
+
         private void CargarImpuestos()
         {
             try
@@ -240,9 +335,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
         private decimal GetImpuestoPorcentajeActual()
         {
-            if (cmbImpuesto.SelectedItem is DataRowView drv &&
-                decimal.TryParse(drv["porcentaje"].ToString(), out var p))
-                return p;
+            var drv = cmbImpuesto.SelectedItem as DataRowView;
+            if (drv != null)
+            {
+                decimal p;
+                if (decimal.TryParse(drv["porcentaje"].ToString(), out p))
+                    return p;
+            }
             return 0m;
         }
 
@@ -269,16 +368,18 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             lblTotal.Text = $"Total: {total:0.00}";
         }
 
-        //  OT 
+        
+        // OT
+        
         private class OTItem
         {
             public long Id { get; set; }
             public string Cliente { get; set; }
             public string Placa { get; set; }
-            public override string ToString() => $"OT #{Id} | {Placa} | {Cliente}";
+            public override string ToString() { return $"OT #{Id} | {Placa} | {Cliente}"; }
         }
 
-        private void BuscarOT()
+        private async Task BuscarOTAsync()
         {
             if (!modoDesdeOT) return;
 
@@ -290,10 +391,17 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 return;
             }
 
+            // Cancelar búsqueda anterior
+            if (_otCts != null) _otCts.Cancel();
+            _otCts = new CancellationTokenSource();
+            var token = _otCts.Token;
+
             try
             {
-                con.Abrir();
-                string sql = @"
+                var list = new List<OTItem>();
+
+                using (var cn = con.CrearConexion())
+                using (var cmd = new SqlCommand(@"
 SELECT TOP 15 
     OT.id,
     C.nombre AS cliente,
@@ -301,18 +409,19 @@ SELECT TOP 15
 FROM OrdenesTrabajo OT
 JOIN Vehiculos V ON V.id = OT.vehiculo_id
 JOIN Clientes C ON C.id = V.cliente_id
-WHERE CAST(OT.id AS NVARCHAR(20)) LIKE @q
-   OR V.placa LIKE @q
-   OR C.nombre LIKE @q
-ORDER BY OT.id DESC";
-
-                var list = new List<OTItem>();
-                using (var cmd = new SqlCommand(sql, con.leer))
+WHERE (CAST(OT.id AS NVARCHAR(20)) LIKE @q OR V.placa LIKE @q OR C.nombre LIKE @q)
+  AND ISNULL(OT.facturada,0) = 0
+  AND OT.estado IN ('Terminado','Entregado')
+  AND NOT EXISTS (SELECT 1 FROM dbo.Facturas F WHERE F.orden_trabajo_id = OT.id)
+ORDER BY OT.id DESC", cn))
                 {
+                    cmd.CommandTimeout = 8;
                     cmd.Parameters.Add("@q", SqlDbType.NVarChar, 100).Value = "%" + q + "%";
-                    using (var dr = cmd.ExecuteReader())
+
+                    await cn.OpenAsync(token);
+                    using (var dr = await cmd.ExecuteReaderAsync(token))
                     {
-                        while (dr.Read())
+                        while (await dr.ReadAsync(token))
                         {
                             list.Add(new OTItem
                             {
@@ -324,26 +433,35 @@ ORDER BY OT.id DESC";
                     }
                 }
 
-                lstOTResultados.DataSource = list;
-                lstOTResultados.Visible = list.Count > 0;
+                if (token.IsCancellationRequested) return;
+
+                // hilo UI (porque el Tick es de WinForms),
+                
+                if (IsHandleCreated)
+                {
+                    BeginInvoke((Action)(() =>
+                    {
+                        lstOTResultados.DataSource = list;
+                        lstOTResultados.Visible = list.Count > 0;
+                    }));
+                }
             }
+            catch (OperationCanceledException) { }
             catch (Exception ex)
             {
                 MessageBox.Show("Error buscando OT:\n" + ex.Message);
             }
-            finally { con.Cerrar(); }
         }
 
         private void SeleccionarOT()
         {
-            if (lstOTResultados.SelectedItem is OTItem item)
-            {
-                ordenTrabajoId = item.Id;
-                lstOTResultados.Visible = false;
+            var item = lstOTResultados.SelectedItem as OTItem;
+            if (item == null) return;
 
-                // Cargar receptor por defecto desde OT
-                CargarReceptorDesdeOT(item.Id);
-            }
+            ordenTrabajoId = item.Id;
+            lstOTResultados.Visible = false;
+
+            CargarReceptorDesdeOT(item.Id);
         }
 
         private void CargarReceptorDesdeOT(long otId)
@@ -409,21 +527,11 @@ WHERE OT.id = @id";
                 con.Abrir();
                 string sql = @"
 SELECT 
-    CASE 
-        WHEN i.producto_id IS NOT NULL THEN 'Producto'
-        ELSE 'Servicio'
-    END AS tipo_item,
-
-    -- Nombre real:
-    -- 1) Si es producto: Productos.nombre
-    -- 2) Si no es producto: toma i.descripcion
-    -- 3) Si i.descripcion está vacío: usa OT.descripcion (de tu tabla OrdenesTrabajo)
+    CASE WHEN i.producto_id IS NOT NULL THEN 'Producto' ELSE 'Servicio' END AS tipo_item,
     COALESCE(p.nombre, NULLIF(LTRIM(RTRIM(i.descripcion)), ''), NULLIF(LTRIM(RTRIM(ot.descripcion)), ''), 'SERVICIO') AS nombre_item,
-
     CAST(i.cantidad AS DECIMAL(18,2)) AS cantidad,
     CAST(i.precio_unitario AS DECIMAL(18,2)) AS precio_unitario,
     CAST(i.subtotal AS DECIMAL(18,2)) AS subtotal,
-
     i.producto_id,
     CAST(NULL AS BIGINT) AS servicio_id
 FROM OrdenesTrabajo_Items i
@@ -438,9 +546,8 @@ ORDER BY i.id ASC";
                     da.SelectCommand.Parameters.Add("@orden", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
                     da.Fill(dtItems);
                 }
-                RecalcularTotales();
 
-                
+                RecalcularTotales();
 
                 if (dtItems.Rows.Count == 0)
                     MessageBox.Show("Esta OT no tiene items todavía.");
@@ -452,7 +559,9 @@ ORDER BY i.id ASC";
             finally { con.Cerrar(); }
         }
 
-        //  RECEPTOR 
+        
+        //RECEPTOR (con limpieza CF)
+        
         private void ActualizarUIReceptor()
         {
             bool existente = rbClienteExistente.Checked;
@@ -464,7 +573,6 @@ ORDER BY i.id ASC";
 
             btnNuevoCliente.Enabled = nuevo;
 
-            // Campos snapshot habilitados salvo CF (si quieres editables en CF, dímelo)
             bool enableSnap = !cf;
             txtTipoDoc.Enabled = enableSnap;
             txtNumDoc.Enabled = enableSnap;
@@ -472,11 +580,59 @@ ORDER BY i.id ASC";
             txtDireccion.Enabled = enableSnap;
             txtTelefono.Enabled = enableSnap;
             txtEmail.Enabled = enableSnap;
-            
 
             if (cf) SetConsumidorFinal();
         }
 
+        private void LimpiarSnapshotReceptor()
+        {
+            clienteId = null;
+            snapTipoDoc = "";
+            snapNumDoc = "";
+            snapNombre = "";
+            snapDireccion = "";
+            snapTelefono = "";
+            snapEmail = "";
+            snapContribuyenteEspecial = false;
+
+            ReflejarSnapshotEnUI();
+        }
+
+        private void SetConsumidorFinal()
+        {
+            clienteId = null;
+            snapTipoDoc = "CF";
+            snapNumDoc = "9999999999999";
+            snapNombre = "CONSUMIDOR FINAL";
+            snapDireccion = "";
+            snapTelefono = "";
+            snapEmail = "";
+            snapContribuyenteEspecial = false;
+
+            ReflejarSnapshotEnUI();
+        }
+
+        private void ReflejarSnapshotEnUI()
+        {
+            txtTipoDoc.Text = snapTipoDoc;
+            txtNumDoc.Text = snapNumDoc;
+            txtNombre.Text = snapNombre;
+            txtDireccion.Text = snapDireccion;
+            txtTelefono.Text = snapTelefono;
+            txtEmail.Text = snapEmail;
+        }
+
+        private void TomarSnapshotDesdeUI()
+        {
+            snapTipoDoc = (txtTipoDoc.Text ?? "").Trim();
+            snapNumDoc = (txtNumDoc.Text ?? "").Trim();
+            snapNombre = (txtNombre.Text ?? "").Trim();
+            snapDireccion = (txtDireccion.Text ?? "").Trim();
+            snapTelefono = (txtTelefono.Text ?? "").Trim();
+            snapEmail = (txtEmail.Text ?? "").Trim();
+        }
+
+        // CLIENTE EXISTENTE
         private class ClienteItem
         {
             public long Id { get; set; }
@@ -487,7 +643,7 @@ ORDER BY i.id ASC";
             public string Telefono { get; set; }
             public string Email { get; set; }
             public bool CE { get; set; }
-            public override string ToString() => $"{Nombre} ({TipoDoc} {NumDoc})";
+            public override string ToString() { return $"{Nombre} ({TipoDoc} {NumDoc})"; }
         }
 
         private void BuscarCliente()
@@ -548,57 +704,20 @@ ORDER BY nombre ASC";
 
         private void SeleccionarCliente()
         {
-            if (lstClientes.SelectedItem is ClienteItem c)
-            {
-                clienteId = c.Id;
-                snapTipoDoc = c.TipoDoc;
-                snapNumDoc = c.NumDoc;
-                snapNombre = c.Nombre;
-                snapDireccion = c.Direccion;
-                snapTelefono = c.Telefono;
-                snapEmail = c.Email;
-                snapContribuyenteEspecial = c.CE;
+            var c = lstClientes.SelectedItem as ClienteItem;
+            if (c == null) return;
 
-                lstClientes.Visible = false;
-                ReflejarSnapshotEnUI();
-            }
-        }
+            clienteId = c.Id;
+            snapTipoDoc = c.TipoDoc;
+            snapNumDoc = c.NumDoc;
+            snapNombre = c.Nombre;
+            snapDireccion = c.Direccion;
+            snapTelefono = c.Telefono;
+            snapEmail = c.Email;
+            snapContribuyenteEspecial = c.CE;
 
-        private void SetConsumidorFinal()
-        {
-            clienteId = null;
-
-            snapTipoDoc = "CF";
-            snapNumDoc = "9999999999999";
-            snapNombre = "CONSUMIDOR FINAL";
-            snapDireccion = "";
-            snapTelefono = "";
-            snapEmail = "";
-            snapContribuyenteEspecial = false;
-
+            lstClientes.Visible = false;
             ReflejarSnapshotEnUI();
-        }
-
-        private void ReflejarSnapshotEnUI()
-        {
-            txtTipoDoc.Text = snapTipoDoc;
-            txtNumDoc.Text = snapNumDoc;
-            txtNombre.Text = snapNombre;
-            txtDireccion.Text = snapDireccion;
-            txtTelefono.Text = snapTelefono;
-            txtEmail.Text = snapEmail;
-            
-        }
-
-        private void TomarSnapshotDesdeUI()
-        {
-            snapTipoDoc = (txtTipoDoc.Text ?? "").Trim();
-            snapNumDoc = (txtNumDoc.Text ?? "").Trim();
-            snapNombre = (txtNombre.Text ?? "").Trim();
-            snapDireccion = (txtDireccion.Text ?? "").Trim();
-            snapTelefono = (txtTelefono.Text ?? "").Trim();
-            snapEmail = (txtEmail.Text ?? "").Trim();
-            
         }
 
         private void CrearClientePopup()
@@ -607,7 +726,6 @@ ORDER BY nombre ASC";
             {
                 if (pop.ShowDialog() == DialogResult.OK)
                 {
-                    // Si aplicaste el mini-ajuste, esto existe:
                     if (pop.ClienteIdCreado != null)
                     {
                         CargarClientePorId(pop.ClienteIdCreado.Value);
@@ -615,8 +733,7 @@ ORDER BY nombre ASC";
                         return;
                     }
 
-                    // Fallback (si no modificaste el popup): pide que lo busques por documento
-                    MessageBox.Show("Cliente guardado. Búscalo por nombre o documento en el buscador para seleccionarlo.");
+                    MessageBox.Show("Cliente guardado. Búscalo por nombre o documento para seleccionarlo.");
                     rbClienteExistente.Checked = true;
                 }
             }
@@ -660,18 +777,31 @@ WHERE id = @id";
             finally { con.Cerrar(); }
         }
 
-        //GUARDAR FACTURA 
-        private void GenerarFactura()
+        //  FACTURA (sin con.leer dentro de transacción)
+        private bool ExisteFacturaParaOT(long otId)
         {
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand(
+                "SELECT COUNT(1) FROM dbo.Facturas WHERE orden_trabajo_id = @ot", cn))
+            {
+                cmd.CommandTimeout = 5;
+                cmd.Parameters.Add("@ot", SqlDbType.BigInt).Value = otId;
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
 
+        private async Task GenerarFacturaAsync()
+        {
+            // Esta validación usa UI (debe ser antes del await)
             if (modoDesdeOT && ordenTrabajoId.HasValue)
             {
                 if (ExisteFacturaParaOT(ordenTrabajoId.Value))
                 {
-                    MessageBox.Show("Esta Orden de Trabajo ya tiene una factura generada. No se puede duplicar.");
+                    MessageBox.Show("Esta OT ya tiene una factura generada.");
                     return;
                 }
             }
+
             if (usuarioId == 0)
             {
                 MessageBox.Show("Sesión inválida (usuarioId).");
@@ -692,7 +822,6 @@ WHERE id = @id";
 
             TomarSnapshotDesdeUI();
 
-            // Si NO es consumidor final, validamos datos mínimos
             if (!rbConsumidorFinal.Checked)
             {
                 if (string.IsNullOrWhiteSpace(snapTipoDoc) ||
@@ -713,17 +842,16 @@ WHERE id = @id";
 
             secuencialGenerado = GenerarSiguienteSecuencial();
             claveAccesoGenerada = GenerarClaveAcceso49();
-
             int impuestoId = Convert.ToInt32(cmbImpuesto.SelectedValue);
 
             try
             {
-                con.Abrir();
-                using (SqlTransaction tx = con.leer.BeginTransaction())
+                //  Todo con una conexión propia (cn) y esa misma en todos los comandos
+                using (var cn = con.CrearConexionAbierta())
+                using (var tx = cn.BeginTransaction())
                 {
                     try
                     {
-                        // Facturas + snapshot
                         string sqlF = @"
 INSERT INTO dbo.Facturas
 (orden_trabajo_id, usuario_id, clave_acceso, numero_autorizacion, punto_emision, establecimiento, secuencial,
@@ -737,8 +865,10 @@ VALUES
  @tdoc, @ndoc, @cnom, @cdir, @ctel, @cemail, @cces)";
 
                         long facturaId;
-                        using (var cmd = new SqlCommand(sqlF, con.leer, tx))
+                        using (var cmd = new SqlCommand(sqlF, cn, tx))
                         {
+                            cmd.CommandTimeout = 15;
+
                             cmd.Parameters.Add("@ot", SqlDbType.BigInt).Value = (object)ordenTrabajoId ?? DBNull.Value;
                             cmd.Parameters.Add("@user", SqlDbType.BigInt).Value = usuarioId;
                             cmd.Parameters.Add("@clave", SqlDbType.Char, 49).Value = claveAccesoGenerada;
@@ -746,7 +876,7 @@ VALUES
                             cmd.Parameters.Add("@est", SqlDbType.Char, 3).Value = "001";
                             cmd.Parameters.Add("@sec", SqlDbType.Char, 9).Value = secuencialGenerado;
 
-                            cmd.Parameters.Add("@sub15", SqlDbType.Decimal).Value = subtotal; // simplificado
+                            cmd.Parameters.Add("@sub15", SqlDbType.Decimal).Value = subtotal;
                             cmd.Parameters.Add("@sub0", SqlDbType.Decimal).Value = 0m;
                             cmd.Parameters.Add("@iva", SqlDbType.Decimal).Value = iva;
                             cmd.Parameters.Add("@total", SqlDbType.Decimal).Value = total;
@@ -764,7 +894,6 @@ VALUES
                             facturaId = Convert.ToInt64(cmd.ExecuteScalar());
                         }
 
-                        // Items
                         string sqlI = @"
 INSERT INTO dbo.FacturaItems
 (factura_id, producto_id, servicio_id, cantidad, precio_unitario, descuento_item, impuesto_id, valor_iva_item)
@@ -777,12 +906,12 @@ VALUES
                             long? serv = r["servicio_id"] == DBNull.Value ? (long?)null : Convert.ToInt64(r["servicio_id"]);
 
                             decimal cantDec = Convert.ToDecimal(r["cantidad"]);
-                            int cantInt = Math.Max(1, (int)Math.Round(cantDec, 0)); // tu columna es INT
+                            int cantInt = Math.Max(1, (int)Math.Round(cantDec, 0));
                             decimal punit = Convert.ToDecimal(r["precio_unitario"]);
                             decimal subItem = Convert.ToDecimal(r["subtotal"]);
                             decimal ivaItem = Math.Round(subItem * pct, 4);
 
-                            using (var cmd = new SqlCommand(sqlI, con.leer, tx))
+                            using (var cmd = new SqlCommand(sqlI, cn, tx))
                             {
                                 cmd.Parameters.Add("@factura", SqlDbType.BigInt).Value = facturaId;
                                 cmd.Parameters.Add("@prod", SqlDbType.BigInt).Value = (object)prod ?? DBNull.Value;
@@ -795,14 +924,24 @@ VALUES
                             }
                         }
 
-                        tx.Commit();
+                        if (modoDesdeOT && ordenTrabajoId.HasValue)
+                        {
+                            using (var cmd = new SqlCommand(
+                                "UPDATE dbo.OrdenesTrabajo SET facturada = 1 WHERE id = @id", cn, tx))
+                            {
+                                cmd.Parameters.Add("@id", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
 
+                        tx.Commit();
                         facturaIdGenerada = facturaId;
-                        MessageBox.Show($"Factura generada \nID: {facturaIdGenerada}\nSecuencial: {secuencialGenerado}");
+
+                        MessageBox.Show("Factura generada\nID: " + facturaId + "\nSecuencial: " + secuencialGenerado);
                     }
                     catch (Exception ex)
                     {
-                        tx.Rollback();
+                        try { tx.Rollback(); } catch { }
                         MessageBox.Show("Error generando factura:\n" + ex.Message);
                     }
                 }
@@ -811,7 +950,8 @@ VALUES
             {
                 MessageBox.Show("Error BD:\n" + ex.Message);
             }
-            finally { con.Cerrar(); }
+
+            await Task.CompletedTask;
         }
 
         private string GenerarSiguienteSecuencial()
@@ -821,6 +961,7 @@ VALUES
                 con.Abrir();
                 using (var cmd = new SqlCommand("SELECT ISNULL(MAX(CAST(secuencial AS INT)), 0) + 1 FROM dbo.Facturas", con.leer))
                 {
+                    cmd.CommandTimeout = 5;
                     int next = Convert.ToInt32(cmd.ExecuteScalar());
                     return next.ToString().PadLeft(9, '0');
                 }
@@ -838,7 +979,8 @@ VALUES
             return digits;
         }
 
-        //  PRINT 
+       
+        // PRINT 
         private void MostrarVistaPrevia()
         {
             if (dtItems == null || dtItems.Rows.Count == 0)
@@ -848,7 +990,6 @@ VALUES
             }
 
             TomarSnapshotDesdeUI();
-
             preview.Width = 1000;
             preview.Height = 800;
             preview.ShowDialog();
@@ -856,80 +997,184 @@ VALUES
 
         private void PrintDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
-            var fTitle = new System.Drawing.Font("Arial", 16, System.Drawing.FontStyle.Bold);
-            var f = new System.Drawing.Font("Arial", 10);
-            var fBold = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
+            // Fuentes
+            var fTitle = new System.Drawing.Font("Arial", 14, System.Drawing.FontStyle.Bold);
+            var fSub = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
+            var f = new System.Drawing.Font("Arial", 9);
+            var fSmall = new System.Drawing.Font("Arial", 8);
 
-            int left = 50;
-            int y = 50;
+            int leftX = e.MarginBounds.Left;
+            int topY = e.MarginBounds.Top;
+            int pageW = e.MarginBounds.Width;
 
-            e.Graphics.DrawString("TALLER MECÁNICO - FACTURA", fTitle, System.Drawing.Brushes.Black, left, y);
-            y += 35;
+            int cursorY = topY;
 
-            e.Graphics.DrawString($"Secuencial: {(string.IsNullOrWhiteSpace(secuencialGenerado) ? "(no generado)" : secuencialGenerado)}", fBold, System.Drawing.Brushes.Black, left, y);
-            y += 18;
+            // ======= HEADER (2 columnas) =======
+            int boxH = 170;
+            int gap = 10;
+            int leftW = (pageW / 2) - (gap / 2);
+            int rightW = pageW - leftW - gap;
 
-            e.Graphics.DrawString($"Fecha: {DateTime.Now:yyyy-MM-dd HH:mm}", f, System.Drawing.Brushes.Black, left, y);
-            y += 18;
+            var rectEmpresa = new System.Drawing.Rectangle(leftX, cursorY, leftW, boxH);
+            var rectFactura = new System.Drawing.Rectangle(leftX + leftW + gap, cursorY, rightW, boxH);
 
-            e.Graphics.DrawString($"OT: {(ordenTrabajoId == null ? "N/A (venta directa)" : ordenTrabajoId.ToString())}", f, System.Drawing.Brushes.Black, left, y);
-            y += 18;
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectEmpresa);
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectFactura);
 
-            e.Graphics.DrawString($"Receptor: {snapNombre}", fBold, System.Drawing.Brushes.Black, left, y); y += 18;
-            e.Graphics.DrawString($"Documento: {snapTipoDoc} {snapNumDoc}", f, System.Drawing.Brushes.Black, left, y); y += 18;
+            // Empresa (izq)
+            int x1 = rectEmpresa.Left + 10;
+            int y1 = rectEmpresa.Top + 10;
+            e.Graphics.DrawString("TALLER MECÁNICO (TU NOMBRE AQUÍ)", fSub, System.Drawing.Brushes.Black, x1, y1); y1 += 18;
+            e.Graphics.DrawString("Dirección: (tu dirección)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
+            e.Graphics.DrawString("Tel: (tu teléfono)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
+            e.Graphics.DrawString("Email: (tu email)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
+            e.Graphics.DrawString("RUC: (tu RUC)", fSub, System.Drawing.Brushes.Black, x1, y1);
 
-            y += 10;
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, left, y, left + e.MarginBounds.Width, y);
-            y += 12;
+            // Factura (der)
+            int x2 = rectFactura.Left + 10;
+            int y2 = rectFactura.Top + 10;
+            e.Graphics.DrawString("FACTURA", fTitle, System.Drawing.Brushes.Black, x2, y2); y2 += 26;
 
-            int colDesc = left;
-            int colCant = left + 320;
-            int colPU = left + 390;
-            int colSub = left + 480;
+            e.Graphics.DrawString("No.:", fSub, System.Drawing.Brushes.Black, x2, y2);
+            e.Graphics.DrawString($"001-001-{(string.IsNullOrWhiteSpace(secuencialGenerado) ? "000000001" : secuencialGenerado)}",
+                fSub, System.Drawing.Brushes.Black, x2 + 45, y2);
+            y2 += 18;
 
-            e.Graphics.DrawString("Descripción", fBold, System.Drawing.Brushes.Black, colDesc, y);
-            e.Graphics.DrawString("Cant", fBold, System.Drawing.Brushes.Black, colCant, y);
-            e.Graphics.DrawString("P.Unit", fBold, System.Drawing.Brushes.Black, colPU, y);
-            e.Graphics.DrawString("Subtotal", fBold, System.Drawing.Brushes.Black, colSub, y);
-            y += 18;
+            e.Graphics.DrawString("CLAVE DE ACCESO:", fSmall, System.Drawing.Brushes.Black, x2, y2); y2 += 12;
+            e.Graphics.DrawString(string.IsNullOrWhiteSpace(claveAccesoGenerada) ? "(no generada)" : claveAccesoGenerada,
+                fSmall, System.Drawing.Brushes.Black, x2, y2);
+            y2 += 16;
 
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, left, y, left + e.MarginBounds.Width, y);
-            y += 8;
+            e.Graphics.DrawString("Fecha emisión:", f, System.Drawing.Brushes.Black, x2, y2);
+            e.Graphics.DrawString(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), f, System.Drawing.Brushes.Black, x2 + 90, y2);
+            y2 += 15;
 
-            foreach (DataRow r in dtItems.Rows)
+            e.Graphics.DrawString("OT:", f, System.Drawing.Brushes.Black, x2, y2);
+            e.Graphics.DrawString((ordenTrabajoId == null ? "N/A" : ordenTrabajoId.ToString()), f, System.Drawing.Brushes.Black, x2 + 30, y2);
+
+            cursorY += boxH + 10;
+
+            // ======= RECEPTOR (1 caja) =======
+            int receptorH = 55;
+            var rectRec = new System.Drawing.Rectangle(leftX, cursorY, pageW, receptorH);
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectRec);
+
+            int rx = rectRec.Left + 10;
+            int ry = rectRec.Top + 8;
+
+            e.Graphics.DrawString("Nombre / Razón Social:", f, System.Drawing.Brushes.Black, rx, ry);
+            e.Graphics.DrawString(snapNombre, fSub, System.Drawing.Brushes.Black, rx + 140, ry);
+
+            e.Graphics.DrawString("Identificación:", f, System.Drawing.Brushes.Black, rx + 430, ry);
+            e.Graphics.DrawString($"{snapTipoDoc} {snapNumDoc}", fSub, System.Drawing.Brushes.Black, rx + 515, ry);
+
+            ry += 18;
+            e.Graphics.DrawString("Dirección:", f, System.Drawing.Brushes.Black, rx, ry);
+            e.Graphics.DrawString(string.IsNullOrWhiteSpace(snapDireccion) ? "-" : snapDireccion, f, System.Drawing.Brushes.Black, rx + 70, ry);
+
+            e.Graphics.DrawString("Email:", f, System.Drawing.Brushes.Black, rx + 430, ry);
+            e.Graphics.DrawString(string.IsNullOrWhiteSpace(snapEmail) ? "-" : snapEmail, f, System.Drawing.Brushes.Black, rx + 475, ry);
+
+            cursorY += receptorH + 10;
+
+            // ======= TABLA ITEMS =======
+            int headerH = 22;
+            int rowH = 18;
+
+            // Columnas (proporciones tipo SRI)
+            int colCod = 70;
+            int colCant = 70;
+            int colDesc = pageW - (colCod + colCant + 90 + 90);
+            int colPU = 90;
+            int colSub = 90;
+
+            // Header
+            var rectHead = new System.Drawing.Rectangle(leftX, cursorY, pageW, headerH);
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectHead);
+
+            int cx = leftX;
+            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod, cursorY, cx + colCod, cursorY + headerH);
+            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant, cursorY, cx + colCod + colCant, cursorY + headerH);
+            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc, cursorY, cx + colCod + colCant + colDesc, cursorY + headerH);
+            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc + colPU, cursorY, cx + colCod + colCant + colDesc + colPU, cursorY + headerH);
+
+            e.Graphics.DrawString("Código", fSmall, System.Drawing.Brushes.Black, leftX + 5, cursorY + 5);
+            e.Graphics.DrawString("Cant", fSmall, System.Drawing.Brushes.Black, leftX + colCod + 5, cursorY + 5);
+            e.Graphics.DrawString("Descripción", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + 5, cursorY + 5);
+            e.Graphics.DrawString("P.Unit", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + 5, cursorY + 5);
+            e.Graphics.DrawString("Total", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + colPU + 5, cursorY + 5);
+
+            cursorY += headerH;
+
+            // Filas
+            for (int i = 0; i < dtItems.Rows.Count; i++)
             {
-                string desc = r.Table.Columns.Contains("nombre_item")
-    ? r["nombre_item"].ToString()
-    : r[""].ToString();
+                var r = dtItems.Rows[i];
+                string desc = r["nombre_item"].ToString();
                 string cant = Convert.ToDecimal(r["cantidad"]).ToString("0.##");
                 string pu = Convert.ToDecimal(r["precio_unitario"]).ToString("0.00");
                 string sub = Convert.ToDecimal(r["subtotal"]).ToString("0.00");
 
-                e.Graphics.DrawString(desc, f, System.Drawing.Brushes.Black, colDesc, y);
-                e.Graphics.DrawString(cant, f, System.Drawing.Brushes.Black, colCant, y);
-                e.Graphics.DrawString(pu, f, System.Drawing.Brushes.Black, colPU, y);
-                e.Graphics.DrawString(sub, f, System.Drawing.Brushes.Black, colSub, y);
+                var rectRow = new System.Drawing.Rectangle(leftX, cursorY, pageW, rowH);
+                e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectRow);
 
-                y += 18;
-                if (y > e.MarginBounds.Bottom - 120)
+                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod, cursorY, cx + colCod, cursorY + rowH);
+                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant, cursorY, cx + colCod + colCant, cursorY + rowH);
+                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc, cursorY, cx + colCod + colCant + colDesc, cursorY + rowH);
+                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc + colPU, cursorY, cx + colCod + colCant + colDesc + colPU, cursorY + rowH);
+
+                e.Graphics.DrawString("-", fSmall, System.Drawing.Brushes.Black, leftX + 5, cursorY + 4);
+                e.Graphics.DrawString(cant, fSmall, System.Drawing.Brushes.Black, leftX + colCod + 5, cursorY + 4);
+                e.Graphics.DrawString(desc, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + 5, cursorY + 4);
+                e.Graphics.DrawString(pu, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + 5, cursorY + 4);
+                e.Graphics.DrawString(sub, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + colPU + 5, cursorY + 4);
+
+                cursorY += rowH;
+
+                // Paginación simple
+                if (cursorY > e.MarginBounds.Bottom - 160)
                 {
                     e.HasMorePages = true;
                     return;
                 }
             }
 
-            y += 10;
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, left, y, left + e.MarginBounds.Width, y);
-            y += 12;
+            cursorY += 8;
 
+            // ======= PIE (izq info adicional / der totales) =======
             decimal subtotal = dtItems.AsEnumerable().Sum(rr => Convert.ToDecimal(rr["subtotal"]));
             decimal pct = GetImpuestoPorcentajeActual() / 100m;
             decimal iva = Math.Round(subtotal * pct, 2);
             decimal total = Math.Round(subtotal + iva, 2);
 
-            e.Graphics.DrawString($"Subtotal: {subtotal:0.00}", fBold, System.Drawing.Brushes.Black, colSub, y); y += 18;
-            e.Graphics.DrawString($"IVA ({GetImpuestoPorcentajeActual():0.##}%): {iva:0.00}", fBold, System.Drawing.Brushes.Black, colSub, y); y += 18;
-            e.Graphics.DrawString($"TOTAL: {total:0.00}", new System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, colSub, y);
+            int pieH = 120;
+            int pieLeftW = (pageW * 62) / 100;
+            int pieRightW = pageW - pieLeftW - gap;
+
+            var rectInfo = new System.Drawing.Rectangle(leftX, cursorY, pieLeftW, pieH);
+            var rectTot = new System.Drawing.Rectangle(leftX + pieLeftW + gap, cursorY, pieRightW, pieH);
+
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectInfo);
+            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectTot);
+
+            int ix = rectInfo.Left + 10;
+            int iy = rectInfo.Top + 10;
+            e.Graphics.DrawString("INFORMACIÓN ADICIONAL:", fSub, System.Drawing.Brushes.Black, ix, iy); iy += 18;
+            e.Graphics.DrawString("Correo: " + (string.IsNullOrWhiteSpace(snapEmail) ? "-" : snapEmail), f, System.Drawing.Brushes.Black, ix, iy); iy += 14;
+            e.Graphics.DrawString("Teléfono: " + (string.IsNullOrWhiteSpace(snapTelefono) ? "-" : snapTelefono), f, System.Drawing.Brushes.Black, ix, iy); iy += 14;
+            e.Graphics.DrawString("Forma de pago: EFECTIVO", f, System.Drawing.Brushes.Black, ix, iy);
+
+            int tx = rectTot.Left + 10;
+            int ty = rectTot.Top + 10;
+
+            e.Graphics.DrawString("SUBTOTAL:", f, System.Drawing.Brushes.Black, tx, ty);
+            e.Graphics.DrawString(subtotal.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty); ty += 16;
+
+            e.Graphics.DrawString($"IVA ({GetImpuestoPorcentajeActual():0.##}%):", f, System.Drawing.Brushes.Black, tx, ty);
+            e.Graphics.DrawString(iva.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty); ty += 16;
+
+            e.Graphics.DrawString("TOTAL:", fSub, System.Drawing.Brushes.Black, tx, ty);
+            e.Graphics.DrawString(total.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty);
 
             e.HasMorePages = false;
         }

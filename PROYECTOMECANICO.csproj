@@ -114,6 +114,12 @@
     <Compile Include="Modulo_Facturacion\FormGenFactu.Designer.cs">
       <DependentUpon>FormGenFactu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Facturacion\FormItemPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Facturacion\FormItemPicker.Designer.cs">
+      <DependentUpon>FormItemPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Inicio\FormInicio.cs">
       <SubType>Form</SubType>
     </Compile>
