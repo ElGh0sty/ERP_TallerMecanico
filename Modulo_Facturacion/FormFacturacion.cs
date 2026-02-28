@@ -65,6 +65,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 );
                 return;
             }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(
+                    new CobroCaja(usuarioId)
+                    );
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
