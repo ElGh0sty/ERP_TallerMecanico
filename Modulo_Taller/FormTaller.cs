@@ -43,7 +43,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 );
                 return;
             }
-            FormPrincipal objetoPadre = (FormPrincipal)this.ParentForm;
+            Form1 objetoPadre = (Form1)this.ParentForm;
             if (objetoPadre != null)
             {
                 objetoPadre.AbrirFormularioEnPanel(new FormOrdenTrabajo(usuarioId , rolUsuario));

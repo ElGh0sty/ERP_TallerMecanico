@@ -27,6 +27,7 @@ namespace PROYECTOMECANICO
             this.Padding = new Padding(borderSize);//Border size
             this.BackColor = Color.FromArgb(98, 102, 244);
 
+            
             this.usuarioId = usuarioId;
             this.rolUsuario = rol;
             this.usuarioActual = usuario;
