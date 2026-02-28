@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PROYECTOMECANICO.Seguridad;
+
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
@@ -15,6 +16,8 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 {
     public partial class FormClientes : Form
     {
+        private int borderSize = 2;
+        private Size formSize;
         private string rolUsuario;
 
         public FormClientes(string rolUsuario)
@@ -151,5 +154,22 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             btn.FlatAppearance.BorderSize = 0;
         }
 
+        private void FormClientes_Resize(object sender, EventArgs e)
+        {
+            AdjustForm();
+        }
+        private void AdjustForm()
+        {
+            switch (this.WindowState)
+            {
+                case FormWindowState.Maximized: //Maximized form (After)
+                    this.Padding = new Padding(8, 8, 8, 0);
+                    break;
+                case FormWindowState.Normal: //Restored form (After)
+                    if (this.Padding.Top != borderSize)
+                        this.Padding = new Padding(borderSize);
+                    break;
+            }
+        }
     }
 }

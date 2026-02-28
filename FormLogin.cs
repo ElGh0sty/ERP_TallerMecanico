@@ -46,7 +46,7 @@ AND U.activo = 1";
                     string userLogueado = leer["nombre_usuario"].ToString();
                     string rolNombre = leer["nombre"].ToString();
 
-                    Form1 principal = new Form1(userId, rolNombre, userLogueado);
+                    FormPrincipal principal = new FormPrincipal(userId, rolNombre, userLogueado);
                     principal.Show();
                     this.Hide();
 

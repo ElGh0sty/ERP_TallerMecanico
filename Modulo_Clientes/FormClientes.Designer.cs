@@ -118,6 +118,7 @@
             this.Name = "FormClientes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modulo Clientes";
+            this.Resize += new System.EventHandler(this.FormClientes_Resize);
             this.ResumeLayout(false);
 
         }
