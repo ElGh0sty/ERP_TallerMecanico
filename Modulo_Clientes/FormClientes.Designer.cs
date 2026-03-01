@@ -54,6 +54,7 @@
             // 
             // btnOrden
             // 
+            this.btnOrden.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOrden.BackColor = System.Drawing.Color.Gold;
             this.btnOrden.FlatAppearance.BorderSize = 0;
             this.btnOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -71,6 +72,7 @@
             // 
             // btnRegistrarVe
             // 
+            this.btnRegistrarVe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRegistrarVe.BackColor = System.Drawing.Color.LightSalmon;
             this.btnRegistrarVe.FlatAppearance.BorderSize = 0;
             this.btnRegistrarVe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
