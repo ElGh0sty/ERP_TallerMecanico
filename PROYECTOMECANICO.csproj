@@ -187,6 +187,12 @@
     <Compile Include="Modulo_Facturacion\FormItemPicker.Designer.cs">
       <DependentUpon>FormItemPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Facturacion\FormRepGastos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Facturacion\FormRepGastos.Designer.cs">
+      <DependentUpon>FormRepGastos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Facturacion\FormRepVentas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormGenFactu.resx">
       <DependentUpon>FormGenFactu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Facturacion\FormRepGastos.resx">
+      <DependentUpon>FormRepGastos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormRepVentas.resx">
       <DependentUpon>FormRepVentas.cs</DependentUpon>

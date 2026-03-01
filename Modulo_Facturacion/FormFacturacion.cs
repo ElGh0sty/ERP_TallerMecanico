@@ -107,6 +107,13 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 );
                 return;
             }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(
+                    new FormRepGastos()
+                    );
+            }
         }
 
         private void AplicarBotonesRedondos()
