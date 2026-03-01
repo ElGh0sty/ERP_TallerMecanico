@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using PROYECTOMECANICO.Seguridad;
 
 namespace PROYECTOMECANICO
 {
@@ -227,8 +228,22 @@ namespace PROYECTOMECANICO
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion(usuarioId,rolUsuario));
         }
 
+        private bool PuedeUsarEsteModulo()
+        {
+            return Permisos.TienePermiso(rolUsuario, "PERSONAL");
+        }
         private void btnPersonal_Click(object sender, EventArgs e)
         {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
             buttonof();
             btnPersonal.FillColor = Color.FromArgb(50, 100, 201);
             btnPersonal.FillColor2 = Color.FromArgb(255, 77, 165);
@@ -237,6 +252,16 @@ namespace PROYECTOMECANICO
 
         private void btnConfiguracion_Click(object sender, EventArgs e)
         {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
             buttonof();
             btnConfiguracion.FillColor = Color.FromArgb(50, 100, 201);
             btnConfiguracion.FillColor2 = Color.FromArgb(255, 77, 165);

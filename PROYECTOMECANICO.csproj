@@ -356,6 +356,9 @@
     <EmbeddedResource Include="Modulo_Inventario\FormProveePopup.resx">
       <DependentUpon>FormProveePopup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Personal\FormPersonal.resx">
+      <DependentUpon>FormPersonal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Taller\FormHistorial.resx">
       <DependentUpon>FormHistorial.cs</DependentUpon>
     </EmbeddedResource>

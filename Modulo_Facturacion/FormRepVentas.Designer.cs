@@ -361,6 +361,7 @@
             this.splitContainer1.Size = new System.Drawing.Size(908, 331);
             this.splitContainer1.SplitterDistance = 333;
             this.splitContainer1.TabIndex = 5;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // guna2Panel1
             // 

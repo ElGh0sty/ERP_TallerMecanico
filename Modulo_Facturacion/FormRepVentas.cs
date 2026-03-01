@@ -468,5 +468,10 @@ ORDER BY YEAR(f.fecha), DATEPART(ISO_WEEK, f.fecha);";
         {
 
         }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+
+        }
     }
 }
