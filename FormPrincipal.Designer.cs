@@ -29,13 +29,6 @@
         private void InitializeComponent()
         {
             this.panelMenu = new System.Windows.Forms.Panel();
-            this.btnPersonal = new System.Windows.Forms.Button();
-            this.btnConfiguracion = new System.Windows.Forms.Button();
-            this.btnFactu = new System.Windows.Forms.Button();
-            this.btnInven = new System.Windows.Forms.Button();
-            this.btnTaller = new System.Windows.Forms.Button();
-            this.btnClientes = new System.Windows.Forms.Button();
-            this.btnInicio = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -49,6 +42,12 @@
             this.iconButton3 = new FontAwesome.Sharp.IconButton();
             this.iconButton2 = new FontAwesome.Sharp.IconButton();
             this.panelDesktop = new System.Windows.Forms.Panel();
+            this.btnInicio = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnClientes = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnTaller = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnFacturacion = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnConfiguracion = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnPersonal = new Guna.UI2.WinForms.Guna2GradientButton();
             this.panelMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -60,8 +59,7 @@
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(102)))), ((int)(((byte)(244)))));
             this.panelMenu.Controls.Add(this.btnPersonal);
             this.panelMenu.Controls.Add(this.btnConfiguracion);
-            this.panelMenu.Controls.Add(this.btnFactu);
-            this.panelMenu.Controls.Add(this.btnInven);
+            this.panelMenu.Controls.Add(this.btnFacturacion);
             this.panelMenu.Controls.Add(this.btnTaller);
             this.panelMenu.Controls.Add(this.btnClientes);
             this.panelMenu.Controls.Add(this.btnInicio);
@@ -75,153 +73,6 @@
             this.panelMenu.Name = "panelMenu";
             this.panelMenu.Size = new System.Drawing.Size(248, 661);
             this.panelMenu.TabIndex = 0;
-            // 
-            // btnPersonal
-            // 
-            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnPersonal.FlatAppearance.BorderSize = 0;
-            this.btnPersonal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPersonal.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPersonal.ForeColor = System.Drawing.Color.White;
-            this.btnPersonal.Image = global::PROYECTOMECANICO.Properties.Resources.agent_102942;
-            this.btnPersonal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPersonal.Location = new System.Drawing.Point(15, 517);
-            this.btnPersonal.Name = "btnPersonal";
-            this.btnPersonal.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnPersonal.Size = new System.Drawing.Size(218, 72);
-            this.btnPersonal.TabIndex = 19;
-            this.btnPersonal.Tag = "Personal";
-            this.btnPersonal.Text = "  Personal";
-            this.btnPersonal.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnPersonal.UseVisualStyleBackColor = true;
-            this.btnPersonal.Click += new System.EventHandler(this.btnPersonal_Click);
-            // 
-            // btnConfiguracion
-            // 
-            this.btnConfiguracion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfiguracion.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnConfiguracion.FlatAppearance.BorderSize = 0;
-            this.btnConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConfiguracion.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConfiguracion.ForeColor = System.Drawing.Color.White;
-            this.btnConfiguracion.Image = global::PROYECTOMECANICO.Properties.Resources.configurations_102859;
-            this.btnConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnConfiguracion.Location = new System.Drawing.Point(15, 589);
-            this.btnConfiguracion.Name = "btnConfiguracion";
-            this.btnConfiguracion.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnConfiguracion.Size = new System.Drawing.Size(218, 72);
-            this.btnConfiguracion.TabIndex = 18;
-            this.btnConfiguracion.Tag = "Ajustes";
-            this.btnConfiguracion.Text = "  Ajustes";
-            this.btnConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnConfiguracion.UseVisualStyleBackColor = true;
-            this.btnConfiguracion.Click += new System.EventHandler(this.btnConfiguracion_Click);
-            // 
-            // btnFactu
-            // 
-            this.btnFactu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFactu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnFactu.FlatAppearance.BorderSize = 0;
-            this.btnFactu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFactu.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFactu.ForeColor = System.Drawing.Color.White;
-            this.btnFactu.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
-            this.btnFactu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFactu.Location = new System.Drawing.Point(15, 399);
-            this.btnFactu.Name = "btnFactu";
-            this.btnFactu.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnFactu.Size = new System.Drawing.Size(218, 72);
-            this.btnFactu.TabIndex = 17;
-            this.btnFactu.Tag = "Facturacion";
-            this.btnFactu.Text = "  Facturacion";
-            this.btnFactu.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnFactu.UseVisualStyleBackColor = true;
-            this.btnFactu.Click += new System.EventHandler(this.btnFacturacion_Click);
-            // 
-            // btnInven
-            // 
-            this.btnInven.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInven.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnInven.FlatAppearance.BorderSize = 0;
-            this.btnInven.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInven.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInven.ForeColor = System.Drawing.Color.White;
-            this.btnInven.Image = global::PROYECTOMECANICO.Properties.Resources.box_open_102904;
-            this.btnInven.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInven.Location = new System.Drawing.Point(15, 327);
-            this.btnInven.Name = "btnInven";
-            this.btnInven.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnInven.Size = new System.Drawing.Size(218, 72);
-            this.btnInven.TabIndex = 16;
-            this.btnInven.Tag = "Inventario";
-            this.btnInven.Text = "  Inventario";
-            this.btnInven.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnInven.UseVisualStyleBackColor = true;
-            this.btnInven.Click += new System.EventHandler(this.btnInventario_Click);
-            // 
-            // btnTaller
-            // 
-            this.btnTaller.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTaller.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnTaller.FlatAppearance.BorderSize = 0;
-            this.btnTaller.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTaller.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTaller.ForeColor = System.Drawing.Color.White;
-            this.btnTaller.Image = global::PROYECTOMECANICO.Properties.Resources.tools2_102885;
-            this.btnTaller.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaller.Location = new System.Drawing.Point(15, 255);
-            this.btnTaller.Name = "btnTaller";
-            this.btnTaller.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnTaller.Size = new System.Drawing.Size(218, 72);
-            this.btnTaller.TabIndex = 15;
-            this.btnTaller.Tag = "Taller";
-            this.btnTaller.Text = "  Taller";
-            this.btnTaller.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTaller.UseVisualStyleBackColor = true;
-            this.btnTaller.Click += new System.EventHandler(this.btnTaller_Click);
-            // 
-            // btnClientes
-            // 
-            this.btnClientes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClientes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnClientes.FlatAppearance.BorderSize = 0;
-            this.btnClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClientes.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClientes.ForeColor = System.Drawing.Color.White;
-            this.btnClientes.Image = global::PROYECTOMECANICO.Properties.Resources.user_female_102881;
-            this.btnClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClientes.Location = new System.Drawing.Point(15, 183);
-            this.btnClientes.Name = "btnClientes";
-            this.btnClientes.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnClientes.Size = new System.Drawing.Size(218, 72);
-            this.btnClientes.TabIndex = 14;
-            this.btnClientes.Tag = "Clientes";
-            this.btnClientes.Text = "  Clientes";
-            this.btnClientes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnClientes.UseVisualStyleBackColor = true;
-            this.btnClientes.Click += new System.EventHandler(this.btnClientes_Click);
-            // 
-            // btnInicio
-            // 
-            this.btnInicio.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInicio.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnInicio.FlatAppearance.BorderSize = 0;
-            this.btnInicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInicio.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInicio.ForeColor = System.Drawing.Color.White;
-            this.btnInicio.Image = global::PROYECTOMECANICO.Properties.Resources.laptop_content_102849;
-            this.btnInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInicio.Location = new System.Drawing.Point(15, 111);
-            this.btnInicio.Name = "btnInicio";
-            this.btnInicio.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnInicio.Size = new System.Drawing.Size(218, 72);
-            this.btnInicio.TabIndex = 13;
-            this.btnInicio.Tag = "Inicio";
-            this.btnInicio.Text = "  Inicio";
-            this.btnInicio.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnInicio.UseVisualStyleBackColor = true;
-            this.btnInicio.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel3
             // 
@@ -387,6 +238,156 @@
             this.panelDesktop.Size = new System.Drawing.Size(936, 601);
             this.panelDesktop.TabIndex = 2;
             // 
+            // btnInicio
+            // 
+            this.btnInicio.BorderRadius = 10;
+            this.btnInicio.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnInicio.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnInicio.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInicio.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInicio.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnInicio.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInicio.FillColor = System.Drawing.Color.Transparent;
+            this.btnInicio.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnInicio.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInicio.ForeColor = System.Drawing.Color.White;
+            this.btnInicio.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnInicio.Image = global::PROYECTOMECANICO.Properties.Resources.laptop_content_102849;
+            this.btnInicio.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInicio.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnInicio.Location = new System.Drawing.Point(15, 111);
+            this.btnInicio.Name = "btnInicio";
+            this.btnInicio.Size = new System.Drawing.Size(218, 72);
+            this.btnInicio.TabIndex = 26;
+            this.btnInicio.Tag = "Inicio";
+            this.btnInicio.Text = " Inicio";
+            this.btnInicio.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnClientes
+            // 
+            this.btnClientes.BorderRadius = 10;
+            this.btnClientes.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnClientes.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnClientes.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnClientes.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnClientes.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnClientes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnClientes.FillColor = System.Drawing.Color.Transparent;
+            this.btnClientes.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnClientes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClientes.ForeColor = System.Drawing.Color.White;
+            this.btnClientes.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnClientes.Image = global::PROYECTOMECANICO.Properties.Resources.user_female_102881;
+            this.btnClientes.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnClientes.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnClientes.Location = new System.Drawing.Point(15, 183);
+            this.btnClientes.Name = "btnClientes";
+            this.btnClientes.Size = new System.Drawing.Size(218, 72);
+            this.btnClientes.TabIndex = 27;
+            this.btnClientes.Tag = "Clientes";
+            this.btnClientes.Text = "Clientes";
+            this.btnClientes.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnTaller
+            // 
+            this.btnTaller.BorderRadius = 10;
+            this.btnTaller.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaller.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaller.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnTaller.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnTaller.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnTaller.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnTaller.FillColor = System.Drawing.Color.Transparent;
+            this.btnTaller.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnTaller.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTaller.ForeColor = System.Drawing.Color.White;
+            this.btnTaller.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnTaller.Image = global::PROYECTOMECANICO.Properties.Resources.tools2_102885;
+            this.btnTaller.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTaller.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnTaller.Location = new System.Drawing.Point(15, 255);
+            this.btnTaller.Name = "btnTaller";
+            this.btnTaller.Size = new System.Drawing.Size(218, 72);
+            this.btnTaller.TabIndex = 28;
+            this.btnTaller.Tag = "Taller";
+            this.btnTaller.Text = " Taller";
+            this.btnTaller.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnFacturacion
+            // 
+            this.btnFacturacion.BorderRadius = 10;
+            this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnFacturacion.FillColor = System.Drawing.Color.Transparent;
+            this.btnFacturacion.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnFacturacion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFacturacion.ForeColor = System.Drawing.Color.White;
+            this.btnFacturacion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
+            this.btnFacturacion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnFacturacion.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnFacturacion.Location = new System.Drawing.Point(15, 327);
+            this.btnFacturacion.Name = "btnFacturacion";
+            this.btnFacturacion.Size = new System.Drawing.Size(218, 72);
+            this.btnFacturacion.TabIndex = 29;
+            this.btnFacturacion.Tag = "Facturacion";
+            this.btnFacturacion.Text = " Facturacion";
+            this.btnFacturacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnConfiguracion
+            // 
+            this.btnConfiguracion.BorderRadius = 10;
+            this.btnConfiguracion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnConfiguracion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnConfiguracion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnConfiguracion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnConfiguracion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnConfiguracion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnConfiguracion.FillColor = System.Drawing.Color.Transparent;
+            this.btnConfiguracion.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnConfiguracion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfiguracion.ForeColor = System.Drawing.Color.White;
+            this.btnConfiguracion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnConfiguracion.Image = global::PROYECTOMECANICO.Properties.Resources.configurations_102859;
+            this.btnConfiguracion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnConfiguracion.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnConfiguracion.Location = new System.Drawing.Point(15, 601);
+            this.btnConfiguracion.Name = "btnConfiguracion";
+            this.btnConfiguracion.Size = new System.Drawing.Size(218, 60);
+            this.btnConfiguracion.TabIndex = 30;
+            this.btnConfiguracion.Tag = "Ajustes";
+            this.btnConfiguracion.Text = "Ajustes";
+            this.btnConfiguracion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnPersonal
+            // 
+            this.btnPersonal.BorderRadius = 10;
+            this.btnPersonal.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnPersonal.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnPersonal.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnPersonal.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnPersonal.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnPersonal.FillColor = System.Drawing.Color.Transparent;
+            this.btnPersonal.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnPersonal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPersonal.ForeColor = System.Drawing.Color.White;
+            this.btnPersonal.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnPersonal.Image = global::PROYECTOMECANICO.Properties.Resources.agent_102942;
+            this.btnPersonal.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPersonal.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnPersonal.Location = new System.Drawing.Point(15, 541);
+            this.btnPersonal.Name = "btnPersonal";
+            this.btnPersonal.Size = new System.Drawing.Size(218, 60);
+            this.btnPersonal.TabIndex = 31;
+            this.btnPersonal.Tag = "Personal";
+            this.btnPersonal.Text = " Personal";
+            this.btnPersonal.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,16 +421,15 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btnPersonal;
-        private System.Windows.Forms.Button btnConfiguracion;
-        private System.Windows.Forms.Button btnFactu;
-        private System.Windows.Forms.Button btnInven;
-        private System.Windows.Forms.Button btnTaller;
-        private System.Windows.Forms.Button btnClientes;
-        private System.Windows.Forms.Button btnInicio;
         private FontAwesome.Sharp.IconButton iconButton2;
         private FontAwesome.Sharp.IconButton iconButton4;
         private FontAwesome.Sharp.IconButton iconButton3;
         private System.Windows.Forms.Label lblSesion;
+        private Guna.UI2.WinForms.Guna2GradientButton btnFacturacion;
+        private Guna.UI2.WinForms.Guna2GradientButton btnTaller;
+        private Guna.UI2.WinForms.Guna2GradientButton btnClientes;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInicio;
+        private Guna.UI2.WinForms.Guna2GradientButton btnPersonal;
+        private Guna.UI2.WinForms.Guna2GradientButton btnConfiguracion;
     }
 }

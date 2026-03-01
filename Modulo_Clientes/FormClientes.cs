@@ -127,10 +127,10 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         private void AplicarBotonesRedondos()
         {
             // Ejemplo: botón Guardar
-            BotonRedondo(btnCatalogo , 20);
+            BotonRedondo(btnCatalogo, 20);
             BotonRedondo(btnOrden, 20);
-             BotonRedondo(btnRegistrar, 20);
-             BotonRedondo(btnRegistrarVe, 20);
+            BotonRedondo(btnRegistrar, 20);
+            BotonRedondo(btnRegistrarVe, 20);
         }
 
 
@@ -170,6 +170,26 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                         this.Padding = new Padding(borderSize);
                     break;
             }
+        }
+
+        private void tableLayoutPanel1_Resize(object sender, EventArgs e)
+        {
+
+        }
+        private void AjustarBoton(Control btn, float scale)
+        {
+            // Fuente
+            float baseFont = 12f;
+            btn.Font = new Font(btn.Font.FontFamily, baseFont * scale, FontStyle.Regular);
+
+            // Si es Guna2GradientButton, ajusta imagen también
+            if (btn is Guna.UI2.WinForms.Guna2GradientButton gbtn)
+            {
+                int baseImg = 48; // el tamaño que te gustó en modo ventana
+                int img = (int)(baseImg * scale);
+                gbtn.ImageSize = new Size(img, img);
+            }
+
         }
     }
 }

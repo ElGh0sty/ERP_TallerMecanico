@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace PROYECTOMECANICO
 {
@@ -30,7 +31,7 @@ namespace PROYECTOMECANICO
             this.Padding = new Padding(borderSize);//Border size
             this.BackColor = Color.FromArgb(98, 102, 244);
 
-
+            
 
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
             this.usuarioId = usuarioId;   
@@ -154,22 +155,34 @@ namespace PROYECTOMECANICO
 
             lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario} \t Vista: {nombreForm}";
         }
-
+        private Form _formActivo;
         public void AbrirFormularioEnPanel(object formularioHijo)
         {
-            if (this.panel6.Controls.Count > 0)
-                this.panel6.Controls.RemoveAt(0);
+            // Cerrar/limpiar anterior
+            if (_formActivo != null)
+            {
+                _formActivo.Close();
+                _formActivo.Dispose();
+                _formActivo = null;
+            }
 
-            Form fh = formularioHijo as Form;
-            fh.TopLevel = false;
-            fh.FormBorderStyle = FormBorderStyle.None;
-            fh.Dock = DockStyle.Fill;
+            panel6.SuspendLayout();
+            panel6.Controls.Clear();
 
-            this.panel6.Controls.Add(fh);
-            this.panel6.Tag = fh;
-            ActualizarSesionConFormulario(fh);
+            Form frm = formularioHijo as Form;
+            // Configurar para que se comporte como "contenido"
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;          // <- esto es lo más importante
+            frm.AutoScroll = true;              // útil si en tamaños pequeños no cabe
+            frm.AutoScaleMode = AutoScaleMode.Dpi; // o Font, ver punto 3
 
-            fh.Show();
+            panel6.Controls.Add(frm);
+            ActualizarSesionConFormulario(frm);
+            frm.Show();
+
+            _formActivo = frm;
+            panel6.ResumeLayout();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -179,27 +192,42 @@ namespace PROYECTOMECANICO
 
         private void btnTaller_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnTaller.FillColor = Color.FromArgb(50, 100, 201);
+            btnTaller.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Taller.FormTaller(usuarioId ,rolUsuario));
         }
 
         private void btnInventario_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnTaller.FillColor = Color.FromArgb(50, 100, 201);
+            btnTaller.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario(usuarioId, rolUsuario));
         }
 
         private void btnFacturacion_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnFacturacion.FillColor = Color.FromArgb(50, 100, 201);
+            btnFacturacion.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Facturacion.FormFacturacion(usuarioId,rolUsuario));
         }
 
         private void btnPersonal_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnPersonal.FillColor = Color.FromArgb(50, 100, 201);
+            btnPersonal.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Personal.FormPersonal());
         }
 
         private void btnConfiguracion_Click(object sender, EventArgs e)
         {
-           AbrirFormularioEnPanel(new Modulo_Config.FormConfiguracion());
+            buttonof();
+            btnConfiguracion.FillColor = Color.FromArgb(50, 100, 201);
+            btnConfiguracion.FillColor2 = Color.FromArgb(255, 77, 165);
+            AbrirFormularioEnPanel(new Modulo_Config.FormConfiguracion());
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -214,10 +242,16 @@ namespace PROYECTOMECANICO
 
         private void button1_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnInicio.FillColor = Color.FromArgb(50, 100, 201);
+            btnInicio.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
         }
         private void btnClientes_Click(object sender, EventArgs e)
         {
+            buttonof();
+            btnClientes.FillColor = Color.FromArgb(50, 100, 201);
+            btnClientes.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Clientes.FormClientes(rolUsuario));
         }
 
@@ -302,6 +336,13 @@ namespace PROYECTOMECANICO
                     menuButton.ImageAlign = ContentAlignment.MiddleCenter;
                     menuButton.Padding = new Padding(0);
                 }
+                
+                foreach(Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna2GradientButton>())
+                {
+                    menuButton2.Text = "";
+                    menuButton2.ImageAlign = HorizontalAlignment.Center;
+                    menuButton2.Padding = new Padding(0);
+                }
             }
             else
             { //Expand menu
@@ -318,6 +359,12 @@ namespace PROYECTOMECANICO
                     menuButton.Text = "   " + menuButton.Tag.ToString();
                     menuButton.ImageAlign = ContentAlignment.MiddleLeft;
                     menuButton.Padding = new Padding(10, 0, 0, 0);
+                }
+                foreach (Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna2GradientButton>())
+                {
+                    menuButton2.Text = "   " + menuButton2.Tag.ToString();
+                    menuButton2.ImageAlign = HorizontalAlignment.Left;
+                    menuButton2.Padding = new Padding(10, 0, 0, 0);
                 }
             }
         }
@@ -349,28 +396,19 @@ namespace PROYECTOMECANICO
             Application.Exit();
         }
 
-        private void guna2GradientButton1_Click(object sender, EventArgs e)
-        {
-            buttonof();
-            guna2GradientButton1.FillColor = Color.FromArgb(50, 100, 201);
-            guna2GradientButton1.FillColor2 = Color.FromArgb(255, 77, 165); 
-        }
+        
 
         private void buttonof()
         {
-            guna2GradientButton1.FillColor = Color.Transparent;
-            guna2GradientButton1.FillColor2 = Color.Transparent;
+            foreach (Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna2GradientButton>())
+            {
+                menuButton2.FillColor = Color.Transparent;
+                menuButton2.FillColor2 = Color.Transparent;
+            }
 
-            guna2GradientButton2.FillColor = Color.Transparent;
-            guna2GradientButton2.FillColor2 = Color.Transparent;
         }
 
-        private void guna2GradientButton2_Click(object sender, EventArgs e)
-        {
-            buttonof();
-            guna2GradientButton2.FillColor = Color.FromArgb(50, 100, 201);
-            guna2GradientButton2.FillColor2 = Color.FromArgb(255, 77, 165);
-        }
+        
     }
 }
 
