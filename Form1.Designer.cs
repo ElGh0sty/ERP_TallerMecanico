@@ -45,11 +45,12 @@
             this.panelMenu = new System.Windows.Forms.Panel();
             this.btnPersonal = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnConfiguracion = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.btnFacturacion = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnInventario = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnTaller = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnClientes = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnInicio = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnCerrarSesion = new FontAwesome.Sharp.IconButton();
+            this.btnFacturacion = new Guna.UI2.WinForms.Guna2GradientButton();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -211,9 +212,10 @@
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(102)))), ((int)(((byte)(244)))));
+            this.panelMenu.Controls.Add(this.btnFacturacion);
             this.panelMenu.Controls.Add(this.btnPersonal);
             this.panelMenu.Controls.Add(this.btnConfiguracion);
-            this.panelMenu.Controls.Add(this.btnFacturacion);
+            this.panelMenu.Controls.Add(this.btnInventario);
             this.panelMenu.Controls.Add(this.btnTaller);
             this.panelMenu.Controls.Add(this.btnClientes);
             this.panelMenu.Controls.Add(this.btnInicio);
@@ -286,33 +288,33 @@
             this.btnConfiguracion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnConfiguracion.Click += new System.EventHandler(this.btnConfiguracion_Click);
             // 
-            // btnFacturacion
+            // btnInventario
             // 
-            this.btnFacturacion.Animated = true;
-            this.btnFacturacion.BorderRadius = 10;
-            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFacturacion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFacturacion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnFacturacion.FillColor = System.Drawing.Color.Transparent;
-            this.btnFacturacion.FillColor2 = System.Drawing.Color.Transparent;
-            this.btnFacturacion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFacturacion.ForeColor = System.Drawing.Color.White;
-            this.btnFacturacion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
-            this.btnFacturacion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnFacturacion.ImageSize = new System.Drawing.Size(50, 50);
-            this.btnFacturacion.Location = new System.Drawing.Point(15, 334);
-            this.btnFacturacion.Name = "btnFacturacion";
-            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
-            this.btnFacturacion.TabIndex = 35;
-            this.btnFacturacion.Tag = "Facturacion";
-            this.btnFacturacion.Text = " Facturacion";
-            this.btnFacturacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
+            this.btnInventario.Animated = true;
+            this.btnInventario.BorderRadius = 10;
+            this.btnInventario.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInventario.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnInventario.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnInventario.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInventario.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInventario.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnInventario.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInventario.FillColor = System.Drawing.Color.Transparent;
+            this.btnInventario.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnInventario.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInventario.ForeColor = System.Drawing.Color.White;
+            this.btnInventario.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnInventario.Image = global::PROYECTOMECANICO.Properties.Resources.box_open_102904;
+            this.btnInventario.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInventario.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnInventario.Location = new System.Drawing.Point(15, 334);
+            this.btnInventario.Name = "btnInventario";
+            this.btnInventario.Size = new System.Drawing.Size(246, 72);
+            this.btnInventario.TabIndex = 35;
+            this.btnInventario.Tag = " Inventario";
+            this.btnInventario.Text = " Inventario";
+            this.btnInventario.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInventario.Click += new System.EventHandler(this.btnInventario_Click);
             // 
             // btnTaller
             // 
@@ -418,6 +420,34 @@
             this.btnCerrarSesion.UseVisualStyleBackColor = false;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
+            // btnFacturacion
+            // 
+            this.btnFacturacion.Animated = true;
+            this.btnFacturacion.BorderRadius = 10;
+            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnFacturacion.FillColor = System.Drawing.Color.Transparent;
+            this.btnFacturacion.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnFacturacion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFacturacion.ForeColor = System.Drawing.Color.White;
+            this.btnFacturacion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
+            this.btnFacturacion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnFacturacion.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnFacturacion.Location = new System.Drawing.Point(15, 406);
+            this.btnFacturacion.Name = "btnFacturacion";
+            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
+            this.btnFacturacion.TabIndex = 39;
+            this.btnFacturacion.Tag = "Facturacion";
+            this.btnFacturacion.Text = " Facturacion";
+            this.btnFacturacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -429,7 +459,6 @@
             this.Controls.Add(this.panelMenu);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
@@ -464,11 +493,12 @@
         private FontAwesome.Sharp.IconButton iconButton2;
         private Guna.UI2.WinForms.Guna2GradientButton btnPersonal;
         private Guna.UI2.WinForms.Guna2GradientButton btnConfiguracion;
-        private Guna.UI2.WinForms.Guna2GradientButton btnFacturacion;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInventario;
         private Guna.UI2.WinForms.Guna2GradientButton btnTaller;
         private Guna.UI2.WinForms.Guna2GradientButton btnClientes;
         private Guna.UI2.WinForms.Guna2GradientButton btnInicio;
         private FontAwesome.Sharp.IconButton btnCerrarSesion;
+        private Guna.UI2.WinForms.Guna2GradientButton btnFacturacion;
     }
 }
 

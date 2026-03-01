@@ -214,8 +214,8 @@ namespace PROYECTOMECANICO
         private void btnInventario_Click(object sender, EventArgs e)
         {
             buttonof();
-            btnTaller.FillColor = Color.FromArgb(50, 100, 201);
-            btnTaller.FillColor2 = Color.FromArgb(255, 77, 165);
+            btnInventario.FillColor = Color.FromArgb(50, 100, 201);
+            btnInventario.FillColor2 = Color.FromArgb(255, 77, 165);
             AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inventario.FormInventario(usuarioId, rolUsuario));
         }
 

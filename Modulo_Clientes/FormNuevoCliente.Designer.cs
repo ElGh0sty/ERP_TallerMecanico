@@ -36,6 +36,8 @@
             // dgvNuevo
             // 
             this.dgvNuevo.AllowUserToAddRows = false;
+            this.dgvNuevo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNuevo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvNuevo.Location = new System.Drawing.Point(12, 12);
             this.dgvNuevo.Name = "dgvNuevo";
@@ -45,6 +47,7 @@
             // 
             // btnNuevoCliente
             // 
+            this.btnNuevoCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNuevoCliente.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.btnNuevoCliente.FlatAppearance.BorderSize = 0;
             this.btnNuevoCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
