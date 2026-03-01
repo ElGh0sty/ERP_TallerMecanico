@@ -43,7 +43,7 @@
             this.btnCatalogo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCatalogo.ForeColor = System.Drawing.Color.White;
             this.btnCatalogo.Image = global::PROYECTOMECANICO.Properties.Resources.file_document_new_contract_icon_131249;
-            this.btnCatalogo.Location = new System.Drawing.Point(43, 347);
+            this.btnCatalogo.Location = new System.Drawing.Point(43, 268);
             this.btnCatalogo.Name = "btnCatalogo";
             this.btnCatalogo.Size = new System.Drawing.Size(372, 169);
             this.btnCatalogo.TabIndex = 16;
@@ -60,7 +60,7 @@
             this.btnOrden.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOrden.ForeColor = System.Drawing.Color.White;
             this.btnOrden.Image = global::PROYECTOMECANICO.Properties.Resources.search_find_magnify_icon_131253;
-            this.btnOrden.Location = new System.Drawing.Point(493, 347);
+            this.btnOrden.Location = new System.Drawing.Point(493, 268);
             this.btnOrden.Name = "btnOrden";
             this.btnOrden.Size = new System.Drawing.Size(372, 169);
             this.btnOrden.TabIndex = 17;
@@ -77,7 +77,7 @@
             this.btnRegistrarVe.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegistrarVe.ForeColor = System.Drawing.Color.White;
             this.btnRegistrarVe.Image = global::PROYECTOMECANICO.Properties.Resources.car_23964;
-            this.btnRegistrarVe.Location = new System.Drawing.Point(493, 86);
+            this.btnRegistrarVe.Location = new System.Drawing.Point(493, 40);
             this.btnRegistrarVe.Name = "btnRegistrarVe";
             this.btnRegistrarVe.Size = new System.Drawing.Size(372, 169);
             this.btnRegistrarVe.TabIndex = 15;
@@ -94,7 +94,7 @@
             this.btnRegistrar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegistrar.ForeColor = System.Drawing.Color.White;
             this.btnRegistrar.Image = global::PROYECTOMECANICO.Properties.Resources.user_account_person_avatar_icon_131248;
-            this.btnRegistrar.Location = new System.Drawing.Point(43, 86);
+            this.btnRegistrar.Location = new System.Drawing.Point(43, 40);
             this.btnRegistrar.Name = "btnRegistrar";
             this.btnRegistrar.Size = new System.Drawing.Size(372, 169);
             this.btnRegistrar.TabIndex = 14;

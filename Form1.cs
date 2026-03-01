@@ -15,6 +15,13 @@ namespace PROYECTOMECANICO
 {
     public partial class Form1 : Form
     {
+        private Timer menuTimer;
+        private bool menuCollapsed;     // estado actual
+        private bool menuTargetCollapsed; // a dónde vamos
+        private int menuExpandedWidth = 276;
+        private int menuCollapsedWidth = 110;
+        private int menuStep = 15;
+
         private int borderSize = 2;
         private Size formSize;
 
@@ -27,7 +34,13 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
-            CollapseMenu();
+            
+            menuCollapsed = true; // porque llamas CollapseMenu() al inicio
+            menuTargetCollapsed = true;
+
+            menuTimer = new Timer();
+            menuTimer.Interval = 15; // 10-20ms se ve fluido
+            menuTimer.Tick += MenuTimer_Tick;
             this.Padding = new Padding(borderSize);//Border size
             this.BackColor = Color.FromArgb(98, 102, 244);
 
@@ -317,27 +330,26 @@ namespace PROYECTOMECANICO
             }
         }
 
-        private void CollapseMenu()
+        private void AplicarEstadoMenu(bool collapsed)
         {
-            if (this.panelMenu.Width > 200) //Collapse menu
+            if (collapsed)
             {
-                
                 panel3.Visible = false;
                 panel4.Visible = false;
                 label1.Visible = false;
                 label2.Visible = false;
-                panelMenu.Width = 110;
                 pictureBox1.Visible = false;
 
                 btnMenu.Dock = DockStyle.Top;
+
                 foreach (Button menuButton in panelMenu.Controls.OfType<Button>())
                 {
                     menuButton.Text = "";
                     menuButton.ImageAlign = ContentAlignment.MiddleCenter;
                     menuButton.Padding = new Padding(0);
                 }
-                
-                foreach(Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna2GradientButton>())
+
+                foreach (Guna.UI2.WinForms.Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna.UI2.WinForms.Guna2GradientButton>())
                 {
                     menuButton2.Text = "";
                     menuButton2.ImageAlign = HorizontalAlignment.Center;
@@ -345,33 +357,67 @@ namespace PROYECTOMECANICO
                 }
             }
             else
-            { //Expand menu
+            {
                 panel3.Visible = true;
                 panel4.Visible = true;
                 label1.Visible = true;
                 label2.Visible = true;
-                panelMenu.Width = 276;
-                
                 pictureBox1.Visible = true;
+
                 btnMenu.Dock = DockStyle.None;
+
                 foreach (Button menuButton in panelMenu.Controls.OfType<Button>())
                 {
-                    menuButton.Text = "   " + menuButton.Tag.ToString();
+                    menuButton.Text = "   " + menuButton.Tag?.ToString();
                     menuButton.ImageAlign = ContentAlignment.MiddleLeft;
                     menuButton.Padding = new Padding(10, 0, 0, 0);
                 }
-                foreach (Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna2GradientButton>())
+
+                foreach (Guna.UI2.WinForms.Guna2GradientButton menuButton2 in panelMenu.Controls.OfType<Guna.UI2.WinForms.Guna2GradientButton>())
                 {
-                    menuButton2.Text = "   " + menuButton2.Tag.ToString();
+                    menuButton2.Text = "   " + menuButton2.Tag?.ToString();
                     menuButton2.ImageAlign = HorizontalAlignment.Left;
                     menuButton2.Padding = new Padding(10, 0, 0, 0);
                 }
             }
         }
 
+        private void ToggleMenuAnimated()
+        {
+            if (menuTimer.Enabled) return; 
+
+            menuTargetCollapsed = panelMenu.Width > 200;
+
+            if (menuTargetCollapsed)
+                AplicarEstadoMenu(true); // quita textos desde el inicio del cierre
+
+            menuTimer.Start();
+        }
+
+        private void MenuTimer_Tick(object sender, EventArgs e)
+        {
+            int targetWidth = menuTargetCollapsed ? menuCollapsedWidth : menuExpandedWidth;
+
+            if (panelMenu.Width == targetWidth)
+            {
+                menuTimer.Stop();
+                menuCollapsed = menuTargetCollapsed;
+
+                // Al terminar la apertura, recién ponemos texto y visibles
+                AplicarEstadoMenu(menuCollapsed);
+                return;
+            }
+
+            // Animación: acercarse al ancho objetivo
+            if (panelMenu.Width < targetWidth)
+                panelMenu.Width = Math.Min(panelMenu.Width + menuStep, targetWidth);
+            else
+                panelMenu.Width = Math.Max(panelMenu.Width - menuStep, targetWidth);
+        }
+
         private void btnMenu_Click(object sender, EventArgs e)
         {
-            CollapseMenu();
+            ToggleMenuAnimated();
         }
         private void btnMinimize_Click(object sender, EventArgs e)
         {

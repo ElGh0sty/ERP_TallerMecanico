@@ -32,7 +32,6 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.iconButton3 = new FontAwesome.Sharp.IconButton();
             this.iconButton2 = new FontAwesome.Sharp.IconButton();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.lblSesion = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -50,6 +49,7 @@
             this.btnTaller = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnClientes = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnInicio = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnCerrarSesion = new FontAwesome.Sharp.IconButton();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -61,7 +61,6 @@
             this.panel5.BackColor = System.Drawing.Color.White;
             this.panel5.Controls.Add(this.iconButton3);
             this.panel5.Controls.Add(this.iconButton2);
-            this.panel5.Controls.Add(this.btnCerrarSesion);
             this.panel5.Controls.Add(this.lblSesion);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(276, 0);
@@ -105,21 +104,6 @@
             this.iconButton2.TabIndex = 9;
             this.iconButton2.UseVisualStyleBackColor = false;
             this.iconButton2.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnCerrarSesion
-            // 
-            this.btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
-            this.btnCerrarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
-            this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(618, 10);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(124, 39);
-            this.btnCerrarSesion.TabIndex = 4;
-            this.btnCerrarSesion.Text = "Cerrar Sesion";
-            this.btnCerrarSesion.UseVisualStyleBackColor = false;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // lblSesion
             // 
@@ -205,7 +189,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 118);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(15, 582);
+            this.panel3.Size = new System.Drawing.Size(15, 527);
             this.panel3.TabIndex = 1;
             // 
             // panel4
@@ -213,13 +197,13 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel4.Location = new System.Drawing.Point(261, 118);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(15, 582);
+            this.panel4.Size = new System.Drawing.Size(15, 527);
             this.panel4.TabIndex = 2;
             // 
             // panel7
             // 
             this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel7.Location = new System.Drawing.Point(15, 687);
+            this.panel7.Location = new System.Drawing.Point(15, 632);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(246, 13);
             this.panel7.TabIndex = 10;
@@ -237,6 +221,7 @@
             this.panelMenu.Controls.Add(this.panel4);
             this.panelMenu.Controls.Add(this.panel3);
             this.panelMenu.Controls.Add(this.panel1);
+            this.panelMenu.Controls.Add(this.btnCerrarSesion);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.ForeColor = System.Drawing.Color.White;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
@@ -247,7 +232,9 @@
             // 
             // btnPersonal
             // 
+            this.btnPersonal.Animated = true;
             this.btnPersonal.BorderRadius = 10;
+            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPersonal.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnPersonal.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnPersonal.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -262,7 +249,7 @@
             this.btnPersonal.Image = global::PROYECTOMECANICO.Properties.Resources.agent_102942;
             this.btnPersonal.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPersonal.ImageSize = new System.Drawing.Size(50, 50);
-            this.btnPersonal.Location = new System.Drawing.Point(15, 554);
+            this.btnPersonal.Location = new System.Drawing.Point(15, 499);
             this.btnPersonal.Name = "btnPersonal";
             this.btnPersonal.Size = new System.Drawing.Size(246, 60);
             this.btnPersonal.TabIndex = 37;
@@ -273,7 +260,9 @@
             // 
             // btnConfiguracion
             // 
+            this.btnConfiguracion.Animated = true;
             this.btnConfiguracion.BorderRadius = 10;
+            this.btnConfiguracion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnConfiguracion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnConfiguracion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnConfiguracion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -288,7 +277,7 @@
             this.btnConfiguracion.Image = global::PROYECTOMECANICO.Properties.Resources.configurations_102859;
             this.btnConfiguracion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnConfiguracion.ImageSize = new System.Drawing.Size(50, 50);
-            this.btnConfiguracion.Location = new System.Drawing.Point(15, 614);
+            this.btnConfiguracion.Location = new System.Drawing.Point(15, 559);
             this.btnConfiguracion.Name = "btnConfiguracion";
             this.btnConfiguracion.Size = new System.Drawing.Size(246, 73);
             this.btnConfiguracion.TabIndex = 36;
@@ -299,7 +288,9 @@
             // 
             // btnFacturacion
             // 
+            this.btnFacturacion.Animated = true;
             this.btnFacturacion.BorderRadius = 10;
+            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -325,7 +316,9 @@
             // 
             // btnTaller
             // 
+            this.btnTaller.Animated = true;
             this.btnTaller.BorderRadius = 10;
+            this.btnTaller.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTaller.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnTaller.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnTaller.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -351,7 +344,9 @@
             // 
             // btnClientes
             // 
+            this.btnClientes.Animated = true;
             this.btnClientes.BorderRadius = 10;
+            this.btnClientes.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClientes.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnClientes.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnClientes.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -377,7 +372,9 @@
             // 
             // btnInicio
             // 
+            this.btnInicio.Animated = true;
             this.btnInicio.BorderRadius = 10;
+            this.btnInicio.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnInicio.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnInicio.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnInicio.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -400,6 +397,26 @@
             this.btnInicio.Text = " Inicio";
             this.btnInicio.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInicio.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.BackColor = System.Drawing.Color.IndianRed;
+            this.btnCerrarSesion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
+            this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrarSesion.IconChar = FontAwesome.Sharp.IconChar.RightFromBracket;
+            this.btnCerrarSesion.IconColor = System.Drawing.Color.Black;
+            this.btnCerrarSesion.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 645);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(276, 55);
+            this.btnCerrarSesion.TabIndex = 38;
+            this.btnCerrarSesion.Tag = "     Cerrar Sesion";
+            this.btnCerrarSesion.Text = "     Cerrar Sesion";
+            this.btnCerrarSesion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCerrarSesion.UseVisualStyleBackColor = false;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // Form1
             // 
@@ -434,7 +451,6 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label lblSesion;
         public System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Button btnCerrarSesion;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
@@ -452,6 +468,7 @@
         private Guna.UI2.WinForms.Guna2GradientButton btnTaller;
         private Guna.UI2.WinForms.Guna2GradientButton btnClientes;
         private Guna.UI2.WinForms.Guna2GradientButton btnInicio;
+        private FontAwesome.Sharp.IconButton btnCerrarSesion;
     }
 }
 
