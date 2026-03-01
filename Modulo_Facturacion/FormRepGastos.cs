@@ -465,7 +465,6 @@ ORDER BY Semana;
             // Resumen final
             doc.Add(new Paragraph(" "));
 
-            // Si NO tienes lblPromedio, quítalo del string
             Paragraph resumen = new Paragraph(
                 $"Total Movimientos: {lblCantGastos.Text}   |   " +
                 $"Total Gastos: {lblTotalGastos.Text}   |   " +
