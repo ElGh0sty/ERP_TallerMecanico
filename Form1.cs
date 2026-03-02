@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using PROYECTOMECANICO.Seguridad;
 
+
 namespace PROYECTOMECANICO
 {
     public partial class Form1 : Form
@@ -54,6 +55,22 @@ namespace PROYECTOMECANICO
 
             lblSesion.Text = $"Usuario: {usuarioActual} \t Rol: {rolUsuario}";
             BotonRedondo(btnCerrarSesion, 7);
+
+            _empresaHandler = () =>
+            {
+                if (lblNombreTaller.IsDisposed) return;
+
+                if (lblNombreTaller.InvokeRequired)
+                    lblNombreTaller.BeginInvoke(new Action(() => lblNombreTaller.Text = EmpresaContext.NombreEmpresa));
+                else
+                    lblNombreTaller.Text = EmpresaContext.NombreEmpresa;
+            };
+
+            EmpresaContext.EmpresaActualizada += _empresaHandler;
+
+            EmpresaContext.Cargar();   
+            _empresaHandler();
+
         }
 
 
@@ -161,7 +178,17 @@ namespace PROYECTOMECANICO
         }
 
 
+        private Action _empresaHandler;
 
+        
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            if (_empresaHandler != null)
+                EmpresaContext.EmpresaActualizada -= _empresaHandler;
+
+            base.OnFormClosed(e);
+        }
 
         private void ActualizarSesionConFormulario(Form fh)
         {
@@ -361,7 +388,7 @@ namespace PROYECTOMECANICO
             {
                 panel3.Visible = false;
                 panel4.Visible = false;
-                label1.Visible = false;
+                lblNombreTaller.Visible = false;
                 label2.Visible = false;
                 pictureBox1.Visible = false;
 
@@ -385,7 +412,7 @@ namespace PROYECTOMECANICO
             {
                 panel3.Visible = true;
                 panel4.Visible = true;
-                label1.Visible = true;
+                lblNombreTaller.Visible = true;
                 label2.Visible = true;
                 pictureBox1.Visible = true;
 

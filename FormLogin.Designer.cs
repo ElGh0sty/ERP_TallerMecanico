@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblNombreTaller = new System.Windows.Forms.Label();
             this.btnIniciarSesion = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.txtContraseña = new System.Windows.Forms.TextBox();
@@ -51,7 +51,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.pictureBox2);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.lblNombreTaller);
             this.panel1.Controls.Add(this.btnIniciarSesion);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
@@ -72,17 +72,17 @@
             this.pictureBox2.TabIndex = 7;
             this.pictureBox2.TabStop = false;
             // 
-            // label1
+            // lblNombreTaller
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.label1.Location = new System.Drawing.Point(79, 55);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(246, 45);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Taller Mecanico";
+            this.lblNombreTaller.AutoSize = true;
+            this.lblNombreTaller.BackColor = System.Drawing.Color.White;
+            this.lblNombreTaller.Font = new System.Drawing.Font("Yu Gothic UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombreTaller.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblNombreTaller.Location = new System.Drawing.Point(79, 55);
+            this.lblNombreTaller.Name = "lblNombreTaller";
+            this.lblNombreTaller.Size = new System.Drawing.Size(246, 45);
+            this.lblNombreTaller.TabIndex = 8;
+            this.lblNombreTaller.Text = "Taller Mecanico";
             // 
             // btnIniciarSesion
             // 
@@ -214,7 +214,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblNombreTaller;
         private System.Windows.Forms.Button btnIniciarSesion;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TextBox txtContraseña;

@@ -58,6 +58,10 @@ namespace PROYECTOMECANICO
             btnSecGuardar.Click += (s, e) => Sec_Guardar();
             btnSecEliminar.Click += (s, e) => Sec_Eliminar();
             dgvSecuenciales.CellClick += Sec_GridClick;
+
+            CargarEmpresaEnLabel();
+
+
         }
 
         private void FormConfiguracion_Load(object sender, EventArgs e)
@@ -445,6 +449,42 @@ ORDER BY id DESC;";
 
         // EMPRESA
 
+        private void CargarEmpresaEnLabel()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand(
+                    "SELECT TOP 1 nombre, ruc, direccion, telefono, email FROM Empresa WHERE id = 1;", cn))
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read())
+                    {
+                        lblEmpInfo.Text = "Empresa no configurada.";
+                        return;
+                    }
+
+                    string nombre = rd["nombre"]?.ToString() ?? "";
+                    string ruc = rd["ruc"]?.ToString() ?? "";
+                    string dir = rd["direccion"]?.ToString() ?? "";
+                    string tel = rd["telefono"]?.ToString() ?? "";
+                    string mail = rd["email"]?.ToString() ?? "";
+
+                    lblEmpInfo.Text =
+                        $"{nombre}\n" +
+                        $"RUC: {ruc} | Tel: {tel}\n" +
+                        $"{dir}\n" +
+                        $"{mail}";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblEmpInfo.Text = "No se pudo cargar la empresa.";
+                MessageBox.Show("Error cargando Empresa: " + ex.Message, "Empresa",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void Emp_Cargar()
         {
             try
@@ -505,7 +545,8 @@ ORDER BY id DESC;";
 
                     if (existe == 0)
                     {
-                        string ins = @"INSERT INTO Empresa(nombre,ruc,direccion,telefono,email) VALUES(@n,@r,@d,@t,@e);";
+                        string ins = @"INSERT INTO Empresa(id,nombre,ruc,direccion,telefono,email)
+VALUES(1,@n,@r,@d,@t,@e);";
                         using (var cmd = new SqlCommand(ins, cn))
                         {
                             cmd.Parameters.AddWithValue("@n", nombre);
@@ -527,10 +568,10 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                         using (var cmd = new SqlCommand(upd, cn))
                         {
                             cmd.Parameters.AddWithValue("@n", nombre);
-                            cmd.Parameters.AddWithValue("@r", (object)ruc ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@d", (object)dir ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@t", (object)tel ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@e", (object)email ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@r", string.IsNullOrWhiteSpace(ruc) ? (object)DBNull.Value : ruc);
+                            cmd.Parameters.AddWithValue("@d", string.IsNullOrWhiteSpace(dir) ? (object)DBNull.Value : dir);
+                            cmd.Parameters.AddWithValue("@t", string.IsNullOrWhiteSpace(tel) ? (object)DBNull.Value : tel);
+                            cmd.Parameters.AddWithValue("@e", string.IsNullOrWhiteSpace(email) ? (object)DBNull.Value : email);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -538,6 +579,8 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
 
                 MessageBox.Show("Empresa actualizada.", "Empresa",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Emp_Cargar();
+                CargarEmpresaEnLabel();
 
             }
             catch (Exception ex)

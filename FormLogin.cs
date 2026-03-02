@@ -9,6 +9,20 @@ namespace PROYECTOMECANICO
         public FormLogin()
         {
             InitializeComponent();
+            _empresaHandler = () =>
+            {
+                if (lblNombreTaller.IsDisposed) return;
+
+                if (lblNombreTaller.InvokeRequired)
+                    lblNombreTaller.BeginInvoke(new Action(() => lblNombreTaller.Text = EmpresaContext.NombreEmpresa));
+                else
+                    lblNombreTaller.Text = EmpresaContext.NombreEmpresa;
+            };
+
+            EmpresaContext.EmpresaActualizada += _empresaHandler;
+
+            EmpresaContext.Cargar();   // esto debe cargar desde BD y disparar el evento
+            _empresaHandler();
         }
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
@@ -64,6 +78,20 @@ AND U.activo = 1";
             {
                 objetoConexion.Cerrar();
             }
+
+
+        }
+
+        private Action _empresaHandler;
+
+        
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            if (_empresaHandler != null)
+                EmpresaContext.EmpresaActualizada -= _empresaHandler;
+
+            base.OnFormClosed(e);
         }
     }
 }
