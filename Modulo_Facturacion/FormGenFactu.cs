@@ -993,6 +993,7 @@ VALUES
 
                         if (modoDesdeOT && ordenTrabajoId.HasValue)
                         {
+                            
                             using (var cmd = new SqlCommand(
                                 "UPDATE dbo.OrdenesTrabajo SET facturada = 1 WHERE id = @id", cn, tx))
                             {
@@ -1236,5 +1237,8 @@ VALUES
 
             return pdfPath;
         }
+
+        
+        
     }
 }

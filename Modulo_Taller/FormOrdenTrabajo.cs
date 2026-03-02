@@ -41,19 +41,27 @@ FROM OrdenesTrabajo ot
 INNER JOIN Vehiculos v ON ot.vehiculo_id = v.id
 INNER JOIN Clientes c ON v.cliente_id = c.id
 INNER JOIN Usuarios u ON ot.mecanico_id = u.id
-ORDER BY ot.fecha_ingreso DESC";
+WHERE 
+    ISNULL(ot.facturada,0) = 0
+    AND NOT EXISTS (
+        SELECT 1 
+        FROM dbo.Facturas f 
+        WHERE f.orden_trabajo_id = ot.id
+    )
+ORDER BY ot.fecha_ingreso DESC;";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 dgvOrdenes.DataSource = dt;
+
                 if (dgvOrdenes.Columns.Contains("descripcion"))
                     dgvOrdenes.Columns["descripcion"].Visible = false;
+
                 AgregarBotonEliminarOT();
                 EstilizarGridOrdenes();
                 EstilizarBotonEliminarOT();
-
             }
             catch (Exception ex)
             {
