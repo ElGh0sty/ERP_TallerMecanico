@@ -8,6 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PROYECTOMECANICO.Modulo_Clientes;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace PROYECTOMECANICO.Modulo_Facturacion
 {
@@ -65,14 +68,14 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             // Grid + tabla items
             PrepararTablaItems();
             ConfigurarGrid();
+            EstilizarDgvItems();
             dgvItems.DataSource = dtItems;
 
             // Impuestos
             CargarImpuestos();
 
             // Print
-            preview.Document = printDoc;
-            printDoc.PrintPage += PrintDoc_PrintPage;
+            
 
             // Defaults
             rbDesdeOT.Checked = true;
@@ -174,7 +177,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 }
             };
 
-            btnVistaPrevia.Click += (s, e) => MostrarVistaPrevia();
+            btnVistaPrevia.Click += (s, e) => VerPdfFactura();
 
             // Estado inicial UI
             ActualizarUIReceptor();
@@ -239,6 +242,70 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "servicio_id", DataPropertyName = "servicio_id", Visible = false });
         }
 
+        private void EstilizarDgvItems()
+        {
+            
+
+            dgvItems.ColumnHeadersVisible = true;
+            dgvItems.RowHeadersVisible = false;
+            dgvItems.AllowUserToAddRows = false;
+            dgvItems.AllowUserToResizeRows = false;
+            dgvItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvItems.MultiSelect = false;
+
+            dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+
+            dgvItems.ScrollBars = ScrollBars.Both;
+
+            dgvItems.EnableHeadersVisualStyles = false;
+            dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvItems.ColumnHeadersHeight = 34;
+
+            dgvItems.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            dgvItems.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // estilos
+            dgvItems.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dgvItems.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+
+            dgvItems.GridColor = System.Drawing.Color.Gainsboro;
+            dgvItems.BorderStyle = BorderStyle.FixedSingle;
+            dgvItems.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dgvItems.RowTemplate.Height = 28;
+
+            // Formatos numéricos
+            if (dgvItems.Columns.Count > 0)
+            {
+                foreach (DataGridViewColumn col in dgvItems.Columns)
+                {
+                    if (col.DataPropertyName == "cantidad")
+                        col.DefaultCellStyle.Format = "0.##";
+
+                    if (col.DataPropertyName == "precio_unitario" || col.DataPropertyName == "subtotal")
+                        col.DefaultCellStyle.Format = "0.00";
+                }
+            }
+        }
+
+        private (string nombre, string ruc, string direccion, string telefono, string email) ObtenerEmpresa()
+        {
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand("SELECT TOP 1 nombre,ruc,direccion,telefono,email FROM Empresa WHERE id=1;", cn))
+            using (var rd = cmd.ExecuteReader())
+            {
+                if (!rd.Read()) return ("EMPRESA NO CONFIGURADA", "", "", "", "");
+
+                return (
+                    rd["nombre"]?.ToString() ?? "",
+                    rd["ruc"]?.ToString() ?? "",
+                    rd["direccion"]?.ToString() ?? "",
+                    rd["telefono"]?.ToString() ?? "",
+                    rd["email"]?.ToString() ?? ""
+                );
+            }
+        }
         private void AgregarItemManual()
         {
             if (modoDesdeOT) return;
@@ -995,188 +1062,179 @@ VALUES
             preview.ShowDialog();
         }
 
-        private void PrintDoc_PrintPage(object sender, PrintPageEventArgs e)
+        private void VerPdfFactura()
         {
-            // Fuentes
-            var fTitle = new System.Drawing.Font("Arial", 14, System.Drawing.FontStyle.Bold);
-            var fSub = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
-            var f = new System.Drawing.Font("Arial", 9);
-            var fSmall = new System.Drawing.Font("Arial", 8);
-
-            int leftX = e.MarginBounds.Left;
-            int topY = e.MarginBounds.Top;
-            int pageW = e.MarginBounds.Width;
-
-            int cursorY = topY;
-
-            // ======= HEADER (2 columnas) =======
-            int boxH = 170;
-            int gap = 10;
-            int leftW = (pageW / 2) - (gap / 2);
-            int rightW = pageW - leftW - gap;
-
-            var rectEmpresa = new System.Drawing.Rectangle(leftX, cursorY, leftW, boxH);
-            var rectFactura = new System.Drawing.Rectangle(leftX + leftW + gap, cursorY, rightW, boxH);
-
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectEmpresa);
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectFactura);
-
-            // Empresa (izq)
-            int x1 = rectEmpresa.Left + 10;
-            int y1 = rectEmpresa.Top + 10;
-            e.Graphics.DrawString("TALLER MECÁNICO (TU NOMBRE AQUÍ)", fSub, System.Drawing.Brushes.Black, x1, y1); y1 += 18;
-            e.Graphics.DrawString("Dirección: (tu dirección)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
-            e.Graphics.DrawString("Tel: (tu teléfono)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
-            e.Graphics.DrawString("Email: (tu email)", f, System.Drawing.Brushes.Black, x1, y1); y1 += 15;
-            e.Graphics.DrawString("RUC: (tu RUC)", fSub, System.Drawing.Brushes.Black, x1, y1);
-
-            // Factura (der)
-            int x2 = rectFactura.Left + 10;
-            int y2 = rectFactura.Top + 10;
-            e.Graphics.DrawString("FACTURA", fTitle, System.Drawing.Brushes.Black, x2, y2); y2 += 26;
-
-            e.Graphics.DrawString("No.:", fSub, System.Drawing.Brushes.Black, x2, y2);
-            e.Graphics.DrawString($"001-001-{(string.IsNullOrWhiteSpace(secuencialGenerado) ? "000000001" : secuencialGenerado)}",
-                fSub, System.Drawing.Brushes.Black, x2 + 45, y2);
-            y2 += 18;
-
-            e.Graphics.DrawString("CLAVE DE ACCESO:", fSmall, System.Drawing.Brushes.Black, x2, y2); y2 += 12;
-            e.Graphics.DrawString(string.IsNullOrWhiteSpace(claveAccesoGenerada) ? "(no generada)" : claveAccesoGenerada,
-                fSmall, System.Drawing.Brushes.Black, x2, y2);
-            y2 += 16;
-
-            e.Graphics.DrawString("Fecha emisión:", f, System.Drawing.Brushes.Black, x2, y2);
-            e.Graphics.DrawString(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), f, System.Drawing.Brushes.Black, x2 + 90, y2);
-            y2 += 15;
-
-            e.Graphics.DrawString("OT:", f, System.Drawing.Brushes.Black, x2, y2);
-            e.Graphics.DrawString((ordenTrabajoId == null ? "N/A" : ordenTrabajoId.ToString()), f, System.Drawing.Brushes.Black, x2 + 30, y2);
-
-            cursorY += boxH + 10;
-
-            // ======= RECEPTOR (1 caja) =======
-            int receptorH = 55;
-            var rectRec = new System.Drawing.Rectangle(leftX, cursorY, pageW, receptorH);
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectRec);
-
-            int rx = rectRec.Left + 10;
-            int ry = rectRec.Top + 8;
-
-            e.Graphics.DrawString("Nombre / Razón Social:", f, System.Drawing.Brushes.Black, rx, ry);
-            e.Graphics.DrawString(snapNombre, fSub, System.Drawing.Brushes.Black, rx + 140, ry);
-
-            e.Graphics.DrawString("Identificación:", f, System.Drawing.Brushes.Black, rx + 430, ry);
-            e.Graphics.DrawString($"{snapTipoDoc} {snapNumDoc}", fSub, System.Drawing.Brushes.Black, rx + 515, ry);
-
-            ry += 18;
-            e.Graphics.DrawString("Dirección:", f, System.Drawing.Brushes.Black, rx, ry);
-            e.Graphics.DrawString(string.IsNullOrWhiteSpace(snapDireccion) ? "-" : snapDireccion, f, System.Drawing.Brushes.Black, rx + 70, ry);
-
-            e.Graphics.DrawString("Email:", f, System.Drawing.Brushes.Black, rx + 430, ry);
-            e.Graphics.DrawString(string.IsNullOrWhiteSpace(snapEmail) ? "-" : snapEmail, f, System.Drawing.Brushes.Black, rx + 475, ry);
-
-            cursorY += receptorH + 10;
-
-            // ======= TABLA ITEMS =======
-            int headerH = 22;
-            int rowH = 18;
-
-            // Columnas (proporciones tipo SRI)
-            int colCod = 70;
-            int colCant = 70;
-            int colDesc = pageW - (colCod + colCant + 90 + 90);
-            int colPU = 90;
-            int colSub = 90;
-
-            // Header
-            var rectHead = new System.Drawing.Rectangle(leftX, cursorY, pageW, headerH);
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectHead);
-
-            int cx = leftX;
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod, cursorY, cx + colCod, cursorY + headerH);
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant, cursorY, cx + colCod + colCant, cursorY + headerH);
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc, cursorY, cx + colCod + colCant + colDesc, cursorY + headerH);
-            e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc + colPU, cursorY, cx + colCod + colCant + colDesc + colPU, cursorY + headerH);
-
-            e.Graphics.DrawString("Código", fSmall, System.Drawing.Brushes.Black, leftX + 5, cursorY + 5);
-            e.Graphics.DrawString("Cant", fSmall, System.Drawing.Brushes.Black, leftX + colCod + 5, cursorY + 5);
-            e.Graphics.DrawString("Descripción", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + 5, cursorY + 5);
-            e.Graphics.DrawString("P.Unit", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + 5, cursorY + 5);
-            e.Graphics.DrawString("Total", fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + colPU + 5, cursorY + 5);
-
-            cursorY += headerH;
-
-            // Filas
-            for (int i = 0; i < dtItems.Rows.Count; i++)
+            try
             {
-                var r = dtItems.Rows[i];
-                string desc = r["nombre_item"].ToString();
-                string cant = Convert.ToDecimal(r["cantidad"]).ToString("0.##");
-                string pu = Convert.ToDecimal(r["precio_unitario"]).ToString("0.00");
-                string sub = Convert.ToDecimal(r["subtotal"]).ToString("0.00");
+                string pdfPath = GenerarPdfFactura();
 
-                var rectRow = new System.Drawing.Rectangle(leftX, cursorY, pageW, rowH);
-                e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectRow);
-
-                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod, cursorY, cx + colCod, cursorY + rowH);
-                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant, cursorY, cx + colCod + colCant, cursorY + rowH);
-                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc, cursorY, cx + colCod + colCant + colDesc, cursorY + rowH);
-                e.Graphics.DrawLine(System.Drawing.Pens.Black, cx + colCod + colCant + colDesc + colPU, cursorY, cx + colCod + colCant + colDesc + colPU, cursorY + rowH);
-
-                e.Graphics.DrawString("-", fSmall, System.Drawing.Brushes.Black, leftX + 5, cursorY + 4);
-                e.Graphics.DrawString(cant, fSmall, System.Drawing.Brushes.Black, leftX + colCod + 5, cursorY + 4);
-                e.Graphics.DrawString(desc, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + 5, cursorY + 4);
-                e.Graphics.DrawString(pu, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + 5, cursorY + 4);
-                e.Graphics.DrawString(sub, fSmall, System.Drawing.Brushes.Black, leftX + colCod + colCant + colDesc + colPU + 5, cursorY + 4);
-
-                cursorY += rowH;
-
-                // Paginación simple
-                if (cursorY > e.MarginBounds.Bottom - 160)
+                using (var v = new PROYECTOMECANICO.FormPdfViewer(
+                    pdfPath,
+                    title: "Vista previa - Factura",
+                    defaultSaveName: Path.GetFileName(pdfPath)))
                 {
-                    e.HasMorePages = true;
-                    return;
+                    v.ShowDialog();
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo generar/ver el PDF:\n" + ex.Message, "PDF",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            cursorY += 8;
+        private string GenerarPdfFactura()
+        {
+            if (dtItems == null || dtItems.Rows.Count == 0)
+                throw new Exception("No hay items para generar el PDF.");
 
-            // ======= PIE (izq info adicional / der totales) =======
-            decimal subtotal = dtItems.AsEnumerable().Sum(rr => Convert.ToDecimal(rr["subtotal"]));
+            TomarSnapshotDesdeUI();
+
+            var emp = ObtenerEmpresa();
+
+            
+            string secTmp = string.IsNullOrWhiteSpace(secuencialGenerado) ? "000000001" : secuencialGenerado;
+            string numeroFactura = $"001-001-{secTmp}";
+
+            
+            decimal subtotal = dtItems.AsEnumerable().Sum(r => Convert.ToDecimal(r["subtotal"]));
             decimal pct = GetImpuestoPorcentajeActual() / 100m;
             decimal iva = Math.Round(subtotal * pct, 2);
             decimal total = Math.Round(subtotal + iva, 2);
 
-            int pieH = 120;
-            int pieLeftW = (pageW * 62) / 100;
-            int pieRightW = pageW - pieLeftW - gap;
+            string carpeta = Path.Combine(Path.GetTempPath(), "TallerMecanicoERP");
+            Directory.CreateDirectory(carpeta);
 
-            var rectInfo = new System.Drawing.Rectangle(leftX, cursorY, pieLeftW, pieH);
-            var rectTot = new System.Drawing.Rectangle(leftX + pieLeftW + gap, cursorY, pieRightW, pieH);
+            string fileName = $"Factura_{numeroFactura.Replace("-", "")}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            string pdfPath = Path.Combine(carpeta, fileName);
 
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectInfo);
-            e.Graphics.DrawRectangle(System.Drawing.Pens.Black, rectTot);
+            using (var fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                var doc = new Document(PageSize.A4, 36, 36, 36, 36);
+                var writer = PdfWriter.GetInstance(doc, fs);
+                doc.Open();
 
-            int ix = rectInfo.Left + 10;
-            int iy = rectInfo.Top + 10;
-            e.Graphics.DrawString("INFORMACIÓN ADICIONAL:", fSub, System.Drawing.Brushes.Black, ix, iy); iy += 18;
-            e.Graphics.DrawString("Correo: " + (string.IsNullOrWhiteSpace(snapEmail) ? "-" : snapEmail), f, System.Drawing.Brushes.Black, ix, iy); iy += 14;
-            e.Graphics.DrawString("Teléfono: " + (string.IsNullOrWhiteSpace(snapTelefono) ? "-" : snapTelefono), f, System.Drawing.Brushes.Black, ix, iy); iy += 14;
-            e.Graphics.DrawString("Forma de pago: EFECTIVO", f, System.Drawing.Brushes.Black, ix, iy);
+                var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                var fontSub = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+                var font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
 
-            int tx = rectTot.Left + 10;
-            int ty = rectTot.Top + 10;
+                //  Encabezado empresa + factura 
+                PdfPTable head = new PdfPTable(2);
+                head.WidthPercentage = 100;
+                head.SetWidths(new float[] { 65, 35 });
 
-            e.Graphics.DrawString("SUBTOTAL:", f, System.Drawing.Brushes.Black, tx, ty);
-            e.Graphics.DrawString(subtotal.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty); ty += 16;
+                var cellEmp = new PdfPCell();
+                cellEmp.Border = Rectangle.BOX;
+                cellEmp.Padding = 8;
+                cellEmp.AddElement(new Paragraph(emp.nombre, fontSub));
+                if (!string.IsNullOrWhiteSpace(emp.ruc)) cellEmp.AddElement(new Paragraph($"RUC: {emp.ruc}", font));
+                if (!string.IsNullOrWhiteSpace(emp.direccion)) cellEmp.AddElement(new Paragraph($"Dirección: {emp.direccion}", font));
+                if (!string.IsNullOrWhiteSpace(emp.telefono)) cellEmp.AddElement(new Paragraph($"Tel: {emp.telefono}", font));
+                if (!string.IsNullOrWhiteSpace(emp.email)) cellEmp.AddElement(new Paragraph($"Email: {emp.email}", font));
+                head.AddCell(cellEmp);
 
-            e.Graphics.DrawString($"IVA ({GetImpuestoPorcentajeActual():0.##}%):", f, System.Drawing.Brushes.Black, tx, ty);
-            e.Graphics.DrawString(iva.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty); ty += 16;
+                var cellFac = new PdfPCell();
+                cellFac.Border = Rectangle.BOX;
+                cellFac.Padding = 8;
+                cellFac.AddElement(new Paragraph("FACTURA", fontTitle));
+                cellFac.AddElement(new Paragraph($"No.: {numeroFactura}", fontSub));
+                cellFac.AddElement(new Paragraph($"Fecha: {DateTime.Now:dd/MM/yyyy HH:mm}", font));
+                cellFac.AddElement(new Paragraph($"OT: {(ordenTrabajoId == null ? "N/A" : ordenTrabajoId.ToString())}", font));
+                if (!string.IsNullOrWhiteSpace(claveAccesoGenerada))
+                    cellFac.AddElement(new Paragraph($"Clave Acceso: {claveAccesoGenerada}", font));
+                head.AddCell(cellFac);
 
-            e.Graphics.DrawString("TOTAL:", fSub, System.Drawing.Brushes.Black, tx, ty);
-            e.Graphics.DrawString(total.ToString("0.00"), fSub, System.Drawing.Brushes.Black, rectTot.Right - 70, ty);
+                doc.Add(head);
+                doc.Add(new Paragraph(" "));
 
-            e.HasMorePages = false;
+                //  Receptor 
+                PdfPTable rec = new PdfPTable(2);
+                rec.WidthPercentage = 100;
+                rec.SetWidths(new float[] { 50, 50 });
+
+                PdfPCell r1 = new PdfPCell(new Phrase($"Cliente: {snapNombre}", font));
+                r1.Padding = 6;
+                r1.Border = Rectangle.BOX;
+                rec.AddCell(r1);
+
+                PdfPCell r2 = new PdfPCell(new Phrase($"Identificación: {snapTipoDoc} {snapNumDoc}", font));
+                r2.Padding = 6;
+                r2.Border = Rectangle.BOX;
+                rec.AddCell(r2);
+
+                PdfPCell r3 = new PdfPCell(new Phrase($"Dirección: {(string.IsNullOrWhiteSpace(snapDireccion) ? "-" : snapDireccion)}", font));
+                r3.Padding = 6;
+                r3.Border = Rectangle.BOX;
+                rec.AddCell(r3);
+
+                PdfPCell r4 = new PdfPCell(new Phrase($"Email: {(string.IsNullOrWhiteSpace(snapEmail) ? "-" : snapEmail)}", font));
+                r4.Padding = 6;
+                r4.Border = Rectangle.BOX;
+                rec.AddCell(r4);
+
+                doc.Add(rec);
+                doc.Add(new Paragraph(" "));
+
+                //  Items 
+                PdfPTable items = new PdfPTable(4);
+                items.WidthPercentage = 100;
+                items.SetWidths(new float[] { 10, 60, 15, 15 });
+
+                void AddHeader(string t)
+                {
+                    var c = new PdfPCell(new Phrase(t, fontSub));
+                    c.Padding = 6;
+                    c.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    items.AddCell(c);
+                }
+
+                AddHeader("Cant");
+                AddHeader("Descripción");
+                AddHeader("P.Unit");
+                AddHeader("Subtotal");
+
+                foreach (DataRow row in dtItems.Rows)
+                {
+                    decimal cant = Convert.ToDecimal(row["cantidad"]);
+                    string desc = row["nombre_item"]?.ToString() ?? "";
+                    decimal pu = Convert.ToDecimal(row["precio_unitario"]);
+                    decimal sub = Convert.ToDecimal(row["subtotal"]);
+
+                    items.AddCell(new PdfPCell(new Phrase(cant.ToString("0.##"), font)) { Padding = 5 });
+                    items.AddCell(new PdfPCell(new Phrase(desc, font)) { Padding = 5 });
+                    items.AddCell(new PdfPCell(new Phrase(pu.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    items.AddCell(new PdfPCell(new Phrase(sub.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
+                }
+
+                doc.Add(items);
+                doc.Add(new Paragraph(" "));
+
+                //  Totales 
+                PdfPTable tot = new PdfPTable(2);
+                tot.HorizontalAlignment = Element.ALIGN_RIGHT;
+                tot.WidthPercentage = 40;
+                tot.SetWidths(new float[] { 60, 40 });
+
+                void AddTotalRow(string k, string v, bool bold = false)
+                {
+                    var fk = bold ? fontSub : font;
+                    var fv = bold ? fontSub : font;
+
+                    tot.AddCell(new PdfPCell(new Phrase(k, fk)) { Padding = 6, Border = Rectangle.BOX });
+                    tot.AddCell(new PdfPCell(new Phrase(v, fv)) { Padding = 6, Border = Rectangle.BOX, HorizontalAlignment = Element.ALIGN_RIGHT });
+                }
+
+                AddTotalRow("Subtotal", subtotal.ToString("0.00"));
+                AddTotalRow($"IVA ({GetImpuestoPorcentajeActual():0.##}%)", iva.ToString("0.00"));
+                AddTotalRow("TOTAL", total.ToString("0.00"), bold: true);
+
+                doc.Add(tot);
+
+                doc.Close();
+                writer.Close();
+            }
+
+            return pdfPath;
         }
     }
 }

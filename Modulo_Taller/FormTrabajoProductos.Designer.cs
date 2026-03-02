@@ -188,6 +188,7 @@
             this.cmbOrdenes.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbOrdenes.FormattingEnabled = true;
             this.cmbOrdenes.Location = new System.Drawing.Point(35, 96);
+            this.cmbOrdenes.MaxDropDownItems = 20;
             this.cmbOrdenes.Name = "cmbOrdenes";
             this.cmbOrdenes.Size = new System.Drawing.Size(314, 33);
             this.cmbOrdenes.TabIndex = 3;
