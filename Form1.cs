@@ -265,7 +265,7 @@ namespace PROYECTOMECANICO
             buttonof();
             btnConfiguracion.FillColor = Color.FromArgb(50, 100, 201);
             btnConfiguracion.FillColor2 = Color.FromArgb(255, 77, 165);
-            AbrirFormularioEnPanel(new Modulo_Config.FormConfiguracion());
+            AbrirFormularioEnPanel(new FormConfiguracion());
         }
 
         private void Form1_Load(object sender, EventArgs e)

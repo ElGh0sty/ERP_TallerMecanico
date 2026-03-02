@@ -431,7 +431,7 @@ WHERE id = @id;";
                     }
                 }
 
-                MessageBox.Show($"✅ Novedad marcada como {nuevoEstado}.");
+                MessageBox.Show($" Novedad marcada como {nuevoEstado}.");
                 CargarNovedades();
             }
             catch (Exception ex)
@@ -448,7 +448,7 @@ WHERE id = @id;";
         {
             string sql = @"
 INSERT INTO OrdenesTrabajo_Items
-(orden_id, producto_id, servicio_id, descripcion, cantidad, precio_unit, subtotal, fecha_agregado)
+(orden_id, producto_id, servicio_id, descripcion, cantidad, precio_unitario, subtotal, fecha_agregado)
 VALUES
 (@ordenId, NULL, NULL, @desc, 1, @precio, @subtotal, GETDATE());";
 

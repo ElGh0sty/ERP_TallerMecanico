@@ -43,6 +43,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.btnFacturacion = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnPersonal = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnConfiguracion = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnInventario = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -50,7 +51,6 @@
             this.btnClientes = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnInicio = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnCerrarSesion = new FontAwesome.Sharp.IconButton();
-            this.btnFacturacion = new Guna.UI2.WinForms.Guna2GradientButton();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -232,6 +232,34 @@
             this.panelMenu.Size = new System.Drawing.Size(276, 700);
             this.panelMenu.TabIndex = 0;
             // 
+            // btnFacturacion
+            // 
+            this.btnFacturacion.Animated = true;
+            this.btnFacturacion.BorderRadius = 10;
+            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFacturacion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnFacturacion.FillColor = System.Drawing.Color.Transparent;
+            this.btnFacturacion.FillColor2 = System.Drawing.Color.Transparent;
+            this.btnFacturacion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFacturacion.ForeColor = System.Drawing.Color.White;
+            this.btnFacturacion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
+            this.btnFacturacion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnFacturacion.ImageSize = new System.Drawing.Size(50, 50);
+            this.btnFacturacion.Location = new System.Drawing.Point(15, 406);
+            this.btnFacturacion.Name = "btnFacturacion";
+            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
+            this.btnFacturacion.TabIndex = 39;
+            this.btnFacturacion.Tag = "Facturacion";
+            this.btnFacturacion.Text = " Facturacion";
+            this.btnFacturacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
+            // 
             // btnPersonal
             // 
             this.btnPersonal.Animated = true;
@@ -402,7 +430,7 @@
             // 
             // btnCerrarSesion
             // 
-            this.btnCerrarSesion.BackColor = System.Drawing.Color.IndianRed;
+            this.btnCerrarSesion.BackColor = System.Drawing.Color.Transparent;
             this.btnCerrarSesion.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -419,34 +447,6 @@
             this.btnCerrarSesion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCerrarSesion.UseVisualStyleBackColor = false;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
-            // 
-            // btnFacturacion
-            // 
-            this.btnFacturacion.Animated = true;
-            this.btnFacturacion.BorderRadius = 10;
-            this.btnFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFacturacion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnFacturacion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnFacturacion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFacturacion.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFacturacion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnFacturacion.FillColor = System.Drawing.Color.Transparent;
-            this.btnFacturacion.FillColor2 = System.Drawing.Color.Transparent;
-            this.btnFacturacion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFacturacion.ForeColor = System.Drawing.Color.White;
-            this.btnFacturacion.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            this.btnFacturacion.Image = global::PROYECTOMECANICO.Properties.Resources.layout_102871;
-            this.btnFacturacion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnFacturacion.ImageSize = new System.Drawing.Size(50, 50);
-            this.btnFacturacion.Location = new System.Drawing.Point(15, 406);
-            this.btnFacturacion.Name = "btnFacturacion";
-            this.btnFacturacion.Size = new System.Drawing.Size(246, 72);
-            this.btnFacturacion.TabIndex = 39;
-            this.btnFacturacion.Tag = "Facturacion";
-            this.btnFacturacion.Text = " Facturacion";
-            this.btnFacturacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
             // 
             // Form1
             // 

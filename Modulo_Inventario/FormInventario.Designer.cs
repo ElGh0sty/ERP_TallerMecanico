@@ -47,7 +47,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(372, 169);
             this.button4.TabIndex = 17;
-            this.button4.Text = "Registro de Compras";
+            this.button4.Text = "Compras de Inventario";
             this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -82,7 +82,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(372, 169);
             this.button2.TabIndex = 15;
-            this.button2.Text = "Kardex";
+            this.button2.Text = "Historial de Inventario";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);

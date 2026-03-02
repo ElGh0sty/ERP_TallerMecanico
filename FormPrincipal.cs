@@ -82,7 +82,7 @@ namespace PROYECTOMECANICO
 
         private void btnConfiguracion_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new Modulo_Config.FormConfiguracion());
+            AbrirFormularioEnPanel(new FormConfiguracion());
         }
 
         private void button1_Click(object sender, EventArgs e)

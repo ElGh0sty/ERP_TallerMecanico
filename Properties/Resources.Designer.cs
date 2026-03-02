@@ -173,6 +173,26 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap alarm_clock_regular {
+            get {
+                object obj = ResourceManager.GetObject("alarm-clock-regular", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alarm_clock_solid {
+            get {
+                object obj = ResourceManager.GetObject("alarm-clock-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap box_open_102904 {
             get {
                 object obj = ResourceManager.GetObject("box-open_102904", resourceCulture);
@@ -186,6 +206,26 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap car_23964 {
             get {
                 object obj = ResourceManager.GetObject("car_23964", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap car_on_solid {
+            get {
+                object obj = ResourceManager.GetObject("car-on-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chart_line_solid {
+            get {
+                object obj = ResourceManager.GetObject("chart-line-solid", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -466,6 +506,26 @@ namespace PROYECTOMECANICO.Properties {
         internal static System.Drawing.Bitmap user_female_102881 {
             get {
                 object obj = ResourceManager.GetObject("user-female_102881", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap users_solid {
+            get {
+                object obj = ResourceManager.GetObject("users-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap users_solid1 {
+            get {
+                object obj = ResourceManager.GetObject("users-solid1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

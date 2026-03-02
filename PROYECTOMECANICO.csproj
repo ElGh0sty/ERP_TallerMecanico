@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
+    <Compile Include="EmpresaContext.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -347,6 +348,9 @@
     <EmbeddedResource Include="Modulo_Facturacion\FormRepVentas.resx">
       <DependentUpon>FormRepVentas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inicio\FormInicio.resx">
+      <DependentUpon>FormInicio.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inventario\FormCalogProd.resx">
       <DependentUpon>FormCalogProd.cs</DependentUpon>
     </EmbeddedResource>
@@ -433,6 +437,12 @@
     <Content Include=".gitignore">
       <Generator>SettingsSingleFileGenerator</Generator>
     </Content>
+    <None Include="Resources\car-on-solid.png" />
+    <None Include="Resources\chart-line-solid.png" />
+    <None Include="Resources\users-solid1.png" />
+    <None Include="Resources\users-solid.png" />
+    <None Include="Resources\alarm-clock-solid.png" />
+    <None Include="Resources\alarm-clock-regular.png" />
     <None Include="Resources\offering_granting_charity_property_donation_land_icon_251183.png" />
     <None Include="Resources\configurations_102859.png" />
     <None Include="Resources\agent_102942.png" />
