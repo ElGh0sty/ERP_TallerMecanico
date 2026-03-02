@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.TabControl1 = new Guna.UI2.WinForms.Guna2TabControl();
+            this.tabControl3 = new System.Windows.Forms.TabPage();
             this.dgvTareas = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,7 +38,7 @@
             this.btnCargarOrden = new System.Windows.Forms.Button();
             this.txtTarea = new System.Windows.Forms.TextBox();
             this.cmbOrdenes = new System.Windows.Forms.ComboBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabControl4 = new System.Windows.Forms.TabPage();
             this.dgvItems = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,38 +47,57 @@
             this.txtBuscarProducto = new System.Windows.Forms.TextBox();
             this.lblStock = new System.Windows.Forms.Label();
             this.btnAgregarProducto = new System.Windows.Forms.Button();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.TabControl1.SuspendLayout();
+            this.tabControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).BeginInit();
             this.panel1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // TabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(908, 603);
-            this.tabControl1.TabIndex = 0;
+            this.TabControl1.Controls.Add(this.tabControl3);
+            this.TabControl1.Controls.Add(this.tabControl4);
+            this.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControl1.ItemSize = new System.Drawing.Size(180, 40);
+            this.TabControl1.Location = new System.Drawing.Point(0, 0);
+            this.TabControl1.Name = "TabControl1";
+            this.TabControl1.SelectedIndex = 0;
+            this.TabControl1.Size = new System.Drawing.Size(908, 603);
+            this.TabControl1.TabButtonHoverState.BorderColor = System.Drawing.Color.Empty;
+            this.TabControl1.TabButtonHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
+            this.TabControl1.TabButtonHoverState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.TabControl1.TabButtonHoverState.ForeColor = System.Drawing.Color.White;
+            this.TabControl1.TabButtonHoverState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
+            this.TabControl1.TabButtonIdleState.BorderColor = System.Drawing.Color.Empty;
+            this.TabControl1.TabButtonIdleState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabButtonIdleState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.TabControl1.TabButtonIdleState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(160)))), ((int)(((byte)(167)))));
+            this.TabControl1.TabButtonIdleState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabButtonSelectedState.BorderColor = System.Drawing.Color.Empty;
+            this.TabControl1.TabButtonSelectedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(102)))), ((int)(((byte)(244)))));
+            this.TabControl1.TabButtonSelectedState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.TabControl1.TabButtonSelectedState.ForeColor = System.Drawing.Color.White;
+            this.TabControl1.TabButtonSelectedState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(132)))), ((int)(((byte)(255)))));
+            this.TabControl1.TabButtonSize = new System.Drawing.Size(180, 40);
+            this.TabControl1.TabIndex = 2;
+            this.TabControl1.TabMenuBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabMenuOrientation = Guna.UI2.WinForms.TabMenuOrientation.HorizontalTop;
             // 
-            // tabPage1
+            // tabControl3
             // 
-            this.tabPage1.Controls.Add(this.dgvTareas);
-            this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(900, 577);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Añadir Tareas";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabControl3.Controls.Add(this.dgvTareas);
+            this.tabControl3.Controls.Add(this.panel1);
+            this.tabControl3.Location = new System.Drawing.Point(4, 44);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabControl3.Size = new System.Drawing.Size(900, 555);
+            this.tabControl3.TabIndex = 2;
+            this.tabControl3.Text = "Añadir Tareas";
+            this.tabControl3.UseVisualStyleBackColor = true;
             // 
             // dgvTareas
             // 
@@ -100,24 +119,24 @@
             this.panel1.Controls.Add(this.btnCargarOrden);
             this.panel1.Controls.Add(this.txtTarea);
             this.panel1.Controls.Add(this.cmbOrdenes);
-            this.panel1.Location = new System.Drawing.Point(25, 288);
+            this.panel1.Location = new System.Drawing.Point(96, 288);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(846, 270);
+            this.panel1.Size = new System.Drawing.Size(706, 259);
             this.panel1.TabIndex = 6;
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.LightSlateGray;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(521, 52);
+            this.label2.Location = new System.Drawing.Point(439, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(204, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "Agrega tus Tareas a la Lista:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // lblOrdenInfo
             // 
@@ -134,8 +153,9 @@
             // 
             // btnAgregarTarea
             // 
+            this.btnAgregarTarea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAgregarTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarTarea.Location = new System.Drawing.Point(525, 172);
+            this.btnAgregarTarea.Location = new System.Drawing.Point(443, 172);
             this.btnAgregarTarea.Name = "btnAgregarTarea";
             this.btnAgregarTarea.Size = new System.Drawing.Size(173, 70);
             this.btnAgregarTarea.TabIndex = 1;
@@ -156,10 +176,11 @@
             // 
             // txtTarea
             // 
+            this.txtTarea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTarea.Location = new System.Drawing.Point(454, 96);
+            this.txtTarea.Location = new System.Drawing.Point(390, 96);
             this.txtTarea.Name = "txtTarea";
-            this.txtTarea.Size = new System.Drawing.Size(347, 33);
+            this.txtTarea.Size = new System.Drawing.Size(297, 33);
             this.txtTarea.TabIndex = 0;
             // 
             // cmbOrdenes
@@ -168,21 +189,21 @@
             this.cmbOrdenes.FormattingEnabled = true;
             this.cmbOrdenes.Location = new System.Drawing.Point(35, 96);
             this.cmbOrdenes.Name = "cmbOrdenes";
-            this.cmbOrdenes.Size = new System.Drawing.Size(350, 33);
+            this.cmbOrdenes.Size = new System.Drawing.Size(314, 33);
             this.cmbOrdenes.TabIndex = 3;
             this.cmbOrdenes.SelectedIndexChanged += new System.EventHandler(this.cmbOrdenes_SelectedIndexChanged);
             // 
-            // tabPage2
+            // tabControl4
             // 
-            this.tabPage2.Controls.Add(this.dgvItems);
-            this.tabPage2.Controls.Add(this.panel2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(900, 577);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Añadir Productos";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabControl4.Controls.Add(this.dgvItems);
+            this.tabControl4.Controls.Add(this.panel2);
+            this.tabControl4.Location = new System.Drawing.Point(4, 44);
+            this.tabControl4.Name = "tabControl4";
+            this.tabControl4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabControl4.Size = new System.Drawing.Size(900, 555);
+            this.tabControl4.TabIndex = 3;
+            this.tabControl4.Text = "Añadir Productos";
+            this.tabControl4.UseVisualStyleBackColor = true;
             // 
             // dgvItems
             // 
@@ -205,9 +226,9 @@
             this.panel2.Controls.Add(this.txtBuscarProducto);
             this.panel2.Controls.Add(this.lblStock);
             this.panel2.Controls.Add(this.btnAgregarProducto);
-            this.panel2.Location = new System.Drawing.Point(126, 315);
+            this.panel2.Location = new System.Drawing.Point(126, 310);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(631, 236);
+            this.panel2.Size = new System.Drawing.Size(631, 232);
             this.panel2.TabIndex = 8;
             // 
             // label1
@@ -276,16 +297,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormTrabajoProductos";
             this.Text = "Asignar Trabajo y Productos";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.TabControl1.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.tabControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -296,24 +317,24 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private Guna.UI2.WinForms.Guna2TabControl TabControl1;
+        private System.Windows.Forms.TabPage tabControl3;
         private System.Windows.Forms.DataGridView dgvTareas;
-        private System.Windows.Forms.Button btnAgregarTarea;
-        private System.Windows.Forms.TextBox txtTarea;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView dgvItems;
-        private System.Windows.Forms.Button btnAgregarProducto;
-        private System.Windows.Forms.Label lblStock;
-        private System.Windows.Forms.NumericUpDown nudCantidad;
-        private System.Windows.Forms.Button btnCargarOrden;
-        private System.Windows.Forms.ComboBox cmbOrdenes;
-        private System.Windows.Forms.Label lblOrdenInfo;
-        private System.Windows.Forms.ListBox lstProductos;
-        private System.Windows.Forms.TextBox txtBuscarProducto;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblOrdenInfo;
+        private System.Windows.Forms.Button btnAgregarTarea;
+        private System.Windows.Forms.Button btnCargarOrden;
+        private System.Windows.Forms.TextBox txtTarea;
+        private System.Windows.Forms.ComboBox cmbOrdenes;
+        private System.Windows.Forms.TabPage tabControl4;
+        private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lstProductos;
+        private System.Windows.Forms.NumericUpDown nudCantidad;
+        private System.Windows.Forms.TextBox txtBuscarProducto;
+        private System.Windows.Forms.Label lblStock;
+        private System.Windows.Forms.Button btnAgregarProducto;
     }
 }

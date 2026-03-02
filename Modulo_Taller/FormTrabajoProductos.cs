@@ -81,7 +81,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
 
             EstilizarGrid(dgvTareas);
             EstilizarGrid(dgvItems);
-            EstilizarTabControl(tabControl1);
+            
 
         }
 
