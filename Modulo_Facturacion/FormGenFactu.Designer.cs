@@ -68,6 +68,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.dgvItems = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
@@ -190,7 +192,7 @@
             // txtTipoDoc
             // 
             this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTipoDoc.Location = new System.Drawing.Point(83, 420);
+            this.txtTipoDoc.Location = new System.Drawing.Point(100, 426);
             this.txtTipoDoc.Name = "txtTipoDoc";
             this.txtTipoDoc.Size = new System.Drawing.Size(125, 29);
             this.txtTipoDoc.TabIndex = 11;
@@ -198,7 +200,7 @@
             // txtNombre
             // 
             this.txtNombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombre.Location = new System.Drawing.Point(83, 467);
+            this.txtNombre.Location = new System.Drawing.Point(100, 473);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(330, 29);
             this.txtNombre.TabIndex = 12;
@@ -206,7 +208,7 @@
             // txtDireccion
             // 
             this.txtDireccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDireccion.Location = new System.Drawing.Point(83, 509);
+            this.txtDireccion.Location = new System.Drawing.Point(100, 515);
             this.txtDireccion.Name = "txtDireccion";
             this.txtDireccion.Size = new System.Drawing.Size(331, 29);
             this.txtDireccion.TabIndex = 13;
@@ -214,7 +216,7 @@
             // txtNumDoc
             // 
             this.txtNumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumDoc.Location = new System.Drawing.Point(279, 420);
+            this.txtNumDoc.Location = new System.Drawing.Point(296, 426);
             this.txtNumDoc.Name = "txtNumDoc";
             this.txtNumDoc.Size = new System.Drawing.Size(133, 29);
             this.txtNumDoc.TabIndex = 14;
@@ -222,7 +224,7 @@
             // txtTelefono
             // 
             this.txtTelefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelefono.Location = new System.Drawing.Point(83, 558);
+            this.txtTelefono.Location = new System.Drawing.Point(100, 564);
             this.txtTelefono.Name = "txtTelefono";
             this.txtTelefono.Size = new System.Drawing.Size(125, 29);
             this.txtTelefono.TabIndex = 15;
@@ -230,7 +232,7 @@
             // txtEmail
             // 
             this.txtEmail.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(265, 558);
+            this.txtEmail.Location = new System.Drawing.Point(282, 564);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(149, 29);
             this.txtEmail.TabIndex = 16;
@@ -271,7 +273,9 @@
             // 
             this.lblSubtotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSubtotal.AutoSize = true;
+            this.lblSubtotal.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSubtotal.ForeColor = System.Drawing.Color.White;
             this.lblSubtotal.Location = new System.Drawing.Point(776, 421);
             this.lblSubtotal.Name = "lblSubtotal";
             this.lblSubtotal.Size = new System.Drawing.Size(51, 21);
@@ -282,7 +286,9 @@
             // 
             this.lblIVA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblIVA.AutoSize = true;
+            this.lblIVA.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIVA.ForeColor = System.Drawing.Color.White;
             this.lblIVA.Location = new System.Drawing.Point(776, 455);
             this.lblIVA.Name = "lblIVA";
             this.lblIVA.Size = new System.Drawing.Size(54, 21);
@@ -293,7 +299,9 @@
             // 
             this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotal.AutoSize = true;
+            this.lblTotal.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.ForeColor = System.Drawing.Color.White;
             this.lblTotal.Location = new System.Drawing.Point(776, 490);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(54, 21);
@@ -375,8 +383,10 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label6.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(5, 423);
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(22, 429);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(80, 21);
             this.label6.TabIndex = 31;
@@ -385,8 +395,10 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(214, 423);
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(231, 429);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 21);
             this.label7.TabIndex = 32;
@@ -395,8 +407,10 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(5, 470);
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(22, 476);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 21);
             this.label8.TabIndex = 33;
@@ -405,8 +419,10 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label9.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(2, 511);
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(19, 517);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(83, 21);
             this.label9.TabIndex = 34;
@@ -415,8 +431,10 @@
             // label10
             // 
             this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label10.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(2, 561);
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(19, 567);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(78, 21);
             this.label10.TabIndex = 35;
@@ -425,8 +443,10 @@
             // label11
             // 
             this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label11.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(207, 561);
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(224, 567);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(52, 21);
             this.label11.TabIndex = 36;
@@ -482,6 +502,24 @@
             this.dgvItems.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvItems.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
+            // guna2Panel1
+            // 
+            this.guna2Panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.guna2Panel1.ForeColor = System.Drawing.Color.White;
+            this.guna2Panel1.Location = new System.Drawing.Point(5, 411);
+            this.guna2Panel1.Name = "guna2Panel1";
+            this.guna2Panel1.Size = new System.Drawing.Size(448, 201);
+            this.guna2Panel1.TabIndex = 38;
+            // 
+            // guna2Panel2
+            // 
+            this.guna2Panel2.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.guna2Panel2.ForeColor = System.Drawing.Color.White;
+            this.guna2Panel2.Location = new System.Drawing.Point(516, 360);
+            this.guna2Panel2.Name = "guna2Panel2";
+            this.guna2Panel2.Size = new System.Drawing.Size(355, 201);
+            this.guna2Panel2.TabIndex = 39;
+            // 
             // FormGenFactu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -526,6 +564,8 @@
             this.Controls.Add(this.rbDesdeOT);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
+            this.Controls.Add(this.guna2Panel1);
+            this.Controls.Add(this.guna2Panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormGenFactu";
             this.Text = "FormGenFactu";
@@ -574,5 +614,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private Guna.UI2.WinForms.Guna2DataGridView dgvItems;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
     }
 }
