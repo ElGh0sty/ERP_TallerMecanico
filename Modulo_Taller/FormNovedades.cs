@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
@@ -12,6 +13,11 @@ namespace PROYECTOMECANICO.Modulo_Taller
         private readonly long usuarioId;
         private readonly string rolUsuario;
         private long ordenIdActual = 0;
+
+        private System.Collections.Generic.List<ProductoItem> _productosBase =
+    new System.Collections.Generic.List<ProductoItem>();
+
+        private ProductoItem _productoSeleccionado = null;
 
         Conexion con = new Conexion();
 
@@ -38,11 +44,137 @@ namespace PROYECTOMECANICO.Modulo_Taller
             btnAceptar.Click += (s, e) => CambiarEstadoNovedad("Aceptado");
             btnRechazar.Click += (s, e) => CambiarEstadoNovedad("Rechazado");
 
+
+            txtBuscarProducto.TextChanged += (s, e) => FiltrarProductos();
+            txtBuscarProducto.Enter += (s, e) =>
+            {
+                if (chkRequiereExtra.Checked)
+                {
+                    FiltrarProductos();
+                    lstProductos.Visible = (lstProductos.Items.Count > 0);
+                }
+            };
+            lstProductos.Click += (s, e) => SeleccionarProductoDeLista();
+
             chkRequiereExtra.CheckedChanged += (s, e) =>
             {
-                nudMontoExtra.Enabled = chkRequiereExtra.Checked;
+                bool on = chkRequiereExtra.Checked;
+
+                nudMontoExtra.Enabled = on; // lo vamos a dejar en false luego (ver punto 3)
+                nudCantidadExtra.Enabled = on;
+
+                txtBuscarProducto.Enabled = on;
+                lstProductos.Enabled = on;
+                lblProductoSel.Enabled = on;
+
+                if (!on)
+                {
+                    txtBuscarProducto.Text = "";
+                    lstProductos.Visible = false;
+                    _productoSeleccionado = null;
+                    lblProductoSel.Text = "Seleccionado: Ninguno";
+                    nudCantidadExtra.Value = 1;
+                    nudMontoExtra.Value = 0;
+                }
+                else
+                {
+                    if (_productosBase == null || _productosBase.Count == 0)
+                        CargarProductosBase();
+
+                    lstProductos.Visible = true;
+                    txtBuscarProducto.Focus();
+                }
             };
 
+            nudMontoExtra.Enabled = false;  
+            nudMontoExtra.ReadOnly = true;  
+            nudMontoExtra.Increment = 0;    
+
+
+            txtBuscarProducto.Enabled = false;
+            lstProductos.Enabled = false;
+            lstProductos.Visible = false;
+            lblProductoSel.Enabled = false;
+            nudCantidadExtra.Enabled = false;
+
+        }
+
+        private void CargarProductosBase()
+        {
+            try
+            {
+                con.Abrir();
+
+                string sql = @"
+SELECT id, nombre, ISNULL(precio_pvp, 0) AS precio_pvp
+FROM Productos
+ORDER BY nombre;";
+
+                var lista = new System.Collections.Generic.List<ProductoItem>();
+
+                using (SqlCommand cmd = new SqlCommand(sql, con.leer))
+                using (SqlDataReader rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        lista.Add(new ProductoItem
+                        {
+                            Id = Convert.ToInt64(rd["id"]),
+                            Nombre = rd["nombre"].ToString(),
+                            Precio = Convert.ToDecimal(rd["precio_pvp"])
+                        });
+                    }
+                }
+
+                _productosBase = lista;
+
+                // mostrar todo al inicio
+                lstProductos.DataSource = _productosBase;
+                lstProductos.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar productos: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
+        }
+
+
+        private void SeleccionarProductoDeLista()
+        {
+            if (lstProductos.SelectedItem == null) return;
+
+            _productoSeleccionado = lstProductos.SelectedItem as ProductoItem;
+
+            if (_productoSeleccionado != null)
+            {
+                lblProductoSel.Text = "Seleccionado: " + _productoSeleccionado.Nombre;
+
+                if (_productoSeleccionado.Precio > 0)
+                    nudMontoExtra.Value = _productoSeleccionado.Precio;
+
+                lstProductos.Visible = false; // se oculta al elegir
+            }
+        }
+
+        private void FiltrarProductos()
+        {
+            if (!chkRequiereExtra.Checked) return;
+
+            string q = (txtBuscarProducto.Text ?? "").Trim().ToLower();
+
+            // si no hay texto, muestra todo
+            var filtrada = string.IsNullOrWhiteSpace(q)
+                ? _productosBase
+                : _productosBase.Where(p => p.Nombre.ToLower().Contains(q)).ToList();
+
+            lstProductos.DataSource = null;
+            lstProductos.DataSource = filtrada;
+
+            lstProductos.Visible = filtrada.Count > 0;
         }
 
         private void ConfigurarGrid()
@@ -204,12 +336,13 @@ ORDER BY ot.fecha_ingreso DESC;";
 
                 string sql = @"
 SELECT 
-    id,
-    descripcion,
-    fecha,
-    requiere_presupuesto_extra,
-    monto_extra,
-    estado_cliente
+    id, 
+    descripcion, 
+    fecha, 
+    requiere_presupuesto_extra, 
+    monto_extra, 
+    estado_cliente, 
+    producto_id
 FROM Novedades
 WHERE orden_trabajo_id = @ordenId
 ORDER BY fecha DESC;";
@@ -305,12 +438,23 @@ ORDER BY fecha DESC;";
 
             if (requiereExtra)
             {
-                if (nudMontoExtra.Value <= 0)
+                if (_productoSeleccionado == null)
                 {
-                    MessageBox.Show("Si requiere extra, ingresa un monto mayor a 0.");
+                    MessageBox.Show("Selecciona un producto/repuesto para el extra.");
                     return;
                 }
-                montoExtra = nudMontoExtra.Value;
+
+                if (nudCantidadExtra.Value <= 0)
+                {
+                    MessageBox.Show("Ingresa una cantidad válida.");
+                    return;
+                }
+
+                decimal cantidad = nudCantidadExtra.Value;
+                decimal precio = _productoSeleccionado.Precio;
+
+                montoExtra = cantidad * precio;
+                nudMontoExtra.Value = montoExtra.Value; 
             }
 
             try
@@ -321,11 +465,13 @@ ORDER BY fecha DESC;";
 
                 string sql = @"
 INSERT INTO Novedades
-(orden_trabajo_id, usuario_id, descripcion, fecha, requiere_presupuesto_extra, monto_extra, estado_cliente)
+(orden_trabajo_id, usuario_id, descripcion, fecha, requiere_presupuesto_extra, monto_extra, estado_cliente, producto_id)
 VALUES
-(@ordenId, @usuarioId, @descripcion, GETDATE(), @requiereExtra, @montoExtra, 'Pendiente');";
+(@ordenId, @usuarioId, @descripcion, GETDATE(), @requiereExtra, @montoExtra, 'Pendiente', @productoId);";
 
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@productoId",
+    requiereExtra ? (object)_productoSeleccionado?.Id ?? DBNull.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@ordenId", ordenIdActual);
                 cmd.Parameters.AddWithValue("@usuarioId", usuarioId);
                 cmd.Parameters.AddWithValue("@descripcion", desc);
@@ -401,16 +547,23 @@ WHERE id = @id;";
                         cmd.Parameters.AddWithValue("@id", novedadId);
                         cmd.ExecuteNonQuery();
 
+                        object prodObj = dgvNovedades.CurrentRow.Cells["producto_id"].Value;
+                        long? productoId = (prodObj == null || prodObj == DBNull.Value) ? (long?)null : Convert.ToInt64(prodObj);
+
                         if (nuevoEstado == "Aceptado" && requiereExtra)
                         {
-                            if (montoExtra <= 0)
-                                throw new Exception("La novedad no tiene monto_extra válido.");
+                            if (productoId == null)
+                                throw new Exception("Esta novedad no tiene producto asignado. Edítala o vuelve a crearla.");
 
-                            InsertarItemExtra(tx, ordenIdActual, montoExtra,
-                                "EXTRA: " + dgvNovedades.CurrentRow.Cells["descripcion"].Value?.ToString());
+                            if (montoExtra <= 0)
+                                throw new Exception("El monto extra debe ser mayor a 0.");
+
+                            decimal cantidad = 1; 
+                            InsertarItemExtraProducto(tx, ordenIdActual, productoId.Value, "Repuesto extra", cantidad, montoExtra);
                         }
 
-                        cmd.ExecuteNonQuery();
+                        
+                        
                         RegistrarHistorial(
     tx,
     ordenIdActual,
@@ -444,43 +597,49 @@ WHERE id = @id;";
             }
         }
 
-        private void InsertarItemExtra(SqlTransaction tx, long ordenId, decimal monto, string descripcion)
+        private void InsertarItemExtraProducto(SqlTransaction tx, long ordenId, long productoId, string nombreProducto, decimal cantidad, decimal montoTotal)
         {
+            decimal precioUnit = (cantidad <= 0) ? 0 : (montoTotal / cantidad);
+
             string sql = @"
 INSERT INTO OrdenesTrabajo_Items
-(orden_id, producto_id, servicio_id, descripcion, cantidad, precio_unitario, subtotal, fecha_agregado)
+(orden_id, producto_id, servicio_id, descripcion, cantidad, precio_unitario, fecha_agregado)
 VALUES
-(@ordenId, NULL, NULL, @desc, 1, @precio, @subtotal, GETDATE());";
+(@ordenId, @productoId, NULL, @desc, @cant, @precioUnit, GETDATE());";
 
-            SqlCommand cmd = new SqlCommand(sql, con.leer, tx);
-            cmd.Parameters.AddWithValue("@ordenId", ordenId);
-            cmd.Parameters.AddWithValue("@desc", descripcion);
-            cmd.Parameters.AddWithValue("@precio", monto);
-            cmd.Parameters.AddWithValue("@subtotal", monto);
-
-            cmd.ExecuteNonQuery();
+            using (SqlCommand cmd = new SqlCommand(sql, con.leer, tx))
+            {
+                cmd.Parameters.AddWithValue("@ordenId", ordenId);
+                cmd.Parameters.AddWithValue("@productoId", productoId);
+                cmd.Parameters.AddWithValue("@desc", "EXTRA REPUESTO: " + nombreProducto);
+                cmd.Parameters.AddWithValue("@cant", cantidad);
+                cmd.Parameters.AddWithValue("@precioUnit", precioUnit);
+                cmd.ExecuteNonQuery();
+            }
 
             RegistrarHistorial(
-    tx,
-    ordenId,
-    usuarioId,
-    "ITEM",
-    "Extra agregado",
-    $"{descripcion} | Monto: {monto:N2}"
-);
+                tx,
+                ordenId,
+                usuarioId,
+                "ITEM",
+                "Extra agregado",
+                $"Producto: {nombreProducto} | Cant: {cantidad:N2} | Total: {montoTotal:N2}"
+            );
         }
+
+
 
         private void HabilitarEdicion()
         {
             txtDescripcion.Enabled = true;
             chkRequiereExtra.Enabled = true;
-            nudMontoExtra.Enabled = true;
+            nudCantidadExtra.Enabled = true;
 
             btnGuardar.Enabled = true;
             btnCancelar.Enabled = true;
 
             txtDescripcion.Focus();
-            nudMontoExtra.Enabled = chkRequiereExtra.Checked;
+            nudCantidadExtra.Enabled = chkRequiereExtra.Checked;
 
         }
 
@@ -488,7 +647,7 @@ VALUES
         {
             txtDescripcion.Enabled = false;
             chkRequiereExtra.Enabled = false;
-            nudMontoExtra.Enabled = false;
+            nudCantidadExtra.Enabled = false;
 
             btnGuardar.Enabled = false;
             btnCancelar.Enabled = false;
@@ -498,7 +657,7 @@ VALUES
         {
             txtDescripcion.Clear();
             chkRequiereExtra.Checked = false;
-            nudMontoExtra.Value = 0;
+            nudCantidadExtra.Value = 0;
         }
 
         private void EstilizarGrid()
@@ -641,9 +800,14 @@ VALUES
             }
         }
 
-        private void lblOrden_Click(object sender, EventArgs e)
+        private class ProductoItem
         {
-
+            public long Id { get; set; }
+            public string Nombre { get; set; }
+            public decimal Precio { get; set; } 
+            public override string ToString() => Nombre;
         }
+
+
     }
 }

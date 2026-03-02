@@ -33,7 +33,7 @@
             this.dgvNovedades = new System.Windows.Forms.DataGridView();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.chkRequiereExtra = new System.Windows.Forms.CheckBox();
-            this.nudMontoExtra = new System.Windows.Forms.NumericUpDown();
+            this.nudCantidadExtra = new System.Windows.Forms.NumericUpDown();
             this.btnNuevaNovedad = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
@@ -41,7 +41,13 @@
             this.btnRechazar = new System.Windows.Forms.Button();
             this.lblPendientes = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtBuscarProducto = new System.Windows.Forms.TextBox();
+            this.lblRepuesto = new System.Windows.Forms.Label();
+            this.lstProductos = new System.Windows.Forms.ListBox();
+            this.lblProductoSel = new System.Windows.Forms.Label();
+            this.nudMontoExtra = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCantidadExtra)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +67,6 @@
             this.lblOrden.Size = new System.Drawing.Size(39, 13);
             this.lblOrden.TabIndex = 1;
             this.lblOrden.Text = "Orden:";
-            this.lblOrden.Click += new System.EventHandler(this.lblOrden_Click);
             // 
             // dgvNovedades
             // 
@@ -90,18 +95,18 @@
             this.chkRequiereExtra.Text = "Requiere presupuesto extra";
             this.chkRequiereExtra.UseVisualStyleBackColor = true;
             // 
-            // nudMontoExtra
+            // nudCantidadExtra
             // 
-            this.nudMontoExtra.DecimalPlaces = 2;
-            this.nudMontoExtra.Location = new System.Drawing.Point(293, 482);
-            this.nudMontoExtra.Maximum = new decimal(new int[] {
+            this.nudCantidadExtra.DecimalPlaces = 2;
+            this.nudCantidadExtra.Location = new System.Drawing.Point(704, 395);
+            this.nudCantidadExtra.Maximum = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
-            this.nudMontoExtra.Name = "nudMontoExtra";
-            this.nudMontoExtra.Size = new System.Drawing.Size(144, 20);
-            this.nudMontoExtra.TabIndex = 5;
+            this.nudCantidadExtra.Name = "nudCantidadExtra";
+            this.nudCantidadExtra.Size = new System.Drawing.Size(144, 20);
+            this.nudCantidadExtra.TabIndex = 5;
             // 
             // btnNuevaNovedad
             // 
@@ -114,7 +119,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(458, 473);
+            this.btnGuardar.Location = new System.Drawing.Point(528, 526);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(130, 35);
             this.btnGuardar.TabIndex = 7;
@@ -123,7 +128,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(622, 473);
+            this.btnCancelar.Location = new System.Drawing.Point(718, 526);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(130, 35);
             this.btnCancelar.TabIndex = 8;
@@ -167,11 +172,62 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Decision del Cliente:";
             // 
+            // txtBuscarProducto
+            // 
+            this.txtBuscarProducto.Location = new System.Drawing.Point(471, 394);
+            this.txtBuscarProducto.Name = "txtBuscarProducto";
+            this.txtBuscarProducto.Size = new System.Drawing.Size(202, 20);
+            this.txtBuscarProducto.TabIndex = 13;
+            // 
+            // lblRepuesto
+            // 
+            this.lblRepuesto.AutoSize = true;
+            this.lblRepuesto.Location = new System.Drawing.Point(525, 363);
+            this.lblRepuesto.Name = "lblRepuesto";
+            this.lblRepuesto.Size = new System.Drawing.Size(104, 13);
+            this.lblRepuesto.TabIndex = 14;
+            this.lblRepuesto.Text = "Repuesto/Producto:";
+            // 
+            // lstProductos
+            // 
+            this.lstProductos.FormattingEnabled = true;
+            this.lstProductos.Location = new System.Drawing.Point(471, 414);
+            this.lstProductos.Name = "lstProductos";
+            this.lstProductos.Size = new System.Drawing.Size(202, 95);
+            this.lstProductos.TabIndex = 15;
+            // 
+            // lblProductoSel
+            // 
+            this.lblProductoSel.AutoSize = true;
+            this.lblProductoSel.Location = new System.Drawing.Point(715, 363);
+            this.lblProductoSel.Name = "lblProductoSel";
+            this.lblProductoSel.Size = new System.Drawing.Size(118, 13);
+            this.lblProductoSel.TabIndex = 16;
+            this.lblProductoSel.Text = "Seleccionado: Ninguno";
+            // 
+            // nudMontoExtra
+            // 
+            this.nudMontoExtra.DecimalPlaces = 2;
+            this.nudMontoExtra.Location = new System.Drawing.Point(704, 432);
+            this.nudMontoExtra.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudMontoExtra.Name = "nudMontoExtra";
+            this.nudMontoExtra.Size = new System.Drawing.Size(85, 20);
+            this.nudMontoExtra.TabIndex = 17;
+            // 
             // FormNovedades
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.nudMontoExtra);
+            this.Controls.Add(this.lblProductoSel);
+            this.Controls.Add(this.lstProductos);
+            this.Controls.Add(this.lblRepuesto);
+            this.Controls.Add(this.txtBuscarProducto);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblPendientes);
             this.Controls.Add(this.btnRechazar);
@@ -179,7 +235,7 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnNuevaNovedad);
-            this.Controls.Add(this.nudMontoExtra);
+            this.Controls.Add(this.nudCantidadExtra);
             this.Controls.Add(this.chkRequiereExtra);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.dgvNovedades);
@@ -189,6 +245,7 @@
             this.Name = "FormNovedades";
             this.Text = "Novedades";
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCantidadExtra)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -202,7 +259,7 @@
         private System.Windows.Forms.DataGridView dgvNovedades;
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.CheckBox chkRequiereExtra;
-        private System.Windows.Forms.NumericUpDown nudMontoExtra;
+        private System.Windows.Forms.NumericUpDown nudCantidadExtra;
         private System.Windows.Forms.Button btnNuevaNovedad;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
@@ -210,5 +267,10 @@
         private System.Windows.Forms.Button btnRechazar;
         private System.Windows.Forms.Label lblPendientes;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtBuscarProducto;
+        private System.Windows.Forms.Label lblRepuesto;
+        private System.Windows.Forms.ListBox lstProductos;
+        private System.Windows.Forms.Label lblProductoSel;
+        private System.Windows.Forms.NumericUpDown nudMontoExtra;
     }
 }
