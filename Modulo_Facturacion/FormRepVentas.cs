@@ -341,108 +341,108 @@ ORDER BY YEAR(f.fecha), DATEPART(ISO_WEEK, f.fecha);";
             ChartVentas.Update();
         }
 
-        private void GenerarPDF(string filePath)
-        {
-            Document doc = new Document(PageSize.A4.Rotate(), 20, 20, 40, 40);
-            PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
-            doc.Open();
-
-            var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
-            var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
-            var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 9);
-
-            Paragraph titulo = new Paragraph("REPORTE DE VENTAS", titleFont);
-            titulo.Alignment = Element.ALIGN_CENTER;
-            titulo.SpacingAfter = 10;
-            doc.Add(titulo);
-
-            Paragraph rango = new Paragraph(
-                $"Desde: {dtpDesde.Value:dd/MM/yyyy}   Hasta: {dtpHasta.Value:dd/MM/yyyy}",
-                bodyFont);
-            rango.Alignment = Element.ALIGN_CENTER;
-            rango.SpacingAfter = 15;
-            doc.Add(rango);
-
-            // Tabla SOLO columnas visibles
-            var visibleCols = 0;
-            foreach (DataGridViewColumn col in dgvVentas.Columns)
-                if (col.Visible) visibleCols++;
-
-            PdfPTable table = new PdfPTable(visibleCols);
-            table.WidthPercentage = 100;
-            table.SpacingBefore = 5;
-
-            foreach (DataGridViewColumn col in dgvVentas.Columns)
+            private void GenerarPDF(string filePath)
             {
-                if (!col.Visible) continue;
-                PdfPCell cell = new PdfPCell(new Phrase(col.HeaderText, headerFont));
-                cell.BackgroundColor = new BaseColor(230, 230, 230);
-                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                cell.Padding = 5;
-                table.AddCell(cell);
-            }
+                Document doc = new Document(PageSize.A4.Rotate(), 20, 20, 40, 40);
+                PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
+                doc.Open();
 
-            foreach (DataGridViewRow row in dgvVentas.Rows)
-            {
-                foreach (DataGridViewCell cell in row.Cells)
+                var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+                var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+                var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 9);
+
+                Paragraph titulo = new Paragraph("REPORTE DE VENTAS", titleFont);
+                titulo.Alignment = Element.ALIGN_CENTER;
+                titulo.SpacingAfter = 10;
+                doc.Add(titulo);
+
+                Paragraph rango = new Paragraph(
+                    $"Desde: {dtpDesde.Value:dd/MM/yyyy}   Hasta: {dtpHasta.Value:dd/MM/yyyy}",
+                    bodyFont);
+                rango.Alignment = Element.ALIGN_CENTER;
+                rango.SpacingAfter = 15;
+                doc.Add(rango);
+
+                // Tabla SOLO columnas visibles
+                var visibleCols = 0;
+                foreach (DataGridViewColumn col in dgvVentas.Columns)
+                    if (col.Visible) visibleCols++;
+
+                PdfPTable table = new PdfPTable(visibleCols);
+                table.WidthPercentage = 100;
+                table.SpacingBefore = 5;
+
+                foreach (DataGridViewColumn col in dgvVentas.Columns)
                 {
-                    if (!cell.Visible) continue;
-
-                    string texto = cell.Value?.ToString() ?? "";
-                    PdfPCell pdfCell = new PdfPCell(new Phrase(texto, bodyFont));
-                    pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    pdfCell.Padding = 4;
-                    table.AddCell(pdfCell);
-                }
-            }
-
-            doc.Add(table);
-
-            doc.Add(new Paragraph(" "));
-            Paragraph resumen = new Paragraph(
-                $"Total Facturas: {lblCantFacturas.Text}   |   " +
-                $"Total Ventas: {lblTotalVentas.Text}   |   " +
-                $"IVA: {lblTotalIVA.Text}",
-                headerFont);
-            resumen.Alignment = Element.ALIGN_RIGHT;
-            resumen.SpacingBefore = 15;
-            doc.Add(resumen);
-
-            doc.Close();
-        }
-
-        private void PrevisualizarPDF()
-        {
-            try
-            {
-                if (_dtVentas == null || _dtVentas.Rows.Count == 0)
-                {
-                    MessageBox.Show("No hay datos para exportar.", "Exportar",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    if (!col.Visible) continue;
+                    PdfPCell cell = new PdfPCell(new Phrase(col.HeaderText, headerFont));
+                    cell.BackgroundColor = new BaseColor(230, 230, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell.Padding = 5;
+                    table.AddCell(cell);
                 }
 
-                string tempPdf = Path.Combine(Path.GetTempPath(),
-                    $"ReporteVentas_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+                foreach (DataGridViewRow row in dgvVentas.Rows)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if (!cell.Visible) continue;
 
-                GenerarPDF(tempPdf); // tu método GenerarPDF(filePath)
+                        string texto = cell.Value?.ToString() ?? "";
+                        PdfPCell pdfCell = new PdfPCell(new Phrase(texto, bodyFont));
+                        pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        pdfCell.Padding = 4;
+                        table.AddCell(pdfCell);
+                    }
+                }
 
-                var visor = new FormPdfViewer(
-                    tempPdf,
-                    title: "Vista previa - Reporte de Ventas",
-                    defaultSaveName: $"ReporteVentas_{DateTime.Now:yyyyMMdd_HHmm}.pdf"
-                );
+                doc.Add(table);
 
-                visor.StartPosition = FormStartPosition.CenterParent;
-                visor.WindowState = FormWindowState.Maximized;
-                visor.ShowDialog(this);
+                doc.Add(new Paragraph(" "));
+                Paragraph resumen = new Paragraph(
+                    $"Total Facturas: {lblCantFacturas.Text}   |   " +
+                    $"Total Ventas: {lblTotalVentas.Text}   |   " +
+                    $"IVA: {lblTotalIVA.Text}",
+                    headerFont);
+                resumen.Alignment = Element.ALIGN_RIGHT;
+                resumen.SpacingBefore = 15;
+                doc.Add(resumen);
+
+                doc.Close();
             }
-            catch (Exception ex)
+
+            private void PrevisualizarPDF()
             {
-                MessageBox.Show("Error en vista previa:\n" + ex.Message, "PDF",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    if (_dtVentas == null || _dtVentas.Rows.Count == 0)
+                    {
+                        MessageBox.Show("No hay datos para exportar.", "Exportar",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    string tempPdf = Path.Combine(Path.GetTempPath(),
+                        $"ReporteVentas_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");   
+
+                    GenerarPDF(tempPdf); 
+
+                    var visor = new FormPdfViewer(
+                        tempPdf,
+                        title: "Vista previa - Reporte de Ventas",
+                        defaultSaveName: $"ReporteVentas_{DateTime.Now:yyyyMMdd_HHmm}.pdf"
+                    );
+
+                    visor.StartPosition = FormStartPosition.CenterParent;
+                    visor.WindowState = FormWindowState.Maximized;
+                    visor.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error en vista previa:\n" + ex.Message, "PDF",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-        }
 
 
 

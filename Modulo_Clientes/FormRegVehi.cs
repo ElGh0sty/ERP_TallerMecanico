@@ -19,7 +19,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         private long? vehiculoIdEditar = null;
         private readonly string rolUsuario;
 
-        // ✅ Cliente seleccionado desde el buscador
         private long clienteSeleccionadoId = 0;
 
         // Item para ListBox
@@ -41,7 +40,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
-            // ✅ Eventos buscador
             txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
             lstClientes.Click += lstClientes_Click;
             txtBuscarCliente.Leave += txtBuscarCliente_Leave;
@@ -69,7 +67,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
-            // ✅ Eventos buscador
             txtBuscarCliente.ReadOnly = true; 
 
             this.Click += (s, e) => lstClientes.Visible = false;
@@ -163,7 +160,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             lstClientes.DataSource = resultados;
 
-            // Mostrar debajo del textbox (si quieres ajustar, lo haces en Designer)
             lstClientes.Visible = true;
             lstClientes.BringToFront();
 
@@ -194,7 +190,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
         private void txtBuscarCliente_Leave(object sender, EventArgs e)
         {
-            // Si el foco pasa al listbox, no lo cierres inmediatamente
             if (!lstClientes.Focused)
                 lstClientes.Visible = false;
         }
@@ -245,7 +240,6 @@ WHERE id = @id";
                         // Cliente
                         clienteSeleccionadoId = Convert.ToInt64(dr["cliente_id"]);
 
-                        // Buscar nombre del cliente en tu dtClientes
                         if (dtClientes != null)
                         {
                             var row = dtClientes.AsEnumerable()
@@ -573,7 +567,6 @@ WHERE id = @id";
 
             if (string.IsNullOrWhiteSpace(kmTxt))
             {
-                // Si quieres obligarlo, cámbialo a MarcarError(...)
                 MarcarOk(txtKilometraje);
                 return;
             }

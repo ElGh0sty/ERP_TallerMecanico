@@ -32,6 +32,8 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             txtMontoRecibido.TextChanged += (s, e) => RecalcularCambio();
 
             btnCobrar.Click += (s, e) => Cobrar();
+
+            EstilizarGridCobro();
         }
 
         private void CobroCaja_Load(object sender, EventArgs e)
@@ -131,7 +133,6 @@ AND (
             lblPagado.Text = pagadoFactura.ToString("0.00");
             lblSaldo.Text = saldoFactura.ToString("0.00");
 
-            // sugerencia: en caja normalmente se cobra el saldo completo
             txtMontoRecibido.Text = saldoFactura.ToString("0.00");
             txtReferencia.Text = "";
             RecalcularCambio();
@@ -271,5 +272,65 @@ VALUES (@facturaId, @metodoId, @monto, @referencia, @usuarioId);
             decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val);
             return val;
         }
+
+        private void EstilizarGridCobro()
+        {
+            // Si tu control es Guna2DataGridView, esto igual funciona.
+
+
+            dgvFacturas.AutoGenerateColumns = true;
+
+            dgvFacturas.AllowUserToAddRows = false;
+            dgvFacturas.AllowUserToDeleteRows = false;
+            dgvFacturas.AllowUserToResizeRows = false;
+
+            dgvFacturas.RowHeadersVisible = false;
+
+            // Para que se ajuste al bloque (y no quede “hueco”)
+            dgvFacturas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvFacturas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+
+            // Si tienes muchas columnas, que permita scroll horizontal
+            dgvFacturas.ScrollBars = ScrollBars.Both;
+
+            // Mejor lectura
+            dgvFacturas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvFacturas.MultiSelect = false;
+
+            // Cabecera visible siempre
+            dgvFacturas.EnableHeadersVisualStyles = false;
+            dgvFacturas.ColumnHeadersVisible = true;
+                dgvFacturas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvFacturas.ColumnHeadersHeight = 38;
+
+            // Alto de filas consistente
+            dgvFacturas.RowTemplate.Height = 34;
+
+            // Evita que “se comprima” y quede feo cuando hay poco contenido
+            dgvFacturas.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            dgvFacturas.AutoSize = false;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

@@ -183,7 +183,6 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
 
                         long ordenIdNueva = Convert.ToInt64(cmd.ExecuteScalar());
 
-                        // ✅ Registrar historial: tipo ESTADO
                         RegistrarHistorial(tx, ordenIdNueva, recepcionistaId,
                             "ESTADO", "Orden creada", $"Estado inicial: {estadoInicial}");
 

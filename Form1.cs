@@ -19,7 +19,7 @@ namespace PROYECTOMECANICO
     {
         private Timer menuTimer;
         private bool menuCollapsed;     // estado actual
-        private bool menuTargetCollapsed; // a dónde vamos
+        private bool menuTargetCollapsed; 
         private int menuExpandedWidth = 276;
         private int menuCollapsedWidth = 110;
         private int menuStep = 15;
@@ -37,7 +37,7 @@ namespace PROYECTOMECANICO
             InitializeComponent();
 
             
-            menuCollapsed = true; // porque llamas CollapseMenu() al inicio
+            menuCollapsed = true; 
             menuTargetCollapsed = true;
 
             menuTimer = new Timer();
@@ -74,7 +74,7 @@ namespace PROYECTOMECANICO
         }
 
 
-        //Drag Form
+        //PARA QUE EL PANEL SEA ARRASTABLE
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
 
@@ -372,16 +372,17 @@ namespace PROYECTOMECANICO
         {
             switch (this.WindowState)
             {
-                case FormWindowState.Maximized: //Maximized form (After)
+                case FormWindowState.Maximized: 
                     this.Padding = new Padding(8, 8, 8, 0);
                     break;
-                case FormWindowState.Normal: //Restored form (After)
+                case FormWindowState.Normal: 
                     if (this.Padding.Top != borderSize)
                         this.Padding = new Padding(borderSize);
                     break;
             }
         }
 
+        //MENU ABRIR Y CERRAR
         private void AplicarEstadoMenu(bool collapsed)
         {
             if (collapsed)

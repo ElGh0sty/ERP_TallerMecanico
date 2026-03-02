@@ -220,7 +220,7 @@ WHERE v.cliente_id = @id", con.leer))
             }
         }
 
-        // ---------------- ESTILOS ----------------
+        //  ESTILOS 
 
         private void EstilizarDataGridView()
         {
