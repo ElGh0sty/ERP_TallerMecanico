@@ -997,13 +997,17 @@ VALUES
                             using (var cmd = new SqlCommand(
                                 "UPDATE dbo.OrdenesTrabajo SET facturada = 1 WHERE id = @id", cn, tx))
                             {
+                                cmd.CommandTimeout = 10;
                                 cmd.Parameters.Add("@id", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
                                 cmd.ExecuteNonQuery();
                             }
                         }
-
                         tx.Commit();
                         facturaIdGenerada = facturaId;
+
+                        // Generar/guardar PDF FUERA de la transacción
+                        string pdfPath = GenerarPdfFactura();
+                        GuardarPdfEnFactura(facturaId, pdfPath);
 
                         MessageBox.Show("Factura generada\nID: " + facturaId + "\nSecuencial: " + secuencialGenerado);
                     }
@@ -1020,6 +1024,26 @@ VALUES
             }
 
             await Task.CompletedTask;
+        }
+
+
+        private void GuardarPdfEnFactura(long facturaId, string pdfPath)
+        {
+            byte[] pdfBytes = System.IO.File.ReadAllBytes(pdfPath);
+            string nombre = System.IO.Path.GetFileName(pdfPath);
+
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand(@"
+UPDATE Facturas
+SET pdf_data = @pdf,
+    pdf_nombre = @nom
+WHERE id = @id;", cn))
+            {
+                cmd.Parameters.Add("@pdf", SqlDbType.VarBinary, -1).Value = pdfBytes;
+                cmd.Parameters.AddWithValue("@nom", nombre);
+                cmd.Parameters.AddWithValue("@id", facturaId);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private string GenerarSiguienteSecuencial()

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.rbDesdeOT = new System.Windows.Forms.RadioButton();
             this.rbVentaDirecta = new System.Windows.Forms.RadioButton();
             this.txtBuscarOT = new System.Windows.Forms.TextBox();
@@ -101,7 +101,7 @@
             // txtBuscarOT
             // 
             this.txtBuscarOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarOT.Location = new System.Drawing.Point(13, 113);
+            this.txtBuscarOT.Location = new System.Drawing.Point(21, 112);
             this.txtBuscarOT.Name = "txtBuscarOT";
             this.txtBuscarOT.Size = new System.Drawing.Size(300, 29);
             this.txtBuscarOT.TabIndex = 2;
@@ -111,7 +111,7 @@
             this.lstOTResultados.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstOTResultados.FormattingEnabled = true;
             this.lstOTResultados.ItemHeight = 21;
-            this.lstOTResultados.Location = new System.Drawing.Point(14, 142);
+            this.lstOTResultados.Location = new System.Drawing.Point(20, 140);
             this.lstOTResultados.Name = "lstOTResultados";
             this.lstOTResultados.Size = new System.Drawing.Size(300, 88);
             this.lstOTResultados.TabIndex = 3;
@@ -119,7 +119,7 @@
             // btnCargarItemsOT
             // 
             this.btnCargarItemsOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCargarItemsOT.Location = new System.Drawing.Point(365, 112);
+            this.btnCargarItemsOT.Location = new System.Drawing.Point(353, 112);
             this.btnCargarItemsOT.Name = "btnCargarItemsOT";
             this.btnCargarItemsOT.Size = new System.Drawing.Size(111, 29);
             this.btnCargarItemsOT.TabIndex = 4;
@@ -130,7 +130,7 @@
             // 
             this.rbClienteExistente.AutoSize = true;
             this.rbClienteExistente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbClienteExistente.Location = new System.Drawing.Point(21, 253);
+            this.rbClienteExistente.Location = new System.Drawing.Point(20, 253);
             this.rbClienteExistente.Name = "rbClienteExistente";
             this.rbClienteExistente.Size = new System.Drawing.Size(149, 25);
             this.rbClienteExistente.TabIndex = 5;
@@ -142,7 +142,7 @@
             // 
             this.rbNuevoCliente.AutoSize = true;
             this.rbNuevoCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbNuevoCliente.Location = new System.Drawing.Point(182, 253);
+            this.rbNuevoCliente.Location = new System.Drawing.Point(175, 253);
             this.rbNuevoCliente.Name = "rbNuevoCliente";
             this.rbNuevoCliente.Size = new System.Drawing.Size(131, 25);
             this.rbNuevoCliente.TabIndex = 6;
@@ -154,7 +154,7 @@
             // 
             this.rbConsumidorFinal.AutoSize = true;
             this.rbConsumidorFinal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbConsumidorFinal.Location = new System.Drawing.Point(353, 253);
+            this.rbConsumidorFinal.Location = new System.Drawing.Point(312, 253);
             this.rbConsumidorFinal.Name = "rbConsumidorFinal";
             this.rbConsumidorFinal.Size = new System.Drawing.Size(154, 25);
             this.rbConsumidorFinal.TabIndex = 7;
@@ -243,7 +243,7 @@
             this.btnAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddItem.ForeColor = System.Drawing.Color.Black;
-            this.btnAddItem.Location = new System.Drawing.Point(17, 27);
+            this.btnAddItem.Location = new System.Drawing.Point(17, 25);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.Size = new System.Drawing.Size(88, 31);
             this.btnAddItem.TabIndex = 18;
@@ -255,7 +255,7 @@
             this.btnDelItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelItem.ForeColor = System.Drawing.Color.Black;
-            this.btnDelItem.Location = new System.Drawing.Point(138, 27);
+            this.btnDelItem.Location = new System.Drawing.Point(138, 25);
             this.btnDelItem.Name = "btnDelItem";
             this.btnDelItem.Size = new System.Drawing.Size(89, 31);
             this.btnDelItem.TabIndex = 19;
@@ -268,7 +268,7 @@
             this.cmbImpuesto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbImpuesto.ForeColor = System.Drawing.Color.Black;
             this.cmbImpuesto.FormattingEnabled = true;
-            this.cmbImpuesto.Location = new System.Drawing.Point(40, 91);
+            this.cmbImpuesto.Location = new System.Drawing.Point(40, 89);
             this.cmbImpuesto.Name = "cmbImpuesto";
             this.cmbImpuesto.Size = new System.Drawing.Size(137, 29);
             this.cmbImpuesto.TabIndex = 20;
@@ -281,7 +281,7 @@
             this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSubtotal.ForeColor = System.Drawing.Color.White;
             this.lblSubtotal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblSubtotal.Location = new System.Drawing.Point(244, 56);
+            this.lblSubtotal.Location = new System.Drawing.Point(244, 54);
             this.lblSubtotal.Name = "lblSubtotal";
             this.lblSubtotal.Size = new System.Drawing.Size(51, 21);
             this.lblSubtotal.TabIndex = 21;
@@ -294,7 +294,7 @@
             this.lblIVA.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIVA.ForeColor = System.Drawing.Color.White;
-            this.lblIVA.Location = new System.Drawing.Point(244, 91);
+            this.lblIVA.Location = new System.Drawing.Point(244, 89);
             this.lblIVA.Name = "lblIVA";
             this.lblIVA.Size = new System.Drawing.Size(54, 21);
             this.lblIVA.TabIndex = 22;
@@ -307,7 +307,7 @@
             this.lblTotal.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Location = new System.Drawing.Point(244, 126);
+            this.lblTotal.Location = new System.Drawing.Point(244, 124);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(54, 21);
             this.lblTotal.TabIndex = 23;
@@ -318,7 +318,7 @@
             this.btnGenerarFactura.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGenerarFactura.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGenerarFactura.ForeColor = System.Drawing.Color.Black;
-            this.btnGenerarFactura.Location = new System.Drawing.Point(16, 152);
+            this.btnGenerarFactura.Location = new System.Drawing.Point(16, 150);
             this.btnGenerarFactura.Name = "btnGenerarFactura";
             this.btnGenerarFactura.Size = new System.Drawing.Size(89, 31);
             this.btnGenerarFactura.TabIndex = 24;
@@ -330,7 +330,7 @@
             this.btnVistaPrevia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVistaPrevia.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVistaPrevia.ForeColor = System.Drawing.Color.Black;
-            this.btnVistaPrevia.Location = new System.Drawing.Point(138, 152);
+            this.btnVistaPrevia.Location = new System.Drawing.Point(138, 150);
             this.btnVistaPrevia.Name = "btnVistaPrevia";
             this.btnVistaPrevia.Size = new System.Drawing.Size(89, 31);
             this.btnVistaPrevia.TabIndex = 25;
@@ -341,7 +341,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(15, 4);
+            this.label1.Location = new System.Drawing.Point(17, 1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(269, 32);
             this.label1.TabIndex = 26;
@@ -361,7 +361,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 89);
+            this.label3.Location = new System.Drawing.Point(19, 88);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 21);
             this.label3.TabIndex = 28;
@@ -371,7 +371,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(5, 293);
+            this.label4.Location = new System.Drawing.Point(9, 293);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 21);
             this.label4.TabIndex = 29;
@@ -381,7 +381,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(19, 226);
+            this.label5.Location = new System.Drawing.Point(16, 229);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(350, 21);
             this.label5.TabIndex = 30;
@@ -461,27 +461,27 @@
             // 
             // dgvItems
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvItems.ColumnHeadersHeight = 4;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvItems.Location = new System.Drawing.Point(536, 1);
             this.dgvItems.Name = "dgvItems";
@@ -516,7 +516,7 @@
             this.guna2Panel1.ForeColor = System.Drawing.Color.White;
             this.guna2Panel1.Location = new System.Drawing.Point(5, 411);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(448, 201);
+            this.guna2Panel1.Size = new System.Drawing.Size(459, 198);
             this.guna2Panel1.TabIndex = 38;
             // 
             // guna2Panel2
@@ -533,7 +533,7 @@
             this.guna2Panel2.ForeColor = System.Drawing.Color.White;
             this.guna2Panel2.Location = new System.Drawing.Point(514, 355);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(370, 201);
+            this.guna2Panel2.Size = new System.Drawing.Size(370, 199);
             this.guna2Panel2.TabIndex = 39;
             // 
             // FormGenFactu
@@ -543,6 +543,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(896, 621);
+            this.Controls.Add(this.lstClientes);
             this.Controls.Add(this.txtNumDoc);
             this.Controls.Add(this.dgvItems);
             this.Controls.Add(this.label11);
@@ -550,7 +551,6 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -560,7 +560,6 @@
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.txtTipoDoc);
             this.Controls.Add(this.btnNuevoCliente);
-            this.Controls.Add(this.lstClientes);
             this.Controls.Add(this.txtBuscarCliente);
             this.Controls.Add(this.rbConsumidorFinal);
             this.Controls.Add(this.rbNuevoCliente);
@@ -572,8 +571,9 @@
             this.Controls.Add(this.rbDesdeOT);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormGenFactu";
             this.Text = "Generacion de Facturas";

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnGuardarComo = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCerrar = new Guna.UI2.WinForms.Guna2Button();
             this.lblTitulo = new System.Windows.Forms.Label();
+            this.btnCerrar = new Guna.UI2.WinForms.Guna2Button();
+            this.btnGuardarComo = new Guna.UI2.WinForms.Guna2Button();
             this.webViewPdf = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webViewPdf)).BeginInit();
@@ -49,20 +49,16 @@
             this.guna2Panel1.Size = new System.Drawing.Size(800, 50);
             this.guna2Panel1.TabIndex = 0;
             // 
-            // btnGuardarComo
+            // lblTitulo
             // 
-            this.btnGuardarComo.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnGuardarComo.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnGuardarComo.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnGuardarComo.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnGuardarComo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnGuardarComo.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnGuardarComo.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarComo.Location = new System.Drawing.Point(5, 5);
-            this.btnGuardarComo.Name = "btnGuardarComo";
-            this.btnGuardarComo.Size = new System.Drawing.Size(180, 40);
-            this.btnGuardarComo.TabIndex = 0;
-            this.btnGuardarComo.Text = "Guardar como";
+            this.lblTitulo.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.Location = new System.Drawing.Point(317, 13);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(152, 25);
+            this.lblTitulo.TabIndex = 2;
+            this.lblTitulo.Text = "Vista previa PDF";
             // 
             // btnCerrar
             // 
@@ -79,15 +75,20 @@
             this.btnCerrar.TabIndex = 1;
             this.btnCerrar.Text = "Cerrar";
             // 
-            // lblTitulo
+            // btnGuardarComo
             // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(322, 13);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(152, 25);
-            this.lblTitulo.TabIndex = 2;
-            this.lblTitulo.Text = "Vista previa PDF";
+            this.btnGuardarComo.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnGuardarComo.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnGuardarComo.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnGuardarComo.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnGuardarComo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnGuardarComo.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnGuardarComo.ForeColor = System.Drawing.Color.White;
+            this.btnGuardarComo.Location = new System.Drawing.Point(5, 5);
+            this.btnGuardarComo.Name = "btnGuardarComo";
+            this.btnGuardarComo.Size = new System.Drawing.Size(180, 40);
+            this.btnGuardarComo.TabIndex = 0;
+            this.btnGuardarComo.Text = "Guardar como";
             // 
             // webViewPdf
             // 

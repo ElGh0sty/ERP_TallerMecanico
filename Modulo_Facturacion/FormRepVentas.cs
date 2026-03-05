@@ -26,11 +26,73 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnLimpiar.Click += (s, e) => LimpiarFiltros();
             btnExportar.Click += (s, e) => PrevisualizarPDF();
             dtpHasta.ValueChanged += (s, e) => AjustarDesdeAlMesDeHasta();
+
+            dgvVentas.CellDoubleClick += dgvVentas_CellDoubleClick;
+            
         }
         private void AjustarDesdeAlMesActual()
         {
             var hoy = DateTime.Today;
             dtpDesde.Value = new DateTime(hoy.Year, hoy.Month, 1);
+        }
+
+        private void dgvVentas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dgvVentas.Rows[e.RowIndex];
+            if (row.DataBoundItem is DataRowView drv)
+            {
+                if (!drv.Row.Table.Columns.Contains("FacturaID"))
+                {
+                    MessageBox.Show("El DataSource no trae FacturaID.");
+                    return;
+                }
+
+                long facturaId = Convert.ToInt64(drv["FacturaID"]);
+                AbrirPdfFacturaDesdeBd(facturaId);
+            }
+        }
+
+        private void AbrirPdfFacturaDesdeBd(long facturaId)
+        {
+            byte[] pdf;
+            string nombre;
+
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand("SELECT pdf_data, pdf_nombre FROM Facturas WHERE id=@id;", cn))
+            {
+                cmd.Parameters.AddWithValue("@id", facturaId);
+
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read())
+                        throw new Exception("No existe la factura " + facturaId);
+
+                    if (rd["pdf_data"] == DBNull.Value)
+                        throw new Exception("Esta factura no tiene PDF guardado. Re-factúrala o vuelve a generarlo.");
+
+                    pdf = (byte[])rd["pdf_data"];
+                    nombre = rd["pdf_nombre"]?.ToString();
+                    if (string.IsNullOrWhiteSpace(nombre)) nombre = $"Factura_{facturaId}.pdf";
+                }
+            }
+
+            string carpeta = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "TallerMecanicoERP");
+            System.IO.Directory.CreateDirectory(carpeta);
+
+            string pdfPath = System.IO.Path.Combine(carpeta, nombre);
+            System.IO.File.WriteAllBytes(pdfPath, pdf);
+
+            using (var visor = new FormPdfViewer(
+                pdfPath,
+                title: "Vista previa - Factura",
+                defaultSaveName: nombre))
+            {
+                visor.StartPosition = FormStartPosition.CenterParent;
+                visor.WindowState = FormWindowState.Maximized;
+                visor.ShowDialog(this);
+            }
         }
 
         private void AjustarDesdeAlMesDeHasta()
