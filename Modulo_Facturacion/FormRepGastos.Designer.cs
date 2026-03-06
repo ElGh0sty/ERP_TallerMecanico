@@ -47,7 +47,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelFiltros = new Guna.UI2.WinForms.Guna2Panel();
-            this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnExportar = new Guna.UI2.WinForms.Guna2Button();
@@ -58,6 +57,7 @@
             this.dtpHasta = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.dtpDesde = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.lblTotalIVA = new System.Windows.Forms.Label();
@@ -102,18 +102,6 @@
             this.panelFiltros.Padding = new System.Windows.Forms.Padding(12);
             this.panelFiltros.Size = new System.Drawing.Size(908, 153);
             this.panelFiltros.TabIndex = 2;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(364, 24);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(100, 25);
-            this.label9.TabIndex = 12;
-            this.label9.Text = "Busqueda:";
             // 
             // label6
             // 
@@ -257,6 +245,18 @@
             this.label8.Size = new System.Drawing.Size(82, 25);
             this.label8.TabIndex = 11;
             this.label8.Text = "Usuario:";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(364, 24);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(100, 25);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "Busqueda:";
             // 
             // guna2Panel2
             // 
@@ -433,6 +433,10 @@
             this.dgvGastos.AllowUserToAddRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgvGastos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvGastos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvGastos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -451,13 +455,12 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvGastos.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvGastos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvGastos.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvGastos.Location = new System.Drawing.Point(0, 0);
+            this.dgvGastos.Location = new System.Drawing.Point(0, 10);
             this.dgvGastos.Name = "dgvGastos";
             this.dgvGastos.ReadOnly = true;
             this.dgvGastos.RowHeadersVisible = false;
-            this.dgvGastos.Size = new System.Drawing.Size(571, 331);
+            this.dgvGastos.Size = new System.Drawing.Size(571, 321);
             this.dgvGastos.TabIndex = 3;
             this.dgvGastos.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvGastos.ThemeStyle.AlternatingRowsStyle.Font = null;

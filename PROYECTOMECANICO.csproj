@@ -342,6 +342,9 @@
     <EmbeddedResource Include="Modulo_Facturacion\FormGenFactu.resx">
       <DependentUpon>FormGenFactu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Facturacion\FormItemPicker.resx">
+      <DependentUpon>FormItemPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormRepGastos.resx">
       <DependentUpon>FormRepGastos.cs</DependentUpon>
     </EmbeddedResource>
