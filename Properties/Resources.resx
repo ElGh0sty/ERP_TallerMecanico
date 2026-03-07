@@ -133,6 +133,9 @@
   <data name="muscular-car-service-worker-repairing-vehicle12" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\muscular-car-service-worker-repairing-vehicle12.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="car-on-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\car-on-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="WhatsApp Image 2026-02-04 at 9.58.32 PM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WhatsApp Image 2026-02-04 at 9.58.32 PM.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -147,9 +150,6 @@
   </data>
   <data name="tools2_102885" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tools2_102885.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="chart-line-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\chart-line-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="user_account_person_avatar_icon_131248" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user_account_person_avatar_icon_131248.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,14 +172,20 @@
   <data name="unnamed (1)1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unnamed (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="users-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\users-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="chart-line-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chart-line-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="3592841-cog-gear-general-machine-office-setting-settings_107765" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592841-cog-gear-general-machine-office-setting-settings_107765.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="users-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\users-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="3592814-document-general-letter-note-office-page-paper_107776" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592814-document-general-letter-note-office-page-paper_107776.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="agent_102942" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\agent_102942.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="unnamed (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unnamed (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -196,17 +202,14 @@
   <data name="user-female_102881" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user-female_102881.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="adoption_protection_kid_child_care_orphan_icon_251222" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\adoption_protection_kid_child_care_orphan_icon_251222.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="confirm_shipping_ecommerce_logistic_box_package_icon_142005" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\confirm_shipping_ecommerce_logistic_box_package_icon_142005.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="agent_102942" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\agent_102942.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="adoption_protection_kid_child_care_orphan_icon_251222" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\adoption_protection_kid_child_care_orphan_icon_251222.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="alarm-clock-regular" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\alarm-clock-regular.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -253,13 +256,13 @@
   <data name="computer_monitor_pc_hardware_screen_icon_142007" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\computer_monitor_pc_hardware_screen_icon_142007.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="3592856-general-group-office-personal-relation-team-team-structure_107770" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\3592856-general-group-office-personal-relation-team-team-structure_107770.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="muscular-car-service-worker-repairing-vehicle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\muscular-car-service-worker-repairing-vehicle.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="3592853-align-employee-general-human-human-list-list-member_107786" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3592853-align-employee-general-human-human-list-list-member_107786.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="car-on-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\car-on-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

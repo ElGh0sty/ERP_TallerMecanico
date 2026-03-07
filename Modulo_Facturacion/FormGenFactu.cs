@@ -1301,50 +1301,30 @@ WHERE id = @id;", cn))
                 rbDesdeOT.Checked = true;
             }
 
-            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Productos);
 
             if (buscador.ShowDialog() == DialogResult.OK)
             {
                 DataRow fila = buscador.ResultadoSeleccionado;
 
-                long ordenId = Convert.ToInt64(fila["id"]);
-                string placa = fila["placa"].ToString();
-                string cliente = fila["cliente"].ToString();
-                string estado = fila["estado"].ToString();
+                long productoId = Convert.ToInt64(fila["id"]);
+                string nombre = fila["nombre"].ToString();
+                int cantidad = buscador.CantidadSeleccionada;
+                decimal precio = Convert.ToDecimal(fila["precio_pvp"]); // Precio SIN IVA o CON IVA?
 
-                // Verificar que la OT esté en estado válido (Terminado/Entregado)
-                if (estado != "Terminado" && estado != "Entregado")
-                {
-                    MessageBox.Show($"La orden seleccionada está en estado '{estado}'. Solo se pueden facturar órdenes en estado 'Terminado' o 'Entregado'.",
-                        "Estado no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                
 
-                // Verificar que la OT no esté ya facturada
-                if (ExisteFacturaParaOT(ordenId))
-                {
-                    MessageBox.Show("Esta OT ya tiene una factura generada.",
-                        "OT ya facturada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                dtItems.Rows.Add(
+                    "Producto",
+                    nombre,
+                    cantidad,
+                    precio, // Este precio debería ser SIN IVA para calcular el IVA aparte
+                    cantidad * precio,
+                    productoId,
+                    DBNull.Value
+                );
 
-                // Asignar la orden seleccionada
-                ordenTrabajoId = ordenId;
-
-                // Mostrar la orden seleccionada en el txtBuscarOT
-                txtBuscarOT.Text = $"OT #{ordenId} - {placa} - {cliente}";
-
-                // Cargar el receptor desde la OT
-                CargarReceptorDesdeOT(ordenId);
-
-                // Opcional: Cargar automáticamente los items
-                DialogResult cargarItems = MessageBox.Show("¿Desea cargar los items de esta orden ahora?",
-                    "Cargar items", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (cargarItems == DialogResult.Yes)
-                {
-                    CargarItemsOT();
-                }
+                RecalcularTotales();
             }
         }
     }

@@ -233,6 +233,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692 {
+            get {
+                object obj = ResourceManager.GetObject("checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap computer_monitor_pc_hardware_screen_icon_142007 {
             get {
                 object obj = ResourceManager.GetObject("computer_monitor_pc_hardware_screen_icon_142007", resourceCulture);

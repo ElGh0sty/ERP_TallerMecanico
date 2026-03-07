@@ -4,6 +4,13 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+// Alias para evitar ambigüedad
+using PdfFont = iTextSharp.text.Font;
+using PdfRectangle = iTextSharp.text.Rectangle;
+using GdiFont = System.Drawing.Font;
 
 namespace PROYECTOMECANICO.Modulo_Inventario
 {
@@ -38,9 +45,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             CargarProductosBuscador();
             CargarImpuestos();
 
-            // Configurar DateTimePicker
             
-            label1.Visible = false; // Ocultar también la etiqueta
 
             // Defaults
             lstProductos.Visible = false;
@@ -79,7 +84,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
         private void AplicarEstilos()
         {
             BackColor = Color.FromArgb(245, 246, 250);
-            Font = new Font("Segoe UI", 10F);
+            Font = new GdiFont("Segoe UI", 10F);
 
             cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbImpuestoCompra.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -113,7 +118,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lblSubtotal.ForeColor = Color.FromArgb(40, 40, 40);
             lblIVA.ForeColor = Color.FromArgb(40, 40, 40);
             lblTotal.ForeColor = Color.FromArgb(15, 15, 15);
-            lblTotal.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTotal.Font = new GdiFont("Segoe UI", 11F, FontStyle.Bold);
         }
 
         private void EstiloBoton(Button btn, Color color)
@@ -309,13 +314,13 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             dgvItems.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvItems.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(24, 24, 28);
             dgvItems.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvItems.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvItems.ColumnHeadersDefaultCellStyle.Font = new GdiFont("Segoe UI", 10F, FontStyle.Bold);
             dgvItems.ColumnHeadersHeight = 42;
 
             dgvItems.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvItems.GridColor = Color.FromArgb(230, 230, 230);
 
-            dgvItems.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvItems.DefaultCellStyle.Font = new GdiFont("Segoe UI", 10F);
             dgvItems.DefaultCellStyle.Padding = new Padding(10, 4, 10, 4);
             dgvItems.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 255);
             dgvItems.DefaultCellStyle.SelectionForeColor = Color.Black;
@@ -365,7 +370,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 dtProveedores.Clear();
 
                 using (var da = new SqlDataAdapter(
-                    "SELECT id, nombre_empresa, ruc, direccion, telefono, email FROM Proveedores WHERE estado = 1 ORDER BY nombre_empresa",
+                    "SELECT id, nombre_empresa, ruc, direccion, telefono, email, contacto_nombre FROM Proveedores WHERE estado = 1 ORDER BY nombre_empresa",
                     con.leer))
                 {
                     da.Fill(dtProveedores);
@@ -675,23 +680,25 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
             string factura = GenerarNumeroCompraAuto();
-            DateTime fecha = DateTime.Now; // Siempre fecha actual
+            DateTime fecha = DateTime.Now;
 
             decimal subtotal = 0;
             foreach (DataRow row in dtItems.Rows)
                 subtotal += Convert.ToDecimal(row["subtotal"]);
 
-            // Obtener el porcentaje de IVA seleccionado
-            decimal porcentajeIVA = 0;
-            int impuestoId = 0;
+            // Obtener el porcentaje de IVA seleccionado para la compra (para la factura)
+            decimal porcentajeIVACompra = 0;
+            int impuestoIdCompra = 0;
+            string nombreIVACompra = "IVA";
             if (cmbImpuestoCompra.SelectedItem != null)
             {
                 var row = ((DataRowView)cmbImpuestoCompra.SelectedItem).Row;
-                porcentajeIVA = Convert.ToDecimal(row["porcentaje"]) / 100m;
-                impuestoId = Convert.ToInt32(row["id"]);
+                porcentajeIVACompra = Convert.ToDecimal(row["porcentaje"]) / 100m;
+                impuestoIdCompra = Convert.ToInt32(row["id"]);
+                nombreIVACompra = row["nombre"].ToString();
             }
 
-            decimal ivaTotal = subtotal * porcentajeIVA;
+            decimal ivaTotal = subtotal * porcentajeIVACompra;
             decimal totalCompra = subtotal + ivaTotal;
 
             try
@@ -702,14 +709,14 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 {
                     try
                     {
-                        // Insertar en Compras
+                        // 1. Insertar en Compras
                         long compraId;
                         using (SqlCommand cmd = new SqlCommand(@"
-                            INSERT INTO Compras
-                            (proveedor_id, usuario_id, numero_factura_proveedor, fecha_compra, subtotal, iva_total, total_compra)
-                            VALUES
-                            (@prov, @user, NULLIF(@factura,''), @fecha, @sub, @iva, @total);
-                            SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer, tx))
+                    INSERT INTO Compras
+                    (proveedor_id, usuario_id, numero_factura_proveedor, fecha_compra, subtotal, iva_total, total_compra)
+                    VALUES
+                    (@prov, @user, NULLIF(@factura,''), @fecha, @sub, @iva, @total);
+                    SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer, tx))
                         {
                             cmd.Parameters.AddWithValue("@prov", proveedorId);
                             cmd.Parameters.AddWithValue("@user", usuarioId);
@@ -722,20 +729,21 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             compraId = Convert.ToInt64(cmd.ExecuteScalar());
                         }
 
-                        // Insertar en FacturaCompra
+                        // 2. Insertar en FacturaCompra y obtener el ID generado
+                        long facturaCompraId;
                         using (SqlCommand cmd = new SqlCommand(@"
-                            INSERT INTO FacturaCompra
-                            (proveedor_id, usuario_id, clave_acceso_proveedor, serie_comprobante, secuencial_proveedor, 
-                             fecha_emision_proveedor, fecha_registro_sistema, subtotal_15_iva, subtotal_0_iva, 
-                             descuento_total, valor_iva, total_factura, estado, compra_id)
-                            VALUES
-                            (@prov, @user, @clave, @serie, @sec, @fecha, GETDATE(), @sub15, @sub0, 0, @iva, @total, 'Registrada', @compra)",
+                    INSERT INTO FacturaCompra
+                    (proveedor_id, usuario_id, clave_acceso_proveedor, serie_comprobante, secuencial_proveedor, 
+                     fecha_emision_proveedor, fecha_registro_sistema, subtotal_15_iva, subtotal_0_iva, 
+                     descuento_total, valor_iva, total_factura, estado, compra_id)
+                    OUTPUT INSERTED.id
+                    VALUES
+                    (@prov, @user, @clave, @serie, @sec, @fecha, GETDATE(), @sub15, @sub0, 0, @iva, @total, 'Registrada', @compra)",
                             con.leer, tx))
                         {
                             // Datos del proveedor seleccionado
                             DataRow proveedorRow = dtProveedores.Select($"id = {proveedorId}").FirstOrDefault();
                             string ruc = proveedorRow?["ruc"]?.ToString() ?? "9999999999999";
-                            string direccion = proveedorRow?["direccion"]?.ToString() ?? "";
 
                             cmd.Parameters.AddWithValue("@prov", proveedorId);
                             cmd.Parameters.AddWithValue("@user", usuarioId);
@@ -749,20 +757,23 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             cmd.Parameters.AddWithValue("@total", totalCompra);
                             cmd.Parameters.AddWithValue("@compra", compraId);
 
-                            cmd.ExecuteNonQuery();
+                            facturaCompraId = (long)cmd.ExecuteScalar();
                         }
 
-                        // Insertar detalles y actualizar productos
+                        // 3. Insertar detalles y actualizar productos
                         foreach (DataRow r in dtItems.Rows)
                         {
                             long prodId = Convert.ToInt64(r["producto_id"]);
                             int cant = Convert.ToInt32(r["cantidad"]);
-                            decimal costo = Convert.ToDecimal(r["costo_unitario"]);
+                            decimal costo = Convert.ToDecimal(r["costo_unitario"]); // Este es el costo SIN IVA
+
+                            // Obtener el impuesto del producto (no el de la compra)
+                            int impuestoIdProducto = impuestoIdOriginal; // El que se cargó al seleccionar el producto
 
                             // detalle
                             using (SqlCommand cmdDet = new SqlCommand(@"
-                                INSERT INTO DetalleCompras(compra_id, producto_id, cantidad, precio_costo_unitario)
-                                VALUES(@c, @p, @cant, @costo);", con.leer, tx))
+                        INSERT INTO DetalleCompras(compra_id, producto_id, cantidad, precio_costo_unitario)
+                        VALUES(@c, @p, @cant, @costo);", con.leer, tx))
                             {
                                 cmdDet.Parameters.AddWithValue("@c", compraId);
                                 cmdDet.Parameters.AddWithValue("@p", prodId);
@@ -771,25 +782,25 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                                 cmdDet.ExecuteNonQuery();
                             }
 
-                            // stock
+                            // stock - Guardamos el costo SIN IVA y el impuesto del producto
                             using (SqlCommand cmdStock = new SqlCommand(@"
-                                UPDATE Productos
-                                SET stock = ISNULL(stock,0) + @cant,
-                                    precio_costo = @costo,
-                                    impuesto_id = @impuesto
-                                WHERE id = @p;", con.leer, tx))
+                        UPDATE Productos
+                        SET stock = ISNULL(stock,0) + @cant,
+                            precio_costo = @costo,
+                            impuesto_id = @impuestoProducto
+                        WHERE id = @p;", con.leer, tx))
                             {
                                 cmdStock.Parameters.AddWithValue("@cant", cant);
-                                cmdStock.Parameters.AddWithValue("@costo", costo);
-                                cmdStock.Parameters.AddWithValue("@impuesto", impuestoId);
+                                cmdStock.Parameters.AddWithValue("@costo", costo); // Costo SIN IVA
+                                cmdStock.Parameters.AddWithValue("@impuestoProducto", impuestoIdProducto); // IVA del producto
                                 cmdStock.Parameters.AddWithValue("@p", prodId);
                                 cmdStock.ExecuteNonQuery();
                             }
 
                             // kardex (ENTRADA)
                             using (SqlCommand cmdK = new SqlCommand(@"
-                                INSERT INTO Kardex(producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad)
-                                VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
+                        INSERT INTO Kardex(producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad)
+                        VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
                             {
                                 cmdK.Parameters.AddWithValue("@p", prodId);
                                 cmdK.Parameters.AddWithValue("@u", usuarioId);
@@ -799,21 +810,39 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             }
                         }
 
+                        // 4. Commit de la transacción
                         tx.Commit();
-                        MessageBox.Show("✅ Compra guardada. Stock, Kardex y Factura de Compra actualizados.");
 
+                        // 5. AHORA generar y guardar el PDF (FUERA de la transacción)
+                        try
+                        {
+                            string pdfPath = GenerarPdfFacturaCompra(paraGuardar: true);
+                            GuardarPdfEnFacturaCompra(facturaCompraId, pdfPath);
+
+                            MessageBox.Show("✅ Compra guardada. PDF generado correctamente.",
+                                "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception exPdf)
+                        {
+                            MessageBox.Show($"⚠️ Compra guardada pero hubo un error al generar el PDF:\n{exPdf.Message}",
+                                "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+
+                        // 6. Recargar datos y limpiar formulario
                         CargarProductosBuscador();
                         LimpiarTodo();
                     }
                     catch (SqlException ex)
                     {
                         tx.Rollback();
-                        MessageBox.Show("Error SQL: " + ex.Message);
+                        MessageBox.Show($"Error SQL: {ex.Message}\n\nDetalle: {ex.StackTrace}",
+                            "Error de Base de Datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch (Exception ex)
                     {
                         tx.Rollback();
-                        MessageBox.Show("Error: " + ex.Message);
+                        MessageBox.Show($"Error: {ex.Message}\n\nDetalle: {ex.StackTrace}",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -905,10 +934,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     nudCosto.Value = costoActual;
                     costoOriginalProducto = costoActual;
 
+                    // IMPORTANTE: Guardar el impuesto del producto
                     int impuestoId = Convert.ToInt32(productoRow["impuesto_id"]);
                     impuestoIdOriginal = impuestoId;
 
-                    // Seleccionar el impuesto correspondiente
+                    // Seleccionar el impuesto correspondiente en el ComboBox de compra
+                    // (esto es solo para la factura de compra, no afecta al producto)
                     for (int i = 0; i < cmbImpuestoCompra.Items.Count; i++)
                     {
                         var row = ((DataRowView)cmbImpuestoCompra.Items[i]).Row;
@@ -921,7 +952,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
                     // Opcional: Preguntar si quiere agregar el producto automáticamente
                     DialogResult agregarAuto = MessageBox.Show(
-                        $"¿Desea agregar {cantidad} unidad(es) de '{nombre}' a la compra?",
+                        $"¿Desea agregar {cantidad} unidad(es) de '{nombre}' a la compra?\n\n" +
+                        $"Costo SIN IVA: {costoActual:C4}\n" +
+                        $"IVA del producto: {ObtenerNombreImpuesto(impuestoId)}",
                         "Agregar automáticamente",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
@@ -934,13 +967,384 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 }
                 else
                 {
-                    // Si no está en dtProductos (raro), recargar productos
                     CargarProductosBuscador();
                     MessageBox.Show("Producto seleccionado. Por favor, selecciónelo nuevamente de la lista.",
                         "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
+
+        // Método auxiliar para obtener nombre del impuesto
+        private string ObtenerNombreImpuesto(int impuestoId)
+        {
+            foreach (DataRowView item in cmbImpuestoCompra.Items)
+            {
+                if (Convert.ToInt32(item.Row["id"]) == impuestoId)
+                    return item.Row["nombre"].ToString();
+            }
+            return "IVA";
+        }
+
+        private void btnVistaPreviaCompra_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtItems == null || dtItems.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay items para generar la factura.");
+                    return;
+                }
+
+                if (cmbProveedor.SelectedValue == null)
+                {
+                    MessageBox.Show("Seleccione un proveedor.");
+                    return;
+                }
+
+                string pdfPath = GenerarPdfFacturaCompra();
+
+                using (var viewer = new FormPdfViewer(
+                    pdfPath,
+                    title: $"Vista previa - Factura de Compra",
+                    defaultSaveName: $"Factura_Compra_{DateTime.Now:yyyyMMdd_HHmmss}.pdf"))
+                {
+                    viewer.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generando vista previa: " + ex.Message);
+            }
+        }
+
+        private string GenerarPdfFacturaCompra(bool paraGuardar = false)
+        {
+            if (dtItems == null || dtItems.Rows.Count == 0)
+                throw new Exception("No hay items para generar el PDF.");
+
+            // Obtener datos de la empresa
+            var empresa = ObtenerEmpresa();
+
+            // Obtener datos del proveedor seleccionado
+            long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
+            DataRow proveedorRow = dtProveedores.Select($"id = {proveedorId}").FirstOrDefault();
+
+            string numFactura = GenerarNumeroCompraAuto();
+
+            decimal subtotal = dtItems.AsEnumerable().Sum(r => Convert.ToDecimal(r["subtotal"]));
+
+            // Obtener el porcentaje de IVA de la COMPRA (el que pagamos al proveedor)
+            decimal porcentajeIVACompra = 0;
+            string nombreIVACompra = "IVA";
+            if (cmbImpuestoCompra.SelectedItem != null)
+            {
+                var row = ((DataRowView)cmbImpuestoCompra.SelectedItem).Row;
+                porcentajeIVACompra = Convert.ToDecimal(row["porcentaje"]) / 100m;
+                nombreIVACompra = row["nombre"].ToString();
+            }
+
+            decimal ivaCompra = subtotal * porcentajeIVACompra;
+            decimal totalConIVA = subtotal + ivaCompra;
+
+            string carpeta = Path.Combine(Path.GetTempPath(), "TallerMecanicoERP", "Compras");
+            Directory.CreateDirectory(carpeta);
+
+            string fileName = $"FacturaCompra_{numFactura}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            string pdfPath = Path.Combine(carpeta, fileName);
+
+            using (var fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                var doc = new Document(PageSize.A4, 36, 36, 36, 36);
+                var writer = PdfWriter.GetInstance(doc, fs);
+                doc.Open();
+
+                // Definir fuentes
+                var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                var fontSub = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+                var font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
+                var fontSmall = FontFactory.GetFont(FontFactory.HELVETICA, 8);
+                var fontNote = FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 8, BaseColor.GRAY);
+
+                //  ENCABEZADO 
+                PdfPTable head = new PdfPTable(2);
+                head.WidthPercentage = 100;
+                head.SetWidths(new float[] { 65, 35 });
+
+                // Celda Empresa
+                var cellEmp = new PdfPCell();
+                cellEmp.Border = PdfRectangle.BOX;
+                cellEmp.Padding = 8;
+
+                Phrase phraseEmp = new Phrase();
+                phraseEmp.Add(new Chunk(empresa.nombre?.ToUpper() ?? "EMPRESA\n", fontSub));
+                phraseEmp.Add(new Chunk("\n", fontSmall)); // Espacio
+                if (!string.IsNullOrWhiteSpace(empresa.ruc))
+                    phraseEmp.Add(new Chunk($"RUC: {empresa.ruc}\n", font));
+                if (!string.IsNullOrWhiteSpace(empresa.direccion))
+                    phraseEmp.Add(new Chunk($"Dirección: {empresa.direccion}\n", font));
+                if (!string.IsNullOrWhiteSpace(empresa.telefono))
+                    phraseEmp.Add(new Chunk($"Tel: {empresa.telefono}\n", font));
+                if (!string.IsNullOrWhiteSpace(empresa.email))
+                    phraseEmp.Add(new Chunk($"Email: {empresa.email}\n", font));
+
+                cellEmp.AddElement(phraseEmp);
+                head.AddCell(cellEmp);
+
+                // Celda Factura
+                var cellFac = new PdfPCell();
+                cellFac.Border = PdfRectangle.BOX;
+                cellFac.Padding = 8;
+
+                Phrase phraseFac = new Phrase();
+                phraseFac.Add(new Chunk("FACTURA DE COMPRA\n", fontTitle));
+                phraseFac.Add(new Chunk($"No. Documento: {numFactura}\n", fontSub));
+                phraseFac.Add(new Chunk($"Fecha Emisión: {DateTime.Now:dd/MM/yyyy HH:mm}\n", font));
+
+                cellFac.AddElement(phraseFac);
+                head.AddCell(cellFac);
+
+                doc.Add(head);
+                doc.Add(new Paragraph(" "));
+
+                //  DATOS DEL PROVEEDOR 
+                PdfPTable proveedorTable = new PdfPTable(2);
+                proveedorTable.WidthPercentage = 100;
+                proveedorTable.SetWidths(new float[] { 50, 50 });
+
+                var cellProv1 = new PdfPCell(new Phrase("PROVEEDOR:", fontSub));
+                cellProv1.Colspan = 2;
+                cellProv1.Padding = 5;
+                cellProv1.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv1);
+
+                var cellProv2 = new PdfPCell(new Phrase($"Razón Social: {proveedorRow["nombre_empresa"]}", font));
+                cellProv2.Padding = 5;
+                cellProv2.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv2);
+
+                var cellProv3 = new PdfPCell(new Phrase($"RUC: {proveedorRow["ruc"]}", font));
+                cellProv3.Padding = 5;
+                cellProv3.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv3);
+
+                var cellProv4 = new PdfPCell(new Phrase($"Dirección: {proveedorRow["direccion"]?.ToString() ?? "-"}", font));
+                cellProv4.Padding = 5;
+                cellProv4.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv4);
+
+                var cellProv5 = new PdfPCell(new Phrase($"Teléfono: {proveedorRow["telefono"]?.ToString() ?? "-"}", font));
+                cellProv5.Padding = 5;
+                cellProv5.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv5);
+
+                var cellProv6 = new PdfPCell(new Phrase($"Email: {proveedorRow["email"]?.ToString() ?? "-"}", font));
+                cellProv6.Padding = 5;
+                cellProv6.Border = PdfRectangle.BOX;
+                proveedorTable.AddCell(cellProv6);
+
+                if (proveedorRow["contacto_nombre"] != DBNull.Value)
+                {
+                    var cellProv7 = new PdfPCell(new Phrase($"Contacto: {proveedorRow["contacto_nombre"]}", font));
+                    cellProv7.Colspan = 2;
+                    cellProv7.Padding = 5;
+                    cellProv7.Border = PdfRectangle.BOX;
+                    proveedorTable.AddCell(cellProv7);
+                }
+
+                doc.Add(proveedorTable);
+                doc.Add(new Paragraph(" "));
+
+                //  TABLA DE ITEMS 
+                PdfPTable items = new PdfPTable(6); // Aumentamos a 6 columnas
+                items.WidthPercentage = 100;
+                items.SetWidths(new float[] { 8, 32, 12, 12, 12, 24 });
+
+                void AddHeader(string t)
+                {
+                    var c = new PdfPCell(new Phrase(t, fontSub));
+                    c.Padding = 6;
+                    c.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    c.HorizontalAlignment = Element.ALIGN_CENTER;
+                    items.AddCell(c);
+                }
+
+                AddHeader("Cant.");
+                AddHeader("Descripción");
+                AddHeader("Costo U.");
+                AddHeader("Subtotal");
+                AddHeader("% IVA Compra");
+                AddHeader("IVA Venta (Producto)");
+
+                foreach (DataRow row in dtItems.Rows)
+                {
+                    decimal cant = Convert.ToDecimal(row["cantidad"]);
+                    string desc = row["producto"]?.ToString() ?? "";
+                    decimal costo = Convert.ToDecimal(row["costo_unitario"]);
+                    decimal sub = Convert.ToDecimal(row["subtotal"]);
+
+                    // Obtener el IVA del producto (para venta)
+                    int impuestoIdProducto = impuestoIdOriginal;
+                    string nombreIVAProducto = "IVA";
+                    decimal porcentajeIVAProducto = 0;
+
+                    // Buscar el porcentaje del IVA del producto
+                    foreach (DataRowView item in cmbImpuestoCompra.Items)
+                    {
+                        if (Convert.ToInt32(item.Row["id"]) == impuestoIdProducto)
+                        {
+                            nombreIVAProducto = item.Row["nombre"].ToString();
+                            porcentajeIVAProducto = Convert.ToDecimal(item.Row["porcentaje"]);
+                            break;
+                        }
+                    }
+
+                    items.AddCell(new PdfPCell(new Phrase(cant.ToString("0.##"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
+                    items.AddCell(new PdfPCell(new Phrase(desc, font)) { Padding = 5 });
+                    items.AddCell(new PdfPCell(new Phrase(costo.ToString("N4"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    items.AddCell(new PdfPCell(new Phrase(sub.ToString("N4"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    items.AddCell(new PdfPCell(new Phrase($"{nombreIVACompra} ({porcentajeIVACompra * 100:0}%)", font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
+                    items.AddCell(new PdfPCell(new Phrase($"{nombreIVAProducto} ({porcentajeIVAProducto:0}%)", font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
+                }
+
+                doc.Add(items);
+                doc.Add(new Paragraph(" "));
+
+                //  TOTALES 
+                PdfPTable tot = new PdfPTable(2);
+                tot.HorizontalAlignment = Element.ALIGN_RIGHT;
+                tot.WidthPercentage = 45;
+                tot.SetWidths(new float[] { 70, 30 });
+
+                void AddTotalRow(string k, string v, bool bold = false)
+                {
+                    var fk = bold ? fontSub : font;
+                    var fv = bold ? fontSub : font;
+
+                    var cellK = new PdfPCell(new Phrase(k, fk)) { Padding = 6, Border = PdfRectangle.BOX };
+                    var cellV = new PdfPCell(new Phrase(v, fv)) { Padding = 6, Border = PdfRectangle.BOX, HorizontalAlignment = Element.ALIGN_RIGHT };
+
+                    if (bold)
+                    {
+                        cellK.BackgroundColor = BaseColor.LIGHT_GRAY;
+                        cellV.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    }
+
+                    tot.AddCell(cellK);
+                    tot.AddCell(cellV);
+                }
+
+                AddTotalRow("SUBTOTAL (sin IVA)", $"$ {subtotal:N4}");
+                AddTotalRow($"{nombreIVACompra} ({porcentajeIVACompra * 100:0}%) - DÉBITO FISCAL", $"$ {ivaCompra:N4}");
+
+                // Línea separadora visual
+                var cellSep = new PdfPCell(new Phrase(""));
+                cellSep.Colspan = 2;
+                cellSep.Border = PdfRectangle.NO_BORDER;
+                cellSep.FixedHeight = 5;
+                tot.AddCell(cellSep);
+
+                AddTotalRow("TOTAL A PAGAR", $"$ {totalConIVA:N4}", bold: true);
+
+                doc.Add(tot);
+                doc.Add(new Paragraph(" "));
+
+                //  NOTA INFORMATIVA SOBRE IVA 
+                PdfPTable noteTable = new PdfPTable(1);
+                noteTable.WidthPercentage = 100;
+
+                var cellNote = new PdfPCell();
+                cellNote.Border = PdfRectangle.BOX;
+                cellNote.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cellNote.Padding = 6;
+
+                Phrase phraseNote = new Phrase();
+                phraseNote.Add(new Chunk("NOTA INFORMATIVA SOBRE IVA:\n", fontSub));
+                phraseNote.Add(new Chunk("• El IVA mostrado en 'IVA Compra' es el Impuesto al Valor Agregado pagado al proveedor (DÉBITO FISCAL).\n", fontNote));
+                phraseNote.Add(new Chunk("• El IVA mostrado en 'IVA Venta' es el impuesto que se aplicará al vender el producto (CRÉDITO FISCAL).\n", fontNote));
+                phraseNote.Add(new Chunk("• El costo del producto se registra SIN IVA para efectos de inventario y cálculo de ganancias.", fontNote));
+
+                cellNote.AddElement(phraseNote);
+                noteTable.AddCell(cellNote);
+
+                doc.Add(noteTable);
+                doc.Add(new Paragraph(" "));
+
+                //  PIE DE PÁGINA 
+                PdfPTable footer = new PdfPTable(1);
+                footer.WidthPercentage = 100;
+
+                var cellFooter = new PdfPCell();
+                cellFooter.Border = PdfRectangle.TOP_BORDER;
+                cellFooter.PaddingTop = 8;
+
+                Phrase phraseFooter = new Phrase();
+                phraseFooter.Add(new Chunk("Documento generado electrónicamente.\n", fontSmall));
+                phraseFooter.Add(new Chunk($"Usuario: {usuarioId} - Fecha impresión: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", fontSmall));
+
+                cellFooter.AddElement(phraseFooter);
+                footer.AddCell(cellFooter);
+
+                doc.Add(footer);
+
+                doc.Close();
+                writer.Close();
+            }
+
+            return pdfPath;
+        }
+
+        private (string nombre, string ruc, string direccion, string telefono, string email) ObtenerEmpresa()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT TOP 1 nombre, ruc, direccion, telefono, email FROM Empresa WHERE id = 1", cn))
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (rd.Read())
+                    {
+                        return (
+                            rd["nombre"]?.ToString() ?? "EMPRESA",
+                            rd["ruc"]?.ToString() ?? "",
+                            rd["direccion"]?.ToString() ?? "",
+                            rd["telefono"]?.ToString() ?? "",
+                            rd["email"]?.ToString() ?? ""
+                        );
+                    }
+                }
+            }
+            catch { }
+
+            return ("EMPRESA NO CONFIGURADA", "", "", "", "");
+        }
+
+        private void GuardarPdfEnFacturaCompra(long facturaCompraId, string pdfPath)
+        {
+            byte[] pdfBytes = File.ReadAllBytes(pdfPath);
+            string nombre = Path.GetFileName(pdfPath);
+
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand(@"
+        UPDATE FacturaCompra
+        SET pdf_data = @pdf,
+            pdf_nombre = @nom
+        WHERE id = @id;", cn))
+            {
+                cmd.Parameters.Add("@pdf", SqlDbType.VarBinary, -1).Value = pdfBytes;
+                cmd.Parameters.AddWithValue("@nom", nombre);
+                cmd.Parameters.AddWithValue("@id", facturaCompraId);
+                cmd.ExecuteNonQuery();
+            }
+
+            try
+            {
+                if (File.Exists(pdfPath))
+                    File.Delete(pdfPath);
+            }
+            catch { }
+        }
+
+
     }
 }
 

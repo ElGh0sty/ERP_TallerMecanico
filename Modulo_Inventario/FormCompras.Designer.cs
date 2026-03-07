@@ -45,8 +45,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnNuevoProducto = new System.Windows.Forms.Button();
             this.btnBuscadorProducto = new FontAwesome.Sharp.IconButton();
-            this.label1 = new System.Windows.Forms.Label();
             this.cmbImpuestoCompra = new System.Windows.Forms.ComboBox();
+            this.btnVistaPrevia = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCosto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -229,25 +230,37 @@
             this.btnBuscadorProducto.UseVisualStyleBackColor = true;
             this.btnBuscadorProducto.Click += new System.EventHandler(this.btnBuscadorProductos_Click);
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(548, 54);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 21);
-            this.label1.TabIndex = 28;
-            this.label1.Text = "IVA:";
-            // 
             // cmbImpuestoCompra
             // 
             this.cmbImpuestoCompra.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbImpuestoCompra.FormattingEnabled = true;
-            this.cmbImpuestoCompra.Location = new System.Drawing.Point(542, 86);
+            this.cmbImpuestoCompra.Location = new System.Drawing.Point(555, 85);
             this.cmbImpuestoCompra.Name = "cmbImpuestoCompra";
-            this.cmbImpuestoCompra.Size = new System.Drawing.Size(67, 29);
+            this.cmbImpuestoCompra.Size = new System.Drawing.Size(78, 29);
             this.cmbImpuestoCompra.TabIndex = 29;
+            // 
+            // btnVistaPrevia
+            // 
+            this.btnVistaPrevia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnVistaPrevia.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVistaPrevia.Location = new System.Drawing.Point(483, 511);
+            this.btnVistaPrevia.Name = "btnVistaPrevia";
+            this.btnVistaPrevia.Size = new System.Drawing.Size(104, 61);
+            this.btnVistaPrevia.TabIndex = 30;
+            this.btnVistaPrevia.Text = "Vista Previa";
+            this.btnVistaPrevia.UseVisualStyleBackColor = true;
+            this.btnVistaPrevia.Click += new System.EventHandler(this.btnVistaPreviaCompra_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(551, 54);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 21);
+            this.label4.TabIndex = 31;
+            this.label4.Text = "IVA:";
             // 
             // FormCompras
             // 
@@ -255,8 +268,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.btnVistaPrevia);
             this.Controls.Add(this.cmbImpuestoCompra);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBuscadorProducto);
             this.Controls.Add(this.btnNuevoProducto);
             this.Controls.Add(this.label3);
@@ -304,7 +318,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnNuevoProducto;
         private FontAwesome.Sharp.IconButton btnBuscadorProducto;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbImpuestoCompra;
+        private System.Windows.Forms.Button btnVistaPrevia;
+        private System.Windows.Forms.Label label4;
     }
 }

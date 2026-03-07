@@ -27,6 +27,8 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnExportar.Click += (s, e) => PrevisualizarPDF();
 
             dtpHasta.ValueChanged += (s, e) => AjustarDesdeAlMesDeHasta();
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(dgvGastos, "Doble clic para ver la factura (solo compras)");
         }
 
         private void FormRepGastos_Load(object sender, EventArgs e)
@@ -89,12 +91,12 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
                 CargarGraficoGastosSemanal(desde, hasta, usuarioId, buscar);
 
-
-
+                // MODIFICADA: Agregar columnas ID para poder abrir los PDFs
                 string sqlGrid = @"
 SELECT
-    t.Fecha,
+    t.ID,
     t.Tipo,
+    t.Fecha,
     t.Descripcion,
     t.Usuario,
     t.MetodoPago,
@@ -105,27 +107,31 @@ FROM
 (
     -- COMPRAS
     SELECT
-        c.fecha_compra AS Fecha,
+        fc.id AS ID,  -- ID de FacturaCompra
         'Compra' AS Tipo,
-        CONCAT('Factura Proveedor: ', c.numero_factura_proveedor) AS Descripcion,
+        c.fecha_compra AS Fecha,
+        CONCAT('Factura: ', c.numero_factura_proveedor, ' - ', p.nombre_empresa) AS Descripcion,
         u.nombre_usuario AS Usuario,
-        CAST('—' AS nvarchar(50)) AS MetodoPago,
+        'Transferencia/Cheque' AS MetodoPago,
         c.subtotal AS Subtotal,
         c.iva_total AS IVA,
         c.total_compra AS Total
     FROM Compras c
+    INNER JOIN FacturaCompra fc ON fc.compra_id = c.id
     INNER JOIN Usuarios u ON u.id = c.usuario_id
+    INNER JOIN Proveedores p ON p.id = c.proveedor_id
     WHERE
         c.fecha_compra >= @desde AND c.fecha_compra < @hasta
         AND (@usuarioId = 0 OR c.usuario_id = @usuarioId)
-        AND (@buscar = '' OR c.numero_factura_proveedor LIKE '%' + @buscar + '%')
+        AND (@buscar = '' OR c.numero_factura_proveedor LIKE '%' + @buscar + '%' OR p.nombre_empresa LIKE '%' + @buscar + '%')
 
     UNION ALL
 
     -- EGRESOS CAJA
     SELECT
-        e.fecha_pago AS Fecha,
+        e.id AS ID,
         'Egreso Caja' AS Tipo,
+        e.fecha_pago AS Fecha,
         ISNULL(e.referencia, 'Sin referencia') AS Descripcion,
         u.nombre_usuario AS Usuario,
         mp.nombre AS MetodoPago,
@@ -252,6 +258,8 @@ FROM
         private void AplicarAnchosColumnas()
         {
             if (dgvGastos.Columns.Count == 0) return;
+
+            if (dgvGastos.Columns["ID"] != null) dgvGastos.Columns["ID"].Visible = false;
 
             if (dgvGastos.Columns["Fecha"] != null) dgvGastos.Columns["Fecha"].Width = 140;
             if (dgvGastos.Columns["Tipo"] != null) dgvGastos.Columns["Tipo"].Width = 110;
@@ -485,10 +493,113 @@ ORDER BY Semana;
             AjustarDesdeAlMesActual();
 
             if (cbUsuario.Items.Count > 0) cbUsuario.SelectedIndex = 0;
-            // if (cbCategoria.Items.Count > 0) cbCategoria.SelectedIndex = 0; // si aplica
 
             txtBuscar.Text = "";
             CargarReporte();
+        }
+
+        private void dgvGastos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Validar que no sea el header
+            if (e.RowIndex < 0) return;
+
+            try
+            {
+                DataGridViewRow row = dgvGastos.Rows[e.RowIndex];
+                if (row.DataBoundItem == null) return;
+
+                // Obtener el tipo de gasto y el ID
+                string tipo = "";
+                long id = 0;
+
+                if (row.DataBoundItem is DataRowView drv)
+                {
+                    tipo = drv["Tipo"]?.ToString() ?? "";
+                    if (drv.Row.Table.Columns.Contains("ID"))
+                        id = Convert.ToInt64(drv["ID"]);
+                }
+                else
+                {
+                    if (dgvGastos.Columns["Tipo"] != null)
+                        tipo = row.Cells["Tipo"].Value?.ToString() ?? "";
+
+                    if (dgvGastos.Columns["ID"] != null)
+                        id = Convert.ToInt64(row.Cells["ID"].Value);
+                }
+
+                // Solo las compras tienen PDF (los egresos de caja no)
+                if (tipo == "Compra")
+                {
+                    if (id <= 0)
+                    {
+                        MessageBox.Show("No se pudo identificar la factura.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    Cursor = Cursors.WaitCursor;
+                    try
+                    {
+                        AbrirPdfFacturaCompraDesdeBd(id);
+                    }
+                    finally
+                    {
+                        Cursor = Cursors.Default;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Los egresos de caja no tienen factura asociada.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al abrir:\n{ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void AbrirPdfFacturaCompraDesdeBd(long facturaCompraId)
+        {
+            byte[] pdf;
+            string nombre;
+
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand("SELECT pdf_data, pdf_nombre FROM FacturaCompra WHERE id=@id;", cn))
+            {
+                cmd.Parameters.AddWithValue("@id", facturaCompraId);
+
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read())
+                        throw new Exception("No existe la factura de compra " + facturaCompraId);
+
+                    if (rd["pdf_data"] == DBNull.Value)
+                        throw new Exception("Esta factura no tiene PDF guardado.");
+
+                    pdf = (byte[])rd["pdf_data"];
+                    nombre = rd["pdf_nombre"]?.ToString();
+                    if (string.IsNullOrWhiteSpace(nombre)) nombre = $"FacturaCompra_{facturaCompraId}.pdf";
+                }
+            }
+
+            string carpeta = Path.Combine(Path.GetTempPath(), "TallerMecanicoERP");
+            Directory.CreateDirectory(carpeta);
+
+            string pdfPath = Path.Combine(carpeta, nombre);
+            File.WriteAllBytes(pdfPath, pdf);
+
+            using (var visor = new FormPdfViewer(
+                pdfPath,
+                title: "Vista previa - Factura de Compra",
+                defaultSaveName: nombre))
+            {
+                visor.StartPosition = FormStartPosition.CenterParent;
+                visor.WindowState = FormWindowState.Maximized;
+                visor.ShowDialog(this);
+            }
         }
     }
 }
