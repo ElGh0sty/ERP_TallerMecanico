@@ -45,6 +45,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmbMecanico = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnBuscadorVehiculosRegistrados = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,6 +98,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel1.Controls.Add(this.btnBuscadorVehiculosRegistrados);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
@@ -239,6 +241,19 @@
             this.label7.TabIndex = 30;
             this.label7.Text = "Descripcion de la Orden de Trabajo:";
             // 
+            // btnBuscadorVehiculosRegistrados
+            // 
+            this.btnBuscadorVehiculosRegistrados.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorVehiculosRegistrados.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorVehiculosRegistrados.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorVehiculosRegistrados.IconSize = 30;
+            this.btnBuscadorVehiculosRegistrados.Location = new System.Drawing.Point(279, 78);
+            this.btnBuscadorVehiculosRegistrados.Name = "btnBuscadorVehiculosRegistrados";
+            this.btnBuscadorVehiculosRegistrados.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorVehiculosRegistrados.TabIndex = 31;
+            this.btnBuscadorVehiculosRegistrados.UseVisualStyleBackColor = true;
+            this.btnBuscadorVehiculosRegistrados.Click += new System.EventHandler(this.btnBuscadorVehiculosRegistrados_Click);
+            // 
             // FormOrden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -284,5 +299,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cmbMecanico;
         private System.Windows.Forms.Label label7;
+        private FontAwesome.Sharp.IconButton btnBuscadorVehiculosRegistrados;
     }
 }

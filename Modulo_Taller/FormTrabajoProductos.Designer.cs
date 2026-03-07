@@ -30,17 +30,21 @@
         {
             this.TabControl1 = new Guna.UI2.WinForms.Guna2TabControl();
             this.tabControl3 = new System.Windows.Forms.TabPage();
-            this.dgvTareas = new System.Windows.Forms.DataGridView();
+            this.dgvServicios = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lstServicios = new System.Windows.Forms.ListBox();
+            this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
+            this.btnBuscadorServicios = new FontAwesome.Sharp.IconButton();
             this.label2 = new System.Windows.Forms.Label();
             this.lblOrdenInfo = new System.Windows.Forms.Label();
-            this.btnAgregarTarea = new System.Windows.Forms.Button();
+            this.btnAgregarServicio = new System.Windows.Forms.Button();
             this.btnCargarOrden = new System.Windows.Forms.Button();
-            this.txtTarea = new System.Windows.Forms.TextBox();
+            this.txtBuscarServicio = new System.Windows.Forms.TextBox();
             this.cmbOrdenes = new System.Windows.Forms.ComboBox();
             this.tabControl4 = new System.Windows.Forms.TabPage();
             this.dgvItems = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnBuscadoProductos = new FontAwesome.Sharp.IconButton();
             this.label1 = new System.Windows.Forms.Label();
             this.lstProductos = new System.Windows.Forms.ListBox();
             this.nudCantidad = new System.Windows.Forms.NumericUpDown();
@@ -49,7 +53,7 @@
             this.btnAgregarProducto = new System.Windows.Forms.Button();
             this.TabControl1.SuspendLayout();
             this.tabControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvServicios)).BeginInit();
             this.panel1.SuspendLayout();
             this.tabControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -89,7 +93,7 @@
             // 
             // tabControl3
             // 
-            this.tabControl3.Controls.Add(this.dgvTareas);
+            this.tabControl3.Controls.Add(this.dgvServicios);
             this.tabControl3.Controls.Add(this.panel1);
             this.tabControl3.Location = new System.Drawing.Point(4, 44);
             this.tabControl3.Name = "tabControl3";
@@ -99,30 +103,69 @@
             this.tabControl3.Text = "Añadir Tareas";
             this.tabControl3.UseVisualStyleBackColor = true;
             // 
-            // dgvTareas
+            // dgvServicios
             // 
-            this.dgvTareas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTareas.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvTareas.Location = new System.Drawing.Point(3, 3);
-            this.dgvTareas.Name = "dgvTareas";
-            this.dgvTareas.Size = new System.Drawing.Size(894, 266);
-            this.dgvTareas.TabIndex = 2;
-            this.dgvTareas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTareas_CellClick);
+            this.dgvServicios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvServicios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvServicios.Location = new System.Drawing.Point(3, 3);
+            this.dgvServicios.Name = "dgvServicios";
+            this.dgvServicios.Size = new System.Drawing.Size(894, 266);
+            this.dgvServicios.TabIndex = 2;
+            this.dgvServicios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvServicios_CellClick);
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.Controls.Add(this.lstServicios);
+            this.panel1.Controls.Add(this.btnBuscadorOrden);
+            this.panel1.Controls.Add(this.btnBuscadorServicios);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.lblOrdenInfo);
-            this.panel1.Controls.Add(this.btnAgregarTarea);
+            this.panel1.Controls.Add(this.btnAgregarServicio);
             this.panel1.Controls.Add(this.btnCargarOrden);
-            this.panel1.Controls.Add(this.txtTarea);
+            this.panel1.Controls.Add(this.txtBuscarServicio);
             this.panel1.Controls.Add(this.cmbOrdenes);
             this.panel1.Location = new System.Drawing.Point(96, 288);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(706, 259);
             this.panel1.TabIndex = 6;
+            // 
+            // lstServicios
+            // 
+            this.lstServicios.FormattingEnabled = true;
+            this.lstServicios.Location = new System.Drawing.Point(392, 121);
+            this.lstServicios.Name = "lstServicios";
+            this.lstServicios.Size = new System.Drawing.Size(253, 95);
+            this.lstServicios.TabIndex = 10;
+            this.lstServicios.Visible = false;
+            this.lstServicios.SelectedIndexChanged += new System.EventHandler(this.lstProductos_SelectedIndexChanged);
+            // 
+            // btnBuscadorOrden
+            // 
+            this.btnBuscadorOrden.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorOrden.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorOrden.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorOrden.IconSize = 30;
+            this.btnBuscadorOrden.Location = new System.Drawing.Point(349, 96);
+            this.btnBuscadorOrden.Name = "btnBuscadorOrden";
+            this.btnBuscadorOrden.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorOrden.TabIndex = 9;
+            this.btnBuscadorOrden.UseVisualStyleBackColor = true;
+            this.btnBuscadorOrden.Click += new System.EventHandler(this.btnBuscadorOrden_Click);
+            // 
+            // btnBuscadorServicios
+            // 
+            this.btnBuscadorServicios.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorServicios.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorServicios.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorServicios.IconSize = 30;
+            this.btnBuscadorServicios.Location = new System.Drawing.Point(649, 96);
+            this.btnBuscadorServicios.Name = "btnBuscadorServicios";
+            this.btnBuscadorServicios.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorServicios.TabIndex = 7;
+            this.btnBuscadorServicios.UseVisualStyleBackColor = true;
+            this.btnBuscadorServicios.Click += new System.EventHandler(this.btnBuscadorServicios_Click);
             // 
             // label2
             // 
@@ -131,11 +174,11 @@
             this.label2.BackColor = System.Drawing.Color.LightSlateGray;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(439, 52);
+            this.label2.Location = new System.Drawing.Point(436, 52);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(204, 20);
+            this.label2.Size = new System.Drawing.Size(195, 20);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Agrega tus Tareas a la Lista:";
+            this.label2.Text = "Agrega Servicios a la Lista:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblOrdenInfo
@@ -151,17 +194,17 @@
             this.lblOrdenInfo.Text = "Orden Seleccionada: -";
             this.lblOrdenInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAgregarTarea
+            // btnAgregarServicio
             // 
-            this.btnAgregarTarea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAgregarTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarTarea.Location = new System.Drawing.Point(443, 172);
-            this.btnAgregarTarea.Name = "btnAgregarTarea";
-            this.btnAgregarTarea.Size = new System.Drawing.Size(173, 70);
-            this.btnAgregarTarea.TabIndex = 1;
-            this.btnAgregarTarea.Text = "Agregar tarea";
-            this.btnAgregarTarea.UseVisualStyleBackColor = true;
-            this.btnAgregarTarea.Click += new System.EventHandler(this.btnAgregarTarea_Click);
+            this.btnAgregarServicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAgregarServicio.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarServicio.Location = new System.Drawing.Point(443, 172);
+            this.btnAgregarServicio.Name = "btnAgregarServicio";
+            this.btnAgregarServicio.Size = new System.Drawing.Size(173, 70);
+            this.btnAgregarServicio.TabIndex = 1;
+            this.btnAgregarServicio.Text = "Agregar Servicio";
+            this.btnAgregarServicio.UseVisualStyleBackColor = true;
+            this.btnAgregarServicio.Click += new System.EventHandler(this.btnAgregarServicio_Click);
             // 
             // btnCargarOrden
             // 
@@ -174,14 +217,14 @@
             this.btnCargarOrden.UseVisualStyleBackColor = true;
             this.btnCargarOrden.Click += new System.EventHandler(this.btnCargarOrden_Click);
             // 
-            // txtTarea
+            // txtBuscarServicio
             // 
-            this.txtTarea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTarea.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTarea.Location = new System.Drawing.Point(390, 96);
-            this.txtTarea.Name = "txtTarea";
-            this.txtTarea.Size = new System.Drawing.Size(297, 33);
-            this.txtTarea.TabIndex = 0;
+            this.txtBuscarServicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBuscarServicio.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscarServicio.Location = new System.Drawing.Point(392, 96);
+            this.txtBuscarServicio.Name = "txtBuscarServicio";
+            this.txtBuscarServicio.Size = new System.Drawing.Size(253, 33);
+            this.txtBuscarServicio.TabIndex = 0;
             // 
             // cmbOrdenes
             // 
@@ -190,9 +233,8 @@
             this.cmbOrdenes.Location = new System.Drawing.Point(35, 96);
             this.cmbOrdenes.MaxDropDownItems = 20;
             this.cmbOrdenes.Name = "cmbOrdenes";
-            this.cmbOrdenes.Size = new System.Drawing.Size(314, 33);
+            this.cmbOrdenes.Size = new System.Drawing.Size(310, 33);
             this.cmbOrdenes.TabIndex = 3;
-            this.cmbOrdenes.SelectedIndexChanged += new System.EventHandler(this.cmbOrdenes_SelectedIndexChanged);
             // 
             // tabControl4
             // 
@@ -221,6 +263,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panel2.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel2.Controls.Add(this.btnBuscadoProductos);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.lstProductos);
             this.panel2.Controls.Add(this.nudCantidad);
@@ -231,6 +274,19 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(631, 232);
             this.panel2.TabIndex = 8;
+            // 
+            // btnBuscadoProductos
+            // 
+            this.btnBuscadoProductos.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadoProductos.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadoProductos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadoProductos.IconSize = 30;
+            this.btnBuscadoProductos.Location = new System.Drawing.Point(398, 65);
+            this.btnBuscadoProductos.Name = "btnBuscadoProductos";
+            this.btnBuscadoProductos.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadoProductos.TabIndex = 10;
+            this.btnBuscadoProductos.UseVisualStyleBackColor = true;
+            this.btnBuscadoProductos.Click += new System.EventHandler(this.btnBuscadorProductos_Click);
             // 
             // label1
             // 
@@ -304,7 +360,7 @@
             this.Text = "Asignar Trabajo y Productos";
             this.TabControl1.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTareas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvServicios)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabControl4.ResumeLayout(false);
@@ -320,13 +376,13 @@
 
         private Guna.UI2.WinForms.Guna2TabControl TabControl1;
         private System.Windows.Forms.TabPage tabControl3;
-        private System.Windows.Forms.DataGridView dgvTareas;
+        private System.Windows.Forms.DataGridView dgvServicios;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblOrdenInfo;
-        private System.Windows.Forms.Button btnAgregarTarea;
+        private System.Windows.Forms.Button btnAgregarServicio;
         private System.Windows.Forms.Button btnCargarOrden;
-        private System.Windows.Forms.TextBox txtTarea;
+        private System.Windows.Forms.TextBox txtBuscarServicio;
         private System.Windows.Forms.ComboBox cmbOrdenes;
         private System.Windows.Forms.TabPage tabControl4;
         private System.Windows.Forms.DataGridView dgvItems;
@@ -337,5 +393,9 @@
         private System.Windows.Forms.TextBox txtBuscarProducto;
         private System.Windows.Forms.Label lblStock;
         private System.Windows.Forms.Button btnAgregarProducto;
+        private FontAwesome.Sharp.IconButton btnBuscadorServicios;
+        private FontAwesome.Sharp.IconButton btnBuscadorOrden;
+        private FontAwesome.Sharp.IconButton btnBuscadoProductos;
+        private System.Windows.Forms.ListBox lstServicios;
     }
 }

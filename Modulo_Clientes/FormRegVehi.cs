@@ -64,6 +64,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             this.rolUsuario = rolUsuario;
             vehiculoIdEditar = vehiculoId;
 
+            btnBuscadorCliente.Visible = false;
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
@@ -861,6 +862,47 @@ WHERE id = @id";
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnBuscadorCliente_Click(object sender, EventArgs e)
+        {
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Clientes);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long clienteId = Convert.ToInt64(fila["id"]);
+                string nombre = fila["nombre"].ToString();
+                string telefono = fila["telefono"].ToString();
+                string email = fila["email"].ToString();
+
+                clienteSeleccionadoId = clienteId;
+
+                txtBuscarCliente.TextChanged -= txtBuscarCliente_TextChanged;
+
+                txtBuscarCliente.Text = nombre;
+                txtBuscarCliente.SelectionStart = txtBuscarCliente.Text.Length;
+
+                txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
+
+                if (dtClientes != null)
+                {
+                    var clienteRow = dtClientes.AsEnumerable()
+                        .FirstOrDefault(r => Convert.ToInt64(r["id"]) == clienteId);
+
+                    if (clienteRow != null)
+                    {
+                        txtTipoDoc.Text = clienteRow["tipo_documento"]?.ToString();
+                        txtDocumento.Text = clienteRow["numero_documento"]?.ToString();
+                    }
+                }
+
+                lstClientes.Visible = false;
+
+                ValidarDuenioLive();
+
+            }
         }
     }
 }

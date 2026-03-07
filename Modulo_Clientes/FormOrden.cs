@@ -242,6 +242,37 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
         {
 
         }
+
+        private void btnBuscadorVehiculosRegistrados_Click(object sender, EventArgs e)
+        {
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Vehiculos);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long vehiculoId = Convert.ToInt64(fila["id"]);
+                string placa = fila["placa"].ToString();
+                string cliente = fila["cliente"].ToString();
+
+                for (int i = 0; i < cmbVehiculo.Items.Count; i++)
+                {
+                    DataRowView item = cmbVehiculo.Items[i] as DataRowView;
+                    if (item != null && Convert.ToInt64(item["vehiculo_id"]) == vehiculoId)
+                    {
+                        cmbVehiculo.SelectedIndex = i;
+
+                        txtCliente.Text = item["cliente"].ToString();
+                        txtDocumento.Text = item["numero_documento"].ToString();
+                        txtPlaca.Text = item["placa"].ToString();
+                        txtTipoVehiculo.Text = item["tipo"].ToString();
+
+                        GenerarNombreOrden();
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 

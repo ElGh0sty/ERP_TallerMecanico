@@ -40,12 +40,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnGuardarVehiculo = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lstClientes = new System.Windows.Forms.ListBox();
             this.txtBuscarCliente = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtDocumento = new System.Windows.Forms.TextBox();
             this.txtTipoDoc = new System.Windows.Forms.TextBox();
+            this.lstClientes = new System.Windows.Forms.ListBox();
             this.txtChasis = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -54,6 +54,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnBuscadorCliente = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -162,6 +163,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.Controls.Add(this.btnBuscadorCliente);
             this.panel1.Controls.Add(this.txtBuscarCliente);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label7);
@@ -172,17 +174,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(908, 164);
             this.panel1.TabIndex = 11;
-            // 
-            // lstClientes
-            // 
-            this.lstClientes.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstClientes.FormattingEnabled = true;
-            this.lstClientes.ItemHeight = 21;
-            this.lstClientes.Location = new System.Drawing.Point(48, 101);
-            this.lstClientes.Name = "lstClientes";
-            this.lstClientes.Size = new System.Drawing.Size(220, 130);
-            this.lstClientes.TabIndex = 18;
-            this.lstClientes.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // txtBuscarCliente
             // 
@@ -233,6 +224,17 @@
             this.txtTipoDoc.ReadOnly = true;
             this.txtTipoDoc.Size = new System.Drawing.Size(218, 29);
             this.txtTipoDoc.TabIndex = 14;
+            // 
+            // lstClientes
+            // 
+            this.lstClientes.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstClientes.FormattingEnabled = true;
+            this.lstClientes.ItemHeight = 21;
+            this.lstClientes.Location = new System.Drawing.Point(48, 101);
+            this.lstClientes.Name = "lstClientes";
+            this.lstClientes.Size = new System.Drawing.Size(220, 130);
+            this.lstClientes.TabIndex = 18;
+            this.lstClientes.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // txtChasis
             // 
@@ -298,6 +300,19 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // btnBuscadorCliente
+            // 
+            this.btnBuscadorCliente.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorCliente.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorCliente.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorCliente.IconSize = 30;
+            this.btnBuscadorCliente.Location = new System.Drawing.Point(274, 72);
+            this.btnBuscadorCliente.Name = "btnBuscadorCliente";
+            this.btnBuscadorCliente.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorCliente.TabIndex = 18;
+            this.btnBuscadorCliente.UseVisualStyleBackColor = true;
+            this.btnBuscadorCliente.Click += new System.EventHandler(this.btnBuscadorCliente_Click);
+            // 
             // FormRegVehi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -359,5 +374,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ListBox lstClientes;
         private System.Windows.Forms.TextBox txtBuscarCliente;
+        private FontAwesome.Sharp.IconButton btnBuscadorCliente;
     }
 }

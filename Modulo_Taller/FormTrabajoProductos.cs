@@ -2,10 +2,9 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace PROYECTOMECANICO.Modulo_Taller    
+namespace PROYECTOMECANICO.Modulo_Taller
 {
     public partial class FormTrabajoProductos : Form
     {
@@ -14,7 +13,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
         private long ordenIdActual = 0;
 
         private DataTable dtProductosFull = new DataTable();
-        private DataTable dtTareas = new DataTable();
+        private DataTable dtServicios = new DataTable();
+        private DataTable dtServiciosDisponibles = new DataTable();
         private DataTable dtItems = new DataTable();
 
         Conexion con = new Conexion();
@@ -26,15 +26,12 @@ namespace PROYECTOMECANICO.Modulo_Taller
             this.usuarioId = usuarioActual;
             this.rolUsuario = rolUsuario;
 
-            dgvTareas.DataError += (s, e) => { e.ThrowException = false; };
+            dgvServicios.DataError += (s, e) => { e.ThrowException = false; };
             dgvItems.DataError += (s, e) => { e.ThrowException = false; };
 
             txtBuscarProducto.TextChanged += (s, e) => FiltrarProductos(txtBuscarProducto.Text);
             lstProductos.SelectionMode = SelectionMode.One;
             lstProductos.SelectedIndexChanged += lstProductos_SelectedIndexChanged;
-
-            dgvTareas.CurrentCellDirtyStateChanged += dgvTareas_CurrentCellDirtyStateChanged;
-            
 
             PrepararGrids();
             AplicarEstilos();
@@ -45,16 +42,57 @@ namespace PROYECTOMECANICO.Modulo_Taller
             HabilitarSecciones(false);
             cmbOrdenes.Enabled = true;
             btnCargarOrden.Enabled = true;
+
+            txtBuscarServicio.TextChanged += (s, e) => {
+                if (!string.IsNullOrWhiteSpace(txtBuscarServicio.Text))
+                {
+                    lstServicios.Visible = true;
+                    FiltrarServiciosDisponibles(txtBuscarServicio.Text);
+                }
+                else
+                {
+                    lstServicios.Visible = false;
+                }
+            };
+
+            txtBuscarServicio.Leave += (s, e) => {
+                Timer timer = new Timer();
+                timer.Interval = 200;
+                timer.Tick += (sender, args) => {
+                    if (!lstServicios.Focused && !txtBuscarServicio.Focused)
+                    {
+                        lstServicios.Visible = false;
+                    }
+                    timer.Stop();
+                };
+                timer.Start();
+            };
+
+            lstServicios.Leave += (s, e) => {
+                lstServicios.Visible = false;
+            };
+
+            lstServicios.Click += (s, e) => {
+                if (lstServicios.SelectedItem != null)
+                {
+                    DataRowView rv = lstServicios.SelectedItem as DataRowView;
+                    if (rv != null)
+                    {
+                        txtBuscarServicio.Text = rv["nombre"].ToString();
+                        txtBuscarServicio.SelectionStart = txtBuscarServicio.Text.Length;
+                    }
+                    lstServicios.Visible = false;
+                }
+            };
         }
 
         private void AplicarEstilos()
         {
             BackColor = Color.FromArgb(245, 246, 250);
-
             Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
             EstilizarBoton(btnCargarOrden, true);
-            EstilizarBoton(btnAgregarTarea, true);
+            EstilizarBoton(btnAgregarServicio, true);
             EstilizarBoton(btnAgregarProducto, true);
 
             lblOrdenInfo.ForeColor = Color.White;
@@ -63,11 +101,15 @@ namespace PROYECTOMECANICO.Modulo_Taller
             lblStock.ForeColor = Color.White;
             lblStock.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
 
-            txtTarea.Font = new Font("Segoe UI", 10.5F);
+            txtBuscarServicio.Font = new Font("Segoe UI", 10.5F);
             txtBuscarProducto.Font = new Font("Segoe UI", 10.5F);
 
-            txtTarea.BorderStyle = BorderStyle.FixedSingle;
+            txtBuscarServicio.BorderStyle = BorderStyle.FixedSingle;
             txtBuscarProducto.BorderStyle = BorderStyle.FixedSingle;
+
+            lstServicios.BorderStyle = BorderStyle.FixedSingle;
+            lstServicios.Font = new Font("Segoe UI", 10.5F);
+            lstServicios.ItemHeight = 22;
 
             lstProductos.BorderStyle = BorderStyle.FixedSingle;
             lstProductos.Font = new Font("Segoe UI", 10.5F);
@@ -79,54 +121,9 @@ namespace PROYECTOMECANICO.Modulo_Taller
 
             nudCantidad.Font = new Font("Segoe UI", 10.5F);
 
-            EstilizarGrid(dgvTareas);
+            EstilizarGrid(dgvServicios);
             EstilizarGrid(dgvItems);
-            
-
         }
-
-        private void EstilizarTabControl(TabControl tab)
-        {
-            tab.DrawMode = TabDrawMode.OwnerDrawFixed;
-            tab.SizeMode = TabSizeMode.Fixed;
-            tab.ItemSize = new Size(180, 42);
-            tab.Appearance = TabAppearance.Normal;
-            
-
-            tab.DrawItem -= tabControl1_DrawItem;
-            tab.DrawItem += tabControl1_DrawItem;
-
-            tab.Padding = new Point(20, 6);
-        }
-
-        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            var tab = sender as TabControl;
-            if (tab == null) return;
-
-            bool selected = (e.Index == tab.SelectedIndex);
-
-            Rectangle r = e.Bounds;
-            r.Inflate(-6, -6);
-
-            Color bg = selected ? Color.FromArgb(30, 96, 210) : Color.FromArgb(235, 236, 240);
-            Color fg = selected ? Color.White : Color.FromArgb(40, 40, 40);
-
-            using (var br = new SolidBrush(bg))
-            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-            using (var font = new Font("Segoe UI", 10.5F, FontStyle.Bold))
-            {
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                using (var path = Redondear(r, 14))
-                {
-                    e.Graphics.FillPath(br, path);
-                }
-
-                e.Graphics.DrawString(tab.TabPages[e.Index].Text, font, new SolidBrush(fg), r, sf);
-            }
-        }
-
 
         private void EstilizarGrid(DataGridView dgv)
         {
@@ -162,51 +159,6 @@ namespace PROYECTOMECANICO.Modulo_Taller
             dgv.ScrollBars = ScrollBars.Both;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.MultiSelect = false;
-
-            
-        }
-
-        private void dgv_CellPaintingRedondearBotones(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            var dgv = sender as DataGridView;
-            if (dgv == null) return;
-
-            if (!(dgv.Columns[e.ColumnIndex] is DataGridViewButtonColumn)) return;
-
-            e.PaintBackground(e.CellBounds, true);
-
-            Rectangle rect = e.CellBounds;
-            rect.Inflate(-10, -10);
-
-            using (var path = Redondear(rect, 10))
-            using (var br = new SolidBrush(Color.FromArgb(220, 60, 60)))
-            using (var pen = new Pen(Color.FromArgb(200, 40, 40)))
-            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-            {
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                e.Graphics.FillPath(br, path);
-                e.Graphics.DrawPath(pen, path);
-
-                string text = "Eliminar";
-                e.Graphics.DrawString(text, new Font("Segoe UI", 9.5F, FontStyle.Bold), Brushes.White, rect, sf);
-            }
-
-            e.Handled = true;
-        }
-
-
-        private System.Drawing.Drawing2D.GraphicsPath Redondear(Rectangle r, int radius)
-        {
-            int d = radius * 2;
-            var path = new System.Drawing.Drawing2D.GraphicsPath();
-            path.AddArc(r.X, r.Y, d, d, 180, 90);
-            path.AddArc(r.Right - d, r.Y, d, d, 270, 90);
-            path.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
-            path.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
-            path.CloseFigure();
-            return path;
         }
 
         private void EstilizarBoton(Button btn, bool primario)
@@ -227,40 +179,51 @@ namespace PROYECTOMECANICO.Modulo_Taller
             btn.MouseLeave += (s, e) => btn.BackColor = baseColor;
         }
 
-
-
         private void PrepararGrids()
         {
-            dgvTareas.AutoGenerateColumns = false;
-            dgvTareas.Columns.Clear();
+            dgvServicios.AutoGenerateColumns = false;
+            dgvServicios.Columns.Clear();
 
-            dgvTareas.Columns.Add(new DataGridViewTextBoxColumn
+            dgvServicios.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "id",
                 Name = "id",
                 Visible = false
             });
 
-            dgvTareas.Columns.Add(new DataGridViewTextBoxColumn
+            dgvServicios.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "descripcion",
-                HeaderText = "Tarea"
+                DataPropertyName = "servicio",
+                HeaderText = "Servicio",
+                Width = 300
             });
 
-            dgvTareas.Columns.Add(new DataGridViewCheckBoxColumn
+            dgvServicios.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "completada",
-                HeaderText = "Hecho"
+                DataPropertyName = "precio",
+                HeaderText = "Precio",
+                DefaultCellStyle = { Format = "C2" },
+                Width = 120
             });
 
-            dgvTareas.Columns.Add(new DataGridViewButtonColumn
+            dgvServicios.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "btnEliminarTarea",
+                DataPropertyName = "fecha_agregado",
+                HeaderText = "Fecha",
+                DefaultCellStyle = { Format = "dd/MM/yyyy HH:mm" },
+                Width = 150
+            });
+
+            dgvServicios.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "btnEliminarServicio",
+                HeaderText = "Acción",
                 Text = "Eliminar",
-                UseColumnTextForButtonValue = true
+                UseColumnTextForButtonValue = true,
+                Width = 100
             });
 
-            dgvTareas.DataSource = dtTareas;
+            dgvServicios.DataSource = dtServicios;
 
             dgvItems.AutoGenerateColumns = false;
             dgvItems.Columns.Clear();
@@ -287,39 +250,30 @@ namespace PROYECTOMECANICO.Modulo_Taller
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "precio_unitario",
-                HeaderText = "Precio"
+                HeaderText = "Precio",
+                DefaultCellStyle = { Format = "C2" }
             });
 
             dgvItems.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "subtotal",
-                HeaderText = "Subtotal"
+                HeaderText = "Subtotal",
+                DefaultCellStyle = { Format = "C2" }
             });
 
             dgvItems.Columns.Add(new DataGridViewButtonColumn
             {
                 Name = "btnEliminarItem",
                 Text = "Eliminar",
-                UseColumnTextForButtonValue = true
+                UseColumnTextForButtonValue = true,
+                Width = 95
             });
 
             dgvItems.DataSource = dtItems;
 
             nudCantidad.Minimum = 1;
             nudCantidad.Value = 1;
-
-            AjustarBotonEliminar(dgvTareas, "btnEliminarTarea");
-            AjustarBotonEliminar(dgvItems, "btnEliminarItem");
-
         }
-
-        private void dgvTareas_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            if (dgvTareas.IsCurrentCellDirty)
-                dgvTareas.CommitEdit(DataGridViewDataErrorContexts.Commit);
-        }
-
-        
 
         private void CargarProductos()
         {
@@ -339,6 +293,35 @@ namespace PROYECTOMECANICO.Modulo_Taller
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar productos: " + ex.Message);
+            }
+            finally { con.Cerrar(); }
+        }
+
+        private void CargarServiciosDisponibles()
+        {
+            try
+            {
+                con.Abrir();
+
+                long tipoVehiculoId = ObtenerTipoVehiculoDeOrden(ordenIdActual);
+
+                string sql = @"
+            SELECT s.id, s.nombre, st.precio_mano_obra AS precio
+            FROM Servicios s
+            INNER JOIN ServicioTarifas st ON s.id = st.servicio_id
+            WHERE st.tipo_vehiculo_id = @tipoVehiculo AND st.activo = 1
+            ORDER BY s.nombre";
+
+                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@tipoVehiculo", tipoVehiculoId);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                dtServiciosDisponibles.Clear();
+                da.Fill(dtServiciosDisponibles);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar servicios: " + ex.Message);
             }
             finally { con.Cerrar(); }
         }
@@ -375,21 +358,33 @@ namespace PROYECTOMECANICO.Modulo_Taller
             }
         }
 
-        private void CargarTareasDeOrden()
+        private void CargarServiciosDeOrden()
         {
             if (ordenIdActual <= 0) return;
 
             try
             {
                 con.Abrir();
-                string sql = "SELECT id, descripcion, completada FROM OrdenesTrabajo_Tareas WHERE orden_id=@id ORDER BY id DESC";
+                string sql = @"
+                    SELECT os.id, 
+                           s.nombre AS servicio, 
+                           os.precio, 
+                           os.fecha_agregado
+                    FROM OrdenesTrabajo_Servicios os
+                    INNER JOIN Servicios s ON os.servicio_id = s.id
+                    WHERE os.orden_id = @id
+                    ORDER BY os.fecha_agregado DESC";
+
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 da.SelectCommand.Parameters.AddWithValue("@id", ordenIdActual);
 
-                dtTareas.Clear();
-                da.Fill(dtTareas);
+                dtServicios.Clear();
+                da.Fill(dtServicios);
             }
-            finally { con.Cerrar(); }
+            finally
+            {
+                con.Cerrar();
+            }
         }
 
         private void CargarItemsDeOrden()
@@ -400,15 +395,15 @@ namespace PROYECTOMECANICO.Modulo_Taller
             {
                 con.Abrir();
                 string sql = @"
-SELECT i.id,
-       p.nombre AS producto,
-       i.cantidad,
-       i.precio_unitario,
-       (i.cantidad * i.precio_unitario) AS subtotal
-FROM OrdenesTrabajo_Items i
-INNER JOIN Productos p ON i.producto_id = p.id
-WHERE i.orden_id=@id
-ORDER BY i.id DESC";
+                    SELECT i.id,
+                           p.nombre AS producto,
+                           i.cantidad,
+                           i.precio_unitario,
+                           (i.cantidad * i.precio_unitario) AS subtotal
+                    FROM OrdenesTrabajo_Items i
+                    INNER JOIN Productos p ON i.producto_id = p.id
+                    WHERE i.orden_id=@id
+                    ORDER BY i.id DESC";
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 da.SelectCommand.Parameters.AddWithValue("@id", ordenIdActual);
 
@@ -418,7 +413,7 @@ ORDER BY i.id DESC";
             finally { con.Cerrar(); }
         }
 
-        private void btnAgregarTarea_Click(object sender, EventArgs e)
+        private void btnAgregarServicio_Click(object sender, EventArgs e)
         {
             if (ordenIdActual <= 0)
             {
@@ -426,107 +421,130 @@ ORDER BY i.id DESC";
                 return;
             }
 
-            string tarea = (txtTarea.Text ?? "").Trim();
-
-            if (tarea.Length == 0)
+            if (lstServicios.SelectedItem == null)
             {
-                MessageBox.Show("Escribe una tarea.");
-                txtTarea.Focus();
+                MessageBox.Show("Selecciona un servicio de la lista.");
                 return;
             }
 
+            DataRowView rv = lstServicios.SelectedItem as DataRowView;
+            if (rv == null) return;
+
+            long servicioId = Convert.ToInt64(rv["id"]);
+            string nombreServicio = rv["nombre"].ToString();
+            decimal precio = Convert.ToDecimal(rv["precio"]);
+
+            AgregarServicioAOrden(servicioId, nombreServicio, precio);
+        }
+
+        private void AgregarServicioAOrden(long servicioId, string nombre, decimal precio)
+        {
             try
             {
                 con.Abrir();
-                SqlCommand cmd = new SqlCommand("INSERT INTO OrdenesTrabajo_Tareas(orden_id, descripcion) VALUES(@o,@d)", con.leer);
-                cmd.Parameters.AddWithValue("@o", ordenIdActual);
-                cmd.Parameters.AddWithValue("@d", tarea);
-                cmd.ExecuteNonQuery();
+                SqlTransaction tx = con.leer.BeginTransaction();
+
                 try
                 {
-                    // Reabrimos con una mini transacción NO es necesario aquí.
-                    // Mejor: registrar directo sin tx (porque aquí no estás usando transacción)
-                    using (SqlCommand cmdH = new SqlCommand(
-                        "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
-                        con.leer))
-                    {
-                        cmdH.Parameters.AddWithValue("@orden_id", ordenIdActual);
-                        cmdH.Parameters.AddWithValue("@usuario_id", usuarioId);
-                        cmdH.Parameters.AddWithValue("@tipo_evento", "TAREA");
-                        cmdH.Parameters.AddWithValue("@titulo", "Tarea agregada");
-                        cmdH.Parameters.AddWithValue("@detalle", tarea);
-                        cmdH.ExecuteNonQuery();
-                    }
+                    string sql = @"
+                        INSERT INTO OrdenesTrabajo_Servicios
+                        (orden_id, servicio_id, precio, fecha_agregado)
+                        VALUES (@orden, @servicio, @precio, GETDATE())";
+
+                    SqlCommand cmd = new SqlCommand(sql, con.leer, tx);
+                    cmd.Parameters.AddWithValue("@orden", ordenIdActual);
+                    cmd.Parameters.AddWithValue("@servicio", servicioId);
+                    cmd.Parameters.AddWithValue("@precio", precio);
+                    cmd.ExecuteNonQuery();
+
+                    RegistrarHistorial(
+                        tx,
+                        ordenIdActual,
+                        usuarioId,
+                        "SERVICIO",
+                        "Servicio agregado",
+                        $"{nombre} - Precio: {precio:C}"
+                    );
+
+                    tx.Commit();
+
+                    MessageBox.Show("Servicio agregado correctamente.");
+
+                    CargarServiciosDeOrden();
                 }
-                catch { /* no rompas el flujo */ }
+                catch
+                {
+                    tx.Rollback();
+                    throw;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar tarea: " + ex.Message);
+                MessageBox.Show("Error agregando servicio: " + ex.Message);
             }
             finally
             {
                 con.Cerrar();
             }
-
-            txtTarea.Clear();
-            CargarTareasDeOrden();
         }
 
-        private void dgvTareas_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvServicios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            if (dgvTareas.Columns[e.ColumnIndex].Name != "btnEliminarTarea") return;
-
-            if (!(dgvTareas.Rows[e.RowIndex].DataBoundItem is DataRowView rv)) return;
-
-            long tareaId = Convert.ToInt64(rv["id"]);
-
-            if (MessageBox.Show("¿Eliminar esta tarea?", "Confirmar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                return;
-
-            try
+            if (dgvServicios.Columns[e.ColumnIndex].Name == "btnEliminarServicio")
             {
-                con.Abrir();
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM OrdenesTrabajo_Tareas WHERE id=@id", con.leer))
+                if (!(dgvServicios.Rows[e.RowIndex].DataBoundItem is DataRowView rv)) return;
+
+                long servicioId = Convert.ToInt64(rv["id"]);
+                string nombreServicio = rv["servicio"].ToString();
+
+                if (MessageBox.Show($"¿Eliminar el servicio '{nombreServicio}' de la orden?",
+                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    return;
+
+                try
                 {
-                    cmd.Parameters.AddWithValue("@id", tareaId);
-                    cmd.ExecuteNonQuery();
+                    con.Abrir();
+                    SqlTransaction tx = con.leer.BeginTransaction();
+
                     try
                     {
-                        using (SqlCommand cmdH = new SqlCommand(
-                            "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
-                            con.leer))
+                        using (SqlCommand cmd = new SqlCommand("DELETE FROM OrdenesTrabajo_Servicios WHERE id=@id", con.leer, tx))
                         {
-                            cmdH.Parameters.AddWithValue("@orden_id", ordenIdActual);
-                            cmdH.Parameters.AddWithValue("@usuario_id", usuarioId);
-                            cmdH.Parameters.AddWithValue("@tipo_evento", "TAREA");
-                            cmdH.Parameters.AddWithValue("@titulo", "Tarea eliminada");
-                            cmdH.Parameters.AddWithValue("@detalle", $"ID tarea: {tareaId}");
-                            cmdH.ExecuteNonQuery();
+                            cmd.Parameters.AddWithValue("@id", servicioId);
+                            cmd.ExecuteNonQuery();
                         }
+
+                        RegistrarHistorial(
+                            tx,
+                            ordenIdActual,
+                            usuarioId,
+                            "SERVICIO",
+                            "Servicio eliminado",
+                            $"{nombreServicio} (ID: {servicioId})"
+                        );
+
+                        tx.Commit();
                     }
-                    catch { }
+                    catch
+                    {
+                        tx.Rollback();
+                        throw;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al eliminar tarea: " + ex.Message);
-            }
-            finally
-            {
-                con.Cerrar();
-            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar servicio: " + ex.Message);
+                }
+                finally
+                {
+                    con.Cerrar();
+                }
 
-            CargarTareasDeOrden();
+                CargarServiciosDeOrden();
+            }
         }
-
-
-
-        
-
 
         private long ObtenerProductoIdSeleccionado()
         {
@@ -584,11 +602,11 @@ ORDER BY i.id DESC";
                     }
 
                     SqlCommand cmdInsert = new SqlCommand(@"
-INSERT INTO OrdenesTrabajo_Items
-(orden_id, producto_id, cantidad, precio_unitario, fecha_agregado)
-SELECT @o, @p, @c, precio_pvp, GETDATE()
-FROM Productos
-WHERE id=@p;", con.leer, tx);
+                        INSERT INTO OrdenesTrabajo_Items
+                        (orden_id, producto_id, cantidad, precio_unitario, fecha_agregado)
+                        SELECT @o, @p, @c, precio_pvp, GETDATE()
+                        FROM Productos
+                        WHERE id=@p;", con.leer, tx);
 
                     cmdInsert.Parameters.AddWithValue("@o", ordenIdActual);
                     cmdInsert.Parameters.AddWithValue("@p", productoId);
@@ -608,19 +626,13 @@ WHERE id=@p;", con.leer, tx);
                         cmdK.ExecuteNonQuery();
                     }
 
-
-
                     string nombreProd = rv["nombre"].ToString();
                     RegistrarHistorial(tx, ordenIdActual, usuarioId, "ITEM", "Producto agregado",
                         $"{nombreProd} (ID {productoId}) - Cantidad: {cantidad}");
 
                     tx.Commit();
 
-                    
-                    
-
-
-
+                    MessageBox.Show("Producto agregado correctamente.");
                 }
                 catch
                 {
@@ -646,8 +658,8 @@ WHERE id=@p;", con.leer, tx);
             if (usuarioId <= 0) return;
 
             SqlCommand cmd = new SqlCommand(@"
-INSERT INTO Novedades(orden_trabajo_id, usuario_id, descripcion, fecha)
-VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
+                INSERT INTO Novedades(orden_trabajo_id, usuario_id, descripcion, fecha)
+                VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
 
             cmd.Parameters.AddWithValue("@o", ordenIdActual);
             cmd.Parameters.AddWithValue("@u", usuarioId);
@@ -662,7 +674,6 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                 "Stock insuficiente",
                 $"ProductoID: {productoId}. Requerido: {requerido}. Disponible: {stock}"
             );
-
         }
 
         private void dgvItems_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -723,7 +734,6 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                         cmdK.ExecuteNonQuery();
                     }
 
-
                     RegistrarHistorial(
                         tx,
                         ordenIdActual,
@@ -732,7 +742,6 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                         "Producto eliminado",
                         $"ItemID: {itemId}, ProductoID: {prodId}, Cantidad: {cantDec} (stock devuelto)"
                     );
-
 
                     tx.Commit();
                 }
@@ -755,11 +764,6 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
             CargarItemsDeOrden();
         }
 
-
-        
-
-
-
         private void CargarOrdenesEnCombo()
         {
             try
@@ -767,12 +771,13 @@ VALUES(@o,@u,@d,GETDATE())", con.leer, tx);
                 con.Abrir();
 
                 string sql = @"
-SELECT 
-    ot.id,
-    CONCAT('OT #', ot.id, ' - ', ISNULL(v.placa,'SIN-PLACA'), ' - ', ISNULL(ot.estado,'(sin estado)')) AS display_text
-FROM OrdenesTrabajo ot
-LEFT JOIN Vehiculos v ON v.id = ot.vehiculo_id
-ORDER BY ot.id DESC";
+                    SELECT 
+                        ot.id,
+                        CONCAT('OT #', ot.id, ' - ', ISNULL(v.placa,'SIN-PLACA'), ' - ', ISNULL(ot.estado,'(sin estado)')) AS display_text
+                    FROM OrdenesTrabajo ot
+                    LEFT JOIN Vehiculos v ON v.id = ot.vehiculo_id
+                    WHERE ot.facturada = 0
+                    ORDER BY ot.id DESC";
 
                 DataTable dt = new DataTable();
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
@@ -803,45 +808,30 @@ ORDER BY ot.id DESC";
 
             lblOrdenInfo.Text = $"Orden seleccionada: #{ordenIdActual}";
 
-            CargarTareasDeOrden();
+            CargarServiciosDeOrden();
             CargarItemsDeOrden();
+            CargarServiciosDisponibles();
 
             HabilitarSecciones(true);
         }
 
-        private void AjustarBotonEliminar(DataGridView dgv, string colName)
-        {
-            if (!dgv.Columns.Contains(colName)) return;
-
-            var col = dgv.Columns[colName] as DataGridViewButtonColumn;
-            if (col == null) return;
-
-            col.FlatStyle = FlatStyle.Flat;
-            col.Width = 95;
-
-            dgv.RowTemplate.Height = 44;
-            dgv.DefaultCellStyle.Padding = new Padding(6, 2, 6, 2);
-        }
-
-
         private void HabilitarSecciones(bool habilitar)
         {
-            btnAgregarTarea.Enabled = habilitar;
+            btnAgregarServicio.Enabled = habilitar;
             btnAgregarProducto.Enabled = habilitar;
-            txtTarea.Enabled = habilitar;
+            txtBuscarServicio.Enabled = habilitar;
             nudCantidad.Enabled = habilitar;
 
             txtBuscarProducto.Enabled = habilitar;
             lstProductos.Enabled = habilitar;
+            lstServicios.Enabled = habilitar;
 
-            dgvTareas.Enabled = habilitar;
+            dgvServicios.Enabled = habilitar;
             dgvItems.Enabled = habilitar;
         }
 
         private void RegistrarHistorial(SqlTransaction tx, long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
         {
-            // No romper nada: si falla, no debe dañar el flujo (pero como estás en tx, aquí sí conviene fallar si quieres).
-            // Para tu caso: lo dejamos dentro de la misma transacción para que quede consistente.
             using (SqlCommand cmd = new SqlCommand(
                 "EXEC dbo.sp_historial_registrar @orden_id, @usuario_id, @tipo_evento, @titulo, @detalle",
                 con.leer, tx))
@@ -855,15 +845,234 @@ ORDER BY ot.id DESC";
             }
         }
 
-
-        private void cmbOrdenes_SelectedIndexChanged(object sender, EventArgs e)
+        private long ObtenerTipoVehiculoDeOrden(long ordenId)
         {
+            long tipoVehiculo = 0;
 
+            try
+            {
+                con.Abrir();
+
+                string sql = @"
+                    SELECT v.tipo
+                    FROM OrdenesTrabajo ot
+                    INNER JOIN Vehiculos v ON v.id = ot.vehiculo_id
+                    WHERE ot.id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@id", ordenId);
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    string tipoVehiculoStr = result.ToString();
+
+                    string sqlTipoId = "SELECT id FROM TiposVehiculo WHERE nombre = @nombre AND activo = 1";
+                    SqlCommand cmdTipo = new SqlCommand(sqlTipoId, con.leer);
+                    cmdTipo.Parameters.AddWithValue("@nombre", tipoVehiculoStr);
+
+                    object tipoId = cmdTipo.ExecuteScalar();
+                    if (tipoId != null)
+                        tipoVehiculo = Convert.ToInt64(tipoId);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error obteniendo tipo de vehículo: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
+
+            return tipoVehiculo;
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private string ObtenerNombreTipoVehiculo(long tipoVehiculoId)
         {
+            string nombre = "";
 
+            try
+            {
+                con.Abrir();
+                string sql = "SELECT nombre FROM TiposVehiculo WHERE id = @id";
+                SqlCommand cmd = new SqlCommand(sql, con.leer);
+                cmd.Parameters.AddWithValue("@id", tipoVehiculoId);
+
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                    nombre = result.ToString();
+            }
+            catch { }
+            finally { con.Cerrar(); }
+
+            return nombre;
+        }
+
+        private void btnBuscadorOrden_Click(object sender, EventArgs e)
+        {
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+                long ordenId = Convert.ToInt64(fila["id"]);
+
+                for (int i = 0; i < cmbOrdenes.Items.Count; i++)
+                {
+                    DataRowView item = cmbOrdenes.Items[i] as DataRowView;
+                    if (item != null && Convert.ToInt64(item["id"]) == ordenId)
+                    {
+                        cmbOrdenes.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void btnBuscadorServicios_Click(object sender, EventArgs e)
+        {
+            if (ordenIdActual <= 0)
+            {
+                MessageBox.Show("Primero selecciona una orden.");
+                return;
+            }
+
+            long tipoVehiculo = ObtenerTipoVehiculoDeOrden(ordenIdActual);
+
+            FormBuscador buscador = new FormBuscador(
+                FormBuscador.TipoBusqueda.Servicios,
+                tipoVehiculo
+            );
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long servicioId = Convert.ToInt64(fila["id"]);
+                string nombre = fila["nombre"].ToString();
+                decimal precio = Convert.ToDecimal(fila["precio"]);
+
+                AgregarServicioAOrden(servicioId, nombre, precio);
+            }
+        }
+
+        private void FiltrarServiciosDisponibles(string texto)
+        {
+            if (dtServiciosDisponibles == null || ordenIdActual <= 0) return;
+
+            texto = (texto ?? "").Trim().Replace("'", "''");
+
+            DataView dv = new DataView(dtServiciosDisponibles);
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                lstServicios.Visible = false;
+                return;
+            }
+            else
+            {
+                dv.RowFilter = $"nombre LIKE '%{texto}%'";
+                lstServicios.Visible = dv.Count > 0;
+            }
+
+            lstServicios.DisplayMember = "nombre";
+            lstServicios.ValueMember = "id";
+            lstServicios.DataSource = dv;
+        }
+
+        private void btnBuscadorProductos_Click(object sender, EventArgs e)
+        {
+            if (ordenIdActual <= 0)
+            {
+                MessageBox.Show("Primero selecciona una orden.");
+                return;
+            }
+
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Productos);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long productoId = Convert.ToInt64(fila["id"]);
+                string nombre = fila["nombre"].ToString();
+                int cantidad = buscador.CantidadSeleccionada;
+                decimal precio = Convert.ToDecimal(fila["precio_pvp"]);
+
+                AgregarProductoAOrden(productoId, nombre, cantidad, precio);
+            }
+        }
+
+        private void AgregarProductoAOrden(long productoId, string nombre, int cantidad, decimal precio)
+        {
+            try
+            {
+                con.Abrir();
+                SqlTransaction tx = con.leer.BeginTransaction();
+
+                try
+                {
+                    SqlCommand cmdStock = new SqlCommand("SELECT ISNULL(stock,0) FROM Productos WHERE id=@id", con.leer, tx);
+                    cmdStock.Parameters.AddWithValue("@id", productoId);
+                    int stock = Convert.ToInt32(cmdStock.ExecuteScalar());
+
+                    if (stock < cantidad)
+                    {
+                        RegistrarNovedad(tx, productoId, cantidad, stock);
+                        tx.Rollback();
+                        MessageBox.Show("Stock insuficiente.");
+                        return;
+                    }
+
+                    SqlCommand cmdInsert = new SqlCommand(@"
+                INSERT INTO OrdenesTrabajo_Items
+                (orden_id, producto_id, cantidad, precio_unitario, fecha_agregado)
+                VALUES (@orden, @producto, @cantidad, @precio, GETDATE())", con.leer, tx);
+
+                    cmdInsert.Parameters.AddWithValue("@orden", ordenIdActual);
+                    cmdInsert.Parameters.AddWithValue("@producto", productoId);
+                    cmdInsert.Parameters.AddWithValue("@cantidad", Convert.ToDecimal(cantidad));
+                    cmdInsert.Parameters.AddWithValue("@precio", precio);
+                    cmdInsert.ExecuteNonQuery();
+
+                    using (SqlCommand cmdK = new SqlCommand("dbo.sp_Kardex_RegistrarMovimiento", con.leer, tx))
+                    {
+                        cmdK.CommandType = CommandType.StoredProcedure;
+                        cmdK.Parameters.AddWithValue("@ProductoId", productoId);
+                        cmdK.Parameters.AddWithValue("@UsuarioId", usuarioId);
+                        cmdK.Parameters.AddWithValue("@TipoMovimiento", "SALIDA");
+                        cmdK.Parameters.AddWithValue("@Origen", "OT");
+                        cmdK.Parameters.AddWithValue("@ReferenciaId", ordenIdActual);
+                        cmdK.Parameters.AddWithValue("@Cantidad", cantidad);
+                        cmdK.Parameters.AddWithValue("@Fecha", DBNull.Value);
+                        cmdK.ExecuteNonQuery();
+                    }
+
+                    RegistrarHistorial(tx, ordenIdActual, usuarioId, "ITEM", "Producto agregado",
+                        $"{nombre} (ID {productoId}) - Cantidad: {cantidad} - Precio: {precio:C}");
+
+                    tx.Commit();
+
+                    MessageBox.Show("Producto agregado correctamente.");
+
+                    CargarItemsDeOrden();
+                }
+                catch
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error agregando producto: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
         }
     }
 }

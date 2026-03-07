@@ -304,6 +304,7 @@ SELECT
     CONCAT('OT #', ot.id, ' - ', v.placa) AS display
 FROM OrdenesTrabajo ot
 INNER JOIN Vehiculos v ON ot.vehiculo_id = v.id
+WHERE ot.facturada = 0
 ORDER BY ot.fecha_ingreso DESC;";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
@@ -808,6 +809,27 @@ VALUES
             public override string ToString() => Nombre;
         }
 
+        private void btnBuscadorOrden_Click(object sender, EventArgs e)
+        {
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
 
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+                long ordenId = Convert.ToInt64(fila["id"]);
+
+                for (int i = 0; i < cmbOrdenes.Items.Count; i++)
+                {
+                    DataRowView item = cmbOrdenes.Items[i] as DataRowView;
+                    if (item != null && Convert.ToInt64(item["id"]) == ordenId)
+                    {
+                        cmbOrdenes.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        
     }
 }

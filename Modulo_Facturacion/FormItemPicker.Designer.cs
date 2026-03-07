@@ -61,7 +61,6 @@
             // 
             // nudCantidad
             // 
-            this.nudCantidad.DecimalPlaces = 2;
             this.nudCantidad.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudCantidad.Location = new System.Drawing.Point(80, 323);
             this.nudCantidad.Maximum = new decimal(new int[] {
@@ -73,12 +72,12 @@
             1,
             0,
             0,
-            131072});
+            0});
             this.nudCantidad.Name = "nudCantidad";
             this.nudCantidad.Size = new System.Drawing.Size(120, 25);
             this.nudCantidad.TabIndex = 6;
             this.nudCantidad.Value = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
             131072});
@@ -158,7 +157,8 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvListado.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListado.ColumnHeadersHeight = 4;
+            this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -184,7 +184,7 @@
             this.dgvListado.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvListado.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgvListado.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvListado.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListado.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             this.dgvListado.ThemeStyle.HeaderStyle.Height = 4;
             this.dgvListado.ThemeStyle.ReadOnly = false;
             this.dgvListado.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;

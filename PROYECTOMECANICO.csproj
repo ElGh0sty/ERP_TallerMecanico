@@ -53,6 +53,7 @@
     <Reference Include="itextsharp, Version=5.5.13.5, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>packages\iTextSharp.5.5.13.5\lib\net461\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.3800.47, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Web.WebView2.1.0.3800.47\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
     </Reference>
@@ -112,6 +113,12 @@
     </Compile>
     <Compile Include="FormAux.Designer.cs">
       <DependentUpon>FormAux.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBuscador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBuscador.Designer.cs">
+      <DependentUpon>FormBuscador.cs</DependentUpon>
     </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
@@ -302,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAux.resx">
       <DependentUpon>FormAux.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBuscador.resx">
+      <DependentUpon>FormBuscador.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>

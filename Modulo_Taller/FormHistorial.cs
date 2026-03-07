@@ -113,6 +113,7 @@ SELECT
     CONCAT('OT #', ot.id, ' - ', ISNULL(v.placa,'SIN-PLACA'), ' - ', ISNULL(ot.estado,'(sin estado)')) AS display
 FROM OrdenesTrabajo ot
 LEFT JOIN Vehiculos v ON v.id = ot.vehiculo_id
+WHERE ot.facturada = 0
 ORDER BY ot.id DESC;";
 
                 DataTable dt = new DataTable();
@@ -271,6 +272,27 @@ ORDER BY h.fecha DESC;";
         private void cmbOrdenes_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnBuscadorOrden_Click(object sender, EventArgs e)
+        {
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+                long ordenId = Convert.ToInt64(fila["id"]);
+
+                for (int i = 0; i < cmbOrdenes.Items.Count; i++)
+                {
+                    DataRowView item = cmbOrdenes.Items[i] as DataRowView;
+                    if (item != null && Convert.ToInt64(item["id"]) == ordenId)
+                    {
+                        cmbOrdenes.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

@@ -46,6 +46,7 @@
             this.lstProductos = new System.Windows.Forms.ListBox();
             this.lblProductoSel = new System.Windows.Forms.Label();
             this.nudMontoExtra = new System.Windows.Forms.NumericUpDown();
+            this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidadExtra)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).BeginInit();
@@ -70,10 +71,12 @@
             // 
             // dgvNovedades
             // 
+            this.dgvNovedades.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNovedades.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNovedades.Location = new System.Drawing.Point(2, 71);
+            this.dgvNovedades.Location = new System.Drawing.Point(-1, 71);
             this.dgvNovedades.Name = "dgvNovedades";
-            this.dgvNovedades.Size = new System.Drawing.Size(908, 265);
+            this.dgvNovedades.Size = new System.Drawing.Size(911, 265);
             this.dgvNovedades.TabIndex = 2;
             this.dgvNovedades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNovedades_CellContentClick);
             // 
@@ -218,11 +221,25 @@
             this.nudMontoExtra.Size = new System.Drawing.Size(85, 20);
             this.nudMontoExtra.TabIndex = 17;
             // 
+            // btnBuscadorOrden
+            // 
+            this.btnBuscadorOrden.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorOrden.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorOrden.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorOrden.IconSize = 30;
+            this.btnBuscadorOrden.Location = new System.Drawing.Point(325, 24);
+            this.btnBuscadorOrden.Name = "btnBuscadorOrden";
+            this.btnBuscadorOrden.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorOrden.TabIndex = 18;
+            this.btnBuscadorOrden.UseVisualStyleBackColor = true;
+            this.btnBuscadorOrden.Click += new System.EventHandler(this.btnBuscadorOrden_Click);
+            // 
             // FormNovedades
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(908, 603);
+            this.Controls.Add(this.btnBuscadorOrden);
             this.Controls.Add(this.nudMontoExtra);
             this.Controls.Add(this.lblProductoSel);
             this.Controls.Add(this.lstProductos);
@@ -272,5 +289,6 @@
         private System.Windows.Forms.ListBox lstProductos;
         private System.Windows.Forms.Label lblProductoSel;
         private System.Windows.Forms.NumericUpDown nudMontoExtra;
+        private FontAwesome.Sharp.IconButton btnBuscadorOrden;
     }
 }

@@ -36,6 +36,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnEliminarHistorial = new System.Windows.Forms.Button();
+            this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +46,7 @@
             this.cmbOrdenes.FormattingEnabled = true;
             this.cmbOrdenes.Location = new System.Drawing.Point(20, 60);
             this.cmbOrdenes.Name = "cmbOrdenes";
-            this.cmbOrdenes.Size = new System.Drawing.Size(267, 21);
+            this.cmbOrdenes.Size = new System.Drawing.Size(230, 21);
             this.cmbOrdenes.TabIndex = 0;
             this.cmbOrdenes.SelectedIndexChanged += new System.EventHandler(this.cmbOrdenes_SelectedIndexChanged);
             // 
@@ -94,6 +95,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.Controls.Add(this.btnBuscadorOrden);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnEliminarHistorial);
             this.panel1.Controls.Add(this.lblTotal);
@@ -130,6 +132,19 @@
             this.btnEliminarHistorial.Text = "Eliminar Historial";
             this.btnEliminarHistorial.UseVisualStyleBackColor = false;
             // 
+            // btnBuscadorOrden
+            // 
+            this.btnBuscadorOrden.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorOrden.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorOrden.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorOrden.IconSize = 30;
+            this.btnBuscadorOrden.Location = new System.Drawing.Point(258, 58);
+            this.btnBuscadorOrden.Name = "btnBuscadorOrden";
+            this.btnBuscadorOrden.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorOrden.TabIndex = 10;
+            this.btnBuscadorOrden.UseVisualStyleBackColor = true;
+            this.btnBuscadorOrden.Click += new System.EventHandler(this.btnBuscadorOrden_Click);
+            // 
             // FormHistorial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -158,5 +173,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnEliminarHistorial;
         private System.Windows.Forms.Label label1;
+        private FontAwesome.Sharp.IconButton btnBuscadorOrden;
     }
 }

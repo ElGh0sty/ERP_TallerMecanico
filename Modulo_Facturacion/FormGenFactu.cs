@@ -149,7 +149,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnNuevoCliente.Click += (s, e) => CrearClientePopup();
 
             // Items manuales
-            btnAddItem.Click += (s, e) => AgregarItemDesdeCatalogo();
+            
             btnDelItem.Click += (s, e) => EliminarItemSeleccionado();
 
             //  Mantener botones correctos según selección
@@ -339,35 +339,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             catch { }
         }
 
-        private void AgregarItemDesdeCatalogo()
-        {
-            if (modoDesdeOT)
-            {
-                MessageBox.Show("En modo 'Desde OT' los ítems se cargan desde la orden de trabajo.");
-                return;
-            }
-
-            using (var pop = new PROYECTOMECANICO.Modulo_Facturacion.FormItemPicker(con))
-            {
-                if (pop.ShowDialog() != DialogResult.OK) return;
-                if (pop.Result == null) return;
-
-                var r = pop.Result;
-                decimal sub = Math.Round(r.Cantidad * r.PrecioUnitario, 4);
-
-                dtItems.Rows.Add(
-                    r.TipoItem,
-                    r.NombreItem,
-                    r.Cantidad,
-                    r.PrecioUnitario,
-                    sub,
-                    (object)r.ProductoId ?? DBNull.Value,
-                    (object)r.ServicioId ?? DBNull.Value
-                );
-
-                RecalcularTotales();
-            }
-        }
+        
 
         //  IMPUESTO / TOTALES
 
@@ -592,23 +564,43 @@ WHERE OT.id = @id";
             try
             {
                 con.Abrir();
-                string sql = @"
-SELECT 
-    CASE WHEN i.producto_id IS NOT NULL THEN 'Producto' ELSE 'Servicio' END AS tipo_item,
-    COALESCE(p.nombre, NULLIF(LTRIM(RTRIM(i.descripcion)), ''), NULLIF(LTRIM(RTRIM(ot.descripcion)), ''), 'SERVICIO') AS nombre_item,
-    CAST(i.cantidad AS DECIMAL(18,2)) AS cantidad,
-    CAST(i.precio_unitario AS DECIMAL(18,2)) AS precio_unitario,
-    CAST(i.subtotal AS DECIMAL(18,2)) AS subtotal,
-    i.producto_id,
-    CAST(NULL AS BIGINT) AS servicio_id
-FROM OrdenesTrabajo_Items i
-INNER JOIN OrdenesTrabajo ot ON ot.id = i.orden_id
-LEFT JOIN Productos p ON p.id = i.producto_id
-WHERE i.orden_id = @orden
-ORDER BY i.id ASC";
 
+                // Limpiar items actuales
                 dtItems.Clear();
-                using (var da = new SqlDataAdapter(sql, con.leer))
+
+                // Cargar productos de la orden
+                string sqlProductos = @"
+            SELECT 
+                'Producto' AS tipo_item,
+                p.nombre AS nombre_item,
+                CAST(i.cantidad AS DECIMAL(18,2)) AS cantidad,
+                CAST(i.precio_unitario AS DECIMAL(18,2)) AS precio_unitario,
+                CAST(i.subtotal AS DECIMAL(18,2)) AS subtotal,
+                i.producto_id,
+                CAST(NULL AS BIGINT) AS servicio_id
+            FROM OrdenesTrabajo_Items i
+            INNER JOIN OrdenesTrabajo ot ON ot.id = i.orden_id
+            INNER JOIN Productos p ON p.id = i.producto_id
+            WHERE i.orden_id = @orden AND i.producto_id IS NOT NULL
+            
+            UNION ALL
+            
+            -- Cargar servicios de la orden (directamente desde Servicios)
+            SELECT 
+                'Servicio' AS tipo_item,
+                s.nombre AS nombre_item,
+                1 AS cantidad,
+                os.precio AS precio_unitario,
+                os.precio AS subtotal,
+                CAST(NULL AS BIGINT) AS producto_id,
+                os.servicio_id
+            FROM OrdenesTrabajo_Servicios os
+            INNER JOIN Servicios s ON s.id = os.servicio_id
+            WHERE os.orden_id = @orden
+            
+            ORDER BY tipo_item DESC, nombre_item ASC";
+
+                using (var da = new SqlDataAdapter(sqlProductos, con.leer))
                 {
                     da.SelectCommand.Parameters.Add("@orden", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
                     da.Fill(dtItems);
@@ -626,9 +618,9 @@ ORDER BY i.id ASC";
             finally { con.Cerrar(); }
         }
 
-        
+
         //RECEPTOR (con limpieza CF)
-        
+
         private void ActualizarUIReceptor()
         {
             bool existente = rbClienteExistente.Checked;
@@ -967,6 +959,7 @@ INSERT INTO dbo.FacturaItems
 VALUES
 (@factura, @prod, @serv, @cant, @punit, 0, @imp, @ivaItem)";
 
+                        // Esta parte ya está bien en tu código:
                         foreach (DataRow r in dtItems.Rows)
                         {
                             long? prod = r["producto_id"] == DBNull.Value ? (long?)null : Convert.ToInt64(r["producto_id"]);
@@ -1117,11 +1110,9 @@ WHERE id = @id;", cn))
 
             var emp = ObtenerEmpresa();
 
-            
             string secTmp = string.IsNullOrWhiteSpace(secuencialGenerado) ? "000000001" : secuencialGenerado;
             string numeroFactura = $"001-001-{secTmp}";
 
-            
             decimal subtotal = dtItems.AsEnumerable().Sum(r => Convert.ToDecimal(r["subtotal"]));
             decimal pct = GetImpuestoPorcentajeActual() / 100m;
             decimal iva = Math.Round(subtotal * pct, 2);
@@ -1143,7 +1134,7 @@ WHERE id = @id;", cn))
                 var fontSub = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
                 var font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
 
-                //  Encabezado empresa + factura 
+                // Encabezado empresa + factura 
                 PdfPTable head = new PdfPTable(2);
                 head.WidthPercentage = 100;
                 head.SetWidths(new float[] { 65, 35 });
@@ -1172,7 +1163,7 @@ WHERE id = @id;", cn))
                 doc.Add(head);
                 doc.Add(new Paragraph(" "));
 
-                //  Receptor 
+                // Receptor 
                 PdfPTable rec = new PdfPTable(2);
                 rec.WidthPercentage = 100;
                 rec.SetWidths(new float[] { 50, 50 });
@@ -1200,10 +1191,10 @@ WHERE id = @id;", cn))
                 doc.Add(rec);
                 doc.Add(new Paragraph(" "));
 
-                //  Items 
-                PdfPTable items = new PdfPTable(4);
+                // Items - Ahora con columna de Tipo
+                PdfPTable items = new PdfPTable(5);
                 items.WidthPercentage = 100;
-                items.SetWidths(new float[] { 10, 60, 15, 15 });
+                items.SetWidths(new float[] { 8, 8, 44, 15, 15 });
 
                 void AddHeader(string t)
                 {
@@ -1213,6 +1204,7 @@ WHERE id = @id;", cn))
                     items.AddCell(c);
                 }
 
+                AddHeader("Tipo");
                 AddHeader("Cant");
                 AddHeader("Descripción");
                 AddHeader("P.Unit");
@@ -1220,11 +1212,13 @@ WHERE id = @id;", cn))
 
                 foreach (DataRow row in dtItems.Rows)
                 {
+                    string tipo = row["tipo_item"]?.ToString() ?? "Item";
                     decimal cant = Convert.ToDecimal(row["cantidad"]);
                     string desc = row["nombre_item"]?.ToString() ?? "";
                     decimal pu = Convert.ToDecimal(row["precio_unitario"]);
                     decimal sub = Convert.ToDecimal(row["subtotal"]);
 
+                    items.AddCell(new PdfPCell(new Phrase(tipo, font)) { Padding = 5 });
                     items.AddCell(new PdfPCell(new Phrase(cant.ToString("0.##"), font)) { Padding = 5 });
                     items.AddCell(new PdfPCell(new Phrase(desc, font)) { Padding = 5 });
                     items.AddCell(new PdfPCell(new Phrase(pu.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
@@ -1234,7 +1228,7 @@ WHERE id = @id;", cn))
                 doc.Add(items);
                 doc.Add(new Paragraph(" "));
 
-                //  Totales 
+                // Totales 
                 PdfPTable tot = new PdfPTable(2);
                 tot.HorizontalAlignment = Element.ALIGN_RIGHT;
                 tot.WidthPercentage = 40;
@@ -1254,7 +1248,6 @@ WHERE id = @id;", cn))
                 AddTotalRow("TOTAL", total.ToString("0.00"), bold: true);
 
                 doc.Add(tot);
-
                 doc.Close();
                 writer.Close();
             }
@@ -1262,7 +1255,97 @@ WHERE id = @id;", cn))
             return pdfPath;
         }
 
+        private void btnAddItem_Click(object sender, EventArgs e)
+        {
+            if (modoDesdeOT)
+            {
+                MessageBox.Show("En modo 'Desde OT' los ítems se cargan desde la orden de trabajo.");
+                return;
+            }
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Productos);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long productoId = Convert.ToInt64(fila["id"]);
+                string nombre = fila["nombre"].ToString();
+                int cantidad = buscador.CantidadSeleccionada;
+                decimal precio = Convert.ToDecimal(fila["precio_pvp"]);
+
+                // Agregar a la tabla de items
+                dtItems.Rows.Add(
+                    "Producto",
+                    nombre,
+                    cantidad,
+                    precio,
+                    cantidad * precio,
+                    productoId,
+                    DBNull.Value
+                );
+
+                RecalcularTotales();
+            }
+
+        }
+
         
         
+
+        
+        private void btnBuscadorOrdenTrabajo_Click(object sender, EventArgs e)
+        {
+            // Asegurarse de que estamos en modo OT
+            if (!rbDesdeOT.Checked)
+            {
+                rbDesdeOT.Checked = true;
+            }
+
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long ordenId = Convert.ToInt64(fila["id"]);
+                string placa = fila["placa"].ToString();
+                string cliente = fila["cliente"].ToString();
+                string estado = fila["estado"].ToString();
+
+                // Verificar que la OT esté en estado válido (Terminado/Entregado)
+                if (estado != "Terminado" && estado != "Entregado")
+                {
+                    MessageBox.Show($"La orden seleccionada está en estado '{estado}'. Solo se pueden facturar órdenes en estado 'Terminado' o 'Entregado'.",
+                        "Estado no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Verificar que la OT no esté ya facturada
+                if (ExisteFacturaParaOT(ordenId))
+                {
+                    MessageBox.Show("Esta OT ya tiene una factura generada.",
+                        "OT ya facturada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Asignar la orden seleccionada
+                ordenTrabajoId = ordenId;
+
+                // Mostrar la orden seleccionada en el txtBuscarOT
+                txtBuscarOT.Text = $"OT #{ordenId} - {placa} - {cliente}";
+
+                // Cargar el receptor desde la OT
+                CargarReceptorDesdeOT(ordenId);
+
+                // Opcional: Cargar automáticamente los items
+                DialogResult cargarItems = MessageBox.Show("¿Desea cargar los items de esta orden ahora?",
+                    "Cargar items", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (cargarItems == DialogResult.Yes)
+                {
+                    CargarItemsOT();
+                }
+            }
+        }
     }
 }
