@@ -9,13 +9,13 @@ namespace PROYECTOMECANICO.Modulo_Inventario
     public partial class FormProductoPopup : Form
     {
         private readonly Conexion con = new Conexion();
+        private DataTable dtImpuestos = new DataTable();
 
         public long ProductoCreadoId { get; private set; } = 0;
         public string ProductoCreadoNombre { get; private set; } = "";
 
         public FormProductoPopup()
         {
-            
             InitializeComponent();
             Text = "Nuevo producto";
             StartPosition = FormStartPosition.CenterParent;
@@ -24,20 +24,15 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             cmbTipo.Items.Clear();
             cmbTipo.Items.AddRange(new object[]
             {
-                "Consumible","Repuesto","Aceite","Filtro","Bujia","Bateria","Neumatico","Accesorio","Herramienta","Quimico","Lubricante","Otro"
+                "Consumible","Repuesto","Aceite","Filtro","Bujia","Bateria","Neumatico",
+                "Accesorio","Herramienta","Quimico","Lubricante","Otro"
             });
             cmbTipo.SelectedIndex = 0;
 
-            nudCosto.DecimalPlaces = 4;
-            nudCosto.Maximum = 999999;
             nudPvp.DecimalPlaces = 4;
             nudPvp.Maximum = 999999;
 
-            nudCosto.ValueChanged += (s, e) =>
-            {
-                // sugerencia pvp (30%)
-                nudPvp.Value = Math.Min(nudPvp.Maximum, Math.Round(nudCosto.Value * 1.30m, 4));
-            };
+            CargarImpuestos();
 
             btnGuardar.Click += (s, e) => Guardar();
             btnCancelar.Click += (s, e) => { DialogResult = DialogResult.Cancel; Close(); };
@@ -50,15 +45,27 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             txtNombre.Focus();
         }
 
-
-        private int ObtenerImpuestoIdPorDefecto()
+        private void CargarImpuestos()
         {
-            using (var cmd = new SqlCommand("SELECT TOP 1 id FROM Impuestos ORDER BY id", con.leer))
+            try
             {
-                object v = cmd.ExecuteScalar();
-                if (v == null || v == DBNull.Value)
-                    throw new Exception("No existe ningún impuesto en la tabla Impuestos. Crea uno primero.");
-                return Convert.ToInt32(v);
+                con.Abrir();
+                string sql = "SELECT id, nombre, porcentaje FROM Impuestos WHERE activo = 1 ORDER BY id";
+                SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
+                da.Fill(dtImpuestos);
+
+                cmbImpuesto.DataSource = dtImpuestos;
+                cmbImpuesto.DisplayMember = "nombre";
+                cmbImpuesto.ValueMember = "id";
+                cmbImpuesto.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando impuestos: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
             }
         }
 
@@ -73,13 +80,20 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             string tipo = (cmbTipo.SelectedItem ?? "Otro").ToString();
 
-            decimal costo = nudCosto.Value;
             decimal pvp = nudPvp.Value;
-            if (costo < 0 || pvp < 0)
+            if (pvp < 0)
             {
-                MessageBox.Show("Precios inválidos.");
+                MessageBox.Show("Precio inválido.");
                 return;
             }
+
+            if (cmbImpuesto.SelectedValue == null)
+            {
+                MessageBox.Show("Seleccione un impuesto.");
+                return;
+            }
+
+            int impuestoId = Convert.ToInt32(cmbImpuesto.SelectedValue);
 
             try
             {
@@ -96,16 +110,13 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     }
                 }
 
-                int impuestoId = ObtenerImpuestoIdPorDefecto();
-
                 using (var cmd = new SqlCommand(@"
-INSERT INTO Productos(nombre, tipo, stock, precio_costo, precio_pvp, impuesto_id)
-VALUES(@n, @t, 0, @c, @p, @imp);
-SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer))
+                    INSERT INTO Productos(nombre, tipo, stock, precio_costo, precio_pvp, impuesto_id)
+                    VALUES(@n, @t, 0, 0, @p, @imp);
+                    SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer))
                 {
                     cmd.Parameters.AddWithValue("@n", nombre);
                     cmd.Parameters.AddWithValue("@t", tipo);
-                    cmd.Parameters.AddWithValue("@c", costo);
                     cmd.Parameters.AddWithValue("@p", pvp);
                     cmd.Parameters.AddWithValue("@imp", impuestoId);
 
@@ -121,11 +132,6 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer))
                 MessageBox.Show("Error creando producto: " + ex.Message);
             }
             finally { con.Cerrar(); }
-        }
-
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
