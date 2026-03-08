@@ -96,9 +96,9 @@
             this.panel1.Controls.Add(this.lblNombreTaller);
             this.panel1.Controls.Add(this.btnMenu);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(15, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(276, 118);
+            this.panel1.Size = new System.Drawing.Size(246, 118);
             this.panel1.TabIndex = 0;
             // 
             // label2
@@ -125,17 +125,17 @@
             // panel3
             // 
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(0, 118);
+            this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(15, 467);
+            this.panel3.Size = new System.Drawing.Size(15, 700);
             this.panel3.TabIndex = 1;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(261, 118);
+            this.panel4.Location = new System.Drawing.Point(261, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(15, 467);
+            this.panel4.Size = new System.Drawing.Size(15, 700);
             this.panel4.TabIndex = 2;
             // 
             // panelMenu
@@ -148,11 +148,11 @@
             this.panelMenu.Controls.Add(this.btnTaller);
             this.panelMenu.Controls.Add(this.btnClientes);
             this.panelMenu.Controls.Add(this.btnInicio);
-            this.panelMenu.Controls.Add(this.panel4);
-            this.panelMenu.Controls.Add(this.panel3);
             this.panelMenu.Controls.Add(this.panel1);
             this.panelMenu.Controls.Add(this.btnReportes);
             this.panelMenu.Controls.Add(this.btnCerrarSesion);
+            this.panelMenu.Controls.Add(this.panel3);
+            this.panelMenu.Controls.Add(this.panel4);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.ForeColor = System.Drawing.Color.White;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
@@ -439,13 +439,14 @@
             this.btnReportes.Image = global::PROYECTOMECANICO.Properties.Resources.checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692;
             this.btnReportes.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnReportes.ImageSize = new System.Drawing.Size(50, 50);
-            this.btnReportes.Location = new System.Drawing.Point(0, 585);
+            this.btnReportes.Location = new System.Drawing.Point(15, 585);
             this.btnReportes.Name = "btnReportes";
-            this.btnReportes.Size = new System.Drawing.Size(276, 60);
+            this.btnReportes.Size = new System.Drawing.Size(246, 60);
             this.btnReportes.TabIndex = 40;
             this.btnReportes.Tag = "Ajustes";
             this.btnReportes.Text = "Reportes";
             this.btnReportes.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnReportes.Click += new System.EventHandler(this.btnReportes_Click);
             // 
             // btnCerrarSesion
             // 
@@ -457,9 +458,9 @@
             this.btnCerrarSesion.IconColor = System.Drawing.Color.Black;
             this.btnCerrarSesion.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 645);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(15, 645);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(276, 55);
+            this.btnCerrarSesion.Size = new System.Drawing.Size(246, 55);
             this.btnCerrarSesion.TabIndex = 38;
             this.btnCerrarSesion.Tag = "     Cerrar Sesion";
             this.btnCerrarSesion.Text = "     Cerrar Sesion";

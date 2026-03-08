@@ -1289,42 +1289,126 @@ WHERE id = @id;", cn))
 
         }
 
-        
-        
 
-        
+
+
+
+        // Buscador de Órdenes de Trabajo - Rellena el txtBuscarOT y carga la información
         private void btnBuscadorOrdenTrabajo_Click(object sender, EventArgs e)
         {
-            // Asegurarse de que estamos en modo OT
             if (!rbDesdeOT.Checked)
             {
                 rbDesdeOT.Checked = true;
             }
 
-            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Productos);
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.OrdenesTrabajo);
 
             if (buscador.ShowDialog() == DialogResult.OK)
             {
                 DataRow fila = buscador.ResultadoSeleccionado;
 
-                long productoId = Convert.ToInt64(fila["id"]);
+                long ordenId = Convert.ToInt64(fila["id"]);
+                string placa = fila["placa"].ToString();
+                string cliente = fila["cliente"].ToString();
+                string estado = fila["estado"].ToString();
+
+                // Verificar que la OT esté en estado válido (Terminado/Entregado)
+                if (estado != "Terminado" && estado != "Entregado")
+                {
+                    MessageBox.Show($"La orden seleccionada está en estado '{estado}'. Solo se pueden facturar órdenes en estado 'Terminado' o 'Entregado'.",
+                        "Estado no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Verificar que la OT no esté ya facturada
+                if (ExisteFacturaParaOT(ordenId))
+                {
+                    MessageBox.Show("Esta OT ya tiene una factura generada.",
+                        "OT ya facturada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Asignar la orden seleccionada
+                ordenTrabajoId = ordenId;
+
+                // Rellenar el txtBuscarOT con la información de la orden
+                txtBuscarOT.Text = $"OT #{ordenId} - {placa} - {cliente}";
+
+                // Cargar el receptor desde la OT
+                CargarReceptorDesdeOT(ordenId);
+
+                // Preguntar si desea cargar los items
+                DialogResult cargarItems = MessageBox.Show("¿Desea cargar los items de esta orden ahora?",
+                    "Cargar items", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (cargarItems == DialogResult.Yes)
+                {
+                    CargarItemsOT();
+                }
+            }
+        }
+
+        // Buscador de Clientes - Rellena el txtBuscarCliente y carga la información
+        private void btnBuscadorClientes_Click(object sender, EventArgs e)
+        {
+            // Asegurar que estamos en modo Cliente Existente
+            if (!rbClienteExistente.Checked)
+            {
+                rbClienteExistente.Checked = true;
+            }
+
+            FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Clientes);
+
+            if (buscador.ShowDialog() == DialogResult.OK)
+            {
+                DataRow fila = buscador.ResultadoSeleccionado;
+
+                long clienteId = Convert.ToInt64(fila["id"]);
                 string nombre = fila["nombre"].ToString();
-                int cantidad = buscador.CantidadSeleccionada;
-                decimal precio = Convert.ToDecimal(fila["precio_pvp"]); // Precio SIN IVA o CON IVA?
 
-                
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    try
+                    {
+                        string sql = @"
+                    SELECT id, tipo_documento, numero_documento, nombre, direccion, telefono, email, contribuyente_especial
+                    FROM Clientes
+                    WHERE id = @id";
 
-                dtItems.Rows.Add(
-                    "Producto",
-                    nombre,
-                    cantidad,
-                    precio, // Este precio debería ser SIN IVA para calcular el IVA aparte
-                    cantidad * precio,
-                    productoId,
-                    DBNull.Value
-                );
+                        using (var cmd = new SqlCommand(sql, cn))
+                        {
+                            cmd.Parameters.AddWithValue("@id", clienteId);
+                            using (var dr = cmd.ExecuteReader())
+                            {
+                                if (dr.Read())
+                                {
+                                    // Asignar los valores
+                                    this.clienteId = clienteId;
+                                    snapTipoDoc = dr["tipo_documento"].ToString();
+                                    snapNumDoc = dr["numero_documento"].ToString();
+                                    snapNombre = dr["nombre"].ToString();
+                                    snapDireccion = dr["direccion"] == DBNull.Value ? "" : dr["direccion"].ToString();
+                                    snapTelefono = dr["telefono"] == DBNull.Value ? "" : dr["telefono"].ToString();
+                                    snapEmail = dr["email"] == DBNull.Value ? "" : dr["email"].ToString();
+                                    snapContribuyenteEspecial = dr["contribuyente_especial"] != DBNull.Value && Convert.ToBoolean(dr["contribuyente_especial"]);
 
-                RecalcularTotales();
+                                    // Rellenar el txtBuscarCliente
+                                    txtBuscarCliente.Text = snapNombre;
+
+                                    // Reflejar en los campos de texto
+                                    ReflejarSnapshotEnUI();
+
+                                    // Ocultar el ListBox de resultados
+                                    lstClientes.Visible = false;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error cargando datos del cliente:\n" + ex.Message);
+                    }
+                }
             }
         }
     }

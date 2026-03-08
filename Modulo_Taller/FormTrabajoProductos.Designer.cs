@@ -100,7 +100,7 @@
             this.tabControl3.Padding = new System.Windows.Forms.Padding(3);
             this.tabControl3.Size = new System.Drawing.Size(900, 555);
             this.tabControl3.TabIndex = 2;
-            this.tabControl3.Text = "Añadir Tareas";
+            this.tabControl3.Text = "Añadir Servicios";
             this.tabControl3.UseVisualStyleBackColor = true;
             // 
             // dgvServicios

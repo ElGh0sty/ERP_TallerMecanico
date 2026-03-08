@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace PROYECTOMECANICO.Modulo_Inicio
 
         private void FormInicio_Load(object sender, EventArgs e)
         {
-            InicializarCharts();
-            CargarDashboard();
+            InicializarCharts(); // Primero configurar charts
+            CargarDashboard();   // Luego cargar datos
 
-            _timer = new Timer { Interval = 60000 };
+            _timer = new Timer { Interval = 60000 }; // Actualizar cada minuto
             _timer.Tick += (s, ev) => CargarDashboard();
             _timer.Start();
         }
@@ -35,38 +36,30 @@ namespace PROYECTOMECANICO.Modulo_Inicio
             {
                 using (var cn = con.CrearConexionAbierta())
                 {
-                    //  KPIs 
+                    // KPIs 
                     lblClientesValor.Text = EjecutarScalarInt(cn, "SELECT COUNT(*) FROM Clientes;").ToString();
                     lblVehiculosValor.Text = EjecutarScalarInt(cn, "SELECT COUNT(*) FROM Vehiculos;").ToString();
 
-                    // Órdenes activas (no finalizadas)
-                    string[] estadosFinal = { "FINALIZADA", "FINALIZADO", "ENTREGADA", "ENTREGADO", "CERRADA", "CERRADO", "TERMINADA", "TERMINADO" };
-                    string inFinal = string.Join(",", estadosFinal.Select(s => $"'{s}'"));
-
-                    string sqlActivas = $@"
+                    // Órdenes activas (NO terminadas ni entregadas)
+                    string sqlActivas = @"
 SELECT COUNT(*)
 FROM OrdenesTrabajo
-WHERE ISNULL(UPPER(estado),'') NOT IN ({inFinal});";
+WHERE UPPER(estado) NOT IN ('TERMINADO', 'ENTREGADO')
+  AND UPPER(estado) NOT LIKE '%FINAL%'
+  AND UPPER(estado) NOT LIKE '%CERR%';";
 
                     lblOTActivasValor.Text = EjecutarScalarInt(cn, sqlActivas).ToString();
 
-                    // Órdenes terminadas hoy: desde historial
+                    // Órdenes terminadas HOY (usando la misma lógica)
                     DateTime ini = DateTime.Today;
                     DateTime fin = DateTime.Today.AddDays(1);
 
-                    string[] eventosFinal = { "FINALIZADA", "FINALIZADO", "ENTREGADA", "ENTREGADO", "CERRADA", "CERRADO", "TERMINADA", "TERMINADO", "OT_FINALIZADA" };
-                    string inEventos = string.Join(",", eventosFinal.Select(s => $"'{s}'"));
-
-                    string sqlHoy = $@"
-SELECT COUNT(DISTINCT orden_id)
-FROM OrdenesTrabajo_Historial
-WHERE fecha >= @ini AND fecha < @fin
-AND (
-    UPPER(tipo_evento) IN ({inEventos})
-    OR UPPER(titulo) LIKE '%FINAL%'
-    OR UPPER(titulo) LIKE '%ENTREG%'
-    OR UPPER(titulo) LIKE '%CERR%'
-);";
+                    string sqlHoy = @"
+SELECT COUNT(*)
+FROM OrdenesTrabajo
+WHERE fecha_ingreso >= @ini 
+  AND fecha_ingreso < @fin
+  AND UPPER(estado) IN ('TERMINADO', 'ENTREGADO');";
 
                     using (var cmd = new SqlCommand(sqlHoy, cn))
                     {
@@ -81,9 +74,9 @@ AND (
                     CargarPieEstadosOrdenes(cn);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // no crashear inicio
+                Console.WriteLine("Error en dashboard: " + ex.Message);
             }
         }
 
@@ -100,14 +93,24 @@ AND (
 
         private void InicializarCharts()
         {
-            // LINE
+            // Configurar Chart Line
             chartLine.Datasets.Clear();
-            chartLine.Legend.Display = false;
+            chartLine.Legend.Display = true;
+            chartLine.Legend.Position = Guna.Charts.WinForms.LegendPosition.Top;
             chartLine.Title.Text = "";
 
-            // PIE
+            // Configurar eje X
+            chartLine.XAxes.GridLines.Display = true;
+
+            // Configurar eje Y
+            chartLine.YAxes.GridLines.Display = true;
+            chartLine.YAxes.Ticks.BeginAtZero = true;
+        
+
+            // Configurar Chart Pie
             chartPie.Datasets.Clear();
             chartPie.Legend.Display = true;
+            chartPie.Legend.Position = Guna.Charts.WinForms.LegendPosition.Right;
             chartPie.Title.Text = "";
         }
 
@@ -117,56 +120,73 @@ AND (
 
             var ds = new GunaLineDataset
             {
-                Label = "Finalizadas"
+                Label = "Órdenes Finalizadas",
+                BorderWidth = 2,
+                PointRadius = 3,
             };
 
             DateTime desde = DateTime.Today.AddDays(-dias + 1);
             DateTime hasta = DateTime.Today.AddDays(1);
 
-            string[] eventosFinal = { "FINALIZADA", "FINALIZADO", "ENTREGADA", "ENTREGADO", "CERRADA", "CERRADO", "TERMINADA", "TERMINADO", "OT_FINALIZADA" };
-            string inEventos = string.Join(",", eventosFinal.Select(s => $"'{s}'"));
-
-            string sql = $@"
-SELECT CAST(fecha AS date) AS Dia, COUNT(DISTINCT orden_id) AS Cant
-FROM OrdenesTrabajo_Historial
-WHERE fecha >= @desde AND fecha < @hasta
-AND (
-    UPPER(tipo_evento) IN ({inEventos})
-    OR UPPER(titulo) LIKE '%FINAL%'
-    OR UPPER(titulo) LIKE '%ENTREG%'
-    OR UPPER(titulo) LIKE '%CERR%'
-)
-GROUP BY CAST(fecha AS date)
-ORDER BY CAST(fecha AS date);";
+            string sql = @"
+SELECT 
+    CAST(fecha_ingreso AS date) AS Dia, 
+    COUNT(*) AS Cant
+FROM OrdenesTrabajo
+WHERE fecha_ingreso >= @desde 
+  AND fecha_ingreso < @hasta
+  AND UPPER(estado) IN ('TERMINADO', 'ENTREGADO')
+GROUP BY CAST(fecha_ingreso AS date)
+ORDER BY CAST(fecha_ingreso AS date);";
 
             var dt = new DataTable();
             using (var cmd = new SqlCommand(sql, cn))
             {
                 cmd.Parameters.AddWithValue("@desde", desde);
                 cmd.Parameters.AddWithValue("@hasta", hasta);
-                new SqlDataAdapter(cmd).Fill(dt);
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
             }
 
-            // llenar días faltantes con 0
+            var datosPorDia = new Dictionary<DateTime, int>();
+            foreach (DataRow r in dt.Rows)
+            {
+                DateTime dia = Convert.ToDateTime(r["Dia"]).Date;
+                int cant = Convert.ToInt32(r["Cant"]);
+                datosPorDia[dia] = cant;
+            }
+
+            // Verificar si hay datos
+            bool hayDatos = false;
+
             for (int i = 0; i < dias; i++)
             {
-                var dia = desde.AddDays(i).Date;
+                DateTime diaActual = desde.AddDays(i).Date;
+                int cantidad = datosPorDia.ContainsKey(diaActual) ? datosPorDia[diaActual] : 0;
 
-                int cant = 0;
-                foreach (DataRow r in dt.Rows)
+                if (cantidad > 0) hayDatos = true;
+
+                ds.DataPoints.Add(new LPoint
                 {
-                    if (Convert.ToDateTime(r["Dia"]).Date == dia)
-                    {
-                        cant = Convert.ToInt32(r["Cant"]);
-                        break;
-                    }
-                }
-
-                ds.DataPoints.Add(new LPoint { Label = dia.ToString("dd/MM"), Y = cant });
+                    Label = diaActual.ToString("dd/MM"),
+                    Y = cantidad
+                });
             }
 
             chartLine.Datasets.Add(ds);
+
+            // Ajustar el eje Y para que muestre valores enteros
+
             chartLine.Update();
+
+            // Si no hay datos, mostrar un mensaje (opcional)
+            if (!hayDatos)
+            {
+                // Puedes agregar un label de "Sin datos" si lo deseas
+                Console.WriteLine("No hay órdenes terminadas/entregadas en los últimos 14 días");
+            }
         }
 
         private void CargarPieEstadosOrdenes(SqlConnection cn)

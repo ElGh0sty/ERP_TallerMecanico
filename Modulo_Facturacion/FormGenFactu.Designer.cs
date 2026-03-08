@@ -71,7 +71,7 @@
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnBuscadorOrdenTrabajo = new FontAwesome.Sharp.IconButton();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
+            this.btnBuscadorClientes = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.guna2Panel2.SuspendLayout();
             this.SuspendLayout();
@@ -554,17 +554,18 @@
             this.btnBuscadorOrdenTrabajo.UseVisualStyleBackColor = true;
             this.btnBuscadorOrdenTrabajo.Click += new System.EventHandler(this.btnBuscadorOrdenTrabajo_Click);
             // 
-            // iconButton1
+            // btnBuscadorClientes
             // 
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.iconButton1.IconColor = System.Drawing.Color.Black;
-            this.iconButton1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton1.IconSize = 30;
-            this.iconButton1.Location = new System.Drawing.Point(443, 288);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Size = new System.Drawing.Size(33, 33);
-            this.iconButton1.TabIndex = 40;
-            this.iconButton1.UseVisualStyleBackColor = true;
+            this.btnBuscadorClientes.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorClientes.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorClientes.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorClientes.IconSize = 30;
+            this.btnBuscadorClientes.Location = new System.Drawing.Point(443, 288);
+            this.btnBuscadorClientes.Name = "btnBuscadorClientes";
+            this.btnBuscadorClientes.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorClientes.TabIndex = 40;
+            this.btnBuscadorClientes.UseVisualStyleBackColor = true;
+            this.btnBuscadorClientes.Click += new System.EventHandler(this.btnBuscadorClientes_Click);
             // 
             // FormGenFactu
             // 
@@ -573,7 +574,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(896, 621);
-            this.Controls.Add(this.iconButton1);
+            this.Controls.Add(this.btnBuscadorClientes);
             this.Controls.Add(this.btnBuscadorOrdenTrabajo);
             this.Controls.Add(this.lstClientes);
             this.Controls.Add(this.txtNumDoc);
@@ -659,6 +660,6 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private FontAwesome.Sharp.IconButton btnBuscadorOrdenTrabajo;
-        private FontAwesome.Sharp.IconButton iconButton1;
+        private FontAwesome.Sharp.IconButton btnBuscadorClientes;
     }
 }

@@ -507,7 +507,24 @@ namespace PROYECTOMECANICO
 
         }
 
-        
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+            buttonof();
+            btnReportes.FillColor = Color.FromArgb(50, 100, 201);
+            btnReportes.FillColor2 = Color.FromArgb(255, 77, 165);
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Reportes.FormReportes(rolUsuario));
+
+        }
     }
 }
 

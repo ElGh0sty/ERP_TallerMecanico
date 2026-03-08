@@ -47,6 +47,8 @@
             Guna.Charts.WinForms.Tick tick3 = new Guna.Charts.WinForms.Tick();
             Guna.Charts.WinForms.ChartFont chartFont8 = new Guna.Charts.WinForms.ChartFont();
             this.panelFiltros = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnBuscadorCliente = new FontAwesome.Sharp.IconButton();
+            this.txtBuscarCliente = new Guna.UI2.WinForms.Guna2TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -55,7 +57,6 @@
             this.btnBuscar = new Guna.UI2.WinForms.Guna2Button();
             this.txtBuscar = new Guna.UI2.WinForms.Guna2TextBox();
             this.cbUsuario = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.cbCliente = new Guna.UI2.WinForms.Guna2ComboBox();
             this.dtpHasta = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.dtpDesde = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
@@ -87,6 +88,8 @@
             // 
             this.panelFiltros.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.panelFiltros.BorderRadius = 12;
+            this.panelFiltros.Controls.Add(this.btnBuscadorCliente);
+            this.panelFiltros.Controls.Add(this.txtBuscarCliente);
             this.panelFiltros.Controls.Add(this.label9);
             this.panelFiltros.Controls.Add(this.label6);
             this.panelFiltros.Controls.Add(this.label5);
@@ -95,7 +98,6 @@
             this.panelFiltros.Controls.Add(this.btnBuscar);
             this.panelFiltros.Controls.Add(this.txtBuscar);
             this.panelFiltros.Controls.Add(this.cbUsuario);
-            this.panelFiltros.Controls.Add(this.cbCliente);
             this.panelFiltros.Controls.Add(this.dtpHasta);
             this.panelFiltros.Controls.Add(this.dtpDesde);
             this.panelFiltros.Controls.Add(this.label7);
@@ -107,13 +109,46 @@
             this.panelFiltros.Size = new System.Drawing.Size(908, 153);
             this.panelFiltros.TabIndex = 1;
             // 
+            // btnBuscadorCliente
+            // 
+            this.btnBuscadorCliente.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorCliente.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorCliente.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorCliente.IconSize = 30;
+            this.btnBuscadorCliente.Location = new System.Drawing.Point(348, 35);
+            this.btnBuscadorCliente.Name = "btnBuscadorCliente";
+            this.btnBuscadorCliente.Size = new System.Drawing.Size(36, 39);
+            this.btnBuscadorCliente.TabIndex = 27;
+            this.btnBuscadorCliente.UseVisualStyleBackColor = true;
+            this.btnBuscadorCliente.Click += new System.EventHandler(this.btnBuscadorCliente_Click);
+            // 
+            // txtBuscarCliente
+            // 
+            this.txtBuscarCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.txtBuscarCliente.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtBuscarCliente.DefaultText = "";
+            this.txtBuscarCliente.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtBuscarCliente.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtBuscarCliente.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtBuscarCliente.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtBuscarCliente.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtBuscarCliente.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtBuscarCliente.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtBuscarCliente.Location = new System.Drawing.Point(176, 35);
+            this.txtBuscarCliente.Name = "txtBuscarCliente";
+            this.txtBuscarCliente.PasswordChar = '\0';
+            this.txtBuscarCliente.PlaceholderText = "";
+            this.txtBuscarCliente.SelectedText = "";
+            this.txtBuscarCliente.Size = new System.Drawing.Size(144, 39);
+            this.txtBuscarCliente.TabIndex = 13;
+            // 
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(372, 29);
+            this.label9.Location = new System.Drawing.Point(410, 29);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(100, 25);
             this.label9.TabIndex = 12;
@@ -183,7 +218,7 @@
             this.btnBuscar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
-            this.btnBuscar.Location = new System.Drawing.Point(599, 61);
+            this.btnBuscar.Location = new System.Drawing.Point(637, 61);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(98, 45);
             this.btnBuscar.TabIndex = 5;
@@ -201,7 +236,7 @@
             this.txtBuscar.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtBuscar.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtBuscar.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtBuscar.Location = new System.Drawing.Point(377, 67);
+            this.txtBuscar.Location = new System.Drawing.Point(415, 67);
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.PasswordChar = '\0';
             this.txtBuscar.PlaceholderText = "Secuencial / Clave / Autorización";
@@ -224,25 +259,12 @@
             this.cbUsuario.Size = new System.Drawing.Size(164, 36);
             this.cbUsuario.TabIndex = 3;
             // 
-            // cbCliente
-            // 
-            this.cbCliente.BackColor = System.Drawing.Color.Transparent;
-            this.cbCliente.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCliente.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbCliente.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbCliente.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbCliente.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cbCliente.ItemHeight = 30;
-            this.cbCliente.Location = new System.Drawing.Point(189, 29);
-            this.cbCliente.Name = "cbCliente";
-            this.cbCliente.Size = new System.Drawing.Size(164, 36);
-            this.cbCliente.TabIndex = 2;
-            // 
             // dtpHasta
             // 
             this.dtpHasta.Checked = true;
+            this.dtpHasta.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.dtpHasta.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpHasta.ForeColor = System.Drawing.Color.White;
             this.dtpHasta.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpHasta.Location = new System.Drawing.Point(30, 95);
             this.dtpHasta.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
@@ -255,7 +277,9 @@
             // dtpDesde
             // 
             this.dtpDesde.Checked = true;
+            this.dtpDesde.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.dtpDesde.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpDesde.ForeColor = System.Drawing.Color.White;
             this.dtpDesde.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpDesde.Location = new System.Drawing.Point(30, 40);
             this.dtpDesde.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
@@ -551,7 +575,6 @@
         private Guna.UI2.WinForms.Guna2Button btnBuscar;
         private Guna.UI2.WinForms.Guna2TextBox txtBuscar;
         private Guna.UI2.WinForms.Guna2ComboBox cbUsuario;
-        private Guna.UI2.WinForms.Guna2ComboBox cbCliente;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpHasta;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpDesde;
         private Guna.UI2.WinForms.Guna2Button btnExportar;
@@ -573,5 +596,7 @@
         private System.Windows.Forms.Label lblCantFacturas;
         private System.Windows.Forms.Label lblTotalDesc;
         private System.Windows.Forms.Label lblTotalVentas;
+        private Guna.UI2.WinForms.Guna2TextBox txtBuscarCliente;
+        private FontAwesome.Sharp.IconButton btnBuscadorCliente;
     }
 }
