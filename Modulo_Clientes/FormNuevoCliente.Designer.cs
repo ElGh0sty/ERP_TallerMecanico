@@ -36,12 +36,11 @@
             // dgvNuevo
             // 
             this.dgvNuevo.AllowUserToAddRows = false;
-            this.dgvNuevo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNuevo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNuevo.Location = new System.Drawing.Point(12, 12);
+            this.dgvNuevo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvNuevo.Location = new System.Drawing.Point(0, 145);
             this.dgvNuevo.Name = "dgvNuevo";
-            this.dgvNuevo.Size = new System.Drawing.Size(884, 387);
+            this.dgvNuevo.Size = new System.Drawing.Size(908, 458);
             this.dgvNuevo.TabIndex = 0;
             this.dgvNuevo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNuevo_CellContentClick);
             // 
@@ -53,9 +52,9 @@
             this.btnNuevoCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevoCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNuevoCliente.ForeColor = System.Drawing.Color.White;
-            this.btnNuevoCliente.Location = new System.Drawing.Point(721, 417);
+            this.btnNuevoCliente.Location = new System.Drawing.Point(694, 41);
             this.btnNuevoCliente.Name = "btnNuevoCliente";
-            this.btnNuevoCliente.Size = new System.Drawing.Size(175, 74);
+            this.btnNuevoCliente.Size = new System.Drawing.Size(175, 66);
             this.btnNuevoCliente.TabIndex = 2;
             this.btnNuevoCliente.Text = "Agregar Cliente";
             this.btnNuevoCliente.UseVisualStyleBackColor = false;

@@ -40,6 +40,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnGuardarVehiculo = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBuscadorCliente = new FontAwesome.Sharp.IconButton();
             this.txtBuscarCliente = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnBuscadorCliente = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -96,7 +96,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.label1.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(47, 27);
@@ -162,7 +162,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.panel1.Controls.Add(this.btnBuscadorCliente);
             this.panel1.Controls.Add(this.txtBuscarCliente);
             this.panel1.Controls.Add(this.label8);
@@ -175,6 +175,19 @@
             this.panel1.Size = new System.Drawing.Size(908, 164);
             this.panel1.TabIndex = 11;
             // 
+            // btnBuscadorCliente
+            // 
+            this.btnBuscadorCliente.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorCliente.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorCliente.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorCliente.IconSize = 30;
+            this.btnBuscadorCliente.Location = new System.Drawing.Point(274, 72);
+            this.btnBuscadorCliente.Name = "btnBuscadorCliente";
+            this.btnBuscadorCliente.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorCliente.TabIndex = 18;
+            this.btnBuscadorCliente.UseVisualStyleBackColor = true;
+            this.btnBuscadorCliente.Click += new System.EventHandler(this.btnBuscadorCliente_Click);
+            // 
             // txtBuscarCliente
             // 
             this.txtBuscarCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -186,7 +199,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.LightSlateGray;
+            this.label8.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.White;
             this.label8.Location = new System.Drawing.Point(625, 27);
@@ -198,7 +211,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.LightSlateGray;
+            this.label7.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Location = new System.Drawing.Point(332, 27);
@@ -299,19 +312,6 @@
             // errorProvider2
             // 
             this.errorProvider2.ContainerControl = this;
-            // 
-            // btnBuscadorCliente
-            // 
-            this.btnBuscadorCliente.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorCliente.IconColor = System.Drawing.Color.Black;
-            this.btnBuscadorCliente.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnBuscadorCliente.IconSize = 30;
-            this.btnBuscadorCliente.Location = new System.Drawing.Point(274, 72);
-            this.btnBuscadorCliente.Name = "btnBuscadorCliente";
-            this.btnBuscadorCliente.Size = new System.Drawing.Size(33, 33);
-            this.btnBuscadorCliente.TabIndex = 18;
-            this.btnBuscadorCliente.UseVisualStyleBackColor = true;
-            this.btnBuscadorCliente.Click += new System.EventHandler(this.btnBuscadorCliente_Click);
             // 
             // FormRegVehi
             // 

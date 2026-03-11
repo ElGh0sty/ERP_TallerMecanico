@@ -91,10 +91,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnMenu);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lblNombreTaller);
-            this.panel1.Controls.Add(this.btnMenu);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(15, 0);
             this.panel1.Name = "panel1";
@@ -413,9 +413,9 @@
             this.btnMenu.IconColor = System.Drawing.Color.White;
             this.btnMenu.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnMenu.IconSize = 35;
-            this.btnMenu.Location = new System.Drawing.Point(215, 1);
+            this.btnMenu.Location = new System.Drawing.Point(199, 0);
             this.btnMenu.Name = "btnMenu";
-            this.btnMenu.Size = new System.Drawing.Size(58, 60);
+            this.btnMenu.Size = new System.Drawing.Size(62, 60);
             this.btnMenu.TabIndex = 5;
             this.btnMenu.UseVisualStyleBackColor = false;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
