@@ -47,6 +47,7 @@
             this.lblProductoSel = new System.Windows.Forms.Label();
             this.nudMontoExtra = new System.Windows.Forms.NumericUpDown();
             this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidadExtra)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).BeginInit();
@@ -63,6 +64,8 @@
             // lblOrden
             // 
             this.lblOrden.AutoSize = true;
+            this.lblOrden.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblOrden.ForeColor = System.Drawing.Color.White;
             this.lblOrden.Location = new System.Drawing.Point(43, 26);
             this.lblOrden.Name = "lblOrden";
             this.lblOrden.Size = new System.Drawing.Size(39, 13);
@@ -159,6 +162,8 @@
             // lblPendientes
             // 
             this.lblPendientes.AutoSize = true;
+            this.lblPendientes.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblPendientes.ForeColor = System.Drawing.Color.White;
             this.lblPendientes.Location = new System.Drawing.Point(753, 34);
             this.lblPendientes.Name = "lblPendientes";
             this.lblPendientes.Size = new System.Drawing.Size(78, 13);
@@ -234,6 +239,14 @@
             this.btnBuscadorOrden.UseVisualStyleBackColor = true;
             this.btnBuscadorOrden.Click += new System.EventHandler(this.btnBuscadorOrden_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel1.Location = new System.Drawing.Point(-1, -5);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(911, 79);
+            this.panel1.TabIndex = 19;
+            // 
             // FormNovedades
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -258,6 +271,7 @@
             this.Controls.Add(this.dgvNovedades);
             this.Controls.Add(this.lblOrden);
             this.Controls.Add(this.cmbOrdenes);
+            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormNovedades";
             this.Text = "Novedades";
@@ -290,5 +304,6 @@
         private System.Windows.Forms.Label lblProductoSel;
         private System.Windows.Forms.NumericUpDown nudMontoExtra;
         private FontAwesome.Sharp.IconButton btnBuscadorOrden;
+        private System.Windows.Forms.Panel panel1;
     }
 }
