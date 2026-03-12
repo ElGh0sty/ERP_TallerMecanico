@@ -103,7 +103,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             // Botones
             EstiloBoton(btnGuardarCompra, Color.FromArgb(0, 123, 255));
-            EstiloBoton(btnAgregarItem, Color.DarkSlateBlue);
+            EstiloBoton(btnAgregarItem, Color.MediumSlateBlue);
             EstiloBoton(btnLimpiar, Color.FromArgb(60, 60, 60));
             EstiloBoton(btnNuevoProducto, Color.FromArgb(40, 167, 69));
 
@@ -114,10 +114,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lstProductos.IntegralHeight = false;
             lstProductos.ItemHeight = 22;
 
-            // Labels totales
-            lblSubtotal.ForeColor = Color.FromArgb(40, 40, 40);
-            lblIVA.ForeColor = Color.FromArgb(40, 40, 40);
-            lblTotal.ForeColor = Color.FromArgb(15, 15, 15);
+            
             lblTotal.Font = new GdiFont("Segoe UI", 11F, FontStyle.Bold);
         }
 
@@ -1344,7 +1341,20 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             catch { }
         }
 
+        private void lblTotal_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void lblIVA_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSubtotal_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

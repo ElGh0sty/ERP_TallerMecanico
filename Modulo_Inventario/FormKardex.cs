@@ -475,5 +475,10 @@ ORDER BY k.fecha DESC, k.id DESC;
         {
 
         }
+
+        private void lblTotal_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
