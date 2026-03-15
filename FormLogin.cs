@@ -1,6 +1,17 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
+using PROYECTOMECANICO.Seguridad;
+using System.Data.SqlClient;
 
 namespace PROYECTOMECANICO
 {
@@ -92,6 +103,17 @@ AND U.activo = 1";
                 EmpresaContext.EmpresaActualizada -= _empresaHandler;
 
             base.OnFormClosed(e);
+        }
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+            LogoEmpresa.RegistrarPictureBox(picMiLogo);
+
+            // También puedes acceder al logo directamente si lo necesitas
+            if (LogoEmpresa.LogoActual != null)
+            {
+                picMiLogo.Image = (Image)LogoEmpresa.LogoActual.Clone();
+            }
         }
     }
 }

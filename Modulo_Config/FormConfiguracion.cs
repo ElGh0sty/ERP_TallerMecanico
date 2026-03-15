@@ -1,14 +1,15 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace PROYECTOMECANICO
@@ -50,6 +51,8 @@ namespace PROYECTOMECANICO
 
             // Empresa
             btnEmpGuardar.Click += (s, e) => Emp_Guardar();
+            btnSeleccionarImagen.Click += (s, e) => btnSeleccionarImagen_Click(s, e);
+            btnEliminarImagen.Click += (s, e) => btnEliminarImagen_Click(s, e);
 
             // Secuenciales
             btnSecBuscar.Click += (s, e) => Sec_Cargar();
@@ -60,6 +63,7 @@ namespace PROYECTOMECANICO
             dgvSecuenciales.CellClick += Sec_GridClick;
 
             CargarEmpresaEnLabel();
+            CargarImagenEmpresa();
 
 
         }
@@ -449,76 +453,81 @@ ORDER BY id DESC;";
 
         // EMPRESA
 
-        private void CargarEmpresaEnLabel()
+        // Variable para almacenar la imagen temporalmente
+        private byte[] _imagenEmpresaBytes = null;
+
+        
+
+        // Método para cargar la imagen de la empresa
+        private void CargarImagenEmpresa()
         {
             try
             {
                 using (var cn = con.CrearConexionAbierta())
-                using (var cmd = new SqlCommand(
-                    "SELECT TOP 1 nombre, ruc, direccion, telefono, email FROM Empresa WHERE id = 1;", cn))
-                using (var rd = cmd.ExecuteReader())
+                using (var cmd = new SqlCommand("SELECT TOP 1 logo FROM Empresa WHERE id = 1;", cn))
                 {
-                    if (!rd.Read())
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
                     {
-                        lblEmpInfo.Text = "Empresa no configurada.";
-                        return;
-                    }
-
-                    string nombre = rd["nombre"]?.ToString() ?? "";
-                    string ruc = rd["ruc"]?.ToString() ?? "";
-                    string dir = rd["direccion"]?.ToString() ?? "";
-                    string tel = rd["telefono"]?.ToString() ?? "";
-                    string mail = rd["email"]?.ToString() ?? "";
-
-                    lblEmpInfo.Text =
-                        $"{nombre}\n" +
-                        $"RUC: {ruc} | Tel: {tel}\n" +
-                        $"{dir}\n" +
-                        $"{mail}";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblEmpInfo.Text = "No se pudo cargar la empresa.";
-                MessageBox.Show("Error cargando Empresa: " + ex.Message, "Empresa",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void Emp_Cargar()
-        {
-            try
-            {
-                using (var cn = con.CrearConexionAbierta())
-                using (var cmd = new SqlCommand("SELECT TOP 1 id,nombre,ruc,direccion,telefono,email FROM Empresa ORDER BY id;", cn))
-                using (var rd = cmd.ExecuteReader())
-                {
-                    if (rd.Read())
-                    {
-                        txtEmpNombre.Text = rd["nombre"]?.ToString() ?? "";
-                        txtEmpRuc.Text = rd["ruc"]?.ToString() ?? "";
-                        txtEmpDireccion.Text = rd["direccion"]?.ToString() ?? "";
-                        txtEmpTelefono.Text = rd["telefono"]?.ToString() ?? "";
-                        txtEmpEmail.Text = rd["email"]?.ToString() ?? "";
+                        _imagenEmpresaBytes = (byte[])result;
+                        using (MemoryStream ms = new MemoryStream(_imagenEmpresaBytes))
+                        {
+                            picEmpresa.Image = Image.FromStream(ms);
+                        }
                     }
                     else
                     {
-                        // vacío -> deja campos en blanco
-                        txtEmpNombre.Text = "";
-                        txtEmpRuc.Text = "";
-                        txtEmpDireccion.Text = "";
-                        txtEmpTelefono.Text = "";
-                        txtEmpEmail.Text = "";
+                        // Imagen por defecto (puedes poner una imagen predeterminada)
+                        picEmpresa.Image = null;
+                        picEmpresa.BackColor = Color.LightGray;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar empresa:\n" + ex.Message, "Empresa",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar la imagen: " + ex.Message);
             }
         }
 
+        // Evento para seleccionar imagen
+        private void btnSeleccionarImagen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+                ofd.Title = "Seleccionar logo de la empresa";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Cargar la imagen en el PictureBox
+                        picEmpresa.Image = Image.FromFile(ofd.FileName);
+
+                        // Convertir la imagen a bytes para guardar
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            picEmpresa.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            _imagenEmpresaBytes = ms.ToArray();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al cargar la imagen: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        // Evento para eliminar imagen
+        private void btnEliminarImagen_Click(object sender, EventArgs e)
+        {
+            picEmpresa.Image = null;
+            picEmpresa.BackColor = Color.LightGray;
+            _imagenEmpresaBytes = null;
+        }
+
+        // Modificar el método Emp_Guardar() para incluir la imagen
         private void Emp_Guardar()
         {
             try
@@ -538,15 +547,15 @@ ORDER BY id DESC;";
 
                 using (var cn = con.CrearConexionAbierta())
                 {
-                    // existe fila?
+                    // Verificar si existe la empresa
                     int existe;
                     using (var chk = new SqlCommand("SELECT COUNT(*) FROM Empresa;", cn))
                         existe = Convert.ToInt32(chk.ExecuteScalar());
 
                     if (existe == 0)
                     {
-                        string ins = @"INSERT INTO Empresa(id,nombre,ruc,direccion,telefono,email)
-VALUES(1,@n,@r,@d,@t,@e);";
+                        string ins = @"INSERT INTO Empresa(id, nombre, ruc, direccion, telefono, email, logo)
+                               VALUES(1, @n, @r, @d, @t, @e, @logo);";
                         using (var cmd = new SqlCommand(ins, cn))
                         {
                             cmd.Parameters.AddWithValue("@n", nombre);
@@ -554,15 +563,20 @@ VALUES(1,@n,@r,@d,@t,@e);";
                             cmd.Parameters.AddWithValue("@d", (object)dir ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@t", (object)tel ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@e", (object)email ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@logo", (object)_imagenEmpresaBytes ?? DBNull.Value);
                             cmd.ExecuteNonQuery();
                         }
                     }
                     else
                     {
-                        // actualiza la primera fila
                         string upd = @"
-UPDATE Empresa
-SET nombre=@n, ruc=@r, direccion=@d, telefono=@t, email=@e
+UPDATE Empresa 
+SET nombre = @n, 
+    ruc = @r, 
+    direccion = @d, 
+    telefono = @t, 
+    email = @e,
+    logo = @logo
 WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
 
                         using (var cmd = new SqlCommand(upd, cn))
@@ -572,20 +586,117 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                             cmd.Parameters.AddWithValue("@d", string.IsNullOrWhiteSpace(dir) ? (object)DBNull.Value : dir);
                             cmd.Parameters.AddWithValue("@t", string.IsNullOrWhiteSpace(tel) ? (object)DBNull.Value : tel);
                             cmd.Parameters.AddWithValue("@e", string.IsNullOrWhiteSpace(email) ? (object)DBNull.Value : email);
+                            cmd.Parameters.AddWithValue("@logo", (object)_imagenEmpresaBytes ?? DBNull.Value);
                             cmd.ExecuteNonQuery();
                         }
                     }
                 }
 
+                // Actualizar el logo en toda la aplicación
+                LogoEmpresa.ActualizarLogo(_imagenEmpresaBytes);
+
                 MessageBox.Show("Empresa actualizada.", "Empresa",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Emp_Cargar();
                 CargarEmpresaEnLabel();
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al guardar empresa:\n" + ex.Message, "Empresa",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Modificar Emp_Cargar() para cargar también la imagen
+        private void Emp_Cargar()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT TOP 1 id, nombre, ruc, direccion, telefono, email, logo FROM Empresa ORDER BY id;", cn))
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (rd.Read())
+                    {
+                        txtEmpNombre.Text = rd["nombre"]?.ToString() ?? "";
+                        txtEmpRuc.Text = rd["ruc"]?.ToString() ?? "";
+                        txtEmpDireccion.Text = rd["direccion"]?.ToString() ?? "";
+                        txtEmpTelefono.Text = rd["telefono"]?.ToString() ?? "";
+                        txtEmpEmail.Text = rd["email"]?.ToString() ?? "";
+
+                        // Cargar la imagen si existe
+                        if (rd["logo"] != DBNull.Value)
+                        {
+                            _imagenEmpresaBytes = (byte[])rd["logo"];
+                            using (MemoryStream ms = new MemoryStream(_imagenEmpresaBytes))
+                            {
+                                picEmpresa.Image = Image.FromStream(ms);
+                            }
+                        }
+                        else
+                        {
+                            picEmpresa.Image = null;
+                            picEmpresa.BackColor = Color.LightGray;
+                            _imagenEmpresaBytes = null;
+                        }
+                    }
+                    else
+                    {
+                        // Vacío -> campos en blanco
+                        txtEmpNombre.Text = "";
+                        txtEmpRuc.Text = "";
+                        txtEmpDireccion.Text = "";
+                        txtEmpTelefono.Text = "";
+                        txtEmpEmail.Text = "";
+                        picEmpresa.Image = null;
+                        picEmpresa.BackColor = Color.LightGray;
+                        _imagenEmpresaBytes = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar empresa:\n" + ex.Message, "Empresa",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Modificar CargarEmpresaEnLabel() para mostrar también que hay logo
+        private void CargarEmpresaEnLabel()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand(
+                    "SELECT TOP 1 nombre, ruc, direccion, telefono, email, " +
+                    "CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END AS tiene_logo FROM Empresa WHERE id = 1;", cn))
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read())
+                    {
+                        lblEmpInfo.Text = "Empresa no configurada.";
+                        return;
+                    }
+
+                    string nombre = rd["nombre"]?.ToString() ?? "";
+                    string ruc = rd["ruc"]?.ToString() ?? "";
+                    string dir = rd["direccion"]?.ToString() ?? "";
+                    string tel = rd["telefono"]?.ToString() ?? "";
+                    string mail = rd["email"]?.ToString() ?? "";
+
+
+                    lblEmpInfo.Text =
+                        $"{nombre}\n" +
+                        $"RUC: {ruc} | Tel: {tel}\n" +
+                        $"{dir}\n" +
+                        $"{mail}\n";
+                       
+                }
+            }
+            catch (Exception ex)
+            {
+                lblEmpInfo.Text = "No se pudo cargar la empresa.";
+                MessageBox.Show("Error cargando Empresa: " + ex.Message, "Empresa",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -779,5 +890,7 @@ AND (@id=0 OR id<>@id);";
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        
     }
 }

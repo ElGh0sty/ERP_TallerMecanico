@@ -204,6 +204,28 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             ActualizarBotonesItems();
         }
 
+        // Método auxiliar para obtener el logo de la empresa
+        private byte[] ObtenerLogoEmpresa()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT TOP 1 logo FROM Empresa WHERE id = 1", cn))
+                {
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (byte[])result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si hay error, simplemente no mostramos logo
+                Console.WriteLine("Error al obtener logo: " + ex.Message);
+            }
+            return null;
+        }
         private void ActualizarBotonesItems()
         {
             bool enVentaDirecta = !modoDesdeOT;
@@ -1109,6 +1131,7 @@ WHERE id = @id;", cn))
             TomarSnapshotDesdeUI();
 
             var emp = ObtenerEmpresa();
+            byte[] logoBytes = ObtenerLogoEmpresa();
 
             string secTmp = string.IsNullOrWhiteSpace(secuencialGenerado) ? "000000001" : secuencialGenerado;
             string numeroFactura = $"001-001-{secTmp}";
@@ -1134,21 +1157,48 @@ WHERE id = @id;", cn))
                 var fontSub = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
                 var font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
 
-                // Encabezado empresa + factura 
-                PdfPTable head = new PdfPTable(2);
+                // ===== ENCABEZADO CON LOGO =====
+                PdfPTable head = new PdfPTable(logoBytes != null ? 3 : 2);
                 head.WidthPercentage = 100;
-                head.SetWidths(new float[] { 65, 35 });
+                if (logoBytes != null)
+                    head.SetWidths(new float[] { 20, 45, 35 });
+                else
+                    head.SetWidths(new float[] { 65, 35 });
 
+                // Celda del Logo (si existe)
+                if (logoBytes != null)
+                {
+                    var cellLogo = new PdfPCell();
+                    cellLogo.Border = Rectangle.BOX;
+                    cellLogo.Padding = 5;
+                    cellLogo.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cellLogo.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    try
+                    {
+                        iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoBytes);
+                        logo.ScaleToFit(80, 80);
+                        cellLogo.AddElement(logo);
+                    }
+                    catch
+                    {
+                        cellLogo.AddElement(new Paragraph("Logo no disponible", font));
+                    }
+                    head.AddCell(cellLogo);
+                }
+
+                // Celda Empresa
                 var cellEmp = new PdfPCell();
                 cellEmp.Border = Rectangle.BOX;
                 cellEmp.Padding = 8;
-                cellEmp.AddElement(new Paragraph(emp.nombre, fontSub));
+                cellEmp.AddElement(new Paragraph(emp.nombre?.ToUpper() ?? "EMPRESA", fontSub));
                 if (!string.IsNullOrWhiteSpace(emp.ruc)) cellEmp.AddElement(new Paragraph($"RUC: {emp.ruc}", font));
                 if (!string.IsNullOrWhiteSpace(emp.direccion)) cellEmp.AddElement(new Paragraph($"Dirección: {emp.direccion}", font));
                 if (!string.IsNullOrWhiteSpace(emp.telefono)) cellEmp.AddElement(new Paragraph($"Tel: {emp.telefono}", font));
                 if (!string.IsNullOrWhiteSpace(emp.email)) cellEmp.AddElement(new Paragraph($"Email: {emp.email}", font));
                 head.AddCell(cellEmp);
 
+                // Celda Factura
                 var cellFac = new PdfPCell();
                 cellFac.Border = Rectangle.BOX;
                 cellFac.Padding = 8;

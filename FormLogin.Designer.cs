@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picMiLogo = new System.Windows.Forms.PictureBox();
             this.lblNombreTaller = new System.Windows.Forms.Label();
             this.btnIniciarSesion = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -42,7 +42,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMiLogo)).BeginInit();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -50,7 +50,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.pictureBox2);
+            this.panel1.Controls.Add(this.picMiLogo);
             this.panel1.Controls.Add(this.lblNombreTaller);
             this.panel1.Controls.Add(this.btnIniciarSesion);
             this.panel1.Controls.Add(this.panel3);
@@ -61,16 +61,16 @@
             this.panel1.Size = new System.Drawing.Size(375, 489);
             this.panel1.TabIndex = 0;
             // 
-            // pictureBox2
+            // picMiLogo
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::PROYECTOMECANICO.Properties.Resources.unnamed__1_;
-            this.pictureBox2.Location = new System.Drawing.Point(33, 51);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 7;
-            this.pictureBox2.TabStop = false;
+            this.picMiLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picMiLogo.Image = global::PROYECTOMECANICO.Properties.Resources.unnamed__1_;
+            this.picMiLogo.Location = new System.Drawing.Point(33, 51);
+            this.picMiLogo.Name = "picMiLogo";
+            this.picMiLogo.Size = new System.Drawing.Size(50, 50);
+            this.picMiLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMiLogo.TabIndex = 7;
+            this.picMiLogo.TabStop = false;
             // 
             // lblNombreTaller
             // 
@@ -197,9 +197,10 @@
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Taller Mecanico";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMiLogo)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -213,7 +214,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox picMiLogo;
         private System.Windows.Forms.Label lblNombreTaller;
         private System.Windows.Forms.Button btnIniciarSesion;
         private System.Windows.Forms.Panel panel3;

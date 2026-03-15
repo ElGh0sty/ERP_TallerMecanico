@@ -118,6 +118,29 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lblTotal.Font = new GdiFont("Segoe UI", 11F, FontStyle.Bold);
         }
 
+        // Método auxiliar para obtener el logo de la empresa
+        private byte[] ObtenerLogoEmpresa()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT TOP 1 logo FROM Empresa WHERE id = 1", cn))
+                {
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (byte[])result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si hay error, simplemente no mostramos logo
+                Console.WriteLine("Error al obtener logo: " + ex.Message);
+            }
+            return null;
+        }
+
         private void EstiloBoton(Button btn, Color color)
         {
             if (btn == null) return;
@@ -1021,6 +1044,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             // Obtener datos de la empresa
             var empresa = ObtenerEmpresa();
+            byte[] logoBytes = ObtenerLogoEmpresa();
 
             // Obtener datos del proveedor seleccionado
             long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
@@ -1062,10 +1086,35 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 var fontSmall = FontFactory.GetFont(FontFactory.HELVETICA, 8);
                 var fontNote = FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 8, BaseColor.GRAY);
 
-                //  ENCABEZADO 
-                PdfPTable head = new PdfPTable(2);
+                // ===== ENCABEZADO CON LOGO =====
+                PdfPTable head = new PdfPTable(logoBytes != null ? 3 : 2);
                 head.WidthPercentage = 100;
-                head.SetWidths(new float[] { 65, 35 });
+                if (logoBytes != null)
+                    head.SetWidths(new float[] { 20, 45, 35 });
+                else
+                    head.SetWidths(new float[] { 65, 35 });
+
+                // Celda del Logo (si existe)
+                if (logoBytes != null)
+                {
+                    var cellLogo = new PdfPCell();
+                    cellLogo.Border = PdfRectangle.BOX;
+                    cellLogo.Padding = 5;
+                    cellLogo.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cellLogo.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    try
+                    {
+                        iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoBytes);
+                        logo.ScaleToFit(80, 80);
+                        cellLogo.AddElement(logo);
+                    }
+                    catch
+                    {
+                        cellLogo.AddElement(new Paragraph("Logo no disponible", font));
+                    }
+                    head.AddCell(cellLogo);
+                }
 
                 // Celda Empresa
                 var cellEmp = new PdfPCell();

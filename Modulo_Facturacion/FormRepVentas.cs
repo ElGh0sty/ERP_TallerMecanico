@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
-using System.IO;
+using System.Drawing.Printing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Guna.Charts.WinForms;
-using PROYECTOMECANICO;
+using PROYECTOMECANICO.Modulo_Clientes;
+using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.Drawing;
 // Alias para resolver ambigüedades
 using GdiPen = System.Drawing.Pen;
 using GdiFont = System.Drawing.Font;
@@ -38,6 +39,46 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnExportar.Click += (s, e) => PrevisualizarPDF();
             dtpHasta.ValueChanged += (s, e) => AjustarDesdeAlMesDeHasta();
             dgvVentas.CellDoubleClick += dgvVentas_CellDoubleClick;
+        }
+
+        private byte[] ObtenerLogoEmpresa()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT TOP 1 logo FROM Empresa WHERE id = 1", cn))
+                {
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (byte[])result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si hay error, simplemente no mostramos logo
+                Console.WriteLine("Error al obtener logo: " + ex.Message);
+            }
+            return null;
+        }
+
+        private (string nombre, string ruc, string direccion, string telefono, string email) ObtenerEmpresa()
+        {
+            using (var cn = con.CrearConexionAbierta())
+            using (var cmd = new SqlCommand("SELECT TOP 1 nombre,ruc,direccion,telefono,email FROM Empresa WHERE id=1;", cn))
+            using (var rd = cmd.ExecuteReader())
+            {
+                if (!rd.Read()) return ("EMPRESA NO CONFIGURADA", "", "", "", "");
+
+                return (
+                    rd["nombre"]?.ToString() ?? "",
+                    rd["ruc"]?.ToString() ?? "",
+                    rd["direccion"]?.ToString() ?? "",
+                    rd["telefono"]?.ToString() ?? "",
+                    rd["email"]?.ToString() ?? ""
+                );
+            }
         }
 
         private void AjustarDesdeAlMesActual()
@@ -270,9 +311,9 @@ WHERE
                                 decimal totalDesc = rd["TotalDesc"] == DBNull.Value ? 0 : Convert.ToDecimal(rd["TotalDesc"]);
 
                                 lblCantFacturas.Text = cant.ToString();
-                                lblTotalVentas.Text = totalVentas.ToString("C2", CultureInfo.GetCultureInfo("es-EC"));
-                                lblTotalIVA.Text = totalIva.ToString("C2", CultureInfo.GetCultureInfo("es-EC"));
-                                lblTotalDesc.Text = totalDesc.ToString("C2", CultureInfo.GetCultureInfo("es-EC"));
+                                lblTotalVentas.Text = totalVentas.ToString("C2");
+                                lblTotalIVA.Text = totalIva.ToString("C2");
+                                lblTotalDesc.Text = totalDesc.ToString("C2");
                             }
                         }
                     }
@@ -425,11 +466,65 @@ ORDER BY YEAR(f.fecha), DATEPART(week, f.fecha);";
             var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
             var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 9);
 
-            // Título
-            Paragraph titulo = new Paragraph("REPORTE DE VENTAS", titleFont);
-            titulo.Alignment = Element.ALIGN_CENTER;
-            titulo.SpacingAfter = 10;
-            doc.Add(titulo);
+            // Obtener datos de la empresa y logo
+            var empresa = ObtenerEmpresa();
+            byte[] logoBytes = ObtenerLogoEmpresa();
+
+            // ===== ENCABEZADO CON LOGO =====
+            PdfPTable head = new PdfPTable(logoBytes != null ? 3 : 2);
+            head.WidthPercentage = 100;
+            if (logoBytes != null)
+                head.SetWidths(new float[] { 20, 50, 30 }); // Logo | Info Empresa | Título
+            else
+                head.SetWidths(new float[] { 70, 30 }); // Info Empresa | Título
+
+            // Celda del Logo (si existe)
+            if (logoBytes != null)
+            {
+                var cellLogo = new PdfPCell();
+                cellLogo.Border = Rectangle.NO_BORDER;
+                cellLogo.Padding = 5;
+                cellLogo.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cellLogo.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                try
+                {
+                    iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoBytes);
+                    logo.ScaleToFit(80, 80);
+                    cellLogo.AddElement(logo);
+                }
+                catch
+                {
+                    cellLogo.AddElement(new Paragraph("Logo no disponible", bodyFont));
+                }
+                head.AddCell(cellLogo);
+            }
+
+            // Celda Información de la Empresa
+            var cellEmpresa = new PdfPCell();
+            cellEmpresa.Border = Rectangle.NO_BORDER;
+            cellEmpresa.Padding = 5;
+            cellEmpresa.AddElement(new Paragraph(empresa.nombre?.ToUpper() ?? "EMPRESA", headerFont));
+            if (!string.IsNullOrWhiteSpace(empresa.ruc))
+                cellEmpresa.AddElement(new Paragraph($"RUC: {empresa.ruc}", bodyFont));
+            if (!string.IsNullOrWhiteSpace(empresa.direccion))
+                cellEmpresa.AddElement(new Paragraph(empresa.direccion, bodyFont));
+            if (!string.IsNullOrWhiteSpace(empresa.telefono))
+                cellEmpresa.AddElement(new Paragraph($"Tel: {empresa.telefono}", bodyFont));
+            if (!string.IsNullOrWhiteSpace(empresa.email))
+                cellEmpresa.AddElement(new Paragraph(empresa.email, bodyFont));
+            head.AddCell(cellEmpresa);
+
+            // Celda Título del Reporte
+            var cellTitulo = new PdfPCell();
+            cellTitulo.Border = Rectangle.NO_BORDER;
+            cellTitulo.Padding = 5;
+            cellTitulo.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cellTitulo.AddElement(new Paragraph("REPORTE DE\nVENTAS", titleFont) { Alignment = Element.ALIGN_RIGHT });
+            head.AddCell(cellTitulo);
+
+            doc.Add(head);
+            doc.Add(new Paragraph(" "));
 
             // Rango de fechas y filtros
             string filtros = $"Desde: {dtpDesde.Value:dd/MM/yyyy} - Hasta: {dtpHasta.Value:dd/MM/yyyy}";
@@ -547,7 +642,7 @@ ORDER BY MIN(f.fecha);";
                     decimal total = Convert.ToDecimal(row["Total"]);
 
                     dataTable.AddCell(new PdfPCell(new Phrase(semana, bodyFont)) { Padding = 4 });
-                    dataTable.AddCell(new PdfPCell(new Phrase(total.ToString("C2", CultureInfo.GetCultureInfo("es-EC")), bodyFont)) { Padding = 4, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    dataTable.AddCell(new PdfPCell(new Phrase(total.ToString("C2"), bodyFont)) { Padding = 4, HorizontalAlignment = Element.ALIGN_RIGHT });
                 }
 
                 doc.Add(dataTable);
@@ -708,7 +803,7 @@ ORDER BY MIN(f.fecha);";
 
                             // Etiquetas del eje Y
                             double valor = maxValor * (1 - (double)i / numLineas);
-                            string etiqueta = valor.ToString("C0", CultureInfo.GetCultureInfo("es-EC"));
+                            string etiqueta = valor.ToString("C0");
                             g.DrawString(etiqueta, new GdiFont("Arial", 8),
                                 System.Drawing.Brushes.Gray, marginLeft - 50, y - 6);
                         }
@@ -757,7 +852,7 @@ ORDER BY MIN(f.fecha);";
                             for (int i = 0; i < numPuntos; i++)
                             {
                                 double valor = Convert.ToDouble(dtGrafico.Rows[i]["Total"]);
-                                string valorStr = valor.ToString("C0", CultureInfo.GetCultureInfo("es-EC"));
+                                string valorStr = valor.ToString("C0");
                                 g.DrawString(valorStr, valorFont, System.Drawing.Brushes.Black,
                                     puntos[i].X - 20, puntos[i].Y - 20);
                             }
@@ -777,7 +872,7 @@ ORDER BY MIN(f.fecha);";
                             g.DrawEllipse(whitePen, x - 8, y - 8, 16, 16);
                         }
 
-                        string valorStr = valor.ToString("C0", CultureInfo.GetCultureInfo("es-EC"));
+                        string valorStr = valor.ToString("C0");
                         g.DrawString(valorStr, new GdiFont("Arial", 10, System.Drawing.FontStyle.Bold),
                             System.Drawing.Brushes.Black, x - 20, y - 30);
                     }

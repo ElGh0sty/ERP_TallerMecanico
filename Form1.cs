@@ -297,7 +297,13 @@ namespace PROYECTOMECANICO
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            LogoEmpresa.RegistrarPictureBox(picMiLogo);
 
+            // También puedes acceder al logo directamente si lo necesitas
+            if (LogoEmpresa.LogoActual != null)
+            {
+                picMiLogo.Image = (Image)LogoEmpresa.LogoActual.Clone();
+            }
         }
 
         private void panel6_Paint(object sender, PaintEventArgs e)
@@ -391,7 +397,7 @@ namespace PROYECTOMECANICO
                 panel4.Visible = false;
                 lblNombreTaller.Visible = false;
                 label2.Visible = false;
-                pictureBox1.Visible = false;
+                picMiLogo.Visible = false;
 
                 btnMenu.Dock = DockStyle.Top;
 
@@ -415,7 +421,7 @@ namespace PROYECTOMECANICO
                 panel4.Visible = true;
                 lblNombreTaller.Visible = true;
                 label2.Visible = true;
-                pictureBox1.Visible = true;
+                picMiLogo.Visible = true;
 
                 btnMenu.Dock = DockStyle.None;
 
