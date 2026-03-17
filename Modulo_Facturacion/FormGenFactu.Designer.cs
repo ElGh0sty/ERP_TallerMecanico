@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.rbDesdeOT = new System.Windows.Forms.RadioButton();
             this.rbVentaDirecta = new System.Windows.Forms.RadioButton();
             this.txtBuscarOT = new System.Windows.Forms.TextBox();
@@ -56,7 +56,6 @@
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnGenerarFactura = new System.Windows.Forms.Button();
             this.btnVistaPrevia = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -80,7 +79,7 @@
             // 
             this.rbDesdeOT.AutoSize = true;
             this.rbDesdeOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbDesdeOT.Location = new System.Drawing.Point(23, 60);
+            this.rbDesdeOT.Location = new System.Drawing.Point(20, 32);
             this.rbDesdeOT.Name = "rbDesdeOT";
             this.rbDesdeOT.Size = new System.Drawing.Size(99, 25);
             this.rbDesdeOT.TabIndex = 0;
@@ -92,7 +91,7 @@
             // 
             this.rbVentaDirecta.AutoSize = true;
             this.rbVentaDirecta.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbVentaDirecta.Location = new System.Drawing.Point(138, 60);
+            this.rbVentaDirecta.Location = new System.Drawing.Point(135, 32);
             this.rbVentaDirecta.Name = "rbVentaDirecta";
             this.rbVentaDirecta.Size = new System.Drawing.Size(124, 25);
             this.rbVentaDirecta.TabIndex = 1;
@@ -103,7 +102,7 @@
             // txtBuscarOT
             // 
             this.txtBuscarOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarOT.Location = new System.Drawing.Point(21, 112);
+            this.txtBuscarOT.Location = new System.Drawing.Point(12, 99);
             this.txtBuscarOT.Name = "txtBuscarOT";
             this.txtBuscarOT.Size = new System.Drawing.Size(300, 29);
             this.txtBuscarOT.TabIndex = 2;
@@ -113,7 +112,7 @@
             this.lstOTResultados.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstOTResultados.FormattingEnabled = true;
             this.lstOTResultados.ItemHeight = 21;
-            this.lstOTResultados.Location = new System.Drawing.Point(20, 140);
+            this.lstOTResultados.Location = new System.Drawing.Point(12, 127);
             this.lstOTResultados.Name = "lstOTResultados";
             this.lstOTResultados.Size = new System.Drawing.Size(300, 88);
             this.lstOTResultados.TabIndex = 3;
@@ -121,7 +120,7 @@
             // btnCargarItemsOT
             // 
             this.btnCargarItemsOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCargarItemsOT.Location = new System.Drawing.Point(365, 112);
+            this.btnCargarItemsOT.Location = new System.Drawing.Point(318, 129);
             this.btnCargarItemsOT.Name = "btnCargarItemsOT";
             this.btnCargarItemsOT.Size = new System.Drawing.Size(111, 29);
             this.btnCargarItemsOT.TabIndex = 4;
@@ -132,7 +131,7 @@
             // 
             this.rbClienteExistente.AutoSize = true;
             this.rbClienteExistente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbClienteExistente.Location = new System.Drawing.Point(20, 253);
+            this.rbClienteExistente.Location = new System.Drawing.Point(430, 32);
             this.rbClienteExistente.Name = "rbClienteExistente";
             this.rbClienteExistente.Size = new System.Drawing.Size(149, 25);
             this.rbClienteExistente.TabIndex = 5;
@@ -144,7 +143,7 @@
             // 
             this.rbNuevoCliente.AutoSize = true;
             this.rbNuevoCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbNuevoCliente.Location = new System.Drawing.Point(175, 253);
+            this.rbNuevoCliente.Location = new System.Drawing.Point(585, 32);
             this.rbNuevoCliente.Name = "rbNuevoCliente";
             this.rbNuevoCliente.Size = new System.Drawing.Size(131, 25);
             this.rbNuevoCliente.TabIndex = 6;
@@ -156,7 +155,7 @@
             // 
             this.rbConsumidorFinal.AutoSize = true;
             this.rbConsumidorFinal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbConsumidorFinal.Location = new System.Drawing.Point(312, 253);
+            this.rbConsumidorFinal.Location = new System.Drawing.Point(722, 32);
             this.rbConsumidorFinal.Name = "rbConsumidorFinal";
             this.rbConsumidorFinal.Size = new System.Drawing.Size(154, 25);
             this.rbConsumidorFinal.TabIndex = 7;
@@ -167,7 +166,7 @@
             // txtBuscarCliente
             // 
             this.txtBuscarCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarCliente.Location = new System.Drawing.Point(122, 289);
+            this.txtBuscarCliente.Location = new System.Drawing.Point(436, 99);
             this.txtBuscarCliente.Name = "txtBuscarCliente";
             this.txtBuscarCliente.Size = new System.Drawing.Size(300, 29);
             this.txtBuscarCliente.TabIndex = 8;
@@ -177,7 +176,7 @@
             this.lstClientes.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstClientes.FormattingEnabled = true;
             this.lstClientes.ItemHeight = 21;
-            this.lstClientes.Location = new System.Drawing.Point(121, 317);
+            this.lstClientes.Location = new System.Drawing.Point(435, 127);
             this.lstClientes.Name = "lstClientes";
             this.lstClientes.Size = new System.Drawing.Size(300, 88);
             this.lstClientes.TabIndex = 9;
@@ -185,7 +184,7 @@
             // btnNuevoCliente
             // 
             this.btnNuevoCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevoCliente.Location = new System.Drawing.Point(426, 327);
+            this.btnNuevoCliente.Location = new System.Drawing.Point(741, 129);
             this.btnNuevoCliente.Name = "btnNuevoCliente";
             this.btnNuevoCliente.Size = new System.Drawing.Size(82, 32);
             this.btnNuevoCliente.TabIndex = 10;
@@ -340,21 +339,11 @@
             this.btnVistaPrevia.Text = "Vista Previa";
             this.btnVistaPrevia.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(17, 1);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(269, 32);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Generacion de Facturas";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(19, 36);
+            this.label2.Location = new System.Drawing.Point(14, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(154, 21);
             this.label2.TabIndex = 27;
@@ -364,7 +353,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 88);
+            this.label3.Location = new System.Drawing.Point(14, 68);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 21);
             this.label3.TabIndex = 28;
@@ -374,7 +363,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(9, 293);
+            this.label4.Location = new System.Drawing.Point(432, 68);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 21);
             this.label4.TabIndex = 29;
@@ -384,7 +373,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(16, 229);
+            this.label5.Location = new System.Drawing.Point(426, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(350, 21);
             this.label5.TabIndex = 30;
@@ -464,33 +453,33 @@
             // 
             // dgvItems
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvItems.ColumnHeadersHeight = 4;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvItems.Location = new System.Drawing.Point(536, 1);
+            this.dgvItems.Location = new System.Drawing.Point(0, 194);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersVisible = false;
-            this.dgvItems.Size = new System.Drawing.Size(359, 329);
+            this.dgvItems.Size = new System.Drawing.Size(896, 211);
             this.dgvItems.TabIndex = 37;
             this.dgvItems.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvItems.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -536,7 +525,7 @@
             this.guna2Panel2.Controls.Add(this.btnVistaPrevia);
             this.guna2Panel2.Controls.Add(this.btnGenerarFactura);
             this.guna2Panel2.ForeColor = System.Drawing.Color.White;
-            this.guna2Panel2.Location = new System.Drawing.Point(514, 355);
+            this.guna2Panel2.Location = new System.Drawing.Point(514, 410);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(370, 199);
             this.guna2Panel2.TabIndex = 39;
@@ -547,7 +536,7 @@
             this.btnBuscadorOrdenTrabajo.IconColor = System.Drawing.Color.Black;
             this.btnBuscadorOrdenTrabajo.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadorOrdenTrabajo.IconSize = 30;
-            this.btnBuscadorOrdenTrabajo.Location = new System.Drawing.Point(326, 110);
+            this.btnBuscadorOrdenTrabajo.Location = new System.Drawing.Point(355, 95);
             this.btnBuscadorOrdenTrabajo.Name = "btnBuscadorOrdenTrabajo";
             this.btnBuscadorOrdenTrabajo.Size = new System.Drawing.Size(33, 33);
             this.btnBuscadorOrdenTrabajo.TabIndex = 26;
@@ -560,7 +549,7 @@
             this.btnBuscadorClientes.IconColor = System.Drawing.Color.Black;
             this.btnBuscadorClientes.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadorClientes.IconSize = 30;
-            this.btnBuscadorClientes.Location = new System.Drawing.Point(443, 288);
+            this.btnBuscadorClientes.Location = new System.Drawing.Point(764, 95);
             this.btnBuscadorClientes.Name = "btnBuscadorClientes";
             this.btnBuscadorClientes.Size = new System.Drawing.Size(33, 33);
             this.btnBuscadorClientes.TabIndex = 40;
@@ -578,7 +567,6 @@
             this.Controls.Add(this.btnBuscadorOrdenTrabajo);
             this.Controls.Add(this.lstClientes);
             this.Controls.Add(this.txtNumDoc);
-            this.Controls.Add(this.dgvItems);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label8);
@@ -586,7 +574,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.txtTelefono);
             this.Controls.Add(this.txtDireccion);
@@ -607,6 +594,7 @@
             this.Controls.Add(this.guna2Panel2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.guna2Panel1);
+            this.Controls.Add(this.dgvItems);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormGenFactu";
             this.Text = "Generacion de Facturas";
@@ -645,7 +633,6 @@
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnGenerarFactura;
         private System.Windows.Forms.Button btnVistaPrevia;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;

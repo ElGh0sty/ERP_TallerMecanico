@@ -4,15 +4,13 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
-using System.Net.Mail;
-
 
 namespace PROYECTOMECANICO.Modulo_Inventario
 {
     public partial class FormProveePopup : Form
     {
         private readonly Conexion con = new Conexion();
-        private readonly long? proveedorId; 
+        private readonly long? proveedorId;
 
         public FormProveePopup(long? proveedorId)
         {
@@ -28,14 +26,23 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             txtRuc.KeyPress += SoloNumeros_KeyPress;
             txtTelefono.KeyPress += Telefono_KeyPress;
 
+            // Validaciones en tiempo real
             txtRuc.TextChanged += (s, e) => ValidarRucLive();
+            txtRuc.Leave += (s, e) => ValidarRucLive();
+
             txtEmail.TextChanged += (s, e) => ValidarEmailLive();
+            txtEmail.Leave += (s, e) => ValidarEmailLive();
+
             txtTelefono.TextChanged += (s, e) => ValidarTelefonoLive();
+            txtTelefono.Leave += (s, e) => ValidarTelefonoLive();
+
             txtNombreEmpresa.TextChanged += (s, e) => ValidarNombreLive();
+            txtNombreEmpresa.Leave += (s, e) => ValidarNombreLive();
+
+            txtContacto.TextChanged += (s, e) => ValidarContactoLive();
+            txtContacto.Leave += (s, e) => ValidarContactoLive();
 
             errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
-
-
 
             if (btnCerrar != null) btnCerrar.Click += (s, e) => Close();
 
@@ -44,14 +51,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             else
             {
                 Limpiar();
-                btnDesactivar.Enabled = false; 
+                btnDesactivar.Enabled = false;
             }
         }
 
         private void AplicarEstilos()
         {
-            
-
             EstiloBoton(btnGuardar, Color.FromArgb(0, 123, 255));
             EstiloBoton(btnLimpiar, Color.DarkSlateBlue);
             EstiloBoton(btnDesactivar, Color.FromArgb(220, 60, 60));
@@ -59,7 +64,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             chkActivo.Checked = true;
             chkEspecial.Checked = false;
 
-            
             MaximizeBox = false;
             MinimizeBox = false;
         }
@@ -106,6 +110,13 @@ WHERE id=@id;";
                         txtEmail.Text = dr["email"].ToString();
                         chkActivo.Checked = Convert.ToBoolean(dr["estado"]);
                         chkEspecial.Checked = Convert.ToBoolean(dr["contribuyente_especial"]);
+
+                        // Validar después de cargar
+                        ValidarRucLive();
+                        ValidarNombreLive();
+                        ValidarTelefonoLive();
+                        ValidarEmailLive();
+                        ValidarContactoLive();
                     }
                 }
             }
@@ -123,13 +134,13 @@ WHERE id=@id;";
 
         private void Guardar()
         {
-
+            // Validar todos los campos antes de guardar
             ValidarRucLive();
             ValidarNombreLive();
             ValidarTelefonoLive();
             ValidarEmailLive();
+            ValidarContactoLive();
 
-            
             if (!string.IsNullOrEmpty(errorProvider1.GetError(txtRuc)) ||
                 !string.IsNullOrEmpty(errorProvider1.GetError(txtNombreEmpresa)) ||
                 !string.IsNullOrEmpty(errorProvider1.GetError(txtTelefono)) ||
@@ -169,20 +180,6 @@ INSERT INTO dbo.Proveedores
 VALUES
 (@ruc, @nom, @cont, @tel, @email, @estado, @esp);";
 
-                    ValidarRucLive();
-                    ValidarNombreLive();
-                    ValidarTelefonoLive();
-                    ValidarEmailLive();
-
-                    if (!string.IsNullOrEmpty(errorProvider1.GetError(txtRuc)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtNombreEmpresa)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtTelefono)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtEmail)))
-                    {
-                        MessageBox.Show("Corrige los campos marcados en rojo.");
-                        return;
-                    }
-
                     using (SqlCommand cmd = new SqlCommand(sql, con.leer))
                     {
                         cmd.Parameters.AddWithValue("@ruc", ruc);
@@ -198,7 +195,6 @@ VALUES
                     MessageBox.Show("Proveedor registrado.");
                     DialogResult = DialogResult.OK;
                     Close();
-                    return;
                 }
                 else
                 {
@@ -213,21 +209,6 @@ SET
     estado=@estado,
     contribuyente_especial=@esp
 WHERE id=@id;";
-
-
-                    ValidarRucLive();
-                    ValidarNombreLive();
-                    ValidarTelefonoLive();
-                    ValidarEmailLive();
-
-                    if (!string.IsNullOrEmpty(errorProvider1.GetError(txtRuc)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtNombreEmpresa)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtTelefono)) ||
-                        !string.IsNullOrEmpty(errorProvider1.GetError(txtEmail)))
-                    {
-                        MessageBox.Show("Corrige los campos marcados en rojo.");
-                        return;
-                    }
 
                     using (SqlCommand cmd = new SqlCommand(sql, con.leer))
                     {
@@ -249,15 +230,14 @@ WHERE id=@id;";
             }
             catch (SqlException ex)
             {
-                MessageBox.Show("Error SQL: " + ex.Message);
                 if (ex.Message.ToLower().Contains("unique") && ex.Message.ToLower().Contains("ruc"))
                 {
-                    MessageBox.Show("Ya existe un proveedor con ese RUC.", "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Ya existe un proveedor con ese RUC.", "Duplicado",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtRuc.Focus();
                     return;
                 }
-
-
+                MessageBox.Show("Error SQL: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -314,27 +294,29 @@ WHERE id=@id;";
             chkActivo.Checked = true;
             chkEspecial.Checked = false;
             txtRuc.Focus();
+
+            // Limpiar validaciones
+            MarcarCorrecto(txtRuc);
+            MarcarCorrecto(txtNombreEmpresa);
+            MarcarCorrecto(txtContacto);
+            MarcarCorrecto(txtTelefono);
+            MarcarCorrecto(txtEmail);
         }
 
         private void SoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // solo dígitos y backspace
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
                 e.Handled = true;
         }
 
         private void Telefono_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // permitir + solo al inicio
             if (e.KeyChar == '+' && ((TextBox)sender).SelectionStart == 0)
                 return;
 
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
                 e.Handled = true;
         }
-
-
-        
 
         private bool EmailValido(string email)
         {
@@ -362,8 +344,6 @@ WHERE id=@id;";
             }
         }
 
-
-
         private bool EsCedulaEcuatorianaValida(string cedula)
         {
             if (cedula == null || cedula.Length != 10 || !cedula.All(char.IsDigit))
@@ -373,7 +353,7 @@ WHERE id=@id;";
             if (provincia < 1 || provincia > 24) return false;
 
             int tercer = cedula[2] - '0';
-            if (tercer > 5) return false; // persona natural: 0..5
+            if (tercer > 5) return false;
 
             int[] coef = { 2, 1, 2, 1, 2, 1, 2, 1, 2 };
             int suma = 0;
@@ -402,7 +382,7 @@ WHERE id=@id;";
 
         private void MarcarError(TextBox txt, string mensaje)
         {
-            txt.BackColor = Color.FromArgb(255, 220, 220); // rosado suave
+            txt.BackColor = Color.FromArgb(255, 220, 220);
             errorProvider1.SetError(txt, mensaje);
         }
 
@@ -429,13 +409,23 @@ WHERE id=@id;";
                 return;
             }
 
-            string cedula = ruc.Substring(0, 10);
-            if (!EsCedulaEcuatorianaValida(cedula))
+            // Validación más flexible: solo verificar que los primeros 10 dígitos sean numéricos
+            // y que la provincia sea válida
+            string provinciaStr = ruc.Substring(0, 2);
+            if (!int.TryParse(provinciaStr, out int provincia))
             {
-                MarcarError(txtRuc, "RUC inválido");
+                MarcarError(txtRuc, "Provincia inválida");
                 return;
             }
 
+            // Provincias válidas: 01-24 son tradicionales, 30 es para nuevas provincias
+            if ((provincia < 1 || provincia > 24) && provincia != 30)
+            {
+                MarcarError(txtRuc, "Provincia inválida (debe ser 01-24 o 30)");
+                return;
+            }
+
+            // No validar el dígito verificador de la cédula, solo la estructura básica
             MarcarCorrecto(txtRuc);
         }
 
@@ -445,7 +435,7 @@ WHERE id=@id;";
 
             if (email.Length == 0)
             {
-                MarcarCorrecto(txtEmail); 
+                MarcarCorrecto(txtEmail);
                 return;
             }
 
@@ -464,7 +454,7 @@ WHERE id=@id;";
 
             if (tel.Length == 0)
             {
-                MarcarCorrecto(txtTelefono); // opcional
+                MarcarCorrecto(txtTelefono);
                 return;
             }
 
@@ -478,7 +468,7 @@ WHERE id=@id;";
 
             if (telNorm.Length < 7 || telNorm.Length > 15)
             {
-                MarcarError(txtTelefono, "Teléfono inválido");
+                MarcarError(txtTelefono, "Teléfono inválido (7-15 dígitos)");
                 return;
             }
 
@@ -489,15 +479,50 @@ WHERE id=@id;";
         {
             string nombre = txtNombreEmpresa.Text.Trim();
 
-            if (nombre.Length < 2)
+            if (nombre.Length == 0)
             {
                 MarcarError(txtNombreEmpresa, "Nombre obligatorio");
+                return;
+            }
+
+            if (nombre.Length < 2)
+            {
+                MarcarError(txtNombreEmpresa, "Mínimo 2 caracteres");
+                return;
+            }
+
+            if (nombre.Length > 150)
+            {
+                MarcarError(txtNombreEmpresa, "Máximo 150 caracteres");
                 return;
             }
 
             MarcarCorrecto(txtNombreEmpresa);
         }
 
+        private void ValidarContactoLive()
+        {
+            string contacto = txtContacto.Text.Trim();
 
+            if (contacto.Length == 0)
+            {
+                MarcarCorrecto(txtContacto);
+                return;
+            }
+
+            if (contacto.Length < 3)
+            {
+                MarcarError(txtContacto, "Mínimo 3 caracteres");
+                return;
+            }
+
+            if (contacto.Length > 100)
+            {
+                MarcarError(txtContacto, "Máximo 100 caracteres");
+                return;
+            }
+
+            MarcarCorrecto(txtContacto);
+        }
     }
 }

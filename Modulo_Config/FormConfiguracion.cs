@@ -1,8 +1,6 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -17,19 +15,25 @@ namespace PROYECTOMECANICO
     public partial class FormConfiguracion : Form
     {
         private readonly Conexion con = new Conexion();
+        private ErrorProvider errorProvider;
 
-        //  Impuestos 
+        // Impuestos 
         private long _impId = 0;
 
-        //  MétodosPago 
+        // MétodosPago 
         private long _mpId = 0;
 
-        //  Secuenciales 
+        // Secuenciales 
         private int _secId = 0;
+
+        // Variable para almacenar la imagen temporalmente
+        private byte[] _imagenEmpresaBytes = null;
 
         public FormConfiguracion()
         {
             InitializeComponent();
+
+            InicializarValidaciones();
 
             this.Load += FormConfiguracion_Load;
 
@@ -64,14 +68,475 @@ namespace PROYECTOMECANICO
 
             CargarEmpresaEnLabel();
             CargarImagenEmpresa();
+        }
 
+        private void InicializarValidaciones()
+        {
+            errorProvider = new ErrorProvider();
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
+            
+
+            // ===== VALIDACIONES IMPUESTOS =====
+            txtImpNombre.TextChanged += (s, e) => ValidarImpuestoNombre();
+            txtImpNombre.Leave += (s, e) => ValidarImpuestoNombre();
+
+            nudImpPorcentaje.ValueChanged += (s, e) => ValidarImpuestoPorcentaje();
+            nudImpPorcentaje.Leave += (s, e) => ValidarImpuestoPorcentaje();
+
+            txtImpCodigoSri.TextChanged += (s, e) => ValidarImpuestoCodigoSri();
+            txtImpCodigoSri.Leave += (s, e) => ValidarImpuestoCodigoSri();
+
+            // ===== VALIDACIONES MÉTODOS DE PAGO =====
+            txtMpCodigoSri.TextChanged += (s, e) => ValidarMpCodigoSri();
+            txtMpCodigoSri.Leave += (s, e) => ValidarMpCodigoSri();
+
+            txtMpNombre.TextChanged += (s, e) => ValidarMpNombre();
+            txtMpNombre.Leave += (s, e) => ValidarMpNombre();
+
+            // ===== VALIDACIONES EMPRESA =====
+            txtEmpNombre.TextChanged += (s, e) => ValidarEmpresaNombre();
+            txtEmpNombre.Leave += (s, e) => ValidarEmpresaNombre();
+
+            txtEmpRuc.TextChanged += (s, e) => ValidarEmpresaRuc();
+            txtEmpRuc.Leave += (s, e) => ValidarEmpresaRuc();
+
+            txtEmpTelefono.TextChanged += (s, e) => ValidarEmpresaTelefono();
+            txtEmpTelefono.Leave += (s, e) => ValidarEmpresaTelefono();
+
+            txtEmpEmail.TextChanged += (s, e) => ValidarEmpresaEmail();
+            txtEmpEmail.Leave += (s, e) => ValidarEmpresaEmail();
+
+            // ===== VALIDACIONES SECUENCIALES =====
+            txtSecTipoDoc.TextChanged += (s, e) => ValidarSecTipoDoc();
+            txtSecTipoDoc.Leave += (s, e) => ValidarSecTipoDoc();
+
+            txtSecEstablecimiento.TextChanged += (s, e) => ValidarSecEstablecimiento();
+            txtSecEstablecimiento.Leave += (s, e) => ValidarSecEstablecimiento();
+
+            txtSecPuntoEmision.TextChanged += (s, e) => ValidarSecPuntoEmision();
+            txtSecPuntoEmision.Leave += (s, e) => ValidarSecPuntoEmision();
+
+            nudSecActual.ValueChanged += (s, e) => ValidarSecSecuencia();
+            nudSecActual.Leave += (s, e) => ValidarSecSecuencia();
+        }
+
+        // ===== MÉTODOS DE VALIDACIÓN =====
+
+        private void MarcarError(Control control, string mensaje)
+        {
+            control.BackColor = Color.FromArgb(255, 220, 220);
+            errorProvider.SetError(control, mensaje);
+        }
+
+        private void MarcarOk(Control control)
+        {
+            control.BackColor = Color.White;
+            errorProvider.SetError(control, "");
+        }
+
+        // Validaciones Impuestos
+        private bool ValidarImpuestoNombre()
+        {
+            string nombre = txtImpNombre.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MarcarError(txtImpNombre, "El nombre del impuesto es obligatorio.");
+                return false;
+            }
+
+            if (nombre.Length < 3)
+            {
+                MarcarError(txtImpNombre, "El nombre debe tener al menos 3 caracteres.");
+                return false;
+            }
+
+            if (nombre.Length > 50)
+            {
+                MarcarError(txtImpNombre, "El nombre no puede exceder 50 caracteres.");
+                return false;
+            }
+
+            MarcarOk(txtImpNombre);
+            return true;
+        }
+
+        private bool ValidarImpuestoPorcentaje()
+        {
+            if (nudImpPorcentaje.Value < 0 || nudImpPorcentaje.Value > 100)
+            {
+                MarcarError(nudImpPorcentaje, "El porcentaje debe estar entre 0 y 100.");
+                return false;
+            }
+
+            MarcarOk(nudImpPorcentaje);
+            return true;
+        }
+
+        private bool ValidarImpuestoCodigoSri()
+        {
+            string codigo = txtImpCodigoSri.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                MarcarError(txtImpCodigoSri, "El código SRI es obligatorio.");
+                return false;
+            }
+
+            if (codigo.Length > 10)
+            {
+                MarcarError(txtImpCodigoSri, "El código SRI no puede exceder 10 caracteres.");
+                return false;
+            }
+
+            MarcarOk(txtImpCodigoSri);
+            return true;
+        }
+
+        // Validaciones Métodos de Pago
+        private bool ValidarMpCodigoSri()
+        {
+            string codigo = txtMpCodigoSri.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                MarcarError(txtMpCodigoSri, "El código SRI es obligatorio.");
+                return false;
+            }
+
+            if (codigo.Length != 2)
+            {
+                MarcarError(txtMpCodigoSri, "El código SRI debe tener exactamente 2 caracteres.");
+                return false;
+            }
+
+            // Validar que sean solo números (para códigos SRI numéricos)
+            if (!codigo.All(char.IsDigit))
+            {
+                MarcarError(txtMpCodigoSri, "El código SRI debe contener solo números.");
+                return false;
+            }
+
+            MarcarOk(txtMpCodigoSri);
+            return true;
+        }
+
+        private bool ValidarMpNombre()
+        {
+            string nombre = txtMpNombre.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MarcarError(txtMpNombre, "El nombre del método de pago es obligatorio.");
+                return false;
+            }
+
+            if (nombre.Length < 4) // Cambiado de 3 a 4
+            {
+                MarcarError(txtMpNombre, "El nombre debe tener al menos 4 caracteres.");
+                return false;
+            }
+
+            if (nombre.Length > 150)
+            {
+                MarcarError(txtMpNombre, "El nombre no puede exceder 150 caracteres.");
+                return false;
+            }
+
+            // Validar que no sean solo números
+            if (nombre.All(char.IsDigit))
+            {
+                MarcarError(txtMpNombre, "El nombre no puede contener solo números.");
+                return false;
+            }
+
+            // Validar que tenga al menos una letra
+            if (!nombre.Any(char.IsLetter))
+            {
+                MarcarError(txtMpNombre, "El nombre debe contener al menos una letra.");
+                return false;
+            }
+
+            MarcarOk(txtMpNombre);
+            return true;
+        }
+
+        // Validaciones Empresa
+        private bool ValidarEmpresaNombre()
+        {
+            string nombre = txtEmpNombre.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MarcarError(txtEmpNombre, "El nombre de la empresa es obligatorio.");
+                return false;
+            }
+
+            if (nombre.Length < 3)
+            {
+                MarcarError(txtEmpNombre, "El nombre debe tener al menos 3 caracteres.");
+                return false;
+            }
+
+            if (nombre.Length > 255)
+            {
+                MarcarError(txtEmpNombre, "El nombre no puede exceder 255 caracteres.");
+                return false;
+            }
+
+            // Validar que no sean solo números
+            if (nombre.All(char.IsDigit))
+            {
+                MarcarError(txtEmpNombre, "El nombre no puede contener solo números.");
+                return false;
+            }
+
+            // Validar que tenga al menos 2 letras (para evitar "A1")
+            int letras = nombre.Count(char.IsLetter);
+            if (letras < 2)
+            {
+                MarcarError(txtEmpNombre, "El nombre debe contener al menos 2 letras.");
+                return false;
+            }
+
+            // Caracteres permitidos: letras, números, espacios, puntos, guiones
+            if (!nombre.All(c => char.IsLetterOrDigit(c) || c == ' ' || c == '.' || c == '-' || c == '&' || c == ','))
+            {
+                MarcarError(txtEmpNombre, "El nombre contiene caracteres no válidos.");
+                return false;
+            }
+
+            MarcarOk(txtEmpNombre);
+            return true;
+        }
+
+        private bool ValidarEmpresaRuc()
+        {
+            string ruc = txtEmpRuc.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(ruc))
+            {
+                MarcarError(txtEmpRuc, "El RUC es obligatorio.");
+                return false;
+            }
+
+            if (ruc.Length != 13 || !ruc.All(char.IsDigit))
+            {
+                MarcarError(txtEmpRuc, "El RUC debe tener 13 dígitos numéricos.");
+                return false;
+            }
+
+            MarcarOk(txtEmpRuc);
+            return true;
+        }
+
+        private bool ValidarEmpresaTelefono()
+        {
+            string telefono = txtEmpTelefono.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(telefono))
+            {
+                MarcarError(txtEmpTelefono, "El teléfono es obligatorio.");
+                return false;
+            }
+
+            string soloDigitos = new string(telefono.Where(char.IsDigit).ToArray());
+            if (soloDigitos.Length < 7 || soloDigitos.Length > 15)
+            {
+                MarcarError(txtEmpTelefono, "El teléfono debe tener entre 7 y 15 dígitos.");
+                return false;
+            }
+
+            MarcarOk(txtEmpTelefono);
+            return true;
+        }
+
+        private bool ValidarEmpresaEmail()
+        {
+            string email = txtEmpEmail.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MarcarError(txtEmpEmail, "El email es obligatorio.");
+                return false;
+            }
+
+            // Expresión regular más estricta para email
+            string patron = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(email, patron))
+            {
+                MarcarError(txtEmpEmail, "El formato del email no es válido (ej: nombre@dominio.com).");
+                return false;
+            }
+
+            // Validaciones adicionales
+            if (email.Contains(".."))
+            {
+                MarcarError(txtEmpEmail, "El email no puede contener puntos dobles.");
+                return false;
+            }
+
+            string[] parts = email.Split('@');
+            if (parts.Length != 2)
+            {
+                MarcarError(txtEmpEmail, "El email debe tener un @.");
+                return false;
+            }
+
+            string localPart = parts[0];
+            string domain = parts[1];
+
+            if (string.IsNullOrWhiteSpace(localPart) || string.IsNullOrWhiteSpace(domain))
+            {
+                MarcarError(txtEmpEmail, "El email tiene partes vacías.");
+                return false;
+            }
+
+            if (domain.StartsWith(".") || domain.EndsWith("."))
+            {
+                MarcarError(txtEmpEmail, "El dominio no puede empezar o terminar con punto.");
+                return false;
+            }
+
+            string[] domainParts = domain.Split('.');
+            if (domainParts.Length < 2)
+            {
+                MarcarError(txtEmpEmail, "El dominio debe tener al menos un punto (ej: dominio.com).");
+                return false;
+            }
+
+            string tld = domainParts[domainParts.Length - 1];
+            if (tld.Length < 2)
+            {
+                MarcarError(txtEmpEmail, "La extensión del dominio debe tener al menos 2 caracteres (ej: .com, .ec).");
+                return false;
+            }
+
+            MarcarOk(txtEmpEmail);
+            return true;
+        }
+
+        // Validaciones Secuenciales
+        private bool ValidarSecTipoDoc()
+        {
+            string tipo = txtSecTipoDoc.Text.Trim().ToUpper();
+
+            if (string.IsNullOrWhiteSpace(tipo))
+            {
+                MarcarError(txtSecTipoDoc, "El tipo de documento es obligatorio.");
+                return false;
+            }
+
+            if (tipo.Length < 3 || tipo.Length > 20)
+            {
+                MarcarError(txtSecTipoDoc, "El tipo de documento debe tener entre 3 y 20 caracteres.");
+                return false;
+            }
+
+            MarcarOk(txtSecTipoDoc);
+            return true;
+        }
+
+        private bool ValidarSecEstablecimiento()
+        {
+            string est = txtSecEstablecimiento.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(est))
+            {
+                MarcarError(txtSecEstablecimiento, "El establecimiento es obligatorio.");
+                return false;
+            }
+
+            if (est.Length != 3 || !est.All(char.IsDigit))
+            {
+                MarcarError(txtSecEstablecimiento, "El establecimiento debe tener 3 dígitos (ej: 001).");
+                return false;
+            }
+
+            MarcarOk(txtSecEstablecimiento);
+            return true;
+        }
+
+        private bool ValidarSecPuntoEmision()
+        {
+            string pto = txtSecPuntoEmision.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(pto))
+            {
+                MarcarError(txtSecPuntoEmision, "El punto de emisión es obligatorio.");
+                return false;
+            }
+
+            if (pto.Length != 3 || !pto.All(char.IsDigit))
+            {
+                MarcarError(txtSecPuntoEmision, "El punto de emisión debe tener 3 dígitos (ej: 001).");
+                return false;
+            }
+
+            MarcarOk(txtSecPuntoEmision);
+            return true;
+        }
+
+        private bool ValidarSecSecuencia()
+        {
+            if (nudSecActual.Value < 0)
+            {
+                MarcarError(nudSecActual, "La secuencia no puede ser negativa.");
+                return false;
+            }
+
+            MarcarOk(nudSecActual);
+            return true;
+        }
+
+        private bool ValidarImpuestoTodo()
+        {
+            return ValidarImpuestoNombre() && ValidarImpuestoPorcentaje() && ValidarImpuestoCodigoSri();
+        }
+
+        private bool ValidarMpTodo()
+        {
+            return ValidarMpCodigoSri() && ValidarMpNombre();
+        }
+
+        private bool ValidarEmpresaTodo()
+        {
+            return ValidarEmpresaNombre() && ValidarEmpresaRuc() && ValidarEmpresaTelefono() && ValidarEmpresaEmail();
+        }
+
+        private bool ValidarSecTodo()
+        {
+            return ValidarSecTipoDoc() && ValidarSecEstablecimiento() && ValidarSecPuntoEmision() && ValidarSecSecuencia();
+        }
+
+        private void LimpiarValidaciones()
+        {
+            // Impuestos
+            MarcarOk(txtImpNombre);
+            MarcarOk(nudImpPorcentaje);
+            MarcarOk(txtImpCodigoSri);
+
+            // Métodos Pago
+            MarcarOk(txtMpCodigoSri);
+            MarcarOk(txtMpNombre);
+
+            // Empresa
+            MarcarOk(txtEmpNombre);
+            MarcarOk(txtEmpRuc);
+            MarcarOk(txtEmpTelefono);
+            MarcarOk(txtEmpEmail);
+
+            // Secuenciales
+            MarcarOk(txtSecTipoDoc);
+            MarcarOk(txtSecEstablecimiento);
+            MarcarOk(txtSecPuntoEmision);
+            MarcarOk(nudSecActual);
         }
 
         private void FormConfiguracion_Load(object sender, EventArgs e)
         {
-            
-
             // estilo grids
             GridStyle(dgvImpuestos);
             GridStyle(dgvMetodosPago);
@@ -120,6 +585,11 @@ namespace PROYECTOMECANICO
             swImpActivo.Enabled = activo;
             btnImpGuardar.Enabled = activo;
             btnImpActivarDesactivar.Enabled = (_impId != 0);
+
+            if (!activo)
+            {
+                LimpiarValidaciones();
+            }
         }
 
         private void Imp_LimpiarCampos()
@@ -189,19 +659,19 @@ ORDER BY id DESC;";
 
         private void Imp_Guardar()
         {
+            if (!ValidarImpuestoTodo())
+            {
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 string nombre = (txtImpNombre.Text ?? "").Trim();
                 string codigo = (txtImpCodigoSri.Text ?? "").Trim();
                 decimal porcentaje = nudImpPorcentaje.Value;
                 bool activo = swImpActivo.Checked;
-
-                if (nombre == "")
-                {
-                    MessageBox.Show("El nombre es obligatorio.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
 
                 using (var cn = con.CrearConexionAbierta())
                 {
@@ -290,6 +760,11 @@ ORDER BY id DESC;";
             swMpActivo.Enabled = activo;
             btnMpGuardar.Enabled = activo;
             btnMpActivarDesactivar.Enabled = (_mpId != 0);
+
+            if (!activo)
+            {
+                LimpiarValidaciones();
+            }
         }
 
         private void MP_LimpiarCampos()
@@ -356,25 +831,18 @@ ORDER BY id DESC;";
 
         private void MP_Guardar()
         {
+            if (!ValidarMpTodo())
+            {
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 string cod = (txtMpCodigoSri.Text ?? "").Trim();
                 string nom = (txtMpNombre.Text ?? "").Trim();
                 bool activo = swMpActivo.Checked;
-
-                if (cod.Length != 2)
-                {
-                    MessageBox.Show("El código SRI debe tener exactamente 2 caracteres.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (nom == "")
-                {
-                    MessageBox.Show("El nombre es obligatorio.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
 
                 using (var cn = con.CrearConexionAbierta())
                 {
@@ -453,12 +921,6 @@ ORDER BY id DESC;";
 
         // EMPRESA
 
-        // Variable para almacenar la imagen temporalmente
-        private byte[] _imagenEmpresaBytes = null;
-
-        
-
-        // Método para cargar la imagen de la empresa
         private void CargarImagenEmpresa()
         {
             try
@@ -477,7 +939,6 @@ ORDER BY id DESC;";
                     }
                     else
                     {
-                        // Imagen por defecto (puedes poner una imagen predeterminada)
                         picEmpresa.Image = null;
                         picEmpresa.BackColor = Color.LightGray;
                     }
@@ -489,7 +950,6 @@ ORDER BY id DESC;";
             }
         }
 
-        // Evento para seleccionar imagen
         private void btnSeleccionarImagen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -501,10 +961,8 @@ ORDER BY id DESC;";
                 {
                     try
                     {
-                        // Cargar la imagen en el PictureBox
                         picEmpresa.Image = Image.FromFile(ofd.FileName);
 
-                        // Convertir la imagen a bytes para guardar
                         using (MemoryStream ms = new MemoryStream())
                         {
                             picEmpresa.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -519,7 +977,6 @@ ORDER BY id DESC;";
             }
         }
 
-        // Evento para eliminar imagen
         private void btnEliminarImagen_Click(object sender, EventArgs e)
         {
             picEmpresa.Image = null;
@@ -527,9 +984,15 @@ ORDER BY id DESC;";
             _imagenEmpresaBytes = null;
         }
 
-        // Modificar el método Emp_Guardar() para incluir la imagen
         private void Emp_Guardar()
         {
+            if (!ValidarEmpresaTodo())
+            {
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 string nombre = (txtEmpNombre.Text ?? "").Trim();
@@ -538,16 +1001,8 @@ ORDER BY id DESC;";
                 string tel = (txtEmpTelefono.Text ?? "").Trim();
                 string email = (txtEmpEmail.Text ?? "").Trim();
 
-                if (nombre == "")
-                {
-                    MessageBox.Show("El nombre del taller/empresa es obligatorio.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 using (var cn = con.CrearConexionAbierta())
                 {
-                    // Verificar si existe la empresa
                     int existe;
                     using (var chk = new SqlCommand("SELECT COUNT(*) FROM Empresa;", cn))
                         existe = Convert.ToInt32(chk.ExecuteScalar());
@@ -592,7 +1047,6 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                     }
                 }
 
-                // Actualizar el logo en toda la aplicación
                 LogoEmpresa.ActualizarLogo(_imagenEmpresaBytes);
 
                 MessageBox.Show("Empresa actualizada.", "Empresa",
@@ -607,7 +1061,6 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
             }
         }
 
-        // Modificar Emp_Cargar() para cargar también la imagen
         private void Emp_Cargar()
         {
             try
@@ -624,7 +1077,6 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                         txtEmpTelefono.Text = rd["telefono"]?.ToString() ?? "";
                         txtEmpEmail.Text = rd["email"]?.ToString() ?? "";
 
-                        // Cargar la imagen si existe
                         if (rd["logo"] != DBNull.Value)
                         {
                             _imagenEmpresaBytes = (byte[])rd["logo"];
@@ -642,7 +1094,6 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                     }
                     else
                     {
-                        // Vacío -> campos en blanco
                         txtEmpNombre.Text = "";
                         txtEmpRuc.Text = "";
                         txtEmpDireccion.Text = "";
@@ -661,7 +1112,6 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
             }
         }
 
-        // Modificar CargarEmpresaEnLabel() para mostrar también que hay logo
         private void CargarEmpresaEnLabel()
         {
             try
@@ -684,13 +1134,11 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                     string tel = rd["telefono"]?.ToString() ?? "";
                     string mail = rd["email"]?.ToString() ?? "";
 
-
                     lblEmpInfo.Text =
                         $"{nombre}\n" +
                         $"RUC: {ruc} | Tel: {tel}\n" +
                         $"{dir}\n" +
                         $"{mail}\n";
-                       
                 }
             }
             catch (Exception ex)
@@ -712,6 +1160,11 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
 
             btnSecGuardar.Enabled = activo;
             btnSecEliminar.Enabled = (_secId != 0);
+
+            if (!activo)
+            {
+                LimpiarValidaciones();
+            }
         }
 
         private void Sec_LimpiarCampos()
@@ -780,6 +1233,13 @@ ORDER BY id DESC;";
 
         private void Sec_Guardar()
         {
+            if (!ValidarSecTodo())
+            {
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 string tipo = (txtSecTipoDoc.Text ?? "").Trim().ToUpper();
@@ -787,23 +1247,8 @@ ORDER BY id DESC;";
                 string pto = (txtSecPuntoEmision.Text ?? "").Trim();
                 int sec = Convert.ToInt32(nudSecActual.Value);
 
-                if (tipo == "")
-                {
-                    MessageBox.Show("Tipo de documento es obligatorio (ej: FACTURA).", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (est.Length != 3 || pto.Length != 3)
-                {
-                    MessageBox.Show("Establecimiento y Punto de emisión deben tener 3 dígitos (ej: 001).", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 using (var cn = con.CrearConexionAbierta())
                 {
-                    // evitar duplicados (tipo+est+pto)
                     string dup = @"
 SELECT COUNT(*) FROM Secuenciales
 WHERE tipo_documento=@t AND establecimiento=@e AND punto_emision=@p
@@ -890,7 +1335,5 @@ AND (@id=0 OR id<>@id);";
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        
     }
 }

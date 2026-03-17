@@ -11,7 +11,7 @@ using PROYECTOMECANICO.Modulo_Clientes;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-// Alias para resolver ambigüedades
+
 using GdiPen = System.Drawing.Pen;
 using GdiFont = System.Drawing.Font;
 using GdiBrush = System.Drawing.SolidBrush;
@@ -118,10 +118,18 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 using (var rd = cmd.ExecuteReader())
                 {
                     if (!rd.Read())
-                        throw new Exception("No existe la factura " + facturaId);
+                    {
+                        MessageBox.Show($"No existe la factura con ID: {facturaId}", "Factura no encontrada",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
                     if (rd["pdf_data"] == DBNull.Value)
-                        throw new Exception("Esta factura no tiene PDF guardado.");
+                    {
+                        MessageBox.Show("Esta factura no tiene PDF generado.", "PDF no disponible",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
 
                     pdf = (byte[])rd["pdf_data"];
                     nombre = rd["pdf_nombre"]?.ToString();

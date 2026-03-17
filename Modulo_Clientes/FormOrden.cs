@@ -1,6 +1,7 @@
-﻿    using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PROYECTOMECANICO.Modulo_Clientes
@@ -12,13 +13,47 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
         long recepcionistaId = 9;
         private string rolUsuario;
+        private ErrorProvider errorProvider;
+        private ValidadorTiempoReal validador;
 
         public FormOrden(string rolUsuario)
         {
             InitializeComponent();
+            this.rolUsuario = rolUsuario;
+
+            InicializarValidaciones();
+            ConfigurarCombos();
             CargarVehiculos();
             CargarMecanicos();
-            this.rolUsuario = rolUsuario;
+        }
+
+        private void InicializarValidaciones()
+        {
+            errorProvider = new ErrorProvider();
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            validador = new ValidadorTiempoReal(errorProvider);
+
+            // Configurar ComboBox como solo selección
+            cmbVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMecanico.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // Eventos de validación en tiempo real
+            cmbVehiculo.SelectedIndexChanged += (s, e) => ValidarVehiculo();
+            cmbMecanico.SelectedIndexChanged += (s, e) => ValidarMecanico();
+            txtDescripcion.TextChanged += (s, e) => ValidarDescripcion();
+            txtDescripcion.Leave += (s, e) => ValidarDescripcion();
+
+            // Validar al perder foco
+            cmbVehiculo.Leave += (s, e) => ValidarVehiculo();
+            cmbMecanico.Leave += (s, e) => ValidarMecanico();
+        }
+
+        private void ConfigurarCombos()
+        {
+            // Los ComboBox ya están configurados en el diseñador como DropDownList
+            // pero lo reforzamos aquí
+            cmbVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMecanico.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void CargarVehiculos()
@@ -38,18 +73,24 @@ SELECT
 FROM Vehiculos v
 INNER JOIN Clientes c ON v.cliente_id = c.id";
 
-
-
                 SqlDataAdapter da = new SqlDataAdapter(sql, con.leer);
                 dtVehiculos = new DataTable();
                 da.Fill(dtVehiculos);
 
+                // Agregar opción por defecto
+                DataRow filaVacia = dtVehiculos.NewRow();
+                filaVacia["vehiculo_id"] = 0;
+                filaVacia["vehiculo_mostrar"] = "Seleccione un vehículo";
+                filaVacia["cliente"] = "";
+                filaVacia["numero_documento"] = "";
+                filaVacia["placa"] = "";
+                filaVacia["tipo"] = "";
+                dtVehiculos.Rows.InsertAt(filaVacia, 0);
 
                 cmbVehiculo.DataSource = dtVehiculos;
                 cmbVehiculo.DisplayMember = "vehiculo_mostrar";
                 cmbVehiculo.ValueMember = "vehiculo_id";
-                cmbVehiculo.SelectedIndex = -1;
-
+                cmbVehiculo.SelectedIndex = 0; // Seleccionar la opción por defecto
             }
             catch (Exception ex)
             {
@@ -63,8 +104,16 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
 
         private void cmbVehiculo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbVehiculo.SelectedItem == null)
+            if (cmbVehiculo.SelectedIndex <= 0 || cmbVehiculo.SelectedItem == null)
+            {
+                // Si es la opción por defecto, limpiar campos
+                txtCliente.Clear();
+                txtDocumento.Clear();
+                txtPlaca.Clear();
+                txtTipoVehiculo.Clear();
+                txtNombreOrden.Clear();
                 return;
+            }
 
             if (!(cmbVehiculo.SelectedItem is DataRowView row))
                 return;
@@ -74,10 +123,8 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
             txtPlaca.Text = row["placa"].ToString();
             txtTipoVehiculo.Text = row["tipo"].ToString();
 
-
             GenerarNombreOrden();
         }
-
 
         private void CargarMecanicos()
         {
@@ -93,10 +140,16 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                // Agregar opción por defecto
+                DataRow filaVacia = dt.NewRow();
+                filaVacia["id"] = 0;
+                filaVacia["nombre_usuario"] = "Seleccione un mecánico";
+                dt.Rows.InsertAt(filaVacia, 0);
+
                 cmbMecanico.DataSource = dt;
                 cmbMecanico.DisplayMember = "nombre_usuario";
                 cmbMecanico.ValueMember = "id";
-                cmbMecanico.SelectedIndex = -1;
+                cmbMecanico.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -112,14 +165,17 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
         {
             try
             {
-                if (cmbVehiculo.SelectedValue == null)
+                if (cmbVehiculo.SelectedIndex <= 0 || cmbVehiculo.SelectedValue == null)
                     return;
 
-                if (!(cmbVehiculo.SelectedValue is long vehiculoId))
+                if (!long.TryParse(cmbVehiculo.SelectedValue.ToString(), out long vehiculoId) || vehiculoId <= 0)
                     return;
 
                 string cliente = txtCliente.Text.Trim();
                 string tipo = txtTipoVehiculo.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(cliente) || string.IsNullOrWhiteSpace(tipo))
+                    return;
 
                 con.Abrir();
 
@@ -144,14 +200,82 @@ INNER JOIN Clientes c ON v.cliente_id = c.id";
             }
         }
 
+        // ===== MÉTODOS DE VALIDACIÓN =====
+
+        private bool ValidarVehiculo()
+        {
+            if (cmbVehiculo.SelectedIndex <= 0 || cmbVehiculo.SelectedValue == null)
+            {
+                validador.MarcarError(cmbVehiculo, "Seleccione un vehículo.");
+                return false;
+            }
+
+            if (!long.TryParse(cmbVehiculo.SelectedValue.ToString(), out long vehiculoId) || vehiculoId <= 0)
+            {
+                validador.MarcarError(cmbVehiculo, "Seleccione un vehículo válido.");
+                return false;
+            }
+
+            validador.MarcarOk(cmbVehiculo);
+            return true;
+        }
+
+        private bool ValidarMecanico()
+        {
+            if (cmbMecanico.SelectedIndex <= 0 || cmbMecanico.SelectedValue == null)
+            {
+                validador.MarcarError(cmbMecanico, "Seleccione un mecánico.");
+                return false;
+            }
+
+            if (!long.TryParse(cmbMecanico.SelectedValue.ToString(), out long mecanicoId) || mecanicoId <= 0)
+            {
+                validador.MarcarError(cmbMecanico, "Seleccione un mecánico válido.");
+                return false;
+            }
+
+            validador.MarcarOk(cmbMecanico);
+            return true;
+        }
+
+        private bool ValidarDescripcion()
+        {
+            string descripcion = txtDescripcion.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(descripcion))
+            {
+                validador.MarcarError(txtDescripcion, "La descripción es obligatoria.");
+                return false;
+            }
+
+            if (descripcion.Length < 5)
+            {
+                validador.MarcarError(txtDescripcion, "La descripción debe tener al menos 5 caracteres.");
+                return false;
+            }
+
+            if (descripcion.Length > 500)
+            {
+                validador.MarcarError(txtDescripcion, "La descripción no puede exceder 500 caracteres.");
+                return false;
+            }
+
+            validador.MarcarOk(txtDescripcion);
+            return true;
+        }
+
+        private bool ValidarTodo()
+        {
+            return ValidarVehiculo() && ValidarMecanico() && ValidarDescripcion();
+        }
 
         private void btnGuardarOrden_Click(object sender, EventArgs e)
         {
-            if (cmbVehiculo.SelectedIndex == -1 ||
-                cmbMecanico.SelectedIndex == -1 ||
-                string.IsNullOrWhiteSpace(txtDescripcion.Text))
+            // Validar todos los campos
+            if (!ValidarTodo())
             {
-                MessageBox.Show("Completa todos los datos obligatorios.");
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -208,11 +332,10 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
             }
         }
 
-
         private void LimpiarFormulario()
         {
-            cmbVehiculo.SelectedIndex = -1;
-            cmbMecanico.SelectedIndex = -1;
+            cmbVehiculo.SelectedIndex = 0;
+            cmbMecanico.SelectedIndex = 0;
 
             txtCliente.Clear();
             txtDocumento.Clear();
@@ -220,6 +343,11 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
             txtTipoVehiculo.Clear();
             txtNombreOrden.Clear();
             txtDescripcion.Clear();
+
+            // Limpiar validaciones
+            validador.MarcarOk(cmbVehiculo);
+            validador.MarcarOk(cmbMecanico);
+            validador.MarcarOk(txtDescripcion);
         }
 
         private void RegistrarHistorial(SqlTransaction tx, long ordenId, long? usuarioId, string tipo, string titulo, string detalle)
@@ -235,12 +363,6 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
                 cmdH.Parameters.AddWithValue("@detalle", (object)detalle ?? DBNull.Value);
                 cmdH.ExecuteNonQuery();
             }
-        }
-
-
-        private void txtNombreOrden_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnBuscadorVehiculosRegistrados_Click(object sender, EventArgs e)
@@ -268,13 +390,19 @@ SELECT CAST(SCOPE_IDENTITY() AS BIGINT);";
                         txtTipoVehiculo.Text = item["tipo"].ToString();
 
                         GenerarNombreOrden();
+                        ValidarVehiculo(); // Re-validar después de seleccionar
                         break;
                     }
                 }
             }
         }
+
+        // Eventos del diseñador
+        private void txtNombreOrden_TextChanged(object sender, EventArgs e) { }
     }
 }
+
+// Clase ValidadorTiempoReal (si no la tienes en un archivo separado)
 
 
 

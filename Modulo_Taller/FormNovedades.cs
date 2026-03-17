@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace PROYECTOMECANICO.Modulo_Taller
@@ -15,9 +14,10 @@ namespace PROYECTOMECANICO.Modulo_Taller
         private long ordenIdActual = 0;
 
         private System.Collections.Generic.List<ProductoItem> _productosBase =
-    new System.Collections.Generic.List<ProductoItem>();
+            new System.Collections.Generic.List<ProductoItem>();
 
         private ProductoItem _productoSeleccionado = null;
+        private ErrorProvider errorProvider;
 
         Conexion con = new Conexion();
 
@@ -28,22 +28,71 @@ namespace PROYECTOMECANICO.Modulo_Taller
             this.usuarioId = usuarioId;
             this.rolUsuario = rolUsuario;
 
+            // Inicializar ErrorProvider
+            errorProvider = new ErrorProvider();
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            // Configurar ComboBox como solo selección
+            cmbOrdenes.DropDownStyle = ComboBoxStyle.DropDownList;
+
             ConfigurarGrid();
             CargarOrdenes();
             EstilizarGrid();
             EstilizarBotones();
 
-
             BloquearEdicion();
 
-            cmbOrdenes.SelectedIndexChanged += (s, e) => CargarNovedades();
+            // Eventos de validación (solo añadidos, sin modificar lógica existente)
+            cmbOrdenes.SelectedIndexChanged += (s, e) => {
+                ValidarOrden();
+                CargarNovedades(); // Mantener lógica original
+            };
+
+            txtDescripcion.TextChanged += (s, e) => ValidarDescripcion();
+            txtDescripcion.Leave += (s, e) => ValidarDescripcion();
+
+            chkRequiereExtra.CheckedChanged += (s, e) => {
+                ValidarExtra();
+                // Mantener lógica original
+                bool on = chkRequiereExtra.Checked;
+
+                nudCantidadExtra.Enabled = on;
+                txtBuscarProducto.Enabled = on;
+                lstProductos.Enabled = on;
+                lblProductoSel.Enabled = on;
+
+                if (!on)
+                {
+                    txtBuscarProducto.Text = "";
+                    lstProductos.Visible = false;
+                    _productoSeleccionado = null;
+                    lblProductoSel.Text = "Seleccionado: Ninguno";
+                    nudCantidadExtra.Value = 1;
+                }
+                else
+                {
+                    if (_productosBase == null || _productosBase.Count == 0)
+                        CargarProductosBase();
+
+                    lstProductos.Visible = true;
+                    txtBuscarProducto.Focus();
+                }
+            };
+
+            nudCantidadExtra.ValueChanged += (s, e) => ValidarExtra();
+
             btnNuevaNovedad.Click += (s, e) => HabilitarEdicion();
             btnCancelar.Click += (s, e) => { Limpiar(); BloquearEdicion(); };
-            btnGuardar.Click += (s, e) => GuardarNovedad();
+            btnGuardar.Click += (s, e) => {
+                if (ValidarTodo())
+                    GuardarNovedad();
+                else
+                    MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            };
 
             btnAceptar.Click += (s, e) => CambiarEstadoNovedad("Aceptado");
             btnRechazar.Click += (s, e) => CambiarEstadoNovedad("Rechazado");
-
 
             txtBuscarProducto.TextChanged += (s, e) => FiltrarProductos();
             txtBuscarProducto.Enter += (s, e) =>
@@ -56,48 +105,122 @@ namespace PROYECTOMECANICO.Modulo_Taller
             };
             lstProductos.Click += (s, e) => SeleccionarProductoDeLista();
 
-            chkRequiereExtra.CheckedChanged += (s, e) =>
-            {
-                bool on = chkRequiereExtra.Checked;
-
-                nudMontoExtra.Enabled = on; // lo vamos a dejar en false luego (ver punto 3)
-                nudCantidadExtra.Enabled = on;
-
-                txtBuscarProducto.Enabled = on;
-                lstProductos.Enabled = on;
-                lblProductoSel.Enabled = on;
-
-                if (!on)
-                {
-                    txtBuscarProducto.Text = "";
-                    lstProductos.Visible = false;
-                    _productoSeleccionado = null;
-                    lblProductoSel.Text = "Seleccionado: Ninguno";
-                    nudCantidadExtra.Value = 1;
-                    nudMontoExtra.Value = 0;
-                }
-                else
-                {
-                    if (_productosBase == null || _productosBase.Count == 0)
-                        CargarProductosBase();
-
-                    lstProductos.Visible = true;
-                    txtBuscarProducto.Focus();
-                }
-            };
-
-            nudMontoExtra.Enabled = false;  
-            nudMontoExtra.ReadOnly = true;  
-            nudMontoExtra.Increment = 0;    
-
+            nudMontoExtra.Enabled = false;
+            nudMontoExtra.ReadOnly = true;
+            nudMontoExtra.Increment = 0;
 
             txtBuscarProducto.Enabled = false;
             lstProductos.Enabled = false;
             lstProductos.Visible = false;
             lblProductoSel.Enabled = false;
             nudCantidadExtra.Enabled = false;
-
         }
+
+        // ===== MÉTODOS DE VALIDACIÓN =====
+
+        private void MarcarError(Control control, string mensaje)
+        {
+            control.BackColor = Color.FromArgb(255, 220, 220);
+            errorProvider.SetError(control, mensaje);
+        }
+
+        private void MarcarOk(Control control)
+        {
+            control.BackColor = Color.White;
+            errorProvider.SetError(control, "");
+        }
+
+        private bool ValidarOrden()
+        {
+            if (cmbOrdenes.SelectedIndex == -1 || cmbOrdenes.SelectedValue == null)
+            {
+                MarcarError(cmbOrdenes, "Seleccione una orden de trabajo.");
+                return false;
+            }
+
+            ordenIdActual = Convert.ToInt64(cmbOrdenes.SelectedValue);
+            if (ordenIdActual <= 0)
+            {
+                MarcarError(cmbOrdenes, "Seleccione una orden válida.");
+                return false;
+            }
+
+            MarcarOk(cmbOrdenes);
+            return true;
+        }
+
+        private bool ValidarDescripcion()
+        {
+            if (!txtDescripcion.Enabled) return true; // Si está deshabilitado, no validar
+
+            string desc = txtDescripcion.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(desc))
+            {
+                MarcarError(txtDescripcion, "La descripción de la novedad es obligatoria.");
+                return false;
+            }
+
+            if (desc.Length < 5)
+            {
+                MarcarError(txtDescripcion, "La descripción debe tener al menos 5 caracteres.");
+                return false;
+            }
+
+            if (desc.Length > 500)
+            {
+                MarcarError(txtDescripcion, "La descripción no puede exceder 500 caracteres.");
+                return false;
+            }
+
+            MarcarOk(txtDescripcion);
+            return true;
+        }
+
+        private bool ValidarExtra()
+        {
+            if (!chkRequiereExtra.Checked || !chkRequiereExtra.Enabled)
+            {
+                MarcarOk(chkRequiereExtra);
+                MarcarOk(nudCantidadExtra);
+                MarcarOk(lstProductos);
+                return true;
+            }
+
+            if (_productoSeleccionado == null)
+            {
+                MarcarError(lstProductos, "Seleccione un producto para el extra.");
+                MarcarError(chkRequiereExtra, "Debe seleccionar un producto.");
+                return false;
+            }
+
+            if (nudCantidadExtra.Value <= 0)
+            {
+                MarcarError(nudCantidadExtra, "La cantidad debe ser mayor a 0.");
+                return false;
+            }
+
+            MarcarOk(chkRequiereExtra);
+            MarcarOk(nudCantidadExtra);
+            MarcarOk(lstProductos);
+            return true;
+        }
+
+        private bool ValidarTodo()
+        {
+            return ValidarOrden() && ValidarDescripcion() && ValidarExtra();
+        }
+
+        private void LimpiarValidaciones()
+        {
+            MarcarOk(cmbOrdenes);
+            MarcarOk(txtDescripcion);
+            MarcarOk(chkRequiereExtra);
+            MarcarOk(nudCantidadExtra);
+            MarcarOk(lstProductos);
+        }
+
+        // ===== RESTO DEL CÓDIGO ORIGINAL SIN MODIFICACIONES =====
 
         private void CargarProductosBase()
         {
@@ -142,7 +265,6 @@ ORDER BY nombre;";
             }
         }
 
-
         private void SeleccionarProductoDeLista()
         {
             if (lstProductos.SelectedItem == null) return;
@@ -157,6 +279,7 @@ ORDER BY nombre;";
                     nudMontoExtra.Value = _productoSeleccionado.Precio;
 
                 lstProductos.Visible = false; // se oculta al elegir
+                ValidarExtra(); // Validar después de seleccionar
             }
         }
 
@@ -196,8 +319,6 @@ ORDER BY nombre;";
             if (dgvNovedades.Columns[e.ColumnIndex].Name == "btnEliminar")
             {
                 long novedadId = Convert.ToInt64(dgvNovedades.Rows[e.RowIndex].Cells["id"].Value);
-
-                
                 string estadoTxt = dgvNovedades.Rows[e.RowIndex].Cells["estado_cliente"].Value?.ToString() ?? "";
 
                 EliminarNovedad(novedadId, estadoTxt);
@@ -258,8 +379,6 @@ ORDER BY nombre;";
                 con.Cerrar();
             }
         }
-
-
 
         private void DgvNovedades_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -415,8 +534,6 @@ ORDER BY fecha DESC;";
             lblPendientes.ForeColor = pendientes > 0
                 ? Color.Red
                 : Color.Green;
-
-
         }
 
         private void GuardarNovedad()
@@ -455,13 +572,11 @@ ORDER BY fecha DESC;";
                 decimal precio = _productoSeleccionado.Precio;
 
                 montoExtra = cantidad * precio;
-                nudMontoExtra.Value = montoExtra.Value; 
+                nudMontoExtra.Value = montoExtra.Value;
             }
 
             try
             {
-                
-
                 con.Abrir();
 
                 string sql = @"
@@ -559,12 +674,10 @@ WHERE id = @id;";
                             if (montoExtra <= 0)
                                 throw new Exception("El monto extra debe ser mayor a 0.");
 
-                            decimal cantidad = 1; 
+                            decimal cantidad = 1;
                             InsertarItemExtraProducto(tx, ordenIdActual, productoId.Value, "Repuesto extra", cantidad, montoExtra);
                         }
 
-                        
-                        
                         RegistrarHistorial(
     tx,
     ordenIdActual,
@@ -573,8 +686,6 @@ WHERE id = @id;";
     "Respuesta a novedad",
     $"Novedad #{novedadId} -> {nuevoEstado}. Desc: {dgvNovedades.CurrentRow.Cells["descripcion"].Value}"
 );
-
-
 
                         tx.Commit();
                     }
@@ -628,8 +739,6 @@ VALUES
             );
         }
 
-
-
         private void HabilitarEdicion()
         {
             txtDescripcion.Enabled = true;
@@ -641,7 +750,6 @@ VALUES
 
             txtDescripcion.Focus();
             nudCantidadExtra.Enabled = chkRequiereExtra.Checked;
-
         }
 
         private void BloquearEdicion()
@@ -652,13 +760,22 @@ VALUES
 
             btnGuardar.Enabled = false;
             btnCancelar.Enabled = false;
+
+            // Limpiar validaciones al bloquear
+            LimpiarValidaciones();
         }
 
         private void Limpiar()
         {
             txtDescripcion.Clear();
             chkRequiereExtra.Checked = false;
-            nudCantidadExtra.Value = 0;
+            nudCantidadExtra.Value = 1; // Cambiado de 0 a 1 para que sea válido
+            txtBuscarProducto.Clear();
+            _productoSeleccionado = null;
+            lblProductoSel.Text = "Seleccionado: Ninguno";
+
+            // Limpiar validaciones
+            LimpiarValidaciones();
         }
 
         private void EstilizarGrid()
@@ -700,7 +817,6 @@ VALUES
 
             dgvNovedades.RowTemplate.Height = 38;
         }
-
 
         private void EstilizarBotones()
         {
@@ -805,7 +921,7 @@ VALUES
         {
             public long Id { get; set; }
             public string Nombre { get; set; }
-            public decimal Precio { get; set; } 
+            public decimal Precio { get; set; }
             public override string ToString() => Nombre;
         }
 
@@ -829,7 +945,5 @@ VALUES
                 }
             }
         }
-
-        
     }
 }

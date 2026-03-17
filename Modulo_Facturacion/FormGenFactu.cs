@@ -12,19 +12,27 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
+using GdiPen = System.Drawing.Pen;
+using GdiFont = System.Drawing.Font;
+using GdiBrush = System.Drawing.SolidBrush;
+using GdiGraphics = System.Drawing.Graphics;
+using GdiImage = System.Drawing.Image;
+using GdiBitmap = System.Drawing.Bitmap;
+using GdiColor = System.Drawing.Color;
+using GdiPointF = System.Drawing.PointF;
+
 namespace PROYECTOMECANICO.Modulo_Facturacion
 {
     public partial class FormGenFactu : Form
     {
         private readonly Conexion con = new Conexion();
         private long usuarioId;
+        private ErrorProvider errorProvider;
 
-        // Estado origen
         private bool modoDesdeOT = true;
         private long? ordenTrabajoId = null;
 
-        // Receptor
-        private long? clienteId = null; // NULL permitido para consumidor final real
+        private long? clienteId = null;
         private string snapTipoDoc = "";
         private string snapNumDoc = "";
         private string snapNombre = "";
@@ -33,23 +41,18 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         private string snapEmail = "";
         private bool snapContribuyenteEspecial = false;
 
-        // Items
         private DataTable dtItems = new DataTable();
 
-        // Factura generada
         private long facturaIdGenerada = 0;
         private string secuencialGenerado = "";
         private string claveAccesoGenerada = "";
 
-        // Timer búsqueda OT (Forms)
         private readonly System.Windows.Forms.Timer _tmBuscarOT = new System.Windows.Forms.Timer();
         private CancellationTokenSource _otCts;
 
-        // Print
         private readonly PrintDocument printDoc = new PrintDocument();
         private readonly PrintPreviewDialog preview = new PrintPreviewDialog();
 
-        // Constructor diseñador
         public FormGenFactu()
         {
             InitializeComponent();
@@ -65,6 +68,16 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
         private void InitCommon(long usuarioId)
         {
+            // Inicializar ErrorProvider
+            errorProvider = new ErrorProvider();
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            // Configurar ComboBox como solo selección
+            cmbImpuesto.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // Configurar campos de cliente como solo lectura (no editables manualmente)
+            ConfigurarCamposClienteSoloLectura();
+
             // Grid + tabla items
             PrepararTablaItems();
             ConfigurarGrid();
@@ -74,16 +87,10 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             // Impuestos
             CargarImpuestos();
 
-            // Print
-            
-
             // Defaults
             rbDesdeOT.Checked = true;
             rbClienteExistente.Checked = true;
 
-            //  OT: txtBuscarOT NO se habilita hasta que el modo OT esté activo
-            // (como rbDesdeOT es default true, inicia habilitado; si quieres que inicie apagado,
-            // cambia rbDesdeOT.Checked = false y rbVentaDirecta.Checked = true arriba).
             CambiarModo(rbDesdeOT.Checked);
 
             // Eventos modo
@@ -124,6 +131,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 {
                     SetConsumidorFinal();
                 }
+                ActualizarEstadoCamposCliente();
             };
 
             rbClienteExistente.CheckedChanged += (s, e) =>
@@ -133,6 +141,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                     if (snapTipoDoc == "CF") LimpiarSnapshotReceptor();
                     ActualizarUIReceptor();
                 }
+                ActualizarEstadoCamposCliente();
             };
 
             rbNuevoCliente.CheckedChanged += (s, e) =>
@@ -142,6 +151,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                     if (snapTipoDoc == "CF") LimpiarSnapshotReceptor();
                     ActualizarUIReceptor();
                 }
+                ActualizarEstadoCamposCliente();
             };
 
             txtBuscarCliente.TextChanged += (s, e) => BuscarCliente();
@@ -149,10 +159,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnNuevoCliente.Click += (s, e) => CrearClientePopup();
 
             // Items manuales
-            
             btnDelItem.Click += (s, e) => EliminarItemSeleccionado();
 
-            //  Mantener botones correctos según selección
+            // Mantener botones correctos según selección
             dgvItems.SelectionChanged += (s, e) => ActualizarBotonesItems();
             dgvItems.RowsAdded += (s, e) => ActualizarBotonesItems();
             dgvItems.RowsRemoved += (s, e) => ActualizarBotonesItems();
@@ -161,9 +170,21 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             cmbImpuesto.SelectedIndexChanged += (s, e) => RecalcularTotales();
             dgvItems.CellEndEdit += (s, e) => { RecalcularSubtotalFila(e.RowIndex); RecalcularTotales(); };
 
-            // Acciones (sin Task.Run que toque UI)
+            // Validaciones en tiempo real
+            cmbImpuesto.SelectedIndexChanged += (s, e) => ValidarImpuesto();
+            dgvItems.RowsAdded += (s, e) => ValidarItems();
+            dgvItems.RowsRemoved += (s, e) => ValidarItems();
+
+            // Acciones
             btnGenerarFactura.Click += async (s, e) =>
             {
+                if (!ValidarTodo())
+                {
+                    MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 btnGenerarFactura.Enabled = false;
                 Cursor = Cursors.WaitCursor;
                 try
@@ -185,26 +206,126 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             ActualizarBotonesItems();
         }
 
-        //  MODO
-        private void CambiarModo(bool desdeOT)
+        // ===== CONFIGURACIÓN DE CAMPOS SOLO LECTURA =====
+
+        private void ConfigurarCamposClienteSoloLectura()
         {
-            modoDesdeOT = desdeOT;
-            ordenTrabajoId = null;
+            // Estos campos son solo de visualización, no se pueden editar manualmente
+            txtTipoDoc.ReadOnly = true;
+            txtNumDoc.ReadOnly = true;
+            txtNombre.ReadOnly = true;
+            txtDireccion.ReadOnly = true;
+            txtTelefono.ReadOnly = true;
+            txtEmail.ReadOnly = true;
 
-            // txtBuscarOT solo activo si modo OT está activo
-            txtBuscarOT.Enabled = desdeOT;
-            btnCargarItemsOT.Enabled = desdeOT;
-            lstOTResultados.Visible = false;
-            lstOTResultados.DataSource = null;
-
-            // Items manuales solo en venta directa
-            dtItems.Clear();
-            RecalcularTotales();
-
-            ActualizarBotonesItems();
+            // Cambiar color de fondo para indicar que son solo lectura
+            txtTipoDoc.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            txtNumDoc.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            txtNombre.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            txtDireccion.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            txtTelefono.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            txtEmail.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
         }
 
-        // Método auxiliar para obtener el logo de la empresa
+        private void ActualizarEstadoCamposCliente()
+        {
+            bool esClienteExistente = rbClienteExistente.Checked && clienteId.HasValue;
+            bool esNuevoCliente = rbNuevoCliente.Checked;
+            bool esConsumidorFinal = rbConsumidorFinal.Checked;
+
+            // En modo Consumidor Final, los campos se llenan automáticamente y son solo lectura
+            // En modo Cliente Existente, se llenan al seleccionar y son solo lectura
+            // En modo Nuevo Cliente, deberían ser editables (pero por ahora los mantenemos solo lectura)
+
+            if (esNuevoCliente)
+            {
+                // Si algún día implementas creación de cliente desde aquí, podrías habilitarlos
+                txtTipoDoc.ReadOnly = true;
+                txtNumDoc.ReadOnly = true;
+                txtNombre.ReadOnly = true;
+                txtDireccion.ReadOnly = true;
+                txtTelefono.ReadOnly = true;
+                txtEmail.ReadOnly = true;
+            }
+        }
+
+        // ===== MÉTODOS DE VALIDACIÓN =====
+
+        private void MarcarError(Control control, string mensaje)
+        {
+            control.BackColor = System.Drawing.Color.FromArgb(255, 220, 220);
+            errorProvider.SetError(control, mensaje);
+        }
+
+        private void MarcarOk(Control control)
+        {
+            control.BackColor = System.Drawing.Color.White;
+            errorProvider.SetError(control, "");
+        }
+
+        private bool ValidarImpuesto()
+        {
+            if (cmbImpuesto.SelectedIndex == -1 || cmbImpuesto.SelectedValue == null)
+            {
+                MarcarError(cmbImpuesto, "Seleccione un impuesto");
+                return false;
+            }
+
+            MarcarOk(cmbImpuesto);
+            return true;
+        }
+
+        private bool ValidarItems()
+        {
+            if (dtItems.Rows.Count == 0)
+            {
+                errorProvider.SetError(btnAddItem, "Agregue al menos un item a la factura");
+                return false;
+            }
+
+            errorProvider.SetError(btnAddItem, "");
+            return true;
+        }
+
+        private bool ValidarCliente()
+        {
+            if (rbConsumidorFinal.Checked)
+                return true;
+
+            if (string.IsNullOrWhiteSpace(snapNombre) ||
+                string.IsNullOrWhiteSpace(snapTipoDoc) ||
+                string.IsNullOrWhiteSpace(snapNumDoc))
+            {
+                MarcarError(txtNombre, "Debe seleccionar un cliente válido");
+                return false;
+            }
+
+            MarcarOk(txtNombre);
+            MarcarOk(txtTipoDoc);
+            MarcarOk(txtNumDoc);
+            return true;
+        }
+
+        private bool ValidarTodo()
+        {
+            bool itemsValidos = ValidarItems();
+            bool impuestoValido = ValidarImpuesto();
+            bool clienteValido = ValidarCliente();
+
+            return itemsValidos && impuestoValido && clienteValido;
+        }
+
+        private void LimpiarValidaciones()
+        {
+            MarcarOk(cmbImpuesto);
+            MarcarOk(txtNombre);
+            MarcarOk(txtTipoDoc);
+            MarcarOk(txtNumDoc);
+            errorProvider.SetError(btnAddItem, "");
+        }
+
+        // ===== MÉTODO AUXILIAR PARA OBTENER LOGO =====
+
         private byte[] ObtenerLogoEmpresa()
         {
             try
@@ -221,11 +342,27 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             }
             catch (Exception ex)
             {
-                // Si hay error, simplemente no mostramos logo
                 Console.WriteLine("Error al obtener logo: " + ex.Message);
             }
             return null;
         }
+
+        //  MODO
+        private void CambiarModo(bool desdeOT)
+        {
+            modoDesdeOT = desdeOT;
+            ordenTrabajoId = null;
+
+            txtBuscarOT.Enabled = desdeOT;
+            btnCargarItemsOT.Enabled = desdeOT;
+            lstOTResultados.Visible = false;
+            lstOTResultados.DataSource = null;
+
+            dtItems.Clear();
+            RecalcularTotales();
+            ActualizarBotonesItems();
+        }
+
         private void ActualizarBotonesItems()
         {
             bool enVentaDirecta = !modoDesdeOT;
@@ -234,7 +371,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btnDelItem.Enabled = enVentaDirecta && dgvItems.CurrentRow != null && dgvItems.Rows.Count > 0;
         }
 
-        
         //ITEMS
         private void PrepararTablaItems()
         {
@@ -266,8 +402,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
         private void EstilizarDgvItems()
         {
-            
-
             dgvItems.ColumnHeadersVisible = true;
             dgvItems.RowHeadersVisible = false;
             dgvItems.AllowUserToAddRows = false;
@@ -287,7 +421,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             dgvItems.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             dgvItems.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
-            // estilos
             dgvItems.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             dgvItems.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F);
 
@@ -297,7 +430,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
 
             dgvItems.RowTemplate.Height = 28;
 
-            // Formatos numéricos
             if (dgvItems.Columns.Count > 0)
             {
                 foreach (DataGridViewColumn col in dgvItems.Columns)
@@ -328,6 +460,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 );
             }
         }
+
         private void AgregarItemManual()
         {
             if (modoDesdeOT) return;
@@ -361,9 +494,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             catch { }
         }
 
-        
-
-        //  IMPUESTO / TOTALES
+        // IMPUESTO / TOTALES
 
         private void CargarImpuestos()
         {
@@ -429,9 +560,8 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             lblTotal.Text = $"Total: {total:0.00}";
         }
 
-        
         // OT
-        
+
         private class OTItem
         {
             public long Id { get; set; }
@@ -452,7 +582,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                 return;
             }
 
-            // Cancelar búsqueda anterior
             if (_otCts != null) _otCts.Cancel();
             _otCts = new CancellationTokenSource();
             var token = _otCts.Token;
@@ -496,8 +625,6 @@ ORDER BY OT.id DESC", cn))
 
                 if (token.IsCancellationRequested) return;
 
-                // hilo UI (porque el Tick es de WinForms),
-                
                 if (IsHandleCreated)
                 {
                     BeginInvoke((Action)(() =>
@@ -569,6 +696,8 @@ WHERE OT.id = @id";
             finally { con.Cerrar(); }
         }
 
+
+
         private void CargarItemsOT()
         {
             if (!modoDesdeOT)
@@ -587,10 +716,8 @@ WHERE OT.id = @id";
             {
                 con.Abrir();
 
-                // Limpiar items actuales
                 dtItems.Clear();
 
-                // Cargar productos de la orden
                 string sqlProductos = @"
             SELECT 
                 'Producto' AS tipo_item,
@@ -640,7 +767,6 @@ WHERE OT.id = @id";
             finally { con.Cerrar(); }
         }
 
-
         //RECEPTOR (con limpieza CF)
 
         private void ActualizarUIReceptor()
@@ -653,14 +779,6 @@ WHERE OT.id = @id";
             lstClientes.Visible = false;
 
             btnNuevoCliente.Enabled = nuevo;
-
-            bool enableSnap = !cf;
-            txtTipoDoc.Enabled = enableSnap;
-            txtNumDoc.Enabled = enableSnap;
-            txtNombre.Enabled = enableSnap;
-            txtDireccion.Enabled = enableSnap;
-            txtTelefono.Enabled = enableSnap;
-            txtEmail.Enabled = enableSnap;
 
             if (cf) SetConsumidorFinal();
         }
@@ -705,12 +823,8 @@ WHERE OT.id = @id";
 
         private void TomarSnapshotDesdeUI()
         {
-            snapTipoDoc = (txtTipoDoc.Text ?? "").Trim();
-            snapNumDoc = (txtNumDoc.Text ?? "").Trim();
-            snapNombre = (txtNombre.Text ?? "").Trim();
-            snapDireccion = (txtDireccion.Text ?? "").Trim();
-            snapTelefono = (txtTelefono.Text ?? "").Trim();
-            snapEmail = (txtEmail.Text ?? "").Trim();
+            // No tomamos de UI porque los campos son solo lectura
+            // Mantenemos los valores actuales
         }
 
         // CLIENTE EXISTENTE
@@ -858,7 +972,7 @@ WHERE id = @id";
             finally { con.Cerrar(); }
         }
 
-        //  FACTURA (sin con.leer dentro de transacción)
+        // FACTURA
         private bool ExisteFacturaParaOT(long otId)
         {
             using (var cn = con.CrearConexionAbierta())
@@ -873,7 +987,6 @@ WHERE id = @id";
 
         private async Task GenerarFacturaAsync()
         {
-            // Esta validación usa UI (debe ser antes del await)
             if (modoDesdeOT && ordenTrabajoId.HasValue)
             {
                 if (ExisteFacturaParaOT(ordenTrabajoId.Value))
@@ -901,8 +1014,6 @@ WHERE id = @id";
                 return;
             }
 
-            TomarSnapshotDesdeUI();
-
             if (!rbConsumidorFinal.Checked)
             {
                 if (string.IsNullOrWhiteSpace(snapTipoDoc) ||
@@ -927,7 +1038,6 @@ WHERE id = @id";
 
             try
             {
-                //  Todo con una conexión propia (cn) y esa misma en todos los comandos
                 using (var cn = con.CrearConexionAbierta())
                 using (var tx = cn.BeginTransaction())
                 {
@@ -981,7 +1091,6 @@ INSERT INTO dbo.FacturaItems
 VALUES
 (@factura, @prod, @serv, @cant, @punit, 0, @imp, @ivaItem)";
 
-                        // Esta parte ya está bien en tu código:
                         foreach (DataRow r in dtItems.Rows)
                         {
                             long? prod = r["producto_id"] == DBNull.Value ? (long?)null : Convert.ToInt64(r["producto_id"]);
@@ -1008,7 +1117,6 @@ VALUES
 
                         if (modoDesdeOT && ordenTrabajoId.HasValue)
                         {
-                            
                             using (var cmd = new SqlCommand(
                                 "UPDATE dbo.OrdenesTrabajo SET facturada = 1 WHERE id = @id", cn, tx))
                             {
@@ -1020,7 +1128,6 @@ VALUES
                         tx.Commit();
                         facturaIdGenerada = facturaId;
 
-                        // Generar/guardar PDF FUERA de la transacción
                         string pdfPath = GenerarPdfFactura();
                         GuardarPdfEnFactura(facturaId, pdfPath);
 
@@ -1041,7 +1148,6 @@ VALUES
             await Task.CompletedTask;
         }
 
-
         private void GuardarPdfEnFactura(long facturaId, string pdfPath)
         {
             byte[] pdfBytes = System.IO.File.ReadAllBytes(pdfPath);
@@ -1061,21 +1167,8 @@ WHERE id = @id;", cn))
             }
         }
 
-        private string GenerarSiguienteSecuencial()
-        {
-            try
-            {
-                con.Abrir();
-                using (var cmd = new SqlCommand("SELECT ISNULL(MAX(CAST(secuencial AS INT)), 0) + 1 FROM dbo.Facturas", con.leer))
-                {
-                    cmd.CommandTimeout = 5;
-                    int next = Convert.ToInt32(cmd.ExecuteScalar());
-                    return next.ToString().PadLeft(9, '0');
-                }
-            }
-            catch { return "000000001"; }
-            finally { con.Cerrar(); }
-        }
+        
+        
 
         private string GenerarClaveAcceso49()
         {
@@ -1084,22 +1177,6 @@ WHERE id = @id;", cn))
             if (digits.Length < 49) digits = digits.PadRight(49, '7');
             if (digits.Length > 49) digits = digits.Substring(0, 49);
             return digits;
-        }
-
-       
-        // PRINT 
-        private void MostrarVistaPrevia()
-        {
-            if (dtItems == null || dtItems.Rows.Count == 0)
-            {
-                MessageBox.Show("No hay items para imprimir.");
-                return;
-            }
-
-            TomarSnapshotDesdeUI();
-            preview.Width = 1000;
-            preview.Height = 800;
-            preview.ShowDialog();
         }
 
         private void VerPdfFactura()
@@ -1127,8 +1204,6 @@ WHERE id = @id;", cn))
         {
             if (dtItems == null || dtItems.Rows.Count == 0)
                 throw new Exception("No hay items para generar el PDF.");
-
-            TomarSnapshotDesdeUI();
 
             var emp = ObtenerEmpresa();
             byte[] logoBytes = ObtenerLogoEmpresa();
@@ -1165,7 +1240,6 @@ WHERE id = @id;", cn))
                 else
                     head.SetWidths(new float[] { 65, 35 });
 
-                // Celda del Logo (si existe)
                 if (logoBytes != null)
                 {
                     var cellLogo = new PdfPCell();
@@ -1187,7 +1261,6 @@ WHERE id = @id;", cn))
                     head.AddCell(cellLogo);
                 }
 
-                // Celda Empresa
                 var cellEmp = new PdfPCell();
                 cellEmp.Border = Rectangle.BOX;
                 cellEmp.Padding = 8;
@@ -1198,7 +1271,6 @@ WHERE id = @id;", cn))
                 if (!string.IsNullOrWhiteSpace(emp.email)) cellEmp.AddElement(new Paragraph($"Email: {emp.email}", font));
                 head.AddCell(cellEmp);
 
-                // Celda Factura
                 var cellFac = new PdfPCell();
                 cellFac.Border = Rectangle.BOX;
                 cellFac.Padding = 8;
@@ -1241,7 +1313,7 @@ WHERE id = @id;", cn))
                 doc.Add(rec);
                 doc.Add(new Paragraph(" "));
 
-                // Items - Ahora con columna de Tipo
+                // Items
                 PdfPTable items = new PdfPTable(5);
                 items.WidthPercentage = 100;
                 items.SetWidths(new float[] { 8, 8, 44, 15, 15 });
@@ -1323,7 +1395,6 @@ WHERE id = @id;", cn))
                 int cantidad = buscador.CantidadSeleccionada;
                 decimal precio = Convert.ToDecimal(fila["precio_pvp"]);
 
-                // Agregar a la tabla de items
                 dtItems.Rows.Add(
                     "Producto",
                     nombre,
@@ -1336,14 +1407,8 @@ WHERE id = @id;", cn))
 
                 RecalcularTotales();
             }
-
         }
 
-
-
-
-
-        // Buscador de Órdenes de Trabajo - Rellena el txtBuscarOT y carga la información
         private void btnBuscadorOrdenTrabajo_Click(object sender, EventArgs e)
         {
             if (!rbDesdeOT.Checked)
@@ -1362,7 +1427,6 @@ WHERE id = @id;", cn))
                 string cliente = fila["cliente"].ToString();
                 string estado = fila["estado"].ToString();
 
-                // Verificar que la OT esté en estado válido (Terminado/Entregado)
                 if (estado != "Terminado" && estado != "Entregado")
                 {
                     MessageBox.Show($"La orden seleccionada está en estado '{estado}'. Solo se pueden facturar órdenes en estado 'Terminado' o 'Entregado'.",
@@ -1370,7 +1434,6 @@ WHERE id = @id;", cn))
                     return;
                 }
 
-                // Verificar que la OT no esté ya facturada
                 if (ExisteFacturaParaOT(ordenId))
                 {
                     MessageBox.Show("Esta OT ya tiene una factura generada.",
@@ -1378,16 +1441,10 @@ WHERE id = @id;", cn))
                     return;
                 }
 
-                // Asignar la orden seleccionada
                 ordenTrabajoId = ordenId;
-
-                // Rellenar el txtBuscarOT con la información de la orden
                 txtBuscarOT.Text = $"OT #{ordenId} - {placa} - {cliente}";
-
-                // Cargar el receptor desde la OT
                 CargarReceptorDesdeOT(ordenId);
 
-                // Preguntar si desea cargar los items
                 DialogResult cargarItems = MessageBox.Show("¿Desea cargar los items de esta orden ahora?",
                     "Cargar items", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -1398,10 +1455,8 @@ WHERE id = @id;", cn))
             }
         }
 
-        // Buscador de Clientes - Rellena el txtBuscarCliente y carga la información
         private void btnBuscadorClientes_Click(object sender, EventArgs e)
         {
-            // Asegurar que estamos en modo Cliente Existente
             if (!rbClienteExistente.Checked)
             {
                 rbClienteExistente.Checked = true;
@@ -1432,7 +1487,6 @@ WHERE id = @id;", cn))
                             {
                                 if (dr.Read())
                                 {
-                                    // Asignar los valores
                                     this.clienteId = clienteId;
                                     snapTipoDoc = dr["tipo_documento"].ToString();
                                     snapNumDoc = dr["numero_documento"].ToString();
@@ -1442,13 +1496,8 @@ WHERE id = @id;", cn))
                                     snapEmail = dr["email"] == DBNull.Value ? "" : dr["email"].ToString();
                                     snapContribuyenteEspecial = dr["contribuyente_especial"] != DBNull.Value && Convert.ToBoolean(dr["contribuyente_especial"]);
 
-                                    // Rellenar el txtBuscarCliente
                                     txtBuscarCliente.Text = snapNombre;
-
-                                    // Reflejar en los campos de texto
                                     ReflejarSnapshotEnUI();
-
-                                    // Ocultar el ListBox de resultados
                                     lstClientes.Visible = false;
                                 }
                             }
@@ -1461,5 +1510,218 @@ WHERE id = @id;", cn))
                 }
             }
         }
+
+        // Clase para almacenar la configuración del secuencial
+        // Clase para almacenar la configuración del secuencial
+        private class SecuencialConfig
+        {
+            public string TipoDocumento { get; set; }
+            public string Establecimiento { get; set; }
+            public string PuntoEmision { get; set; }
+            public int SecuenciaActual { get; set; }
+        }
+
+        // Método para obtener la configuración del secuencial para facturas
+        private SecuencialConfig ObtenerSecuencialFactura()
+        {
+            SecuencialConfig config = null;
+
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    // Buscar el secuencial para FACTURA
+                    string sql = @"
+SELECT TOP 1 
+    tipo_documento, 
+    establecimiento, 
+    punto_emision, 
+    secuencia_actual
+FROM Secuenciales 
+WHERE tipo_documento = 'FACTURA' 
+   OR tipo_documento LIKE '%FACTURA%'
+   OR UPPER(tipo_documento) = 'FACTURA'
+ORDER BY id DESC";
+
+                    using (var cmd = new SqlCommand(sql, cn))
+                    using (var rd = cmd.ExecuteReader())
+                    {
+                        if (rd.Read())
+                        {
+                            config = new SecuencialConfig
+                            {
+                                TipoDocumento = rd["tipo_documento"].ToString(),
+                                Establecimiento = rd["establecimiento"].ToString().PadLeft(3, '0'),
+                                PuntoEmision = rd["punto_emision"].ToString().PadLeft(3, '0'),
+                                SecuenciaActual = Convert.ToInt32(rd["secuencia_actual"])
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener secuencial: " + ex.Message);
+            }
+
+            // Si no hay configuración, usar valores por defecto
+            if (config == null)
+            {
+                config = new SecuencialConfig
+                {
+                    TipoDocumento = "FACTURA",
+                    Establecimiento = "001",
+                    PuntoEmision = "001",
+                    SecuenciaActual = 0
+                };
+            }
+
+            return config;
+        }
+
+        // Método para generar el siguiente secuencial (versión mejorada)
+        private string GenerarSiguienteSecuencial()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var tx = cn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Bloquear la fila del secuencial para evitar concurrencia
+                        string sqlSelect = @"
+SELECT secuencia_actual 
+FROM Secuenciales 
+WHERE tipo_documento = 'FACTURA' 
+   OR tipo_documento LIKE '%FACTURA%'
+WITH (UPDLOCK, ROWLOCK)";
+
+                        int secuenciaActual = 0;
+                        long secuencialId = 0;
+
+                        using (var cmd = new SqlCommand(sqlSelect, cn, tx))
+                        {
+                            using (var rd = cmd.ExecuteReader())
+                            {
+                                if (rd.Read())
+                                {
+                                    secuenciaActual = Convert.ToInt32(rd["secuencia_actual"]);
+                                    // No podemos obtener el ID aquí porque no lo seleccionamos
+                                }
+                                else
+                                {
+                                    // No existe, crear registro por defecto
+                                    rd.Close();
+                                    string sqlInsert = @"
+INSERT INTO Secuenciales (tipo_documento, establecimiento, punto_emision, secuencia_actual)
+VALUES ('FACTURA', '001', '001', 0);
+SELECT SCOPE_IDENTITY();";
+
+                                    using (var cmdInsert = new SqlCommand(sqlInsert, cn, tx))
+                                    {
+                                        secuencialId = Convert.ToInt64(cmdInsert.ExecuteScalar());
+                                        secuenciaActual = 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Si no obtuvimos el ID en el primer bloque, lo buscamos ahora
+                        if (secuencialId == 0)
+                        {
+                            string sqlId = "SELECT id FROM Secuenciales WHERE tipo_documento = 'FACTURA'";
+                            using (var cmdId = new SqlCommand(sqlId, cn, tx))
+                            {
+                                secuencialId = Convert.ToInt64(cmdId.ExecuteScalar());
+                            }
+                        }
+
+                        // Incrementar secuencia
+                        int nuevaSecuencia = secuenciaActual + 1;
+
+                        string sqlUpdate = @"
+UPDATE Secuenciales 
+SET secuencia_actual = @nueva
+WHERE id = @id";
+
+                        using (var cmdUpdate = new SqlCommand(sqlUpdate, cn, tx))
+                        {
+                            cmdUpdate.Parameters.AddWithValue("@nueva", nuevaSecuencia);
+                            cmdUpdate.Parameters.AddWithValue("@id", secuencialId);
+                            cmdUpdate.ExecuteNonQuery();
+                        }
+
+                        tx.Commit();
+
+                        return nuevaSecuencia.ToString().PadLeft(9, '0');
+                    }
+                    catch
+                    {
+                        tx.Rollback();
+                        throw;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar secuencial: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Fallback: generar secuencial basado en MAX+1 (como antes)
+                try
+                {
+                    using (var cn = con.CrearConexionAbierta())
+                    using (var cmd = new SqlCommand("SELECT ISNULL(MAX(CAST(secuencial AS INT)), 0) + 1 FROM dbo.Facturas", cn))
+                    {
+                        int next = Convert.ToInt32(cmd.ExecuteScalar());
+                        return next.ToString().PadLeft(9, '0');
+                    }
+                }
+                catch
+                {
+                    return "000000001";
+                }
+            }
+        }
+
+        // Método para obtener establecimiento y punto de emisión (para mostrar en la factura)
+        private (string establecimiento, string puntoEmision) ObtenerEstablecimientoPunto()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    string sql = @"
+SELECT TOP 1 
+    establecimiento, 
+    punto_emision
+FROM Secuenciales 
+WHERE tipo_documento = 'FACTURA' 
+   OR tipo_documento LIKE '%FACTURA%'
+ORDER BY id DESC";
+
+                    using (var cmd = new SqlCommand(sql, cn))
+                    using (var rd = cmd.ExecuteReader())
+                    {
+                        if (rd.Read())
+                        {
+                            string est = rd["establecimiento"].ToString().PadLeft(3, '0');
+                            string pto = rd["punto_emision"].ToString().PadLeft(3, '0');
+                            return (est, pto);
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            // Valores por defecto
+            return ("001", "001");
+        }
+
+
+
+        // Método para generar el siguiente secuencial (versión mejorada)
+
     }
 }

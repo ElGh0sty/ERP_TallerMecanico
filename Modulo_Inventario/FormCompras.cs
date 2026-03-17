@@ -28,6 +28,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
         private decimal costoOriginalProducto = 0;
         private int impuestoIdOriginal = 0;
         private bool _actualizandoLista = false;
+        private ErrorProvider errorProvider;
 
         private DataTable dtSugerencias = new DataTable();
 
@@ -36,6 +37,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             InitializeComponent();
             this.usuarioId = usuarioId;
 
+            InicializarValidaciones();
             PrepararTablaItems();
             PrepararTablaSugerencias();
             ConfigurarGrid();
@@ -44,8 +46,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             CargarProveedores();
             CargarProductosBuscador();
             CargarImpuestos();
-
-            
 
             // Defaults
             lstProductos.Visible = false;
@@ -81,6 +81,154 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             RecalcularTotales();
         }
 
+        private void InicializarValidaciones()
+        {
+            errorProvider = new ErrorProvider();
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            // Configurar ComboBox como solo selección
+            cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbImpuestoCompra.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // Validaciones en tiempo real
+            cmbProveedor.SelectedIndexChanged += (s, e) => ValidarProveedor();
+            cmbProveedor.Leave += (s, e) => ValidarProveedor();
+
+            txtBuscarProducto.TextChanged += (s, e) => ValidarProductoSeleccionado();
+            txtBuscarProducto.Leave += (s, e) => ValidarProductoSeleccionado();
+
+            nudCantidad.ValueChanged += (s, e) => ValidarCantidad();
+            nudCantidad.Leave += (s, e) => ValidarCantidad();
+
+            nudCosto.ValueChanged += (s, e) => ValidarCosto();
+            nudCosto.Leave += (s, e) => ValidarCosto();
+
+            cmbImpuestoCompra.SelectedIndexChanged += (s, e) => ValidarImpuestoCompra();
+
+            dgvItems.RowsAdded += (s, e) => ValidarItems();
+            dgvItems.RowsRemoved += (s, e) => ValidarItems();
+        }
+
+        // ===== MÉTODOS DE VALIDACIÓN =====
+
+        private void MarcarError(Control control, string mensaje)
+        {
+            control.BackColor = Color.FromArgb(255, 220, 220);
+            errorProvider.SetError(control, mensaje);
+        }
+
+        private void MarcarOk(Control control)
+        {
+            control.BackColor = Color.White;
+            errorProvider.SetError(control, "");
+        }
+
+        private bool ValidarProveedor()
+        {
+            if (cmbProveedor.SelectedIndex == -1 || cmbProveedor.SelectedValue == null)
+            {
+                MarcarError(cmbProveedor, "Seleccione un proveedor");
+                return false;
+            }
+
+            long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
+            if (proveedorId <= 0)
+            {
+                MarcarError(cmbProveedor, "Seleccione un proveedor válido");
+                return false;
+            }
+
+            MarcarOk(cmbProveedor);
+            return true;
+        }
+
+        private bool ValidarProductoSeleccionado()
+        {
+            if (string.IsNullOrWhiteSpace(txtBuscarProducto.Text))
+            {
+                MarcarOk(txtBuscarProducto);
+                return true;
+            }
+
+            if (productoIdSeleccionado == 0)
+            {
+                MarcarError(txtBuscarProducto, "Seleccione un producto de la lista");
+                return false;
+            }
+
+            MarcarOk(txtBuscarProducto);
+            return true;
+        }
+
+        private bool ValidarCantidad()
+        {
+            if (nudCantidad.Value <= 0)
+            {
+                MarcarError(nudCantidad, "La cantidad debe ser mayor a 0");
+                return false;
+            }
+
+            MarcarOk(nudCantidad);
+            return true;
+        }
+
+        private bool ValidarCosto()
+        {
+            if (nudCosto.Value <= 0)
+            {
+                MarcarError(nudCosto, "El costo debe ser mayor a 0");
+                return false;
+            }
+
+            MarcarOk(nudCosto);
+            return true;
+        }
+
+        private bool ValidarImpuestoCompra()
+        {
+            if (cmbImpuestoCompra.SelectedIndex == -1 || cmbImpuestoCompra.SelectedValue == null)
+            {
+                MarcarError(cmbImpuestoCompra, "Seleccione un impuesto");
+                return false;
+            }
+
+            MarcarOk(cmbImpuestoCompra);
+            return true;
+        }
+
+        private bool ValidarItems()
+        {
+            if (dtItems.Rows.Count == 0)
+            {
+                errorProvider.SetError(btnAgregarItem, "Agregue al menos un producto");
+                return false;
+            }
+
+            errorProvider.SetError(btnAgregarItem, "");
+            return true;
+        }
+
+        private bool ValidarTodo()
+        {
+            bool proveedorValido = ValidarProveedor();
+            bool itemsValidos = ValidarItems();
+            bool impuestoValido = ValidarImpuestoCompra();
+
+            return proveedorValido && itemsValidos && impuestoValido;
+        }
+
+        private void LimpiarValidaciones()
+        {
+            MarcarOk(cmbProveedor);
+            MarcarOk(txtBuscarProducto);
+            MarcarOk(nudCantidad);
+            MarcarOk(nudCosto);
+            MarcarOk(cmbImpuestoCompra);
+            errorProvider.SetError(btnAgregarItem, "");
+        }
+
+        // ===== RESTO DEL CÓDIGO ORIGINAL (con mínimas modificaciones) =====
+
         private void AplicarEstilos()
         {
             BackColor = Color.FromArgb(245, 246, 250);
@@ -114,11 +262,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lstProductos.IntegralHeight = false;
             lstProductos.ItemHeight = 22;
 
-            
             lblTotal.Font = new GdiFont("Segoe UI", 11F, FontStyle.Bold);
         }
 
-        // Método auxiliar para obtener el logo de la empresa
         private byte[] ObtenerLogoEmpresa()
         {
             try
@@ -135,7 +281,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             }
             catch (Exception ex)
             {
-                // Si hay error, simplemente no mostramos logo
                 Console.WriteLine("Error al obtener logo: " + ex.Message);
             }
             return null;
@@ -194,7 +339,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 decimal diferencia = Math.Abs(nuevoCosto - costoOriginalProducto);
                 decimal porcentaje = (diferencia / costoOriginalProducto) * 100;
 
-                if (porcentaje > 10) // Si la diferencia es mayor al 10%
+                if (porcentaje > 10)
                 {
                     var result = MessageBox.Show(
                         $"El costo está cambiando de {costoOriginalProducto:C4} a {nuevoCosto:C4} " +
@@ -227,7 +372,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
                     if (result == DialogResult.No)
                     {
-                        // Restaurar el impuesto original
                         for (int i = 0; i < cmbImpuestoCompra.Items.Count; i++)
                         {
                             var row = ((DataRowView)cmbImpuestoCompra.Items[i]).Row;
@@ -352,7 +496,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             dgvItems.Columns["costo_unitario"].DefaultCellStyle.Format = "N4";
             dgvItems.Columns["subtotal"].DefaultCellStyle.Format = "N4";
 
-            // Botón eliminar estilo
             var btnCol = (DataGridViewButtonColumn)dgvItems.Columns["btnEliminar"];
             btnCol.FlatStyle = FlatStyle.Flat;
 
@@ -474,17 +617,18 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                         sugerencias.Rows.Add(r);
                     }
                 }
-                else
-                {
-                    var r = sugerencias.NewRow();
-                    r["id"] = 0L;
-                    r["nombre"] = "➕ Crear producto: " + texto;
-                    r["stock"] = 0;
-                    r["precio_costo"] = 0;
-                    r["impuesto_id"] = 0;
-                    r["is_create"] = true;
-                    sugerencias.Rows.Add(r);
-                }
+                // ELIMINAMOS esta parte que agregaba la opción "Crear producto"
+                // else
+                // {
+                //     var r = sugerencias.NewRow();
+                //     r["id"] = 0L;
+                //     r["nombre"] = "➕ Crear producto: " + texto;
+                //     r["stock"] = 0;
+                //     r["precio_costo"] = 0;
+                //     r["impuesto_id"] = 0;
+                //     r["is_create"] = true;
+                //     sugerencias.Rows.Add(r);
+                // }
 
                 dtSugerencias = sugerencias;
 
@@ -493,7 +637,18 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 lstProductos.ValueMember = "id";
                 lstProductos.DataSource = dtSugerencias;
 
-                MostrarListaDebajo();
+                // Solo mostrar la lista si hay resultados
+                lstProductos.Visible = dv.Count > 0;
+
+                // Posicionar la lista solo si hay resultados
+                if (dv.Count > 0)
+                {
+                    MostrarListaDebajo();
+                }
+                else
+                {
+                    lstProductos.Visible = false;
+                }
             }
             finally
             {
@@ -503,6 +658,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private void MostrarListaDebajo()
         {
+            if (dtSugerencias.Rows.Count == 0) return;
+
             lstProductos.Visible = true;
             lstProductos.Left = txtBuscarProducto.Left;
             lstProductos.Top = txtBuscarProducto.Bottom + 2;
@@ -528,29 +685,30 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             var drv = lstProductos.SelectedItem as DataRowView;
             if (drv == null) return;
 
-            bool isCreate = Convert.ToBoolean(drv["is_create"]);
+            // Eliminamos la comprobación de is_create
+            // bool isCreate = Convert.ToBoolean(drv["is_create"]);
+
             long id = Convert.ToInt64(drv["id"]);
             string nombre = drv["nombre"].ToString();
             int stock = Convert.ToInt32(drv["stock"]);
             decimal precioCosto = Convert.ToDecimal(drv["precio_costo"]);
             int impuestoId = Convert.ToInt32(drv["impuesto_id"]);
 
-            if (isCreate)
-            {
-                string texto = (txtBuscarProducto.Text ?? "").Trim();
-                AbrirPopupNuevoProducto(texto);
-                return;
-            }
+            // Eliminamos esta parte
+            // if (isCreate)
+            // {
+            //     string texto = (txtBuscarProducto.Text ?? "").Trim();
+            //     AbrirPopupNuevoProducto(texto);
+            //     return;
+            // }
 
             productoIdSeleccionado = id;
             txtBuscarProducto.Text = nombre;
             lblStockSel.Text = $"Stock: {stock}";
 
-            // Precargar el costo y el impuesto
             nudCosto.Value = precioCosto;
             costoOriginalProducto = precioCosto;
 
-            // Seleccionar el impuesto correspondiente
             impuestoIdOriginal = impuestoId;
             for (int i = 0; i < cmbImpuestoCompra.Items.Count; i++)
             {
@@ -600,9 +758,20 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private void AgregarItem()
         {
-            if (productoIdSeleccionado <= 0)
+            // Ya no validamos que productoIdSeleccionado > 0
+            // if (productoIdSeleccionado <= 0)
+            // {
+            //     MessageBox.Show("Selecciona un producto válido.");
+            //     return;
+            // }
+
+            string nombreProducto = txtBuscarProducto.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nombreProducto))
             {
-                MessageBox.Show("Selecciona un producto válido.");
+                MessageBox.Show("Ingrese el nombre del producto.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBuscarProducto.Focus();
                 return;
             }
 
@@ -621,8 +790,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 return;
             }
 
-            // Si ya está, sumamos cantidad
-            var existentes = dtItems.Select($"producto_id = {productoIdSeleccionado}");
+            // Si hay un producto seleccionado de la lista, usamos su ID
+            // Si no, usamos 0 para indicar que es un producto nuevo (sin ID)
+            long productoId = productoIdSeleccionado > 0 ? productoIdSeleccionado : 0;
+
+            // Si ya está el mismo producto (mismo nombre) en la lista, sumamos cantidad
+            var existentes = dtItems.Select($"producto = '{nombreProducto.Replace("'", "''")}'");
             if (existentes.Length > 0)
             {
                 var row = existentes[0];
@@ -634,8 +807,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             else
             {
                 var r = dtItems.NewRow();
-                r["producto_id"] = productoIdSeleccionado;
-                r["producto"] = txtBuscarProducto.Text.Trim();
+                r["producto_id"] = productoId;  // Puede ser 0 si es nuevo
+                r["producto"] = nombreProducto;
                 r["cantidad"] = cantidad;
                 r["costo_unitario"] = costo;
                 r["subtotal"] = cantidad * costo;
@@ -652,6 +825,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lstProductos.Visible = false;
 
             RecalcularTotales();
+            ValidarItems();
         }
 
         private void RecalcularTotales()
@@ -661,7 +835,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             foreach (DataRow row in dtItems.Rows)
                 subtotal += Convert.ToDecimal(row["subtotal"]);
 
-            // Obtener el porcentaje de IVA seleccionado
             decimal porcentajeIVA = 0;
             if (cmbImpuestoCompra.SelectedItem != null)
             {
@@ -677,24 +850,44 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             lblTotal.Text = $"Total: {total:C2}";
         }
 
+        
+
+        private long CrearNuevoProducto(string nombre, decimal costo, int impuestoId)
+        {
+            try
+            {
+                using (var cmd = new SqlCommand(@"
+            INSERT INTO Productos(nombre, tipo, stock, precio_costo, precio_pvp, impuesto_id)
+            VALUES(@n, 'Otro', 0, @costo, 0, @imp);
+            SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", con.leer))
+                {
+                    cmd.Parameters.AddWithValue("@n", nombre);
+                    cmd.Parameters.AddWithValue("@costo", costo);
+                    cmd.Parameters.AddWithValue("@imp", impuestoId);
+
+                    return Convert.ToInt64(cmd.ExecuteScalar());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al crear producto '{nombre}': {ex.Message}");
+                return 0;
+            }
+        }
+
         private void GuardarCompra()
         {
+            if (!ValidarTodo())
+            {
+                MessageBox.Show("Corrija los campos marcados en rojo.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (usuarioId <= 0)
             {
                 MessageBox.Show("Error: Sesión inválida (usuarioId). Vuelve a iniciar sesión.",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (cmbProveedor.SelectedValue == null || cmbProveedor.SelectedIndex == -1)
-            {
-                MessageBox.Show("Selecciona un proveedor.");
-                return;
-            }
-
-            if (dtItems.Rows.Count == 0)
-            {
-                MessageBox.Show("Agrega al menos un producto.");
                 return;
             }
 
@@ -706,7 +899,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             foreach (DataRow row in dtItems.Rows)
                 subtotal += Convert.ToDecimal(row["subtotal"]);
 
-            // Obtener el porcentaje de IVA seleccionado para la compra (para la factura)
             decimal porcentajeIVACompra = 0;
             int impuestoIdCompra = 0;
             string nombreIVACompra = "IVA";
@@ -729,7 +921,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 {
                     try
                     {
-                        // 1. Insertar en Compras
                         long compraId;
                         using (SqlCommand cmd = new SqlCommand(@"
                     INSERT INTO Compras
@@ -749,7 +940,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             compraId = Convert.ToInt64(cmd.ExecuteScalar());
                         }
 
-                        // 2. Insertar en FacturaCompra y obtener el ID generado
                         long facturaCompraId;
                         using (SqlCommand cmd = new SqlCommand(@"
                     INSERT INTO FacturaCompra
@@ -761,7 +951,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     (@prov, @user, @clave, @serie, @sec, @fecha, GETDATE(), @sub15, @sub0, 0, @iva, @total, 'Registrada', @compra)",
                             con.leer, tx))
                         {
-                            // Datos del proveedor seleccionado
                             DataRow proveedorRow = dtProveedores.Select($"id = {proveedorId}").FirstOrDefault();
                             string ruc = proveedorRow?["ruc"]?.ToString() ?? "9999999999999";
 
@@ -780,17 +969,26 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             facturaCompraId = (long)cmd.ExecuteScalar();
                         }
 
-                        // 3. Insertar detalles y actualizar productos
-                        foreach (DataRow r in dtItems.Rows)
-                        {
+                        foreach(DataRow r in dtItems.Rows)
+{
                             long prodId = Convert.ToInt64(r["producto_id"]);
+                            string nombreProducto = r["producto"].ToString();
                             int cant = Convert.ToInt32(r["cantidad"]);
-                            decimal costo = Convert.ToDecimal(r["costo_unitario"]); // Este es el costo SIN IVA
+                            decimal costo = Convert.ToDecimal(r["costo_unitario"]);
 
-                            // Obtener el impuesto del producto (no el de la compra)
-                            int impuestoIdProducto = impuestoIdOriginal; // El que se cargó al seleccionar el producto
+                            if (prodId == 0)
+                            {
+                                // Es un producto nuevo que no existe en la base de datos
+                                // Primero debemos crearlo
+                                prodId = CrearNuevoProducto(nombreProducto, costo, impuestoIdOriginal);
+                                if (prodId == 0)
+                                {
+                                    throw new Exception($"No se pudo crear el producto '{nombreProducto}'");
+                                }
+                            }
 
-                            // detalle
+                            int impuestoIdProducto = impuestoIdOriginal;
+
                             using (SqlCommand cmdDet = new SqlCommand(@"
                         INSERT INTO DetalleCompras(compra_id, producto_id, cantidad, precio_costo_unitario)
                         VALUES(@c, @p, @cant, @costo);", con.leer, tx))
@@ -802,7 +1000,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                                 cmdDet.ExecuteNonQuery();
                             }
 
-                            // stock - Guardamos el costo SIN IVA y el impuesto del producto
                             using (SqlCommand cmdStock = new SqlCommand(@"
                         UPDATE Productos
                         SET stock = ISNULL(stock,0) + @cant,
@@ -811,13 +1008,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                         WHERE id = @p;", con.leer, tx))
                             {
                                 cmdStock.Parameters.AddWithValue("@cant", cant);
-                                cmdStock.Parameters.AddWithValue("@costo", costo); // Costo SIN IVA
-                                cmdStock.Parameters.AddWithValue("@impuestoProducto", impuestoIdProducto); // IVA del producto
+                                cmdStock.Parameters.AddWithValue("@costo", costo);
+                                cmdStock.Parameters.AddWithValue("@impuestoProducto", impuestoIdProducto);
                                 cmdStock.Parameters.AddWithValue("@p", prodId);
                                 cmdStock.ExecuteNonQuery();
                             }
 
-                            // kardex (ENTRADA)
                             using (SqlCommand cmdK = new SqlCommand(@"
                         INSERT INTO Kardex(producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad)
                         VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
@@ -830,10 +1026,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             }
                         }
 
-                        // 4. Commit de la transacción
                         tx.Commit();
 
-                        // 5. AHORA generar y guardar el PDF (FUERA de la transacción)
                         try
                         {
                             string pdfPath = GenerarPdfFacturaCompra(paraGuardar: true);
@@ -848,7 +1042,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                                 "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
 
-                        // 6. Recargar datos y limpiar formulario
                         CargarProductosBuscador();
                         LimpiarTodo();
                     }
@@ -874,7 +1067,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private string GenerarClaveAccesoCompra(string ruc, DateTime fecha)
         {
-            // Formato simplificado para clave de acceso de compra
             string baseStr = fecha.ToString("ddMMyyyy") + ruc.PadLeft(13, '0') +
                             "001001" + DateTime.Now.ToString("HHmmss") + "12345678";
             return baseStr.PadRight(49, '1').Substring(0, 49);
@@ -898,7 +1090,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private void LimpiarTodo()
         {
-            
             txtBuscarProducto.Clear();
             lstProductos.Visible = false;
 
@@ -911,6 +1102,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             lblStockSel.Text = "Stock: -";
             RecalcularTotales();
+            LimpiarValidaciones();
         }
 
         private void dgvItems_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -923,6 +1115,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             dtItems.Rows[e.RowIndex].Delete();
             RecalcularTotales();
+            ValidarItems();
         }
 
         private void btnBuscadorProductos_Click(object sender, EventArgs e)
@@ -938,7 +1131,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 decimal precio = Convert.ToDecimal(fila["precio_pvp"]);
                 int cantidad = buscador.CantidadSeleccionada;
 
-                // Buscar el producto en dtProductos para obtener más datos
                 DataRow[] rows = dtProductos.Select($"id = {productoId}");
                 if (rows.Length > 0)
                 {
@@ -954,12 +1146,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     nudCosto.Value = costoActual;
                     costoOriginalProducto = costoActual;
 
-                    // IMPORTANTE: Guardar el impuesto del producto
                     int impuestoId = Convert.ToInt32(productoRow["impuesto_id"]);
                     impuestoIdOriginal = impuestoId;
 
-                    // Seleccionar el impuesto correspondiente en el ComboBox de compra
-                    // (esto es solo para la factura de compra, no afecta al producto)
                     for (int i = 0; i < cmbImpuestoCompra.Items.Count; i++)
                     {
                         var row = ((DataRowView)cmbImpuestoCompra.Items[i]).Row;
@@ -970,7 +1159,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                         }
                     }
 
-                    // Opcional: Preguntar si quiere agregar el producto automáticamente
                     DialogResult agregarAuto = MessageBox.Show(
                         $"¿Desea agregar {cantidad} unidad(es) de '{nombre}' a la compra?\n\n" +
                         $"Costo SIN IVA: {costoActual:C4}\n" +
@@ -984,6 +1172,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                         nudCantidad.Value = cantidad;
                         AgregarItem();
                     }
+
+                    ValidarProductoSeleccionado();
                 }
                 else
                 {
@@ -994,7 +1184,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             }
         }
 
-        // Método auxiliar para obtener nombre del impuesto
         private string ObtenerNombreImpuesto(int impuestoId)
         {
             foreach (DataRowView item in cmbImpuestoCompra.Items)
@@ -1042,11 +1231,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             if (dtItems == null || dtItems.Rows.Count == 0)
                 throw new Exception("No hay items para generar el PDF.");
 
-            // Obtener datos de la empresa
             var empresa = ObtenerEmpresa();
             byte[] logoBytes = ObtenerLogoEmpresa();
 
-            // Obtener datos del proveedor seleccionado
             long proveedorId = Convert.ToInt64(cmbProveedor.SelectedValue);
             DataRow proveedorRow = dtProveedores.Select($"id = {proveedorId}").FirstOrDefault();
 
@@ -1054,7 +1241,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             decimal subtotal = dtItems.AsEnumerable().Sum(r => Convert.ToDecimal(r["subtotal"]));
 
-            // Obtener el porcentaje de IVA de la COMPRA (el que pagamos al proveedor)
             decimal porcentajeIVACompra = 0;
             string nombreIVACompra = "IVA";
             if (cmbImpuestoCompra.SelectedItem != null)
@@ -1079,14 +1265,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 var writer = PdfWriter.GetInstance(doc, fs);
                 doc.Open();
 
-                // Definir fuentes
                 var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
                 var fontSub = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
                 var font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
                 var fontSmall = FontFactory.GetFont(FontFactory.HELVETICA, 8);
                 var fontNote = FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 8, BaseColor.GRAY);
 
-                // ===== ENCABEZADO CON LOGO =====
                 PdfPTable head = new PdfPTable(logoBytes != null ? 3 : 2);
                 head.WidthPercentage = 100;
                 if (logoBytes != null)
@@ -1094,7 +1278,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 else
                     head.SetWidths(new float[] { 65, 35 });
 
-                // Celda del Logo (si existe)
                 if (logoBytes != null)
                 {
                     var cellLogo = new PdfPCell();
@@ -1116,14 +1299,13 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     head.AddCell(cellLogo);
                 }
 
-                // Celda Empresa
                 var cellEmp = new PdfPCell();
                 cellEmp.Border = PdfRectangle.BOX;
                 cellEmp.Padding = 8;
 
                 Phrase phraseEmp = new Phrase();
                 phraseEmp.Add(new Chunk(empresa.nombre?.ToUpper() ?? "EMPRESA\n", fontSub));
-                phraseEmp.Add(new Chunk("\n", fontSmall)); // Espacio
+                phraseEmp.Add(new Chunk("\n", fontSmall));
                 if (!string.IsNullOrWhiteSpace(empresa.ruc))
                     phraseEmp.Add(new Chunk($"RUC: {empresa.ruc}\n", font));
                 if (!string.IsNullOrWhiteSpace(empresa.direccion))
@@ -1136,7 +1318,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 cellEmp.AddElement(phraseEmp);
                 head.AddCell(cellEmp);
 
-                // Celda Factura
                 var cellFac = new PdfPCell();
                 cellFac.Border = PdfRectangle.BOX;
                 cellFac.Padding = 8;
@@ -1152,7 +1333,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 doc.Add(head);
                 doc.Add(new Paragraph(" "));
 
-                //  DATOS DEL PROVEEDOR 
                 PdfPTable proveedorTable = new PdfPTable(2);
                 proveedorTable.WidthPercentage = 100;
                 proveedorTable.SetWidths(new float[] { 50, 50 });
@@ -1200,8 +1380,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 doc.Add(proveedorTable);
                 doc.Add(new Paragraph(" "));
 
-                //  TABLA DE ITEMS 
-                PdfPTable items = new PdfPTable(6); // Aumentamos a 6 columnas
+                PdfPTable items = new PdfPTable(6);
                 items.WidthPercentage = 100;
                 items.SetWidths(new float[] { 8, 32, 12, 12, 12, 24 });
 
@@ -1228,12 +1407,10 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                     decimal costo = Convert.ToDecimal(row["costo_unitario"]);
                     decimal sub = Convert.ToDecimal(row["subtotal"]);
 
-                    // Obtener el IVA del producto (para venta)
                     int impuestoIdProducto = impuestoIdOriginal;
                     string nombreIVAProducto = "IVA";
                     decimal porcentajeIVAProducto = 0;
 
-                    // Buscar el porcentaje del IVA del producto
                     foreach (DataRowView item in cmbImpuestoCompra.Items)
                     {
                         if (Convert.ToInt32(item.Row["id"]) == impuestoIdProducto)
@@ -1255,7 +1432,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 doc.Add(items);
                 doc.Add(new Paragraph(" "));
 
-                //  TOTALES 
                 PdfPTable tot = new PdfPTable(2);
                 tot.HorizontalAlignment = Element.ALIGN_RIGHT;
                 tot.WidthPercentage = 45;
@@ -1282,7 +1458,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 AddTotalRow("SUBTOTAL (sin IVA)", $"$ {subtotal:N4}");
                 AddTotalRow($"{nombreIVACompra} ({porcentajeIVACompra * 100:0}%) - DÉBITO FISCAL", $"$ {ivaCompra:N4}");
 
-                // Línea separadora visual
                 var cellSep = new PdfPCell(new Phrase(""));
                 cellSep.Colspan = 2;
                 cellSep.Border = PdfRectangle.NO_BORDER;
@@ -1294,7 +1469,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 doc.Add(tot);
                 doc.Add(new Paragraph(" "));
 
-                //  NOTA INFORMATIVA SOBRE IVA 
                 PdfPTable noteTable = new PdfPTable(1);
                 noteTable.WidthPercentage = 100;
 
@@ -1315,7 +1489,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                 doc.Add(noteTable);
                 doc.Add(new Paragraph(" "));
 
-                //  PIE DE PÁGINA 
                 PdfPTable footer = new PdfPTable(1);
                 footer.WidthPercentage = 100;
 
@@ -1390,20 +1563,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             catch { }
         }
 
-        private void lblTotal_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblIVA_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblSubtotal_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void lblTotal_Click(object sender, EventArgs e) { }
+        private void lblIVA_Click(object sender, EventArgs e) { }
+        private void lblSubtotal_Click(object sender, EventArgs e) { }
     }
 }
 

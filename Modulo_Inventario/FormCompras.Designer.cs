@@ -53,6 +53,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCosto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
+            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,7 +132,7 @@
             this.lblStockSel.BackColor = System.Drawing.Color.LightSlateGray;
             this.lblStockSel.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStockSel.ForeColor = System.Drawing.Color.White;
-            this.lblStockSel.Location = new System.Drawing.Point(272, 73);
+            this.lblStockSel.Location = new System.Drawing.Point(268, 36);
             this.lblStockSel.Name = "lblStockSel";
             this.lblStockSel.Size = new System.Drawing.Size(59, 21);
             this.lblStockSel.TabIndex = 7;
@@ -243,7 +244,7 @@
             this.btnBuscadorProducto.IconColor = System.Drawing.Color.Black;
             this.btnBuscadorProducto.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadorProducto.IconSize = 30;
-            this.btnBuscadorProducto.Location = new System.Drawing.Point(271, 27);
+            this.btnBuscadorProducto.Location = new System.Drawing.Point(272, 63);
             this.btnBuscadorProducto.Name = "btnBuscadorProducto";
             this.btnBuscadorProducto.Size = new System.Drawing.Size(33, 33);
             this.btnBuscadorProducto.TabIndex = 27;
@@ -293,6 +294,9 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel2.Controls.Add(this.lblStockSel);
+            this.panel2.Controls.Add(this.btnBuscadorProducto);
+            this.panel2.Controls.Add(this.cmbProveedor);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
@@ -324,16 +328,13 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbImpuestoCompra);
-            this.Controls.Add(this.btnBuscadorProducto);
             this.Controls.Add(this.btnNuevoProducto);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnAgregarItem);
             this.Controls.Add(this.nudCosto);
             this.Controls.Add(this.nudCantidad);
-            this.Controls.Add(this.lblStockSel);
             this.Controls.Add(this.txtBuscarProducto);
-            this.Controls.Add(this.cmbProveedor);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormCompras";
@@ -341,6 +342,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCosto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

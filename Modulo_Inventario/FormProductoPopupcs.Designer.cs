@@ -140,6 +140,7 @@
             // 
             // cmbImpuesto
             // 
+            this.cmbImpuesto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbImpuesto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbImpuesto.FormattingEnabled = true;
             this.cmbImpuesto.Location = new System.Drawing.Point(398, 285);

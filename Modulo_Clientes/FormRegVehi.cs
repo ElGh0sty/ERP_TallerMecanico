@@ -20,6 +20,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
         private readonly string rolUsuario;
 
         private long clienteSeleccionadoId = 0;
+        private ValidadorTiempoReal validador;
 
         // Item para ListBox
         private class ClienteItem
@@ -37,6 +38,10 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             formPrincipal = principal;
             this.rolUsuario = rolUsuario;
 
+            // Hacer ComboBox solo de selección
+            cmbTipoVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            InicializarValidador();
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
@@ -44,7 +49,6 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             lstClientes.Click += lstClientes_Click;
             txtBuscarCliente.Leave += txtBuscarCliente_Leave;
 
-            // Para que el ListBox no quede “pegado” siempre visible
             this.Click += (s, e) => lstClientes.Visible = false;
 
             txtPlaca.CharacterCasing = CharacterCasing.Upper;
@@ -64,11 +68,12 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             this.rolUsuario = rolUsuario;
             vehiculoIdEditar = vehiculoId;
 
+            InicializarValidador();
             btnBuscadorCliente.Visible = false;
             CargarClientesCompleto();
             CargarTiposVehiculo();
 
-            txtBuscarCliente.ReadOnly = true; 
+            txtBuscarCliente.ReadOnly = true;
 
             this.Click += (s, e) => lstClientes.Visible = false;
 
@@ -83,6 +88,11 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             CargarVehiculoParaEditar(vehiculoId);
             btnGuardarVehiculo.Text = "Guardar edición";
+        }
+
+        private void InicializarValidador()
+        {
+            validador = new ValidadorTiempoReal(errorProvider1);
         }
 
         private void CargarClientesCompleto()
@@ -219,6 +229,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
                 con.Cerrar();
             }
         }
+
         private void CargarVehiculoParaEditar(long vehiculoId)
         {
             try
@@ -265,6 +276,16 @@ WHERE id = @id";
                         txtKilometraje.Text = dr["kilometraje_actual"].ToString();
 
                         btnGuardarVehiculo.Text = "Guardar cambios";
+
+                        // Validar después de cargar
+                        ValidarDuenioLive();
+                        ValidarTipoLive();
+                        ValidarPlacaLive();
+                        ValidarMarcaLive();
+                        ValidarModeloLive();
+                        ValidarAnioLive();
+                        ValidarVinLive();
+                        ValidarKmLive();
                     }
                     else
                     {
@@ -285,29 +306,13 @@ WHERE id = @id";
 
         private void btnGuardarVehiculo_Click(object sender, EventArgs e)
         {
-            ValidarDuenioLive();
-            ValidarTipoLive();
-            ValidarPlacaLive();
-            ValidarMarcaLive();
-            ValidarModeloLive();
-            ValidarAnioLive();
-            ValidarVinLive();
-            ValidarKmLive();
-
-            if (!string.IsNullOrEmpty(errorProvider1.GetError(txtBuscarCliente)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(cmbTipoVehiculo)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtPlaca)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtMarca)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtModelo)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtAño)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtChasis)) ||
-                !string.IsNullOrEmpty(errorProvider1.GetError(txtKilometraje)))
+            // Validar todos los campos antes de guardar
+            if (!ValidarTodo())
             {
                 MessageBox.Show("Corrige los campos marcados en rojo.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
 
             if (!ValidarFormulario(out int anio, out int kilometraje))
                 return;
@@ -322,6 +327,7 @@ WHERE id = @id";
                 if (ExistePlaca(placa))
                 {
                     MessageBox.Show("Ya existe un vehículo registrado con esa placa.");
+                    validador.MarcarError(txtPlaca, "Placa ya registrada");
                     txtPlaca.Focus();
                     return;
                 }
@@ -329,6 +335,7 @@ WHERE id = @id";
                 if (ExisteVIN(vin))
                 {
                     MessageBox.Show("Ya existe un vehículo registrado con ese Chasis/VIN.");
+                    validador.MarcarError(txtChasis, "VIN ya registrado");
                     txtChasis.Focus();
                     return;
                 }
@@ -361,7 +368,6 @@ WHERE id = @id";
                 SqlCommand cmd = new SqlCommand(sql, con.leer);
 
                 cmd.Parameters.Add("@cliente_id", SqlDbType.BigInt).Value = clienteSeleccionadoId;
-
                 cmd.Parameters.Add("@placa", SqlDbType.Char, 8).Value = placa;
                 cmd.Parameters.Add("@marca", SqlDbType.NVarChar, 255).Value = txtMarca.Text.Trim();
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar, 255).Value = txtModelo.Text.Trim();
@@ -386,10 +392,27 @@ WHERE id = @id";
                     formPrincipal.AbrirFormularioEnPanel(new FormCatalogo(formPrincipal, rolUsuario));
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
-            finally { con.Cerrar(); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                con.Cerrar();
+            }
         }
 
+        private bool ValidarTodo()
+        {
+            return ValidarDuenioLive() &&
+                   ValidarTipoLive() &&
+                   ValidarPlacaLive() &&
+                   ValidarMarcaLive() &&
+                   ValidarModeloLive() &&
+                   ValidarAnioLive() &&
+                   ValidarVinLive() &&
+                   ValidarKmLive();
+        }
 
         private void Limpiar()
         {
@@ -400,6 +423,10 @@ WHERE id = @id";
             clienteSeleccionadoId = 0;
             cmbTipoVehiculo.SelectedIndex = -1;
             lstClientes.Visible = false;
+
+            // Limpiar validaciones
+            validador.LimpiarErrores(errorProvider1,
+                txtBuscarCliente, txtPlaca, txtMarca, txtModelo, txtAño, txtChasis, txtKilometraje);
         }
 
         private void txtKilometraje_KeyPress(object sender, KeyPressEventArgs e)
@@ -408,65 +435,61 @@ WHERE id = @id";
                 e.Handled = true;
         }
 
-        private void txtModelo_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
+        // ===== MÉTODOS DE VALIDACIÓN EN TIEMPO REAL =====
 
-        private void MarcarOk(Control c)
-        {
-            c.BackColor = Color.White;
-            errorProvider1.SetError(c, "");
-        }
-
-        private void MarcarError(Control c, string msg)
-        {
-            c.BackColor = Color.FromArgb(255, 220, 220); 
-            errorProvider1.SetError(c, msg);
-        }
-
-
-        private void ValidarDuenioLive()
+        private bool ValidarDuenioLive()
         {
             if (clienteSeleccionadoId == 0)
-                MarcarError(txtBuscarCliente, "Seleccione un cliente (de la lista).");
+            {
+                validador.MarcarError(txtBuscarCliente, "Seleccione un cliente de la lista.");
+                return false;
+            }
             else
-                MarcarOk(txtBuscarCliente);
+            {
+                validador.MarcarOk(txtBuscarCliente);
+                return true;
+            }
         }
 
-        private void ValidarTipoLive()
+        private bool ValidarTipoLive()
         {
             if (cmbTipoVehiculo.SelectedIndex == -1 || cmbTipoVehiculo.SelectedValue == null)
-                MarcarError(cmbTipoVehiculo, "Seleccione un tipo de vehículo.");
+            {
+                validador.MarcarError(cmbTipoVehiculo, "Seleccione un tipo de vehículo.");
+                return false;
+            }
             else
-                MarcarOk(cmbTipoVehiculo);
+            {
+                validador.MarcarOk(cmbTipoVehiculo);
+                return true;
+            }
         }
 
-        private void ValidarPlacaLive()
+        private bool ValidarPlacaLive()
         {
             string placa = NormalizarPlaca(txtPlaca.Text);
 
             if (string.IsNullOrWhiteSpace(placa))
             {
-                MarcarError(txtPlaca, "Ingrese la placa.");
-                return;
+                validador.MarcarError(txtPlaca, "Ingrese la placa.");
+                return false;
             }
 
             if (!EsPlacaEcuadorValida(placa))
             {
-                MarcarError(txtPlaca, "Formato válido: ABC-123 o ABC-1234.");
-                return;
+                validador.MarcarError(txtPlaca, "Formato válido: ABC-123 o ABC-1234.");
+                return false;
             }
 
             // Si es válida, actualiza el textbox con formato normalizado
             if (txtPlaca.Text.Trim().ToUpper() != placa)
                 txtPlaca.Text = placa;
 
-            MarcarOk(txtPlaca);
+            validador.MarcarOk(txtPlaca);
+            return true;
         }
 
-
-        private void ValidarMarcaLive()
+        private bool ValidarMarcaLive()
         {
             string marca = NormalizarTextoVehiculo(txtMarca.Text);
 
@@ -475,41 +498,42 @@ WHERE id = @id";
 
             if (string.IsNullOrWhiteSpace(marca))
             {
-                MarcarError(txtMarca, "Ingrese la marca.");
-                return;
+                validador.MarcarError(txtMarca, "Ingrese la marca.");
+                return false;
             }
 
             if (marca.Length < 2 || marca.Length > 30)
             {
-                MarcarError(txtMarca, "Marca: 2 a 30 caracteres.");
-                return;
+                validador.MarcarError(txtMarca, "Marca: 2 a 30 caracteres.");
+                return false;
             }
 
             // Caracteres permitidos
             if (!Regex.IsMatch(marca, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-]+$"))
             {
-                MarcarError(txtMarca, "Marca inválida (caracteres no permitidos).");
-                return;
+                validador.MarcarError(txtMarca, "Marca inválida (caracteres no permitidos).");
+                return false;
             }
 
-            // Debe tener al menos 2 letras (evita "12", "X1" si quieres permitir, baja a 1)
+            // Debe tener al menos 2 letras
             if (!TieneMinimoLetras(marca, 2))
             {
-                MarcarError(txtMarca, "Marca inválida (muy corta o sin letras).");
-                return;
+                validador.MarcarError(txtMarca, "Marca inválida (muy corta o sin letras).");
+                return false;
             }
 
             // Evitar basura tipo AAAAAA / ----- / 111111
             if (EsTextoRepetidoBasura(marca))
             {
-                MarcarError(txtMarca, "Marca inválida.");
-                return;
+                validador.MarcarError(txtMarca, "Marca inválida.");
+                return false;
             }
 
-            MarcarOk(txtMarca);
+            validador.MarcarOk(txtMarca);
+            return true;
         }
 
-        private void ValidarModeloLive()
+        private bool ValidarModeloLive()
         {
             string modelo = NormalizarTextoVehiculo(txtModelo.Text);
 
@@ -517,92 +541,94 @@ WHERE id = @id";
 
             if (string.IsNullOrWhiteSpace(modelo))
             {
-                MarcarError(txtModelo, "Ingrese el modelo.");
-                return;
+                validador.MarcarError(txtModelo, "Ingrese el modelo.");
+                return false;
             }
 
             if (modelo.Length < 1 || modelo.Length > 40)
             {
-                MarcarError(txtModelo, "Modelo: 1 a 40 caracteres.");
-                return;
+                validador.MarcarError(txtModelo, "Modelo: 1 a 40 caracteres.");
+                return false;
             }
 
             // Modelo permite más cosas: / (ej: FZ/2.0), - (ej: CX-5)
             if (!Regex.IsMatch(modelo, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .'\-\/]+$"))
             {
-                MarcarError(txtModelo, "Modelo inválido (caracteres no permitidos).");
-                return;
+                validador.MarcarError(txtModelo, "Modelo inválido (caracteres no permitidos).");
+                return false;
             }
 
             // Evitar basura repetida
             if (EsTextoRepetidoBasura(modelo))
             {
-                MarcarError(txtModelo, "Modelo inválido.");
-                return;
+                validador.MarcarError(txtModelo, "Modelo inválido.");
+                return false;
             }
 
-            // (opcional) obliga a que tenga al menos 1 letra o 1 número (ya lo tiene por regex)
-            MarcarOk(txtModelo);
+            validador.MarcarOk(txtModelo);
+            return true;
         }
 
-
-
-        private void ValidarAnioLive()
+        private bool ValidarAnioLive()
         {
             if (!int.TryParse((txtAño.Text ?? "").Trim(), out int anio))
             {
-                MarcarError(txtAño, "Ingrese un año válido.");
-                return;
+                validador.MarcarError(txtAño, "Ingrese un año válido.");
+                return false;
             }
 
             int anioActual = DateTime.Now.Year;
             if (anio < 1950 || anio > anioActual + 1)
-                MarcarError(txtAño, $"Año fuera de rango (1950 - {anioActual + 1}).");
-            else
-                MarcarOk(txtAño);
+            {
+                validador.MarcarError(txtAño, $"Año fuera de rango (1950 - {anioActual + 1}).");
+                return false;
+            }
+
+            validador.MarcarOk(txtAño);
+            return true;
         }
 
-        private void ValidarKmLive()
+        private bool ValidarKmLive()
         {
             string kmTxt = (txtKilometraje.Text ?? "").Trim();
 
             if (string.IsNullOrWhiteSpace(kmTxt))
             {
-                MarcarOk(txtKilometraje);
-                return;
+                validador.MarcarOk(txtKilometraje);
+                return true;
             }
 
             if (!int.TryParse(kmTxt, out int km) || km < 0 || km > 3000000)
-                MarcarError(txtKilometraje, "Kilometraje inválido (0 - 3,000,000).");
-            else
-                MarcarOk(txtKilometraje);
+            {
+                validador.MarcarError(txtKilometraje, "Kilometraje inválido (0 - 3,000,000).");
+                return false;
+            }
+
+            validador.MarcarOk(txtKilometraje);
+            return true;
         }
 
-
-
-
-        private void ValidarVinLive()
+        private bool ValidarVinLive()
         {
             string vin = (txtChasis.Text ?? "").Trim().ToUpper();
 
             if (string.IsNullOrWhiteSpace(vin))
             {
-                MarcarError(txtChasis, "Ingrese el Chasis/VIN.");
-                return;
+                validador.MarcarError(txtChasis, "Ingrese el Chasis/VIN.");
+                return false;
             }
 
             if (!EsVinValido(vin))
             {
-                MarcarError(txtChasis, "VIN inválido: 17 caracteres, sin I/O/Q.");
-                return;
+                validador.MarcarError(txtChasis, "VIN inválido: 17 caracteres, sin I/O/Q.");
+                return false;
             }
 
-            MarcarOk(txtChasis);
+            validador.MarcarOk(txtChasis);
+            return true;
         }
 
-
-        
-
+        // ===== MÉTODOS DE UTILIDAD =====
 
         private string NormalizarPlaca(string placa)
         {
@@ -619,8 +645,6 @@ WHERE id = @id";
             return Regex.IsMatch(placaNormalizada, @"^[A-Z]{3}-\d{3,4}$");
         }
 
-        
-
         private bool EsVinValido(string vin)
         {
             vin = (vin ?? "").Trim().ToUpper();
@@ -636,25 +660,33 @@ WHERE id = @id";
             return true;
         }
 
-
-
         private void InicializarValidacionLive()
         {
             errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
-            
             txtBuscarCliente.TextChanged += (s, e) => ValidarDuenioLive();
+            txtBuscarCliente.Leave += (s, e) => ValidarDuenioLive();
 
             cmbTipoVehiculo.SelectedIndexChanged += (s, e) => ValidarTipoLive();
 
             txtPlaca.TextChanged += (s, e) => ValidarPlacaLive();
-            txtMarca.TextChanged += (s, e) => ValidarMarcaLive();
-            txtModelo.TextChanged += (s, e) => ValidarModeloLive();
-            txtAño.TextChanged += (s, e) => ValidarAnioLive();
-            txtChasis.TextChanged += (s, e) => ValidarVinLive();
-            txtKilometraje.TextChanged += (s, e) => ValidarKmLive();
-        }
+            txtPlaca.Leave += (s, e) => ValidarPlacaLive();
 
+            txtMarca.TextChanged += (s, e) => ValidarMarcaLive();
+            txtMarca.Leave += (s, e) => ValidarMarcaLive();
+
+            txtModelo.TextChanged += (s, e) => ValidarModeloLive();
+            txtModelo.Leave += (s, e) => ValidarModeloLive();
+
+            txtAño.TextChanged += (s, e) => ValidarAnioLive();
+            txtAño.Leave += (s, e) => ValidarAnioLive();
+
+            txtChasis.TextChanged += (s, e) => ValidarVinLive();
+            txtChasis.Leave += (s, e) => ValidarVinLive();
+
+            txtKilometraje.TextChanged += (s, e) => ValidarKmLive();
+            txtKilometraje.Leave += (s, e) => ValidarKmLive();
+        }
 
         private bool ValidarFormulario(out int anio, out int kilometraje)
         {
@@ -669,8 +701,6 @@ WHERE id = @id";
                 return false;
             }
 
-            
-
             // Tipo
             if (cmbTipoVehiculo.SelectedIndex == -1 || cmbTipoVehiculo.SelectedValue == null)
             {
@@ -679,7 +709,7 @@ WHERE id = @id";
                 return false;
             }
 
-            // Placa (en tu BD es char(8) y no permite null según tu captura)
+            // Placa
             string placa = NormalizarPlaca(txtPlaca.Text);
 
             if (string.IsNullOrWhiteSpace(placa))
@@ -694,9 +724,9 @@ WHERE id = @id";
                 txtPlaca.Focus();
                 return false;
             }
-            txtPlaca.Text = placa; 
+            txtPlaca.Text = placa;
 
-
+            // Marca
             string marca = NormalizarTextoVehiculo(txtMarca.Text);
             if (txtMarca.Text != marca) txtMarca.Text = marca;
 
@@ -710,6 +740,7 @@ WHERE id = @id";
                 return false;
             }
 
+            // Modelo
             string modelo = NormalizarTextoVehiculo(txtModelo.Text);
             if (txtModelo.Text != modelo) txtModelo.Text = modelo;
 
@@ -722,7 +753,6 @@ WHERE id = @id";
                 return false;
             }
 
-
             // Año
             if (!int.TryParse((txtAño.Text ?? "").Trim(), out anio))
             {
@@ -732,14 +762,14 @@ WHERE id = @id";
             }
 
             int anioActual = DateTime.Now.Year;
-            if (anio < 1970 || anio > anioActual + 1) // margen por modelos próximos
+            if (anio < 1970 || anio > anioActual + 1)
             {
                 MessageBox.Show($"El año debe estar entre 1970 y {anioActual + 1}.");
                 txtAño.Focus();
                 return false;
             }
 
-            // Chasis/VIN (en tu BD es nvarchar(17) y lo estás tratando como VIN)
+            // VIN
             string vin = (txtChasis.Text ?? "").Trim().ToUpper();
 
             if (string.IsNullOrWhiteSpace(vin))
@@ -755,8 +785,7 @@ WHERE id = @id";
                 return false;
             }
 
-
-            // Kilometraje (en tu BD int NOT NULL)
+            // Kilometraje
             string kmTxt = (txtKilometraje.Text ?? "").Trim();
             if (string.IsNullOrWhiteSpace(kmTxt))
                 kmTxt = "0";
@@ -773,7 +802,6 @@ WHERE id = @id";
 
         private bool ExistePlaca(string placa)
         {
-            // Excluir el mismo vehículo cuando editas
             string sql = vehiculoIdEditar == null
                 ? "SELECT COUNT(*) FROM Vehiculos WHERE placa = @placa"
                 : "SELECT COUNT(*) FROM Vehiculos WHERE placa = @placa AND id <> @id";
@@ -859,11 +887,6 @@ WHERE id = @id";
             return letras >= minLetras;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnBuscadorCliente_Click(object sender, EventArgs e)
         {
             FormBuscador buscador = new FormBuscador(FormBuscador.TipoBusqueda.Clientes);
@@ -874,8 +897,6 @@ WHERE id = @id";
 
                 long clienteId = Convert.ToInt64(fila["id"]);
                 string nombre = fila["nombre"].ToString();
-                string telefono = fila["telefono"].ToString();
-                string email = fila["email"].ToString();
 
                 clienteSeleccionadoId = clienteId;
 
@@ -899,9 +920,7 @@ WHERE id = @id";
                 }
 
                 lstClientes.Visible = false;
-
                 ValidarDuenioLive();
-
             }
         }
     }

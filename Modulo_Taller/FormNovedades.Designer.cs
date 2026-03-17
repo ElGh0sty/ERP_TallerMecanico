@@ -55,6 +55,7 @@
             // 
             // cmbOrdenes
             // 
+            this.cmbOrdenes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbOrdenes.FormattingEnabled = true;
             this.cmbOrdenes.Location = new System.Drawing.Point(113, 26);
             this.cmbOrdenes.Name = "cmbOrdenes";
@@ -241,6 +242,8 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.panel1.Location = new System.Drawing.Point(-1, -5);
             this.panel1.Name = "panel1";

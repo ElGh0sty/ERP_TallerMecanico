@@ -83,7 +83,6 @@
             this.txtModelo.Name = "txtModelo";
             this.txtModelo.Size = new System.Drawing.Size(216, 29);
             this.txtModelo.TabIndex = 3;
-            this.txtModelo.TextChanged += new System.EventHandler(this.txtModelo_TextChanged);
             // 
             // txtAño
             // 
@@ -247,7 +246,6 @@
             this.lstClientes.Name = "lstClientes";
             this.lstClientes.Size = new System.Drawing.Size(220, 130);
             this.lstClientes.TabIndex = 18;
-            this.lstClientes.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // txtChasis
             // 

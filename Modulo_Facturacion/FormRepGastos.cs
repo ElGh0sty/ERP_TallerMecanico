@@ -10,7 +10,7 @@ using PROYECTOMECANICO;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-// Alias para resolver ambigüedades
+
 using GdiPen = System.Drawing.Pen;
 using GdiFont = System.Drawing.Font;
 using GdiBrush = System.Drawing.SolidBrush;
