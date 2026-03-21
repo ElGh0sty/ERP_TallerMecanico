@@ -31,6 +31,9 @@ namespace PROYECTOMECANICO.Modulo_Reportes
         {
             InitializeComponent();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvOrdenes);
+
+
             this.Load += FormRepOrdenes_Load;
             btnBuscar.Click += (s, e) => CargarReporte();
             btnLimpiar.Click += (s, e) => LimpiarFiltros();
@@ -635,6 +638,12 @@ WHERE
             cbEstado.SelectedIndex = 0;
             txtBuscar.Text = "";
             CargarReporte();
+        }
+
+        private void FormRepOrdenes_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvOrdenes);
+
         }
     }
 }

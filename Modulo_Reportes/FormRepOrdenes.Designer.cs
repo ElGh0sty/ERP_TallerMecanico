@@ -61,6 +61,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblFacturadas = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblTotalOrdenes = new System.Windows.Forms.Label();
@@ -72,7 +73,6 @@
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.ChartOrdenes = new Guna.Charts.WinForms.GunaChart();
             this.dgvOrdenes = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.panelFiltros.SuspendLayout();
             this.guna2Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -85,7 +85,7 @@
             // 
             // panelFiltros
             // 
-            this.panelFiltros.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panelFiltros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.panelFiltros.BorderRadius = 12;
             this.panelFiltros.Controls.Add(this.cbEstado);
             this.panelFiltros.Controls.Add(this.label10);
@@ -181,10 +181,13 @@
             // btnExportar
             // 
             this.btnExportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnExportar.BorderThickness = 1;
             this.btnExportar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnExportar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnExportar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnExportar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnExportar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.btnExportar.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnExportar.ForeColor = System.Drawing.Color.White;
             this.btnExportar.Location = new System.Drawing.Point(760, 91);
@@ -196,10 +199,13 @@
             // btnLimpiar
             // 
             this.btnLimpiar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLimpiar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnLimpiar.BorderThickness = 1;
             this.btnLimpiar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnLimpiar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnLimpiar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnLimpiar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLimpiar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLimpiar.ForeColor = System.Drawing.Color.White;
             this.btnLimpiar.Location = new System.Drawing.Point(760, 20);
@@ -211,10 +217,13 @@
             // btnBuscar
             // 
             this.btnBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBuscar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscar.BorderThickness = 1;
             this.btnBuscar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnBuscar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnBuscar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnBuscar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnBuscar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(637, 61);
@@ -246,7 +255,7 @@
             // dtpHasta
             // 
             this.dtpHasta.Checked = true;
-            this.dtpHasta.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.dtpHasta.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.dtpHasta.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpHasta.ForeColor = System.Drawing.Color.White;
             this.dtpHasta.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -261,7 +270,7 @@
             // dtpDesde
             // 
             this.dtpDesde.Checked = true;
-            this.dtpDesde.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.dtpDesde.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.dtpDesde.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpDesde.ForeColor = System.Drawing.Color.White;
             this.dtpDesde.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -311,11 +320,24 @@
             this.guna2Panel2.Size = new System.Drawing.Size(908, 117);
             this.guna2Panel2.TabIndex = 18;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(113, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(160, 25);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Total de Ordenes:";
+            // 
             // lblFacturadas
             // 
             this.lblFacturadas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lblFacturadas.AutoSize = true;
             this.lblFacturadas.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblFacturadas.ForeColor = System.Drawing.Color.White;
             this.lblFacturadas.Location = new System.Drawing.Point(695, 64);
             this.lblFacturadas.Name = "lblFacturadas";
             this.lblFacturadas.Size = new System.Drawing.Size(23, 25);
@@ -327,6 +349,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(545, 64);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 25);
@@ -338,6 +361,7 @@
             this.lblTotalOrdenes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lblTotalOrdenes.AutoSize = true;
             this.lblTotalOrdenes.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblTotalOrdenes.ForeColor = System.Drawing.Color.White;
             this.lblTotalOrdenes.Location = new System.Drawing.Point(300, 28);
             this.lblTotalOrdenes.Name = "lblTotalOrdenes";
             this.lblTotalOrdenes.Size = new System.Drawing.Size(23, 25);
@@ -349,6 +373,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(525, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(129, 25);
@@ -360,6 +385,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(163, 64);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 25);
@@ -371,6 +397,7 @@
             this.lblCompletadas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lblCompletadas.AutoSize = true;
             this.lblCompletadas.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblCompletadas.ForeColor = System.Drawing.Color.White;
             this.lblCompletadas.Location = new System.Drawing.Point(695, 28);
             this.lblCompletadas.Name = "lblCompletadas";
             this.lblCompletadas.Size = new System.Drawing.Size(23, 25);
@@ -382,6 +409,7 @@
             this.lblPendientes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lblPendientes.AutoSize = true;
             this.lblPendientes.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblPendientes.ForeColor = System.Drawing.Color.White;
             this.lblPendientes.Location = new System.Drawing.Point(300, 64);
             this.lblPendientes.Name = "lblPendientes";
             this.lblPendientes.Size = new System.Drawing.Size(23, 25);
@@ -420,9 +448,11 @@
             // 
             // ChartOrdenes
             // 
+            this.ChartOrdenes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.ChartOrdenes.Dock = System.Windows.Forms.DockStyle.Fill;
             chartFont1.FontName = "Arial";
             this.ChartOrdenes.Legend.LabelFont = chartFont1;
+            this.ChartOrdenes.Legend.LabelForeColor = System.Drawing.Color.White;
             this.ChartOrdenes.Location = new System.Drawing.Point(10, 10);
             this.ChartOrdenes.Name = "ChartOrdenes";
             this.ChartOrdenes.Size = new System.Drawing.Size(313, 311);
@@ -431,6 +461,7 @@
             chartFont2.Size = 12;
             chartFont2.Style = Guna.Charts.WinForms.ChartFontStyle.Bold;
             this.ChartOrdenes.Title.Font = chartFont2;
+            this.ChartOrdenes.Title.ForeColor = System.Drawing.Color.White;
             chartFont3.FontName = "Arial";
             this.ChartOrdenes.Tooltips.BodyFont = chartFont3;
             chartFont4.FontName = "Arial";
@@ -440,10 +471,12 @@
             this.ChartOrdenes.XAxes.GridLines = grid1;
             chartFont5.FontName = "Arial";
             tick1.Font = chartFont5;
+            tick1.ForeColor = System.Drawing.Color.White;
             this.ChartOrdenes.XAxes.Ticks = tick1;
             this.ChartOrdenes.YAxes.GridLines = grid2;
             chartFont6.FontName = "Arial";
             tick2.Font = chartFont6;
+            tick2.ForeColor = System.Drawing.Color.White;
             this.ChartOrdenes.YAxes.Ticks = tick2;
             this.ChartOrdenes.ZAxes.GridLines = grid3;
             chartFont7.FontName = "Arial";
@@ -458,7 +491,11 @@
             this.dgvOrdenes.AllowUserToAddRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgvOrdenes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvOrdenes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrdenes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
+            this.dgvOrdenes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -489,7 +526,7 @@
             this.dgvOrdenes.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
             this.dgvOrdenes.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
             this.dgvOrdenes.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
-            this.dgvOrdenes.ThemeStyle.BackColor = System.Drawing.Color.White;
+            this.dgvOrdenes.ThemeStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.dgvOrdenes.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvOrdenes.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.dgvOrdenes.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -506,22 +543,11 @@
             this.dgvOrdenes.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvOrdenes.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(113, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 25);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Total de Ordenes:";
-            // 
             // FormRepOrdenes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 601);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.guna2Panel2);
@@ -529,6 +555,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormRepOrdenes";
             this.Text = "Reporte de Órdenes de Trabajo";
+            this.Load += new System.EventHandler(this.FormRepOrdenes_Load_1);
             this.panelFiltros.ResumeLayout(false);
             this.panelFiltros.PerformLayout();
             this.guna2Panel2.ResumeLayout(false);

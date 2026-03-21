@@ -31,6 +31,9 @@ namespace PROYECTOMECANICO.Modulo_Reportes
         {
             InitializeComponent();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvClientes);
+
+
             this.Load += FormRepClientes_Load;
             btnBuscar.Click += (s, e) => CargarReporte();
             btnLimpiar.Click += (s, e) => LimpiarFiltros();
@@ -601,6 +604,12 @@ WHERE
             dtpHasta.Value = hoy;
             txtBuscar.Text = "";
             CargarReporte();
+        }
+
+        private void FormRepClientes_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvClientes);
+
         }
     }
 }
