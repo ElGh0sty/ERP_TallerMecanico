@@ -36,6 +36,11 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
+            EmpresaContext.EmpresaActualizada += OnEmpresaActualizada;
+
+            // Cargar logo inicial
+            CargarLogo();
+
             LogoEmpresa.RegistrarPictureBox(picMiLogo);
 
             // También puedes acceder al logo directamente si lo necesitas
@@ -78,7 +83,28 @@ namespace PROYECTOMECANICO
             _empresaHandler();
 
         }
+        private void OnEmpresaActualizada()
+        {
+            // Actualizar el logo cuando cambie la empresa
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(CargarLogo));
+            }
+            else
+            {
+                CargarLogo();
+            }
+        }
 
+        private void CargarLogo()
+        {
+            if (LogoEmpresa.LogoActual != null)
+            {
+                picMiLogo.Image = (Image)LogoEmpresa.LogoActual.Clone();
+            }
+        }
+
+        
 
         //PARA QUE EL PANEL SEA ARRASTABLE
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]

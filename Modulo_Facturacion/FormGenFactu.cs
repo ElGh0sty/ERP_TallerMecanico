@@ -78,6 +78,8 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             this.usuarioId = usuarioId;
             InitCommon();
             DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+            Task.Run(async () => await DebugPromociones());
+
         }
 
         private void InitCommon()
@@ -277,7 +279,6 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                             while (await dr.ReadAsync())
                             {
                                 string tipo = dr["tipo"].ToString();
-                                string nombrePromo = dr["nombre"].ToString();
 
                                 if (tipo == "Combo")
                                 {
@@ -291,45 +292,90 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                                     long? servObsequio = dr["servicio_obsequio_id"] != DBNull.Value ?
                                         Convert.ToInt64(dr["servicio_obsequio_id"]) : (long?)null;
                                     int cantidadObsequio = Convert.ToInt32(dr["cantidad_obsequio"]);
+                                    string nombrePromo = dr["nombre"].ToString();
+
+                                    // Verificar si ya se agregó esta promoción en esta factura
+                                    if (_promocionesAplicadas.Contains(Convert.ToInt32(dr["id"])))
+                                        continue;
 
                                     // Verificar si hay producto o servicio principal en los items
                                     bool tienePrincipal = false;
+                                    DataRow itemPrincipal = null;
+
                                     foreach (DataRow row in dtItems.Rows)
                                     {
                                         if (prodPrincipal.HasValue && row["producto_id"] != DBNull.Value &&
                                             Convert.ToInt64(row["producto_id"]) == prodPrincipal.Value)
                                         {
                                             tienePrincipal = true;
+                                            itemPrincipal = row;
                                             break;
                                         }
                                         if (servPrincipal.HasValue && row["servicio_id"] != DBNull.Value &&
                                             Convert.ToInt64(row["servicio_id"]) == servPrincipal.Value)
                                         {
                                             tienePrincipal = true;
+                                            itemPrincipal = row;
                                             break;
                                         }
                                     }
 
-                                    if (tienePrincipal)
+                                    if (tienePrincipal && itemPrincipal != null)
                                     {
-                                        // Agregar obsequio
+                                        // Agregar obsequio con precio 0
                                         if (prodObsequio.HasValue)
                                         {
                                             string nombreObsequio = ObtenerNombreProducto(prodObsequio.Value);
-                                            dtItems.Rows.Add("Producto", nombreObsequio, cantidadObsequio, 0, 0,
-                                                prodObsequio.Value, DBNull.Value);
-                                            _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
-                                            MessageBox.Show($"¡Promoción aplicada! Por comprar el producto/servicio, recibes {cantidadObsequio}x {nombreObsequio} como obsequio.",
-                                                "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                            // Verificar que no se haya agregado ya este obsequio
+                                            bool yaAgregado = false;
+                                            foreach (DataRow row in dtItems.Rows)
+                                            {
+                                                if (row["producto_id"] != DBNull.Value &&
+                                                    Convert.ToInt64(row["producto_id"]) == prodObsequio.Value &&
+                                                    Convert.ToDecimal(row["precio_unitario"]) == 0)
+                                                {
+                                                    yaAgregado = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!yaAgregado)
+                                            {
+                                                dtItems.Rows.Add("Producto", $"{nombreObsequio} (OBSEQUIO)", cantidadObsequio, 0, 0,
+                                                    prodObsequio.Value, DBNull.Value);
+                                                _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
+
+                                                MessageBox.Show($"¡Promoción aplicada! Por comprar '{itemPrincipal["nombre_item"]}', recibes {cantidadObsequio}x {nombreObsequio} como obsequio.",
+                                                    "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            }
                                         }
                                         else if (servObsequio.HasValue)
                                         {
                                             string nombreObsequio = ObtenerNombreServicio(servObsequio.Value);
-                                            dtItems.Rows.Add("Servicio", nombreObsequio, cantidadObsequio, 0, 0,
-                                                DBNull.Value, servObsequio.Value);
-                                            _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
-                                            MessageBox.Show($"¡Promoción aplicada! Por comprar el producto/servicio, recibes {cantidadObsequio}x {nombreObsequio} como obsequio.",
-                                                "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                            // Verificar que no se haya agregado ya este obsequio
+                                            bool yaAgregado = false;
+                                            foreach (DataRow row in dtItems.Rows)
+                                            {
+                                                if (row["servicio_id"] != DBNull.Value &&
+                                                    Convert.ToInt64(row["servicio_id"]) == servObsequio.Value &&
+                                                    Convert.ToDecimal(row["precio_unitario"]) == 0)
+                                                {
+                                                    yaAgregado = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!yaAgregado)
+                                            {
+                                                dtItems.Rows.Add("Servicio", $"{nombreObsequio} (OBSEQUIO)", cantidadObsequio, 0, 0,
+                                                    DBNull.Value, servObsequio.Value);
+                                                _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
+
+                                                MessageBox.Show($"¡Promoción aplicada! Por comprar '{itemPrincipal["nombre_item"]}', recibes {cantidadObsequio}x {nombreObsequio} como obsequio.",
+                                                    "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            }
                                         }
                                         RecalcularTotales();
                                     }
@@ -339,24 +385,40 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
                                     // Descuento general
                                     if (dr["producto_principal_id"] != DBNull.Value)
                                     {
-                                        // Descuento a producto específico
                                         long productoId = Convert.ToInt64(dr["producto_principal_id"]);
                                         decimal porcentaje = Convert.ToDecimal(dr["porcentaje"] ?? 0);
+                                        string nombrePromo = dr["nombre"].ToString();
 
-                                        foreach (DataRow row in dtItems.Rows)
+                                        if (!_promocionesAplicadas.Contains(Convert.ToInt32(dr["id"])))
                                         {
-                                            if (row["producto_id"] != DBNull.Value &&
-                                                Convert.ToInt64(row["producto_id"]) == productoId)
+                                            bool descuentoAplicado = false;
+
+                                            foreach (DataRow row in dtItems.Rows)
                                             {
-                                                decimal precio = Convert.ToDecimal(row["precio_unitario"]);
-                                                decimal nuevoPrecio = precio * (1 - (porcentaje / 100));
-                                                row["precio_unitario"] = Math.Round(nuevoPrecio, 4);
-                                                RecalcularSubtotalFila(dtItems.Rows.IndexOf(row));
+                                                if (row["producto_id"] != DBNull.Value &&
+                                                    Convert.ToInt64(row["producto_id"]) == productoId)
+                                                {
+                                                    decimal precio = Convert.ToDecimal(row["precio_unitario"]);
+                                                    decimal nuevoPrecio = precio * (1 - (porcentaje / 100));
+                                                    row["precio_unitario"] = Math.Round(nuevoPrecio, 4);
+
+                                                    // Guardar el descuento aplicado
+                                                    if (!dtItems.Columns.Contains("descuento_porcentaje"))
+                                                        dtItems.Columns.Add("descuento_porcentaje", typeof(decimal));
+                                                    row["descuento_porcentaje"] = porcentaje;
+
+                                                    RecalcularSubtotalFila(dtItems.Rows.IndexOf(row));
+                                                    descuentoAplicado = true;
+                                                }
+                                            }
+
+                                            if (descuentoAplicado)
+                                            {
+                                                _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
+                                                MessageBox.Show($"¡Promoción aplicada! Descuento del {porcentaje}% en {nombrePromo}.",
+                                                    "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                             }
                                         }
-                                        _promocionesAplicadas.Add(Convert.ToInt32(dr["id"]));
-                                        MessageBox.Show($"¡Promoción aplicada! Descuento del {porcentaje}% en productos seleccionados.",
-                                            "Promoción aplicada", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                 }
                             }
@@ -699,7 +761,7 @@ ORDER BY OT.id DESC", cn))
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void CargarItemsOT()
+        private async void CargarItemsOT()
         {
             if (ordenTrabajoId == null || ordenTrabajoId <= 0)
             {
@@ -753,6 +815,9 @@ ORDER BY tipo_item DESC, nombre_item ASC";
                     da.SelectCommand.Parameters.Add("@orden", SqlDbType.BigInt).Value = ordenTrabajoId.Value;
                     da.Fill(dtItems);
                 }
+
+                // APLICAR PROMOCIONES AUTOMÁTICAS DESPUÉS DE CARGAR LOS ITEMS
+                await AplicarPromocionesAutomaticas();
 
                 RecalcularTotales();
 
@@ -1065,7 +1130,7 @@ WHERE id = @id";
             dgvItems.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
 
-        private void AgregarItemManual()
+        private async void AgregarItemManual()
         {
             // Verificar que estamos en Venta Directa
             if (tabControlPrincipal.SelectedTab != tabPageVentaDirecta)
@@ -1093,7 +1158,12 @@ WHERE id = @id";
                 int cantidad = buscador.CantidadSeleccionada;
                 decimal precio = Convert.ToDecimal(fila["precio_pvp"]);
 
+                // Agregar el producto
                 dtItems.Rows.Add("Producto", nombre, cantidad, precio, cantidad * precio, productoId, DBNull.Value);
+
+                // APLICAR PROMOCIONES AUTOMÁTICAS DESPUÉS DE AGREGAR EL ITEM
+                await AplicarPromocionesAutomaticas();
+
                 RecalcularTotales();
                 ActualizarBotonesItemsPorTab();
             }
@@ -1410,7 +1480,7 @@ VALUES
                             cmd.Parameters.Add("@punto", SqlDbType.Char, 3).Value = _puntoEmisionActual;
                             cmd.Parameters.Add("@est", SqlDbType.Char, 3).Value = _establecimientoActual;
                             cmd.Parameters.Add("@sec", SqlDbType.Char, 9).Value = secuencialGenerado;
-                            await AplicarPromocionesAutomaticas();
+                            //await AplicarPromocionesAutomaticas();
 
                             // Recalcular totales después de promociones
                             RecalcularTotales();
@@ -1518,6 +1588,51 @@ VALUES
             }
 
             await Task.CompletedTask;
+        }
+
+        private async Task DebugPromociones()
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    int diaSemana = (int)DateTime.Now.DayOfWeek;
+                    if (diaSemana == 0) diaSemana = 7;
+                    DateTime fechaActual = DateTime.Now.Date;
+
+                    string sql = @"
+                SELECT p.id, p.nombre, p.tipo, p.dia_semana, p.fecha_especifica,
+                       p.producto_principal_id, pr.nombre as producto_principal,
+                       p.producto_obsequio_id, po.nombre as producto_obsequio,
+                       p.activo, p.fecha_inicio, p.fecha_fin
+                FROM Promociones p
+                LEFT JOIN Productos pr ON pr.id = p.producto_principal_id
+                LEFT JOIN Productos po ON po.id = p.producto_obsequio_id
+                WHERE p.activo = 1 
+                AND p.fecha_inicio <= @fechaActual 
+                AND p.fecha_fin >= @fechaActual";
+
+                    using (var cmd = new SqlCommand(sql, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@fechaActual", fechaActual);
+                        using (var dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (await dr.ReadAsync())
+                            {
+                                Console.WriteLine($"Promoción: {dr["nombre"]} | Tipo: {dr["tipo"]} | Activa: {dr["activo"]}");
+                                if (dr["producto_principal"] != DBNull.Value)
+                                    Console.WriteLine($"  Producto Principal: {dr["producto_principal"]}");
+                                if (dr["producto_obsequio"] != DBNull.Value)
+                                    Console.WriteLine($"  Producto Obsequio: {dr["producto_obsequio"]}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error debug: " + ex.Message);
+            }
         }
 
         // ==================== MÉTODOS AUXILIARES ====================
@@ -1643,6 +1758,19 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
                 }
             }
         }
+        private string ObtenerNombreObsequio(long productoId)
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT nombre FROM Productos WHERE id = @id", cn))
+                {
+                    cmd.Parameters.AddWithValue("@id", productoId);
+                    return cmd.ExecuteScalar()?.ToString() ?? "Producto desconocido";
+                }
+            }
+            catch { return "Producto desconocido"; }
+        }
 
         private void DescontarStockProductos(SqlTransaction tx, DataTable items, long facturaId)
         {
@@ -1652,8 +1780,14 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
                 {
                     long productoId = Convert.ToInt64(row["producto_id"]);
                     int cantidad = Convert.ToInt32(Math.Round(Convert.ToDecimal(row["cantidad"]), 0));
+                    decimal precioUnitario = Convert.ToDecimal(row["precio_unitario"]);
+
                     if (cantidad <= 0) continue;
 
+                    // SI ES UN OBSEQUIO (precio = 0), IGUAL DESCONTAMOS STOCK
+                    // Porque el obsequio sale del inventario igualmente
+
+                    // Verificar stock disponible
                     string sqlCheckStock = @"SELECT stock FROM Productos WITH (UPDLOCK, ROWLOCK) WHERE id = @productoId";
                     using (var cmdCheck = new SqlCommand(sqlCheckStock, tx.Connection, tx))
                     {
@@ -1668,6 +1802,7 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
                         }
                     }
 
+                    // Actualizar stock
                     string sqlUpdateStock = @"UPDATE Productos SET stock = stock - @cantidad WHERE id = @productoId";
                     using (var cmdUpdate = new SqlCommand(sqlUpdateStock, tx.Connection, tx))
                     {
@@ -1676,7 +1811,9 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
                         cmdUpdate.ExecuteNonQuery();
                     }
 
-                    RegistrarMovimientoKardex(tx, productoId, "SALIDA", "FACTURA", facturaId, cantidad, usuarioId);
+                    // Registrar en Kardex (incluir nota si es obsequio)
+                    string origen = precioUnitario == 0 ? "OBSEQUIO" : "FACTURA";
+                    RegistrarMovimientoKardex(tx, productoId, "SALIDA", origen, facturaId, cantidad, usuarioId);
                 }
             }
         }
@@ -1868,7 +2005,9 @@ VALUES (@productoId, @usuarioId, @tipoMovimiento, @origen, @referenciaId, @canti
                     decimal pu = Convert.ToDecimal(row["precio_unitario"]);
                     decimal sub = Convert.ToDecimal(row["subtotal"]);
 
-                    // Obtener porcentaje de descuento si existe
+                    // Si el precio es 0, es un obsequio
+                    bool esObsequio = pu == 0;
+
                     string descuentoTexto = "0%";
                     if (dtItems.Columns.Contains("descuento_porcentaje") && row["descuento_porcentaje"] != DBNull.Value)
                     {
@@ -1876,12 +2015,27 @@ VALUES (@productoId, @usuarioId, @tipoMovimiento, @origen, @referenciaId, @canti
                         descuentoTexto = $"{dto}%";
                     }
 
-                    itemsTable.AddCell(new PdfPCell(new Phrase(tipo, font)) { Padding = 5 });
-                    itemsTable.AddCell(new PdfPCell(new Phrase(cant.ToString("0.##"), font)) { Padding = 5 });
-                    itemsTable.AddCell(new PdfPCell(new Phrase(desc, font)) { Padding = 5 });
-                    itemsTable.AddCell(new PdfPCell(new Phrase(pu.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
-                    itemsTable.AddCell(new PdfPCell(new Phrase(descuentoTexto, font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
-                    itemsTable.AddCell(new PdfPCell(new Phrase(sub.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    // Estilo para obsequios
+                    var cellTipo = new PdfPCell(new Phrase(tipo, font)) { Padding = 5 };
+                    var cellCant = new PdfPCell(new Phrase(cant.ToString("0.##"), font)) { Padding = 5 };
+                    var cellDesc = new PdfPCell(new Phrase(desc, font)) { Padding = 5 };
+                    var cellPUnit = new PdfPCell(new Phrase(pu.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT };
+                    var cellDto = new PdfPCell(new Phrase(descuentoTexto, font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER };
+                    var cellSub = new PdfPCell(new Phrase(sub.ToString("0.00"), font)) { Padding = 5, HorizontalAlignment = Element.ALIGN_RIGHT };
+
+                    // Si es obsequio, cambiar estilo (texto en cursiva y color gris)
+                    if (esObsequio)
+                    {
+                        var italicFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, new BaseColor(100, 100, 100));
+                        cellDesc.Phrase = new Phrase(desc + " (OBSEQUIO)", italicFont);
+                    }
+
+                    itemsTable.AddCell(cellTipo);
+                    itemsTable.AddCell(cellCant);
+                    itemsTable.AddCell(cellDesc);
+                    itemsTable.AddCell(cellPUnit);
+                    itemsTable.AddCell(cellDto);
+                    itemsTable.AddCell(cellSub);
                 }
 
                 doc.Add(itemsTable);

@@ -113,7 +113,6 @@
             this.panelPromocionEdit = new Guna.UI2.WinForms.Guna2Panel();
             this.lblPromocionFechaEspecifica = new System.Windows.Forms.Label();
             this.dtpPromocionFechaEspecifica = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            this.lblPromocionDiaSemana = new System.Windows.Forms.Label();
             this.cmbPromocionProductoPrincipal = new Guna.UI2.WinForms.Guna2ComboBox();
             this.cmbPromocionServicioPrincipal = new Guna.UI2.WinForms.Guna2ComboBox();
             this.cmbPromocionProductoObsequio = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -138,6 +137,7 @@
             this.lblPromocionInicio = new System.Windows.Forms.Label();
             this.lblPromocionFin = new System.Windows.Forms.Label();
             this.lblPromocionActivo = new System.Windows.Forms.Label();
+            this.lblPromocionDiaSemana = new System.Windows.Forms.Label();
             this.tabConfig.SuspendLayout();
             this.tabImpuestos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvImpuestos)).BeginInit();
@@ -1379,7 +1379,6 @@
             // 
             this.panelPromocionEdit.Controls.Add(this.lblPromocionFechaEspecifica);
             this.panelPromocionEdit.Controls.Add(this.dtpPromocionFechaEspecifica);
-            this.panelPromocionEdit.Controls.Add(this.lblPromocionDiaSemana);
             this.panelPromocionEdit.Controls.Add(this.cmbPromocionProductoPrincipal);
             this.panelPromocionEdit.Controls.Add(this.cmbPromocionServicioPrincipal);
             this.panelPromocionEdit.Controls.Add(this.cmbPromocionProductoObsequio);
@@ -1404,6 +1403,7 @@
             this.panelPromocionEdit.Controls.Add(this.lblPromocionInicio);
             this.panelPromocionEdit.Controls.Add(this.lblPromocionFin);
             this.panelPromocionEdit.Controls.Add(this.lblPromocionActivo);
+            this.panelPromocionEdit.Controls.Add(this.lblPromocionDiaSemana);
             this.panelPromocionEdit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelPromocionEdit.Location = new System.Drawing.Point(10, 236);
             this.panelPromocionEdit.Name = "panelPromocionEdit";
@@ -1432,16 +1432,6 @@
             this.dtpPromocionFechaEspecifica.Size = new System.Drawing.Size(127, 36);
             this.dtpPromocionFechaEspecifica.TabIndex = 0;
             this.dtpPromocionFechaEspecifica.Value = new System.DateTime(2026, 3, 21, 11, 49, 3, 297);
-            // 
-            // lblPromocionDiaSemana
-            // 
-            this.lblPromocionDiaSemana.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPromocionDiaSemana.ForeColor = System.Drawing.Color.White;
-            this.lblPromocionDiaSemana.Location = new System.Drawing.Point(207, 155);
-            this.lblPromocionDiaSemana.Name = "lblPromocionDiaSemana";
-            this.lblPromocionDiaSemana.Size = new System.Drawing.Size(118, 15);
-            this.lblPromocionDiaSemana.TabIndex = 1;
-            this.lblPromocionDiaSemana.Text = "Día de la semana:";
             // 
             // cmbPromocionProductoPrincipal
             // 
@@ -1765,6 +1755,16 @@
             this.lblPromocionActivo.TabIndex = 17;
             this.lblPromocionActivo.Text = "Activo:";
             // 
+            // lblPromocionDiaSemana
+            // 
+            this.lblPromocionDiaSemana.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPromocionDiaSemana.ForeColor = System.Drawing.Color.White;
+            this.lblPromocionDiaSemana.Location = new System.Drawing.Point(197, 273);
+            this.lblPromocionDiaSemana.Name = "lblPromocionDiaSemana";
+            this.lblPromocionDiaSemana.Size = new System.Drawing.Size(118, 15);
+            this.lblPromocionDiaSemana.TabIndex = 1;
+            this.lblPromocionDiaSemana.Text = "Día de la semana:";
+            // 
             // FormConfiguracion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1917,7 +1917,6 @@
         private System.Windows.Forms.Label lblPromocionFin;
         private System.Windows.Forms.Label lblPromocionActivo;
         private Guna.UI2.WinForms.Guna2ComboBox cmbPromocionDiaSemana;
-        private System.Windows.Forms.Label lblPromocionDiaSemana;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpPromocionFechaEspecifica;
         private System.Windows.Forms.Label lblPromocionFechaEspecifica;
         private Guna.UI2.WinForms.Guna2ComboBox cmbPromocionProductoPrincipal;
@@ -1925,5 +1924,6 @@
         private Guna.UI2.WinForms.Guna2ComboBox cmbPromocionProductoObsequio;
         private Guna.UI2.WinForms.Guna2ComboBox cmbPromocionServicioObsequio;
         private Guna.UI2.WinForms.Guna2NumericUpDown nudPromocionCantidadObsequio;
+        private System.Windows.Forms.Label lblPromocionDiaSemana;
     }
 }
