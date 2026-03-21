@@ -33,6 +33,9 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvImpuestos);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvMetodosPago);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvSecuenciales);
             InicializarValidaciones();
 
             this.Load += FormConfiguracion_Load;
@@ -1334,6 +1337,16 @@ AND (@id=0 OR id<>@id);";
                 MessageBox.Show("Error:\n" + ex.Message, "Secuenciales",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FormConfiguracion_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvImpuestos);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvMetodosPago);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvSecuenciales);
+
+
+
         }
     }
 }

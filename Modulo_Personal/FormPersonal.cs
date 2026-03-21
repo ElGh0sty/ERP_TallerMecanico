@@ -383,5 +383,26 @@ ORDER BY r.nombre;";
             {
             }
         }
+
+        private void FormPersonal_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvUsuarios);
+
+        }
+
+        private void txtContrasena_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbFiltroRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
