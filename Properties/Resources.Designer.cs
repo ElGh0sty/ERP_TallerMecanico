@@ -63,6 +63,16 @@ namespace PROYECTOMECANICO.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _1 {
+            get {
+                object obj = ResourceManager.GetObject("1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _3592814_document_general_letter_note_office_page_paper_107776 {
             get {
                 object obj = ResourceManager.GetObject("3592814-document-general-letter-note-office-page-paper_107776", resourceCulture);

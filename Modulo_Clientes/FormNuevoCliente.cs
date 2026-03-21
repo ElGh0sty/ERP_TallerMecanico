@@ -20,13 +20,14 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             rolUsuario = rol;
 
-            
+
             dgvNuevo.CellContentClick += dgvNuevo_CellContentClick;
 
             // Botón fuera del DGV (Nuevo Cliente)
             btnNuevoCliente.Click += (s, e) => AbrirPopupClienteNuevo();
 
             CargarBaseDeDatosCompleta();
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvNuevo);
         }
 
         private void CargarBaseDeDatosCompleta()
@@ -305,5 +306,14 @@ WHERE v.cliente_id = @id", con.leer))
             c.Width = 95;
             c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
         }
+
+        private void FormNuevoCliente_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvNuevo);
+
+        }
+
+   
+    
     }
 }

@@ -95,6 +95,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
             validador = new ValidadorTiempoReal(errorProvider1);
         }
 
+
         private void CargarClientesCompleto()
         {
             try

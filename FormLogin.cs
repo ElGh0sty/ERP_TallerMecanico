@@ -30,6 +30,14 @@ namespace PROYECTOMECANICO
                     lblNombreTaller.Text = EmpresaContext.NombreEmpresa;
             };
 
+            LogoEmpresa.RegistrarPictureBox(picMiLogo);
+
+            // También puedes acceder al logo directamente si lo necesitas
+            if (LogoEmpresa.LogoActual != null)
+            {
+                picMiLogo.Image = (Image)LogoEmpresa.LogoActual.Clone();
+            }
+
             EmpresaContext.EmpresaActualizada += _empresaHandler;
 
             EmpresaContext.Cargar();   // esto debe cargar desde BD y disparar el evento

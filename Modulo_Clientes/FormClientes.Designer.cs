@@ -108,7 +108,7 @@
             // FormClientes
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(79)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.btnCatalogo);
             this.Controls.Add(this.btnOrden);

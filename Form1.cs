@@ -36,7 +36,13 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
-            
+            LogoEmpresa.RegistrarPictureBox(picMiLogo);
+
+            // También puedes acceder al logo directamente si lo necesitas
+            if (LogoEmpresa.LogoActual != null)
+            {
+                picMiLogo.Image = (Image)LogoEmpresa.LogoActual.Clone();
+            }
             menuCollapsed = true; 
             menuTargetCollapsed = true;
 
@@ -44,11 +50,11 @@ namespace PROYECTOMECANICO
             menuTimer.Interval = 15; // 10-20ms se ve fluido
             menuTimer.Tick += MenuTimer_Tick;
             this.Padding = new Padding(borderSize);//Border size
-            this.BackColor = Color.FromArgb(98, 102, 244);
+            this.BackColor = Color.FromArgb(107, 83, 255);
 
             
 
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormDashboard());
             this.usuarioId = usuarioId;   
             this.rolUsuario = rol;
             this.usuarioActual = usuario;
@@ -316,7 +322,7 @@ namespace PROYECTOMECANICO
             buttonof();
             btnInicio.FillColor = Color.FromArgb(50, 100, 201);
             btnInicio.FillColor2 = Color.FromArgb(255, 77, 165);
-            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormInicio());
+            AbrirFormularioEnPanel(new PROYECTOMECANICO.Modulo_Inicio.FormDashboard());
         }
         private void btnClientes_Click(object sender, EventArgs e)
         {

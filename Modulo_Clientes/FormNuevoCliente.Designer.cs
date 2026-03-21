@@ -47,8 +47,8 @@
             // btnNuevoCliente
             // 
             this.btnNuevoCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNuevoCliente.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnNuevoCliente.FlatAppearance.BorderSize = 0;
+            this.btnNuevoCliente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnNuevoCliente.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.btnNuevoCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevoCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNuevoCliente.ForeColor = System.Drawing.Color.White;
@@ -63,12 +63,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(79)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.btnNuevoCliente);
             this.Controls.Add(this.dgvNuevo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormNuevoCliente";
             this.Text = "Registrar Nuevo Cliente";
+            this.Load += new System.EventHandler(this.FormNuevoCliente_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvNuevo)).EndInit();
             this.ResumeLayout(false);
 

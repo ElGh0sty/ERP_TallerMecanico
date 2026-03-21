@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
+    <Compile Include="DataGridViewEstilo.cs" />
     <Compile Include="EmpresaContext.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -227,6 +228,12 @@
     </Compile>
     <Compile Include="Modulo_Facturacion\FormRepVentas.Designer.cs">
       <DependentUpon>FormRepVentas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo_Inicio\FormDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Inicio\FormDashboard.Designer.cs">
+      <DependentUpon>FormDashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="Modulo_Inicio\FormInicio.cs">
       <SubType>Form</SubType>
@@ -391,6 +398,9 @@
     <EmbeddedResource Include="Modulo_Facturacion\FormRepVentas.resx">
       <DependentUpon>FormRepVentas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Inicio\FormDashboard.resx">
+      <DependentUpon>FormDashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Inicio\FormInicio.resx">
       <DependentUpon>FormInicio.cs</DependentUpon>
     </EmbeddedResource>
@@ -489,6 +499,7 @@
     <Content Include=".gitignore">
       <Generator>SettingsSingleFileGenerator</Generator>
     </Content>
+    <None Include="Resources\1.png" />
     <None Include="Resources\checklist_report_analysis_doctor_hospital_clipboard_checkup_reports_icon_210692.png" />
     <None Include="Resources\car-on-solid.png" />
     <None Include="Resources\chart-line-solid.png" />

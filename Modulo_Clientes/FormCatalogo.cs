@@ -18,7 +18,7 @@ namespace PROYECTOMECANICO.Modulo_Clientes
 
             formPrincipal = principal;
             rolUsuario = rol;
-
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvVehiculos);
             CargarCatalogoVehiculos();
         }
 
@@ -296,7 +296,10 @@ ORDER BY c.nombre, v.placa";
             }
         }
 
-
+        private void FormCatalogo_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvVehiculos);
+        }
     }
 }
 

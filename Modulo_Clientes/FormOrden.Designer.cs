@@ -34,6 +34,7 @@
             this.txtPlaca = new System.Windows.Forms.TextBox();
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBuscadorVehiculosRegistrados = new FontAwesome.Sharp.IconButton();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,12 +46,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmbMecanico = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnBuscadorVehiculosRegistrados = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbVehiculo
             // 
+            this.cmbVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.cmbVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbVehiculo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbVehiculo.FormattingEnabled = true;
             this.cmbVehiculo.Location = new System.Drawing.Point(55, 78);
@@ -61,43 +63,52 @@
             // 
             // txtDocumento
             // 
+            this.txtDocumento.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtDocumento.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDocumento.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDocumento.Location = new System.Drawing.Point(346, 174);
             this.txtDocumento.Name = "txtDocumento";
             this.txtDocumento.ReadOnly = true;
-            this.txtDocumento.Size = new System.Drawing.Size(218, 29);
+            this.txtDocumento.Size = new System.Drawing.Size(218, 22);
             this.txtDocumento.TabIndex = 15;
             // 
             // txtTipoVehiculo
             // 
+            this.txtTipoVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtTipoVehiculo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTipoVehiculo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTipoVehiculo.Location = new System.Drawing.Point(608, 174);
             this.txtTipoVehiculo.Name = "txtTipoVehiculo";
             this.txtTipoVehiculo.ReadOnly = true;
-            this.txtTipoVehiculo.Size = new System.Drawing.Size(218, 29);
+            this.txtTipoVehiculo.Size = new System.Drawing.Size(218, 22);
             this.txtTipoVehiculo.TabIndex = 16;
             // 
             // txtPlaca
             // 
+            this.txtPlaca.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtPlaca.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPlaca.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPlaca.Location = new System.Drawing.Point(608, 78);
             this.txtPlaca.Name = "txtPlaca";
             this.txtPlaca.ReadOnly = true;
-            this.txtPlaca.Size = new System.Drawing.Size(218, 29);
+            this.txtPlaca.Size = new System.Drawing.Size(218, 22);
             this.txtPlaca.TabIndex = 17;
             // 
             // txtCliente
             // 
+            this.txtCliente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtCliente.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCliente.Location = new System.Drawing.Point(346, 78);
             this.txtCliente.Name = "txtCliente";
             this.txtCliente.ReadOnly = true;
-            this.txtCliente.Size = new System.Drawing.Size(218, 29);
+            this.txtCliente.Size = new System.Drawing.Size(218, 22);
             this.txtCliente.TabIndex = 18;
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.btnBuscadorVehiculosRegistrados);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
@@ -111,10 +122,23 @@
             this.panel1.Size = new System.Drawing.Size(908, 254);
             this.panel1.TabIndex = 19;
             // 
+            // btnBuscadorVehiculosRegistrados
+            // 
+            this.btnBuscadorVehiculosRegistrados.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorVehiculosRegistrados.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorVehiculosRegistrados.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorVehiculosRegistrados.IconSize = 30;
+            this.btnBuscadorVehiculosRegistrados.Location = new System.Drawing.Point(279, 78);
+            this.btnBuscadorVehiculosRegistrados.Name = "btnBuscadorVehiculosRegistrados";
+            this.btnBuscadorVehiculosRegistrados.Size = new System.Drawing.Size(33, 33);
+            this.btnBuscadorVehiculosRegistrados.TabIndex = 31;
+            this.btnBuscadorVehiculosRegistrados.UseVisualStyleBackColor = true;
+            this.btnBuscadorVehiculosRegistrados.Click += new System.EventHandler(this.btnBuscadorVehiculosRegistrados_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label5.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(603, 129);
@@ -126,7 +150,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(603, 24);
@@ -138,7 +162,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(341, 129);
@@ -150,7 +174,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(341, 24);
@@ -162,7 +186,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(50, 24);
@@ -173,16 +197,20 @@
             // 
             // txtNombreOrden
             // 
+            this.txtNombreOrden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.txtNombreOrden.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNombreOrden.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombreOrden.Location = new System.Drawing.Point(55, 307);
             this.txtNombreOrden.Name = "txtNombreOrden";
             this.txtNombreOrden.ReadOnly = true;
-            this.txtNombreOrden.Size = new System.Drawing.Size(480, 29);
+            this.txtNombreOrden.Size = new System.Drawing.Size(480, 22);
             this.txtNombreOrden.TabIndex = 20;
             this.txtNombreOrden.TextChanged += new System.EventHandler(this.txtNombreOrden_TextChanged);
             // 
             // txtDescripcion
             // 
+            this.txtDescripcion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.txtDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDescripcion.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDescripcion.Location = new System.Drawing.Point(55, 416);
             this.txtDescripcion.Name = "txtDescripcion";
@@ -193,8 +221,8 @@
             // btnGuardarOrden
             // 
             this.btnGuardarOrden.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGuardarOrden.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnGuardarOrden.FlatAppearance.BorderSize = 0;
+            this.btnGuardarOrden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnGuardarOrden.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.btnGuardarOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardarOrden.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardarOrden.ForeColor = System.Drawing.Color.White;
@@ -210,9 +238,9 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.SystemColors.Control;
+            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.label6.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Location = new System.Drawing.Point(603, 303);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(209, 30);
@@ -222,9 +250,10 @@
             // cmbMecanico
             // 
             this.cmbMecanico.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbMecanico.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.cmbMecanico.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbMecanico.FormattingEnabled = true;
-            this.cmbMecanico.Location = new System.Drawing.Point(608, 358);
+            this.cmbMecanico.Location = new System.Drawing.Point(611, 353);
             this.cmbMecanico.Name = "cmbMecanico";
             this.cmbMecanico.Size = new System.Drawing.Size(215, 29);
             this.cmbMecanico.TabIndex = 28;
@@ -232,32 +261,20 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.SystemColors.Control;
+            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Location = new System.Drawing.Point(50, 373);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(354, 30);
             this.label7.TabIndex = 30;
             this.label7.Text = "Descripcion de la Orden de Trabajo:";
             // 
-            // btnBuscadorVehiculosRegistrados
-            // 
-            this.btnBuscadorVehiculosRegistrados.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorVehiculosRegistrados.IconColor = System.Drawing.Color.Black;
-            this.btnBuscadorVehiculosRegistrados.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnBuscadorVehiculosRegistrados.IconSize = 30;
-            this.btnBuscadorVehiculosRegistrados.Location = new System.Drawing.Point(279, 78);
-            this.btnBuscadorVehiculosRegistrados.Name = "btnBuscadorVehiculosRegistrados";
-            this.btnBuscadorVehiculosRegistrados.Size = new System.Drawing.Size(33, 33);
-            this.btnBuscadorVehiculosRegistrados.TabIndex = 31;
-            this.btnBuscadorVehiculosRegistrados.UseVisualStyleBackColor = true;
-            this.btnBuscadorVehiculosRegistrados.Click += new System.EventHandler(this.btnBuscadorVehiculosRegistrados_Click);
-            // 
             // FormOrden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
