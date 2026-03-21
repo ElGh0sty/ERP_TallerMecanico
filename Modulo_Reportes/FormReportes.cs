@@ -98,6 +98,7 @@ namespace PROYECTOMECANICO.Modulo_Reportes
             BotonRedondo(button2, 20);
             BotonRedondo(button3, 20);
             BotonRedondo(button4, 20);
+            BotonRedondo(button5, 20);
         }
 
 
@@ -138,6 +139,27 @@ namespace PROYECTOMECANICO.Modulo_Reportes
             {
                 objetoPadre.AbrirFormularioEnPanel(
                     new FormRepOrdenes()
+                    );
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(
+                    new FormKardexPorProducto()
                     );
             }
         }

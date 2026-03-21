@@ -289,6 +289,12 @@
     <Compile Include="Modulo_Personal\FormPersonal.Designer.cs">
       <DependentUpon>FormPersonal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Reportes\FormKardexPorProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Reportes\FormKardexPorProducto.Designer.cs">
+      <DependentUpon>FormKardexPorProducto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Reportes\FormRepClientes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -427,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Personal\FormPersonal.resx">
       <DependentUpon>FormPersonal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Reportes\FormKardexPorProducto.resx">
+      <DependentUpon>FormKardexPorProducto.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Reportes\FormRepClientes.resx">
       <DependentUpon>FormRepClientes.cs</DependentUpon>

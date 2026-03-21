@@ -17,13 +17,15 @@ namespace PROYECTOMECANICO
             public static Color SeleccionFila = Color.FromArgb(241, 89, 126);     // Color rosa al seleccionar
             public static Color EncabezadoFondo = Color.FromArgb(42, 45, 86);     // Fondo del encabezado
             public static Color EncabezadoTexto = Color.White;                    // Texto del encabezado blanco
+            public static Color BotonEliminar = Color.FromArgb(220, 53, 69);      // Rojo para eliminar
+            public static Color BotonEditar = Color.FromArgb(40, 167, 69);        // Verde para editar
+            public static Color BotonVer = Color.FromArgb(0, 123, 255);           // Azul para ver
+            public static Color BotonHover = Color.FromArgb(255, 89, 129);        // Rosa para hover
         }
 
         /// <summary>
         /// Aplica el estilo oscuro del dashboard a un DataGridView con textos blancos
         /// </summary>
-        /// <param name="dgv">DataGridView a estilizar</param>
-        /// <param name="alternarColores">Si se debe alternar colores entre filas</param>
         public static void AplicarEstiloDashboard(DataGridView dgv, bool alternarColores = true)
         {
             if (dgv == null) return;
@@ -58,39 +60,108 @@ namespace PROYECTOMECANICO
             dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgv.ColumnHeadersHeight = 40;
 
-            // Alternar colores entre filas (con texto blanco)
+            // Alternar colores entre filas
             if (alternarColores)
             {
                 dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(35, 38, 75);
                 dgv.AlternatingRowsDefaultCellStyle.ForeColor = Colores.TextoBlanco;
             }
 
-            // ScrollBars verticales visibles, horizontales ocultos
+            // ScrollBars
             dgv.ScrollBars = ScrollBars.Vertical;
         }
 
         /// <summary>
-        /// Aplica el estilo con barras de scroll personalizadas
+        /// Configura un botón columna con estilo personalizado
         /// </summary>
-        public static void AplicarEstiloConScroll(DataGridView dgv, bool alternarColores = true)
+        /// <param name="dgv">DataGridView que contiene la columna</param>
+        /// <param name="nombreColumna">Nombre de la columna botón</param>
+        /// <param name="color">Color del botón</param>
+        /// <param name="texto">Texto del botón</param>
+        /// <param name="ancho">Ancho de la columna (opcional)</param>
+        public static void ConfigurarBotonColumna(DataGridView dgv, string nombreColumna, Color color, string texto = "Acción", int? ancho = null)
         {
-            AplicarEstiloDashboard(dgv, alternarColores);
+            if (dgv.Columns[nombreColumna] is DataGridViewButtonColumn btnCol)
+            {
+                btnCol.Text = texto;
+                btnCol.UseColumnTextForButtonValue = true;
+                btnCol.FlatStyle = FlatStyle.Flat;
 
-            // Personalizar apariencia de las barras de scroll
-            dgv.ScrollBars = ScrollBars.Vertical;
+                if (ancho.HasValue)
+                    btnCol.Width = ancho.Value;
+
+                // Estilo del botón
+                btnCol.DefaultCellStyle.BackColor = color;
+                btnCol.DefaultCellStyle.ForeColor = Color.White;
+                btnCol.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                btnCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                btnCol.DefaultCellStyle.SelectionBackColor = color;
+                btnCol.DefaultCellStyle.SelectionForeColor = Color.White;
+            }
         }
 
         /// <summary>
-        /// Aplica el estilo sin barras de scroll (para grids con poca información)
+        /// Configura un botón de eliminar en el DataGridView
         /// </summary>
-        public static void AplicarEstiloSinScroll(DataGridView dgv, bool alternarColores = true)
+        public static void ConfigurarBotonEliminar(DataGridView dgv, string nombreColumna, int ancho = 80)
         {
-            AplicarEstiloDashboard(dgv, alternarColores);
-            dgv.ScrollBars = ScrollBars.None;
+            ConfigurarBotonColumna(dgv, nombreColumna, Colores.BotonEliminar, "Eliminar", ancho);
+
+            // Personalizar el evento CellPainting para mejor efecto visual (opcional)
+            dgv.CellPainting += (sender, e) =>
+            {
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgv.Columns[e.ColumnIndex].Name == nombreColumna)
+                {
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                    var rect = e.CellBounds;
+                    rect.Inflate(-8, -8);
+
+                    using (var brush = new SolidBrush(Colores.BotonEliminar))
+                    using (var pen = new Pen(Color.FromArgb(200, 40, 40)))
+                    {
+                        e.Graphics.FillRectangle(brush, rect);
+                        e.Graphics.DrawRectangle(pen, rect);
+
+                        var sf = new StringFormat
+                        {
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Center
+                        };
+
+                        e.Graphics.DrawString("Eliminar", new Font("Segoe UI", 9F, FontStyle.Bold), Brushes.White, rect, sf);
+                    }
+                    e.Handled = true;
+                }
+            };
         }
 
         /// <summary>
-        /// Configura un DataGridView para mostrar datos con formato de moneda
+        /// Configura un botón de editar en el DataGridView
+        /// </summary>
+        public static void ConfigurarBotonEditar(DataGridView dgv, string nombreColumna, int ancho = 80)
+        {
+            ConfigurarBotonColumna(dgv, nombreColumna, Colores.BotonEditar, "Editar", ancho);
+        }
+
+        /// <summary>
+        /// Configura un botón de ver/detalle en el DataGridView
+        /// </summary>
+        public static void ConfigurarBotonVer(DataGridView dgv, string nombreColumna, int ancho = 80)
+        {
+            ConfigurarBotonColumna(dgv, nombreColumna, Colores.BotonVer, "Ver", ancho);
+        }
+
+        /// <summary>
+        /// Configura un botón personalizado con evento de hover
+        /// </summary>
+        public static void ConfigurarBotonPersonalizado(DataGridView dgv, string nombreColumna, Color color, string texto, int ancho = 80)
+        {
+            ConfigurarBotonColumna(dgv, nombreColumna, color, texto, ancho);
+        }
+
+        /// <summary>
+        /// Formatea una columna como moneda
         /// </summary>
         public static void FormatearColumnaMoneda(DataGridView dgv, string columna, string formato = "C2")
         {
@@ -103,7 +174,7 @@ namespace PROYECTOMECANICO
         }
 
         /// <summary>
-        /// Configura una columna para mostrar fechas
+        /// Formatea una columna como fecha
         /// </summary>
         public static void FormatearColumnaFecha(DataGridView dgv, string columna, string formato = "dd/MM/yyyy HH:mm")
         {
@@ -116,7 +187,7 @@ namespace PROYECTOMECANICO
         }
 
         /// <summary>
-        /// Configura una columna para mostrar números enteros
+        /// Formatea una columna como número entero
         /// </summary>
         public static void FormatearColumnaNumero(DataGridView dgv, string columna)
         {
@@ -129,7 +200,7 @@ namespace PROYECTOMECANICO
         }
 
         /// <summary>
-        /// Configura una columna para mostrar porcentajes
+        /// Formatea una columna como porcentaje
         /// </summary>
         public static void FormatearColumnaPorcentaje(DataGridView dgv, string columna)
         {
@@ -138,6 +209,29 @@ namespace PROYECTOMECANICO
                 dgv.Columns[columna].DefaultCellStyle.Format = "P2";
                 dgv.Columns[columna].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[columna].DefaultCellStyle.ForeColor = Colores.TextoBlanco;
+            }
+        }
+
+        /// <summary>
+        /// Aplica el estilo completo a un DataGridView con botones incluidos
+        /// </summary>
+        public static void AplicarEstiloCompleto(DataGridView dgv, bool alternarColores = true)
+        {
+            AplicarEstiloDashboard(dgv, alternarColores);
+
+            // Buscar columnas de botón y configurarlas
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                if (col is DataGridViewButtonColumn btnCol)
+                {
+                    // Configurar botones por defecto
+                    btnCol.FlatStyle = FlatStyle.Flat;
+                    btnCol.DefaultCellStyle.BackColor = Colores.BotonEliminar;
+                    btnCol.DefaultCellStyle.ForeColor = Color.White;
+                    btnCol.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    btnCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    btnCol.DefaultCellStyle.SelectionBackColor = Colores.BotonEliminar;
+                }
             }
         }
     }

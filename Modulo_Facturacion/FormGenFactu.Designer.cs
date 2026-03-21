@@ -2,15 +2,8 @@
 {
     partial class FormGenFactu
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,34 +13,62 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.rbDesdeOT = new System.Windows.Forms.RadioButton();
-            this.rbVentaDirecta = new System.Windows.Forms.RadioButton();
+            this.tabControlPrincipal = new Guna.UI2.WinForms.Guna2TabControl();
+            this.tabPageOT = new System.Windows.Forms.TabPage();
+            this.panelOTInfo = new System.Windows.Forms.Panel();
+            this.labelOT_Titulo = new System.Windows.Forms.Label();
+            this.labelOT_Buscar = new System.Windows.Forms.Label();
             this.txtBuscarOT = new System.Windows.Forms.TextBox();
+            this.btnBuscadorOrdenTrabajo = new FontAwesome.Sharp.IconButton();
             this.lstOTResultados = new System.Windows.Forms.ListBox();
             this.btnCargarItemsOT = new System.Windows.Forms.Button();
-            this.rbClienteExistente = new System.Windows.Forms.RadioButton();
-            this.rbNuevoCliente = new System.Windows.Forms.RadioButton();
-            this.rbConsumidorFinal = new System.Windows.Forms.RadioButton();
-            this.txtBuscarCliente = new System.Windows.Forms.TextBox();
-            this.lstClientes = new System.Windows.Forms.ListBox();
-            this.btnNuevoCliente = new System.Windows.Forms.Button();
-            this.txtTipoDoc = new System.Windows.Forms.TextBox();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.txtDireccion = new System.Windows.Forms.TextBox();
-            this.txtNumDoc = new System.Windows.Forms.TextBox();
-            this.txtTelefono = new System.Windows.Forms.TextBox();
-            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.labelOT_TipoDoc = new System.Windows.Forms.Label();
+            this.labelOT_NumDoc = new System.Windows.Forms.Label();
+            this.labelOT_Nombre = new System.Windows.Forms.Label();
+            this.labelOT_Direccion = new System.Windows.Forms.Label();
+            this.labelOT_Telefono = new System.Windows.Forms.Label();
+            this.labelOT_Email = new System.Windows.Forms.Label();
+            this.txtTipoDocOT = new System.Windows.Forms.TextBox();
+            this.txtNumDocOT = new System.Windows.Forms.TextBox();
+            this.txtNombreOT = new System.Windows.Forms.TextBox();
+            this.txtDireccionOT = new System.Windows.Forms.TextBox();
+            this.txtTelefonoOT = new System.Windows.Forms.TextBox();
+            this.txtEmailOT = new System.Windows.Forms.TextBox();
+            this.btnConfirmarReceptorOT = new System.Windows.Forms.Button();
+            this.tabPageVentaDirecta = new System.Windows.Forms.TabPage();
+            this.panelVDInfo = new System.Windows.Forms.Panel();
+            this.labelVD_Titulo = new System.Windows.Forms.Label();
+            this.rbClienteExistenteVD = new System.Windows.Forms.RadioButton();
+            this.rbNuevoClienteVD = new System.Windows.Forms.RadioButton();
+            this.rbConsumidorFinalVD = new System.Windows.Forms.RadioButton();
+            this.labelVD_Buscar = new System.Windows.Forms.Label();
+            this.txtBuscarClienteVD = new System.Windows.Forms.TextBox();
+            this.btnBuscadorClientesVD = new FontAwesome.Sharp.IconButton();
+            this.lstClientesVD = new System.Windows.Forms.ListBox();
+            this.btnNuevoClienteVD = new System.Windows.Forms.Button();
+            this.labelVD_TipoDoc = new System.Windows.Forms.Label();
+            this.labelVD_NumDoc = new System.Windows.Forms.Label();
+            this.labelVD_Nombre = new System.Windows.Forms.Label();
+            this.labelVD_Direccion = new System.Windows.Forms.Label();
+            this.labelVD_Telefono = new System.Windows.Forms.Label();
+            this.labelVD_Email = new System.Windows.Forms.Label();
+            this.txtTipoDocVD = new System.Windows.Forms.TextBox();
+            this.txtNumDocVD = new System.Windows.Forms.TextBox();
+            this.txtNombreVD = new System.Windows.Forms.TextBox();
+            this.txtDireccionVD = new System.Windows.Forms.TextBox();
+            this.txtTelefonoVD = new System.Windows.Forms.TextBox();
+            this.txtEmailVD = new System.Windows.Forms.TextBox();
+            this.dgvItems = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.guna2PanelTotales = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblDescuentoInfo = new System.Windows.Forms.Label();
+            this.btnAplicarDescuento = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbDescuentoItem = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnAddItem = new System.Windows.Forms.Button();
             this.btnDelItem = new System.Windows.Forms.Button();
             this.cmbImpuesto = new System.Windows.Forms.ComboBox();
@@ -56,427 +77,560 @@
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnGenerarFactura = new System.Windows.Forms.Button();
             this.btnVistaPrevia = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.dgvItems = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnBuscadorOrdenTrabajo = new FontAwesome.Sharp.IconButton();
-            this.btnBuscadorClientes = new FontAwesome.Sharp.IconButton();
+            this.tabControlPrincipal.SuspendLayout();
+            this.tabPageOT.SuspendLayout();
+            this.panelOTInfo.SuspendLayout();
+            this.tabPageVentaDirecta.SuspendLayout();
+            this.panelVDInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
-            this.guna2Panel2.SuspendLayout();
+            this.guna2PanelTotales.SuspendLayout();
             this.SuspendLayout();
             // 
-            // rbDesdeOT
+            // tabControlPrincipal
             // 
-            this.rbDesdeOT.AutoSize = true;
-            this.rbDesdeOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbDesdeOT.ForeColor = System.Drawing.Color.White;
-            this.rbDesdeOT.Location = new System.Drawing.Point(20, 32);
-            this.rbDesdeOT.Name = "rbDesdeOT";
-            this.rbDesdeOT.Size = new System.Drawing.Size(99, 25);
-            this.rbDesdeOT.TabIndex = 0;
-            this.rbDesdeOT.TabStop = true;
-            this.rbDesdeOT.Text = "Desde OT";
-            this.rbDesdeOT.UseVisualStyleBackColor = true;
+            this.tabControlPrincipal.Controls.Add(this.tabPageOT);
+            this.tabControlPrincipal.Controls.Add(this.tabPageVentaDirecta);
+            this.tabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControlPrincipal.ItemSize = new System.Drawing.Size(150, 50);
+            this.tabControlPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.tabControlPrincipal.Name = "tabControlPrincipal";
+            this.tabControlPrincipal.SelectedIndex = 0;
+            this.tabControlPrincipal.Size = new System.Drawing.Size(896, 380);
+            this.tabControlPrincipal.TabButtonHoverState.BorderColor = System.Drawing.Color.Empty;
+            this.tabControlPrincipal.TabButtonHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
+            this.tabControlPrincipal.TabButtonHoverState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.tabControlPrincipal.TabButtonHoverState.ForeColor = System.Drawing.Color.White;
+            this.tabControlPrincipal.TabButtonHoverState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
+            this.tabControlPrincipal.TabButtonIdleState.BorderColor = System.Drawing.Color.Empty;
+            this.tabControlPrincipal.TabButtonIdleState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.tabControlPrincipal.TabButtonIdleState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.tabControlPrincipal.TabButtonIdleState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(160)))), ((int)(((byte)(167)))));
+            this.tabControlPrincipal.TabButtonIdleState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.tabControlPrincipal.TabButtonSelectedState.BorderColor = System.Drawing.Color.Empty;
+            this.tabControlPrincipal.TabButtonSelectedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(37)))), ((int)(((byte)(49)))));
+            this.tabControlPrincipal.TabButtonSelectedState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.tabControlPrincipal.TabButtonSelectedState.ForeColor = System.Drawing.Color.White;
+            this.tabControlPrincipal.TabButtonSelectedState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(132)))), ((int)(((byte)(255)))));
+            this.tabControlPrincipal.TabButtonSize = new System.Drawing.Size(150, 50);
+            this.tabControlPrincipal.TabIndex = 0;
+            this.tabControlPrincipal.TabMenuBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.tabControlPrincipal.TabMenuOrientation = Guna.UI2.WinForms.TabMenuOrientation.HorizontalTop;
             // 
-            // rbVentaDirecta
+            // tabPageOT
             // 
-            this.rbVentaDirecta.AutoSize = true;
-            this.rbVentaDirecta.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbVentaDirecta.ForeColor = System.Drawing.Color.White;
-            this.rbVentaDirecta.Location = new System.Drawing.Point(135, 32);
-            this.rbVentaDirecta.Name = "rbVentaDirecta";
-            this.rbVentaDirecta.Size = new System.Drawing.Size(124, 25);
-            this.rbVentaDirecta.TabIndex = 1;
-            this.rbVentaDirecta.TabStop = true;
-            this.rbVentaDirecta.Text = "Venta directa";
-            this.rbVentaDirecta.UseVisualStyleBackColor = true;
+            this.tabPageOT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.tabPageOT.Controls.Add(this.panelOTInfo);
+            this.tabPageOT.Location = new System.Drawing.Point(4, 54);
+            this.tabPageOT.Name = "tabPageOT";
+            this.tabPageOT.Padding = new System.Windows.Forms.Padding(15);
+            this.tabPageOT.Size = new System.Drawing.Size(888, 322);
+            this.tabPageOT.TabIndex = 0;
+            this.tabPageOT.Text = "Orden de Trabajo";
+            // 
+            // panelOTInfo
+            // 
+            this.panelOTInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.panelOTInfo.Controls.Add(this.labelOT_Titulo);
+            this.panelOTInfo.Controls.Add(this.labelOT_Buscar);
+            this.panelOTInfo.Controls.Add(this.txtBuscarOT);
+            this.panelOTInfo.Controls.Add(this.btnBuscadorOrdenTrabajo);
+            this.panelOTInfo.Controls.Add(this.lstOTResultados);
+            this.panelOTInfo.Controls.Add(this.btnCargarItemsOT);
+            this.panelOTInfo.Controls.Add(this.labelOT_TipoDoc);
+            this.panelOTInfo.Controls.Add(this.labelOT_NumDoc);
+            this.panelOTInfo.Controls.Add(this.labelOT_Nombre);
+            this.panelOTInfo.Controls.Add(this.labelOT_Direccion);
+            this.panelOTInfo.Controls.Add(this.labelOT_Telefono);
+            this.panelOTInfo.Controls.Add(this.labelOT_Email);
+            this.panelOTInfo.Controls.Add(this.txtTipoDocOT);
+            this.panelOTInfo.Controls.Add(this.txtNumDocOT);
+            this.panelOTInfo.Controls.Add(this.txtNombreOT);
+            this.panelOTInfo.Controls.Add(this.txtDireccionOT);
+            this.panelOTInfo.Controls.Add(this.txtTelefonoOT);
+            this.panelOTInfo.Controls.Add(this.txtEmailOT);
+            this.panelOTInfo.Controls.Add(this.btnConfirmarReceptorOT);
+            this.panelOTInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelOTInfo.Location = new System.Drawing.Point(15, 15);
+            this.panelOTInfo.Name = "panelOTInfo";
+            this.panelOTInfo.Size = new System.Drawing.Size(858, 292);
+            this.panelOTInfo.TabIndex = 0;
+            // 
+            // labelOT_Titulo
+            // 
+            this.labelOT_Titulo.AutoSize = true;
+            this.labelOT_Titulo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Titulo.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Titulo.Location = new System.Drawing.Point(10, 10);
+            this.labelOT_Titulo.Name = "labelOT_Titulo";
+            this.labelOT_Titulo.Size = new System.Drawing.Size(288, 25);
+            this.labelOT_Titulo.TabIndex = 0;
+            this.labelOT_Titulo.Text = "Facturar desde Orden de Trabajo";
+            // 
+            // labelOT_Buscar
+            // 
+            this.labelOT_Buscar.AutoSize = true;
+            this.labelOT_Buscar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Buscar.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Buscar.Location = new System.Drawing.Point(10, 50);
+            this.labelOT_Buscar.Name = "labelOT_Buscar";
+            this.labelOT_Buscar.Size = new System.Drawing.Size(180, 20);
+            this.labelOT_Buscar.TabIndex = 1;
+            this.labelOT_Buscar.Text = "Buscar Orden de Trabajo:";
             // 
             // txtBuscarOT
             // 
-            this.txtBuscarOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarOT.Location = new System.Drawing.Point(12, 99);
+            this.txtBuscarOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.txtBuscarOT.Location = new System.Drawing.Point(10, 75);
             this.txtBuscarOT.Name = "txtBuscarOT";
-            this.txtBuscarOT.Size = new System.Drawing.Size(300, 29);
+            this.txtBuscarOT.Size = new System.Drawing.Size(320, 27);
             this.txtBuscarOT.TabIndex = 2;
+            // 
+            // btnBuscadorOrdenTrabajo
+            // 
+            this.btnBuscadorOrdenTrabajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscadorOrdenTrabajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscadorOrdenTrabajo.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorOrdenTrabajo.IconColor = System.Drawing.Color.White;
+            this.btnBuscadorOrdenTrabajo.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorOrdenTrabajo.IconSize = 28;
+            this.btnBuscadorOrdenTrabajo.Location = new System.Drawing.Point(336, 71);
+            this.btnBuscadorOrdenTrabajo.Name = "btnBuscadorOrdenTrabajo";
+            this.btnBuscadorOrdenTrabajo.Size = new System.Drawing.Size(35, 35);
+            this.btnBuscadorOrdenTrabajo.TabIndex = 3;
+            this.btnBuscadorOrdenTrabajo.UseVisualStyleBackColor = true;
+            this.btnBuscadorOrdenTrabajo.Click += new System.EventHandler(this.btnBuscadorOrdenTrabajo_Click);
             // 
             // lstOTResultados
             // 
-            this.lstOTResultados.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstOTResultados.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lstOTResultados.FormattingEnabled = true;
-            this.lstOTResultados.ItemHeight = 21;
-            this.lstOTResultados.Location = new System.Drawing.Point(12, 127);
+            this.lstOTResultados.ItemHeight = 17;
+            this.lstOTResultados.Location = new System.Drawing.Point(10, 110);
             this.lstOTResultados.Name = "lstOTResultados";
-            this.lstOTResultados.Size = new System.Drawing.Size(300, 88);
-            this.lstOTResultados.TabIndex = 3;
+            this.lstOTResultados.Size = new System.Drawing.Size(361, 72);
+            this.lstOTResultados.TabIndex = 4;
+            this.lstOTResultados.Visible = false;
             // 
             // btnCargarItemsOT
             // 
-            this.btnCargarItemsOT.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnCargarItemsOT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.btnCargarItemsOT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCargarItemsOT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCargarItemsOT.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.btnCargarItemsOT.ForeColor = System.Drawing.Color.White;
-            this.btnCargarItemsOT.Location = new System.Drawing.Point(320, 134);
+            this.btnCargarItemsOT.Location = new System.Drawing.Point(10, 195);
             this.btnCargarItemsOT.Name = "btnCargarItemsOT";
-            this.btnCargarItemsOT.Size = new System.Drawing.Size(111, 34);
-            this.btnCargarItemsOT.TabIndex = 4;
-            this.btnCargarItemsOT.Text = "Cargar items";
-            this.btnCargarItemsOT.UseVisualStyleBackColor = true;
+            this.btnCargarItemsOT.Size = new System.Drawing.Size(120, 35);
+            this.btnCargarItemsOT.TabIndex = 5;
+            this.btnCargarItemsOT.Text = "Cargar Items";
+            this.btnCargarItemsOT.UseVisualStyleBackColor = false;
             // 
-            // rbClienteExistente
+            // labelOT_TipoDoc
             // 
-            this.rbClienteExistente.AutoSize = true;
-            this.rbClienteExistente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbClienteExistente.ForeColor = System.Drawing.Color.White;
-            this.rbClienteExistente.Location = new System.Drawing.Point(430, 32);
-            this.rbClienteExistente.Name = "rbClienteExistente";
-            this.rbClienteExistente.Size = new System.Drawing.Size(149, 25);
-            this.rbClienteExistente.TabIndex = 5;
-            this.rbClienteExistente.TabStop = true;
-            this.rbClienteExistente.Text = "Cliente Existente";
-            this.rbClienteExistente.UseVisualStyleBackColor = true;
+            this.labelOT_TipoDoc.AutoSize = true;
+            this.labelOT_TipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_TipoDoc.ForeColor = System.Drawing.Color.White;
+            this.labelOT_TipoDoc.Location = new System.Drawing.Point(400, 20);
+            this.labelOT_TipoDoc.Name = "labelOT_TipoDoc";
+            this.labelOT_TipoDoc.Size = new System.Drawing.Size(69, 19);
+            this.labelOT_TipoDoc.TabIndex = 6;
+            this.labelOT_TipoDoc.Text = "Tipo Doc:";
             // 
-            // rbNuevoCliente
+            // labelOT_NumDoc
             // 
-            this.rbNuevoCliente.AutoSize = true;
-            this.rbNuevoCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbNuevoCliente.ForeColor = System.Drawing.Color.White;
-            this.rbNuevoCliente.Location = new System.Drawing.Point(585, 32);
-            this.rbNuevoCliente.Name = "rbNuevoCliente";
-            this.rbNuevoCliente.Size = new System.Drawing.Size(131, 25);
-            this.rbNuevoCliente.TabIndex = 6;
-            this.rbNuevoCliente.TabStop = true;
-            this.rbNuevoCliente.Text = "Nuevo Cliente";
-            this.rbNuevoCliente.UseVisualStyleBackColor = true;
+            this.labelOT_NumDoc.AutoSize = true;
+            this.labelOT_NumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_NumDoc.ForeColor = System.Drawing.Color.White;
+            this.labelOT_NumDoc.Location = new System.Drawing.Point(610, 20);
+            this.labelOT_NumDoc.Name = "labelOT_NumDoc";
+            this.labelOT_NumDoc.Size = new System.Drawing.Size(58, 19);
+            this.labelOT_NumDoc.TabIndex = 7;
+            this.labelOT_NumDoc.Text = "Nº Doc:";
             // 
-            // rbConsumidorFinal
+            // labelOT_Nombre
             // 
-            this.rbConsumidorFinal.AutoSize = true;
-            this.rbConsumidorFinal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbConsumidorFinal.ForeColor = System.Drawing.Color.White;
-            this.rbConsumidorFinal.Location = new System.Drawing.Point(722, 32);
-            this.rbConsumidorFinal.Name = "rbConsumidorFinal";
-            this.rbConsumidorFinal.Size = new System.Drawing.Size(154, 25);
-            this.rbConsumidorFinal.TabIndex = 7;
-            this.rbConsumidorFinal.TabStop = true;
-            this.rbConsumidorFinal.Text = "Consumidor Final";
-            this.rbConsumidorFinal.UseVisualStyleBackColor = true;
+            this.labelOT_Nombre.AutoSize = true;
+            this.labelOT_Nombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Nombre.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Nombre.Location = new System.Drawing.Point(400, 70);
+            this.labelOT_Nombre.Name = "labelOT_Nombre";
+            this.labelOT_Nombre.Size = new System.Drawing.Size(63, 19);
+            this.labelOT_Nombre.TabIndex = 8;
+            this.labelOT_Nombre.Text = "Nombre:";
             // 
-            // txtBuscarCliente
+            // labelOT_Direccion
             // 
-            this.txtBuscarCliente.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarCliente.Location = new System.Drawing.Point(436, 99);
-            this.txtBuscarCliente.Name = "txtBuscarCliente";
-            this.txtBuscarCliente.Size = new System.Drawing.Size(300, 29);
-            this.txtBuscarCliente.TabIndex = 8;
+            this.labelOT_Direccion.AutoSize = true;
+            this.labelOT_Direccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Direccion.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Direccion.Location = new System.Drawing.Point(400, 120);
+            this.labelOT_Direccion.Name = "labelOT_Direccion";
+            this.labelOT_Direccion.Size = new System.Drawing.Size(72, 19);
+            this.labelOT_Direccion.TabIndex = 9;
+            this.labelOT_Direccion.Text = "Dirección:";
             // 
-            // lstClientes
+            // labelOT_Telefono
             // 
-            this.lstClientes.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstClientes.FormattingEnabled = true;
-            this.lstClientes.ItemHeight = 21;
-            this.lstClientes.Location = new System.Drawing.Point(435, 127);
-            this.lstClientes.Name = "lstClientes";
-            this.lstClientes.Size = new System.Drawing.Size(300, 88);
-            this.lstClientes.TabIndex = 9;
+            this.labelOT_Telefono.AutoSize = true;
+            this.labelOT_Telefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Telefono.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Telefono.Location = new System.Drawing.Point(400, 170);
+            this.labelOT_Telefono.Name = "labelOT_Telefono";
+            this.labelOT_Telefono.Size = new System.Drawing.Size(66, 19);
+            this.labelOT_Telefono.TabIndex = 10;
+            this.labelOT_Telefono.Text = "Teléfono:";
             // 
-            // btnNuevoCliente
+            // labelOT_Email
             // 
-            this.btnNuevoCliente.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnNuevoCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNuevoCliente.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevoCliente.ForeColor = System.Drawing.Color.White;
-            this.btnNuevoCliente.Location = new System.Drawing.Point(743, 134);
-            this.btnNuevoCliente.Name = "btnNuevoCliente";
-            this.btnNuevoCliente.Size = new System.Drawing.Size(82, 37);
-            this.btnNuevoCliente.TabIndex = 10;
-            this.btnNuevoCliente.Text = "+ Nuevo";
-            this.btnNuevoCliente.UseVisualStyleBackColor = true;
+            this.labelOT_Email.AutoSize = true;
+            this.labelOT_Email.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelOT_Email.ForeColor = System.Drawing.Color.White;
+            this.labelOT_Email.Location = new System.Drawing.Point(610, 170);
+            this.labelOT_Email.Name = "labelOT_Email";
+            this.labelOT_Email.Size = new System.Drawing.Size(46, 19);
+            this.labelOT_Email.TabIndex = 11;
+            this.labelOT_Email.Text = "Email:";
             // 
-            // txtTipoDoc
+            // txtTipoDocOT
             // 
-            this.txtTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTipoDoc.Location = new System.Drawing.Point(100, 426);
-            this.txtTipoDoc.Name = "txtTipoDoc";
-            this.txtTipoDoc.Size = new System.Drawing.Size(125, 29);
-            this.txtTipoDoc.TabIndex = 11;
+            this.txtTipoDocOT.BackColor = System.Drawing.Color.White;
+            this.txtTipoDocOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtTipoDocOT.Location = new System.Drawing.Point(400, 42);
+            this.txtTipoDocOT.Name = "txtTipoDocOT";
+            this.txtTipoDocOT.Size = new System.Drawing.Size(100, 25);
+            this.txtTipoDocOT.TabIndex = 12;
             // 
-            // txtNombre
+            // txtNumDocOT
             // 
-            this.txtNombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombre.Location = new System.Drawing.Point(100, 473);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(330, 29);
-            this.txtNombre.TabIndex = 12;
+            this.txtNumDocOT.BackColor = System.Drawing.Color.White;
+            this.txtNumDocOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtNumDocOT.Location = new System.Drawing.Point(610, 42);
+            this.txtNumDocOT.Name = "txtNumDocOT";
+            this.txtNumDocOT.Size = new System.Drawing.Size(200, 25);
+            this.txtNumDocOT.TabIndex = 13;
             // 
-            // txtDireccion
+            // txtNombreOT
             // 
-            this.txtDireccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDireccion.Location = new System.Drawing.Point(100, 515);
-            this.txtDireccion.Name = "txtDireccion";
-            this.txtDireccion.Size = new System.Drawing.Size(331, 29);
-            this.txtDireccion.TabIndex = 13;
+            this.txtNombreOT.BackColor = System.Drawing.Color.White;
+            this.txtNombreOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtNombreOT.Location = new System.Drawing.Point(400, 92);
+            this.txtNombreOT.Name = "txtNombreOT";
+            this.txtNombreOT.Size = new System.Drawing.Size(410, 25);
+            this.txtNombreOT.TabIndex = 14;
             // 
-            // txtNumDoc
+            // txtDireccionOT
             // 
-            this.txtNumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumDoc.Location = new System.Drawing.Point(296, 426);
-            this.txtNumDoc.Name = "txtNumDoc";
-            this.txtNumDoc.Size = new System.Drawing.Size(133, 29);
-            this.txtNumDoc.TabIndex = 14;
+            this.txtDireccionOT.BackColor = System.Drawing.Color.White;
+            this.txtDireccionOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtDireccionOT.Location = new System.Drawing.Point(400, 142);
+            this.txtDireccionOT.Name = "txtDireccionOT";
+            this.txtDireccionOT.Size = new System.Drawing.Size(410, 25);
+            this.txtDireccionOT.TabIndex = 15;
             // 
-            // txtTelefono
+            // txtTelefonoOT
             // 
-            this.txtTelefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelefono.Location = new System.Drawing.Point(100, 564);
-            this.txtTelefono.Name = "txtTelefono";
-            this.txtTelefono.Size = new System.Drawing.Size(125, 29);
-            this.txtTelefono.TabIndex = 15;
+            this.txtTelefonoOT.BackColor = System.Drawing.Color.White;
+            this.txtTelefonoOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtTelefonoOT.Location = new System.Drawing.Point(400, 192);
+            this.txtTelefonoOT.Name = "txtTelefonoOT";
+            this.txtTelefonoOT.Size = new System.Drawing.Size(150, 25);
+            this.txtTelefonoOT.TabIndex = 16;
             // 
-            // txtEmail
+            // txtEmailOT
             // 
-            this.txtEmail.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(282, 564);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(149, 29);
-            this.txtEmail.TabIndex = 16;
+            this.txtEmailOT.BackColor = System.Drawing.Color.White;
+            this.txtEmailOT.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtEmailOT.Location = new System.Drawing.Point(610, 192);
+            this.txtEmailOT.Name = "txtEmailOT";
+            this.txtEmailOT.Size = new System.Drawing.Size(200, 25);
+            this.txtEmailOT.TabIndex = 17;
             // 
-            // btnAddItem
+            // btnConfirmarReceptorOT
             // 
-            this.btnAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
-            this.btnAddItem.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddItem.ForeColor = System.Drawing.Color.White;
-            this.btnAddItem.Location = new System.Drawing.Point(17, 25);
-            this.btnAddItem.Name = "btnAddItem";
-            this.btnAddItem.Size = new System.Drawing.Size(88, 31);
-            this.btnAddItem.TabIndex = 18;
-            this.btnAddItem.Text = "+ Item";
-            this.btnAddItem.UseVisualStyleBackColor = false;
-            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            this.btnConfirmarReceptorOT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnConfirmarReceptorOT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfirmarReceptorOT.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnConfirmarReceptorOT.ForeColor = System.Drawing.Color.White;
+            this.btnConfirmarReceptorOT.Location = new System.Drawing.Point(690, 235);
+            this.btnConfirmarReceptorOT.Name = "btnConfirmarReceptorOT";
+            this.btnConfirmarReceptorOT.Size = new System.Drawing.Size(120, 35);
+            this.btnConfirmarReceptorOT.TabIndex = 18;
+            this.btnConfirmarReceptorOT.Text = "Confirmar";
+            this.btnConfirmarReceptorOT.UseVisualStyleBackColor = false;
             // 
-            // btnDelItem
+            // tabPageVentaDirecta
             // 
-            this.btnDelItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
-            this.btnDelItem.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnDelItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelItem.ForeColor = System.Drawing.Color.White;
-            this.btnDelItem.Location = new System.Drawing.Point(138, 25);
-            this.btnDelItem.Name = "btnDelItem";
-            this.btnDelItem.Size = new System.Drawing.Size(89, 31);
-            this.btnDelItem.TabIndex = 19;
-            this.btnDelItem.Text = "Eliminar";
-            this.btnDelItem.UseVisualStyleBackColor = false;
+            this.tabPageVentaDirecta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.tabPageVentaDirecta.Controls.Add(this.panelVDInfo);
+            this.tabPageVentaDirecta.Location = new System.Drawing.Point(4, 54);
+            this.tabPageVentaDirecta.Name = "tabPageVentaDirecta";
+            this.tabPageVentaDirecta.Padding = new System.Windows.Forms.Padding(15);
+            this.tabPageVentaDirecta.Size = new System.Drawing.Size(888, 322);
+            this.tabPageVentaDirecta.TabIndex = 1;
+            this.tabPageVentaDirecta.Text = "Venta Directa";
             // 
-            // cmbImpuesto
+            // panelVDInfo
             // 
-            this.cmbImpuesto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbImpuesto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbImpuesto.ForeColor = System.Drawing.Color.Black;
-            this.cmbImpuesto.FormattingEnabled = true;
-            this.cmbImpuesto.Location = new System.Drawing.Point(40, 89);
-            this.cmbImpuesto.Name = "cmbImpuesto";
-            this.cmbImpuesto.Size = new System.Drawing.Size(137, 29);
-            this.cmbImpuesto.TabIndex = 20;
+            this.panelVDInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.panelVDInfo.Controls.Add(this.labelVD_Titulo);
+            this.panelVDInfo.Controls.Add(this.rbClienteExistenteVD);
+            this.panelVDInfo.Controls.Add(this.rbNuevoClienteVD);
+            this.panelVDInfo.Controls.Add(this.rbConsumidorFinalVD);
+            this.panelVDInfo.Controls.Add(this.labelVD_Buscar);
+            this.panelVDInfo.Controls.Add(this.txtBuscarClienteVD);
+            this.panelVDInfo.Controls.Add(this.btnBuscadorClientesVD);
+            this.panelVDInfo.Controls.Add(this.lstClientesVD);
+            this.panelVDInfo.Controls.Add(this.btnNuevoClienteVD);
+            this.panelVDInfo.Controls.Add(this.labelVD_TipoDoc);
+            this.panelVDInfo.Controls.Add(this.labelVD_NumDoc);
+            this.panelVDInfo.Controls.Add(this.labelVD_Nombre);
+            this.panelVDInfo.Controls.Add(this.labelVD_Direccion);
+            this.panelVDInfo.Controls.Add(this.labelVD_Telefono);
+            this.panelVDInfo.Controls.Add(this.labelVD_Email);
+            this.panelVDInfo.Controls.Add(this.txtTipoDocVD);
+            this.panelVDInfo.Controls.Add(this.txtNumDocVD);
+            this.panelVDInfo.Controls.Add(this.txtNombreVD);
+            this.panelVDInfo.Controls.Add(this.txtDireccionVD);
+            this.panelVDInfo.Controls.Add(this.txtTelefonoVD);
+            this.panelVDInfo.Controls.Add(this.txtEmailVD);
+            this.panelVDInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelVDInfo.Location = new System.Drawing.Point(15, 15);
+            this.panelVDInfo.Name = "panelVDInfo";
+            this.panelVDInfo.Size = new System.Drawing.Size(858, 292);
+            this.panelVDInfo.TabIndex = 0;
             // 
-            // lblSubtotal
+            // labelVD_Titulo
             // 
-            this.lblSubtotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSubtotal.AutoSize = true;
-            this.lblSubtotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubtotal.ForeColor = System.Drawing.Color.White;
-            this.lblSubtotal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblSubtotal.Location = new System.Drawing.Point(244, 54);
-            this.lblSubtotal.Name = "lblSubtotal";
-            this.lblSubtotal.Size = new System.Drawing.Size(51, 21);
-            this.lblSubtotal.TabIndex = 21;
-            this.lblSubtotal.Text = "label1";
+            this.labelVD_Titulo.AutoSize = true;
+            this.labelVD_Titulo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Titulo.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Titulo.Location = new System.Drawing.Point(10, 10);
+            this.labelVD_Titulo.Name = "labelVD_Titulo";
+            this.labelVD_Titulo.Size = new System.Drawing.Size(232, 25);
+            this.labelVD_Titulo.TabIndex = 0;
+            this.labelVD_Titulo.Text = "Facturación Venta Directa";
             // 
-            // lblIVA
+            // rbClienteExistenteVD
             // 
-            this.lblIVA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIVA.AutoSize = true;
-            this.lblIVA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIVA.ForeColor = System.Drawing.Color.White;
-            this.lblIVA.Location = new System.Drawing.Point(244, 89);
-            this.lblIVA.Name = "lblIVA";
-            this.lblIVA.Size = new System.Drawing.Size(54, 21);
-            this.lblIVA.TabIndex = 22;
-            this.lblIVA.Text = "label2";
+            this.rbClienteExistenteVD.AutoSize = true;
+            this.rbClienteExistenteVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.rbClienteExistenteVD.ForeColor = System.Drawing.Color.White;
+            this.rbClienteExistenteVD.Location = new System.Drawing.Point(10, 50);
+            this.rbClienteExistenteVD.Name = "rbClienteExistenteVD";
+            this.rbClienteExistenteVD.Size = new System.Drawing.Size(131, 23);
+            this.rbClienteExistenteVD.TabIndex = 1;
+            this.rbClienteExistenteVD.TabStop = true;
+            this.rbClienteExistenteVD.Text = "Cliente Existente";
+            this.rbClienteExistenteVD.UseVisualStyleBackColor = true;
             // 
-            // lblTotal
+            // rbNuevoClienteVD
             // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Location = new System.Drawing.Point(244, 124);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(54, 21);
-            this.lblTotal.TabIndex = 23;
-            this.lblTotal.Text = "label3";
+            this.rbNuevoClienteVD.AutoSize = true;
+            this.rbNuevoClienteVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.rbNuevoClienteVD.ForeColor = System.Drawing.Color.White;
+            this.rbNuevoClienteVD.Location = new System.Drawing.Point(150, 50);
+            this.rbNuevoClienteVD.Name = "rbNuevoClienteVD";
+            this.rbNuevoClienteVD.Size = new System.Drawing.Size(116, 23);
+            this.rbNuevoClienteVD.TabIndex = 2;
+            this.rbNuevoClienteVD.TabStop = true;
+            this.rbNuevoClienteVD.Text = "Nuevo Cliente";
+            this.rbNuevoClienteVD.UseVisualStyleBackColor = true;
             // 
-            // btnGenerarFactura
+            // rbConsumidorFinalVD
             // 
-            this.btnGenerarFactura.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGenerarFactura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
-            this.btnGenerarFactura.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnGenerarFactura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGenerarFactura.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerarFactura.ForeColor = System.Drawing.Color.White;
-            this.btnGenerarFactura.Location = new System.Drawing.Point(16, 150);
-            this.btnGenerarFactura.Name = "btnGenerarFactura";
-            this.btnGenerarFactura.Size = new System.Drawing.Size(89, 31);
-            this.btnGenerarFactura.TabIndex = 24;
-            this.btnGenerarFactura.Text = "Generar Factura";
-            this.btnGenerarFactura.UseVisualStyleBackColor = false;
+            this.rbConsumidorFinalVD.AutoSize = true;
+            this.rbConsumidorFinalVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.rbConsumidorFinalVD.ForeColor = System.Drawing.Color.White;
+            this.rbConsumidorFinalVD.Location = new System.Drawing.Point(272, 50);
+            this.rbConsumidorFinalVD.Name = "rbConsumidorFinalVD";
+            this.rbConsumidorFinalVD.Size = new System.Drawing.Size(137, 23);
+            this.rbConsumidorFinalVD.TabIndex = 3;
+            this.rbConsumidorFinalVD.TabStop = true;
+            this.rbConsumidorFinalVD.Text = "Consumidor Final";
+            this.rbConsumidorFinalVD.UseVisualStyleBackColor = true;
             // 
-            // btnVistaPrevia
+            // labelVD_Buscar
             // 
-            this.btnVistaPrevia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnVistaPrevia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
-            this.btnVistaPrevia.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnVistaPrevia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnVistaPrevia.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVistaPrevia.ForeColor = System.Drawing.Color.White;
-            this.btnVistaPrevia.Location = new System.Drawing.Point(138, 150);
-            this.btnVistaPrevia.Name = "btnVistaPrevia";
-            this.btnVistaPrevia.Size = new System.Drawing.Size(89, 31);
-            this.btnVistaPrevia.TabIndex = 25;
-            this.btnVistaPrevia.Text = "Vista Previa";
-            this.btnVistaPrevia.UseVisualStyleBackColor = false;
+            this.labelVD_Buscar.AutoSize = true;
+            this.labelVD_Buscar.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Buscar.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Buscar.Location = new System.Drawing.Point(10, 90);
+            this.labelVD_Buscar.Name = "labelVD_Buscar";
+            this.labelVD_Buscar.Size = new System.Drawing.Size(109, 20);
+            this.labelVD_Buscar.TabIndex = 4;
+            this.labelVD_Buscar.Text = "Buscar Cliente:";
             // 
-            // label2
+            // txtBuscarClienteVD
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(14, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(154, 21);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "Origen de la factura";
+            this.txtBuscarClienteVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.txtBuscarClienteVD.Location = new System.Drawing.Point(10, 115);
+            this.txtBuscarClienteVD.Name = "txtBuscarClienteVD";
+            this.txtBuscarClienteVD.Size = new System.Drawing.Size(320, 27);
+            this.txtBuscarClienteVD.TabIndex = 5;
             // 
-            // label3
+            // btnBuscadorClientesVD
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(14, 68);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(135, 21);
-            this.label3.TabIndex = 28;
-            this.label3.Text = "Orden de trabajo";
+            this.btnBuscadorClientesVD.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscadorClientesVD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscadorClientesVD.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
+            this.btnBuscadorClientesVD.IconColor = System.Drawing.Color.White;
+            this.btnBuscadorClientesVD.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnBuscadorClientesVD.IconSize = 28;
+            this.btnBuscadorClientesVD.Location = new System.Drawing.Point(336, 111);
+            this.btnBuscadorClientesVD.Name = "btnBuscadorClientesVD";
+            this.btnBuscadorClientesVD.Size = new System.Drawing.Size(35, 35);
+            this.btnBuscadorClientesVD.TabIndex = 6;
+            this.btnBuscadorClientesVD.UseVisualStyleBackColor = true;
+            this.btnBuscadorClientesVD.Click += new System.EventHandler(this.btnBuscadorClientes_Click);
             // 
-            // label4
+            // lstClientesVD
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(432, 68);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 21);
-            this.label4.TabIndex = 29;
-            this.label4.Text = "Buscar Cliente:";
+            this.lstClientesVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lstClientesVD.FormattingEnabled = true;
+            this.lstClientesVD.ItemHeight = 17;
+            this.lstClientesVD.Location = new System.Drawing.Point(10, 150);
+            this.lstClientesVD.Name = "lstClientesVD";
+            this.lstClientesVD.Size = new System.Drawing.Size(361, 72);
+            this.lstClientesVD.TabIndex = 7;
+            this.lstClientesVD.Visible = false;
             // 
-            // label5
+            // btnNuevoClienteVD
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(426, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(350, 21);
-            this.label5.TabIndex = 30;
-            this.label5.Text = "Datos del receptor (cliente  / consumidor final)";
+            this.btnNuevoClienteVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnNuevoClienteVD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevoClienteVD.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnNuevoClienteVD.ForeColor = System.Drawing.Color.White;
+            this.btnNuevoClienteVD.Location = new System.Drawing.Point(377, 190);
+            this.btnNuevoClienteVD.Name = "btnNuevoClienteVD";
+            this.btnNuevoClienteVD.Size = new System.Drawing.Size(40, 36);
+            this.btnNuevoClienteVD.TabIndex = 8;
+            this.btnNuevoClienteVD.Text = "+";
+            this.btnNuevoClienteVD.UseVisualStyleBackColor = false;
             // 
-            // label6
+            // labelVD_TipoDoc
             // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label6.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(18, 429);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(80, 21);
-            this.label6.TabIndex = 31;
-            this.label6.Text = "Tipo Doc:";
+            this.labelVD_TipoDoc.AutoSize = true;
+            this.labelVD_TipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_TipoDoc.ForeColor = System.Drawing.Color.White;
+            this.labelVD_TipoDoc.Location = new System.Drawing.Point(479, 50);
+            this.labelVD_TipoDoc.Name = "labelVD_TipoDoc";
+            this.labelVD_TipoDoc.Size = new System.Drawing.Size(69, 19);
+            this.labelVD_TipoDoc.TabIndex = 9;
+            this.labelVD_TipoDoc.Text = "Tipo Doc:";
             // 
-            // label7
+            // labelVD_NumDoc
             // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label7.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(228, 429);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(66, 21);
-            this.label7.TabIndex = 32;
-            this.label7.Text = "Nº Doc:";
+            this.labelVD_NumDoc.AutoSize = true;
+            this.labelVD_NumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_NumDoc.ForeColor = System.Drawing.Color.White;
+            this.labelVD_NumDoc.Location = new System.Drawing.Point(632, 50);
+            this.labelVD_NumDoc.Name = "labelVD_NumDoc";
+            this.labelVD_NumDoc.Size = new System.Drawing.Size(58, 19);
+            this.labelVD_NumDoc.TabIndex = 10;
+            this.labelVD_NumDoc.Text = "Nº Doc:";
             // 
-            // label8
+            // labelVD_Nombre
             // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label8.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(18, 476);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 21);
-            this.label8.TabIndex = 33;
-            this.label8.Text = "Nombre:";
+            this.labelVD_Nombre.AutoSize = true;
+            this.labelVD_Nombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Nombre.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Nombre.Location = new System.Drawing.Point(477, 110);
+            this.labelVD_Nombre.Name = "labelVD_Nombre";
+            this.labelVD_Nombre.Size = new System.Drawing.Size(63, 19);
+            this.labelVD_Nombre.TabIndex = 11;
+            this.labelVD_Nombre.Text = "Nombre:";
             // 
-            // label9
+            // labelVD_Direccion
             // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label9.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(19, 517);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(83, 21);
-            this.label9.TabIndex = 34;
-            this.label9.Text = "Direccion:";
+            this.labelVD_Direccion.AutoSize = true;
+            this.labelVD_Direccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Direccion.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Direccion.Location = new System.Drawing.Point(479, 158);
+            this.labelVD_Direccion.Name = "labelVD_Direccion";
+            this.labelVD_Direccion.Size = new System.Drawing.Size(72, 19);
+            this.labelVD_Direccion.TabIndex = 12;
+            this.labelVD_Direccion.Text = "Dirección:";
             // 
-            // label10
+            // labelVD_Telefono
             // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label10.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(19, 567);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(78, 21);
-            this.label10.TabIndex = 35;
-            this.label10.Text = "Telefono:";
+            this.labelVD_Telefono.AutoSize = true;
+            this.labelVD_Telefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Telefono.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Telefono.Location = new System.Drawing.Point(477, 208);
+            this.labelVD_Telefono.Name = "labelVD_Telefono";
+            this.labelVD_Telefono.Size = new System.Drawing.Size(66, 19);
+            this.labelVD_Telefono.TabIndex = 13;
+            this.labelVD_Telefono.Text = "Teléfono:";
             // 
-            // label11
+            // labelVD_Email
             // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.label11.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(224, 567);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(52, 21);
-            this.label11.TabIndex = 36;
-            this.label11.Text = "Email:";
+            this.labelVD_Email.AutoSize = true;
+            this.labelVD_Email.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.labelVD_Email.ForeColor = System.Drawing.Color.White;
+            this.labelVD_Email.Location = new System.Drawing.Point(632, 207);
+            this.labelVD_Email.Name = "labelVD_Email";
+            this.labelVD_Email.Size = new System.Drawing.Size(46, 19);
+            this.labelVD_Email.TabIndex = 14;
+            this.labelVD_Email.Text = "Email:";
+            // 
+            // txtTipoDocVD
+            // 
+            this.txtTipoDocVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtTipoDocVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtTipoDocVD.Location = new System.Drawing.Point(483, 72);
+            this.txtTipoDocVD.Name = "txtTipoDocVD";
+            this.txtTipoDocVD.ReadOnly = true;
+            this.txtTipoDocVD.Size = new System.Drawing.Size(100, 25);
+            this.txtTipoDocVD.TabIndex = 15;
+            // 
+            // txtNumDocVD
+            // 
+            this.txtNumDocVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtNumDocVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtNumDocVD.Location = new System.Drawing.Point(625, 72);
+            this.txtNumDocVD.Name = "txtNumDocVD";
+            this.txtNumDocVD.ReadOnly = true;
+            this.txtNumDocVD.Size = new System.Drawing.Size(170, 25);
+            this.txtNumDocVD.TabIndex = 16;
+            // 
+            // txtNombreVD
+            // 
+            this.txtNombreVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtNombreVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtNombreVD.Location = new System.Drawing.Point(483, 132);
+            this.txtNombreVD.Name = "txtNombreVD";
+            this.txtNombreVD.ReadOnly = true;
+            this.txtNombreVD.Size = new System.Drawing.Size(321, 25);
+            this.txtNombreVD.TabIndex = 17;
+            // 
+            // txtDireccionVD
+            // 
+            this.txtDireccionVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtDireccionVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtDireccionVD.Location = new System.Drawing.Point(483, 180);
+            this.txtDireccionVD.Name = "txtDireccionVD";
+            this.txtDireccionVD.ReadOnly = true;
+            this.txtDireccionVD.Size = new System.Drawing.Size(321, 25);
+            this.txtDireccionVD.TabIndex = 18;
+            // 
+            // txtTelefonoVD
+            // 
+            this.txtTelefonoVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtTelefonoVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtTelefonoVD.Location = new System.Drawing.Point(481, 230);
+            this.txtTelefonoVD.Name = "txtTelefonoVD";
+            this.txtTelefonoVD.ReadOnly = true;
+            this.txtTelefonoVD.Size = new System.Drawing.Size(140, 25);
+            this.txtTelefonoVD.TabIndex = 19;
+            // 
+            // txtEmailVD
+            // 
+            this.txtEmailVD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtEmailVD.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtEmailVD.Location = new System.Drawing.Point(636, 230);
+            this.txtEmailVD.Name = "txtEmailVD";
+            this.txtEmailVD.ReadOnly = true;
+            this.txtEmailVD.Size = new System.Drawing.Size(200, 25);
+            this.txtEmailVD.TabIndex = 20;
             // 
             // dgvItems
             // 
@@ -486,28 +640,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F);
             dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvItems.ColumnHeadersHeight = 4;
+            this.dgvItems.ColumnHeadersHeight = 35;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvItems.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvItems.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvItems.Location = new System.Drawing.Point(0, 194);
+            this.dgvItems.Location = new System.Drawing.Point(5, 382);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersVisible = false;
-            this.dgvItems.Size = new System.Drawing.Size(896, 211);
-            this.dgvItems.TabIndex = 37;
+            this.dgvItems.Size = new System.Drawing.Size(887, 150);
+            this.dgvItems.TabIndex = 1;
             this.dgvItems.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvItems.ThemeStyle.AlternatingRowsStyle.Font = null;
             this.dgvItems.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
@@ -520,7 +671,7 @@
             this.dgvItems.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgvItems.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
             this.dgvItems.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            this.dgvItems.ThemeStyle.HeaderStyle.Height = 4;
+            this.dgvItems.ThemeStyle.HeaderStyle.Height = 35;
             this.dgvItems.ThemeStyle.ReadOnly = false;
             this.dgvItems.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvItems.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
@@ -530,133 +681,260 @@
             this.dgvItems.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvItems.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
-            // guna2Panel1
+            // guna2PanelTotales
             // 
-            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.guna2Panel1.ForeColor = System.Drawing.Color.White;
-            this.guna2Panel1.Location = new System.Drawing.Point(5, 411);
-            this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(459, 198);
-            this.guna2Panel1.TabIndex = 38;
+            this.guna2PanelTotales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.guna2PanelTotales.Controls.Add(this.lblDescuentoInfo);
+            this.guna2PanelTotales.Controls.Add(this.btnAplicarDescuento);
+            this.guna2PanelTotales.Controls.Add(this.label3);
+            this.guna2PanelTotales.Controls.Add(this.cmbDescuentoItem);
+            this.guna2PanelTotales.Controls.Add(this.btnAddItem);
+            this.guna2PanelTotales.Controls.Add(this.btnDelItem);
+            this.guna2PanelTotales.Controls.Add(this.cmbImpuesto);
+            this.guna2PanelTotales.Controls.Add(this.lblSubtotal);
+            this.guna2PanelTotales.Controls.Add(this.lblIVA);
+            this.guna2PanelTotales.Controls.Add(this.lblTotal);
+            this.guna2PanelTotales.Controls.Add(this.btnGenerarFactura);
+            this.guna2PanelTotales.Controls.Add(this.btnVistaPrevia);
+            this.guna2PanelTotales.ForeColor = System.Drawing.Color.White;
+            this.guna2PanelTotales.Location = new System.Drawing.Point(188, 538);
+            this.guna2PanelTotales.Name = "guna2PanelTotales";
+            this.guna2PanelTotales.Size = new System.Drawing.Size(529, 203);
+            this.guna2PanelTotales.TabIndex = 2;
             // 
-            // guna2Panel2
+            // lblDescuentoInfo
             // 
-            this.guna2Panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
-            this.guna2Panel2.Controls.Add(this.lblSubtotal);
-            this.guna2Panel2.Controls.Add(this.lblIVA);
-            this.guna2Panel2.Controls.Add(this.lblTotal);
-            this.guna2Panel2.Controls.Add(this.btnAddItem);
-            this.guna2Panel2.Controls.Add(this.btnDelItem);
-            this.guna2Panel2.Controls.Add(this.cmbImpuesto);
-            this.guna2Panel2.Controls.Add(this.btnVistaPrevia);
-            this.guna2Panel2.Controls.Add(this.btnGenerarFactura);
-            this.guna2Panel2.ForeColor = System.Drawing.Color.White;
-            this.guna2Panel2.Location = new System.Drawing.Point(514, 410);
-            this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(370, 199);
-            this.guna2Panel2.TabIndex = 39;
+            this.lblDescuentoInfo.AutoSize = true;
+            this.lblDescuentoInfo.Font = new System.Drawing.Font("Yu Gothic UI", 8F, System.Drawing.FontStyle.Italic);
+            this.lblDescuentoInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.lblDescuentoInfo.Location = new System.Drawing.Point(320, 130);
+            this.lblDescuentoInfo.Name = "lblDescuentoInfo";
+            this.lblDescuentoInfo.Size = new System.Drawing.Size(168, 13);
+            this.lblDescuentoInfo.TabIndex = 30;
+            this.lblDescuentoInfo.Text = "* Seleccione un item para aplicar";
             // 
-            // btnBuscadorOrdenTrabajo
+            // btnAplicarDescuento
             // 
-            this.btnBuscadorOrdenTrabajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnBuscadorOrdenTrabajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBuscadorOrdenTrabajo.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorOrdenTrabajo.IconColor = System.Drawing.Color.White;
-            this.btnBuscadorOrdenTrabajo.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnBuscadorOrdenTrabajo.IconSize = 30;
-            this.btnBuscadorOrdenTrabajo.Location = new System.Drawing.Point(355, 95);
-            this.btnBuscadorOrdenTrabajo.Name = "btnBuscadorOrdenTrabajo";
-            this.btnBuscadorOrdenTrabajo.Size = new System.Drawing.Size(33, 33);
-            this.btnBuscadorOrdenTrabajo.TabIndex = 26;
-            this.btnBuscadorOrdenTrabajo.UseVisualStyleBackColor = true;
-            this.btnBuscadorOrdenTrabajo.Click += new System.EventHandler(this.btnBuscadorOrdenTrabajo_Click);
+            this.btnAplicarDescuento.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnAplicarDescuento.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnAplicarDescuento.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAplicarDescuento.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnAplicarDescuento.ForeColor = System.Drawing.Color.White;
+            this.btnAplicarDescuento.Location = new System.Drawing.Point(320, 90);
+            this.btnAplicarDescuento.Name = "btnAplicarDescuento";
+            this.btnAplicarDescuento.Size = new System.Drawing.Size(130, 32);
+            this.btnAplicarDescuento.TabIndex = 26;
+            this.btnAplicarDescuento.Text = "Aplicar Descuento";
+            this.btnAplicarDescuento.UseVisualStyleBackColor = false;
             // 
-            // btnBuscadorClientes
+            // label3
             // 
-            this.btnBuscadorClientes.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
-            this.btnBuscadorClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBuscadorClientes.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorClientes.IconColor = System.Drawing.Color.White;
-            this.btnBuscadorClientes.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnBuscadorClientes.IconSize = 30;
-            this.btnBuscadorClientes.Location = new System.Drawing.Point(764, 95);
-            this.btnBuscadorClientes.Name = "btnBuscadorClientes";
-            this.btnBuscadorClientes.Size = new System.Drawing.Size(33, 33);
-            this.btnBuscadorClientes.TabIndex = 40;
-            this.btnBuscadorClientes.UseVisualStyleBackColor = true;
-            this.btnBuscadorClientes.Click += new System.EventHandler(this.btnBuscadorClientes_Click);
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(320, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(121, 19);
+            this.label3.TabIndex = 27;
+            this.label3.Text = "Descuento a item:";
+            // 
+            // cmbDescuentoItem
+            // 
+            this.cmbDescuentoItem.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDescuentoItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDescuentoItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDescuentoItem.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbDescuentoItem.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbDescuentoItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cmbDescuentoItem.ItemHeight = 30;
+            this.cmbDescuentoItem.Location = new System.Drawing.Point(320, 45);
+            this.cmbDescuentoItem.Name = "cmbDescuentoItem";
+            this.cmbDescuentoItem.Size = new System.Drawing.Size(180, 36);
+            this.cmbDescuentoItem.TabIndex = 26;
+            // 
+            // btnAddItem
+            // 
+            this.btnAddItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnAddItem.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAddItem.ForeColor = System.Drawing.Color.White;
+            this.btnAddItem.Location = new System.Drawing.Point(24, 33);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.Size = new System.Drawing.Size(110, 35);
+            this.btnAddItem.TabIndex = 18;
+            this.btnAddItem.Text = "+ Agregar Item";
+            this.btnAddItem.UseVisualStyleBackColor = false;
+            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            // 
+            // btnDelItem
+            // 
+            this.btnDelItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnDelItem.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnDelItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelItem.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDelItem.ForeColor = System.Drawing.Color.White;
+            this.btnDelItem.Location = new System.Drawing.Point(24, 73);
+            this.btnDelItem.Name = "btnDelItem";
+            this.btnDelItem.Size = new System.Drawing.Size(110, 35);
+            this.btnDelItem.TabIndex = 19;
+            this.btnDelItem.Text = "Eliminar";
+            this.btnDelItem.UseVisualStyleBackColor = false;
+            this.btnDelItem.Click += new System.EventHandler(this.btnDelItem_Click);
+            // 
+            // cmbImpuesto
+            // 
+            this.cmbImpuesto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbImpuesto.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.cmbImpuesto.FormattingEnabled = true;
+            this.cmbImpuesto.Location = new System.Drawing.Point(14, 118);
+            this.cmbImpuesto.Name = "cmbImpuesto";
+            this.cmbImpuesto.Size = new System.Drawing.Size(137, 25);
+            this.cmbImpuesto.TabIndex = 20;
+            // 
+            // lblSubtotal
+            // 
+            this.lblSubtotal.AutoSize = true;
+            this.lblSubtotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblSubtotal.ForeColor = System.Drawing.Color.White;
+            this.lblSubtotal.Location = new System.Drawing.Point(180, 20);
+            this.lblSubtotal.Name = "lblSubtotal";
+            this.lblSubtotal.Size = new System.Drawing.Size(102, 20);
+            this.lblSubtotal.TabIndex = 21;
+            this.lblSubtotal.Text = "Subtotal: 0.00";
+            // 
+            // lblIVA
+            // 
+            this.lblIVA.AutoSize = true;
+            this.lblIVA.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblIVA.ForeColor = System.Drawing.Color.White;
+            this.lblIVA.Location = new System.Drawing.Point(180, 50);
+            this.lblIVA.Name = "lblIVA";
+            this.lblIVA.Size = new System.Drawing.Size(68, 20);
+            this.lblIVA.TabIndex = 22;
+            this.lblIVA.Text = "IVA: 0.00";
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTotal.ForeColor = System.Drawing.Color.White;
+            this.lblTotal.Location = new System.Drawing.Point(180, 80);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(77, 20);
+            this.lblTotal.TabIndex = 23;
+            this.lblTotal.Text = "Total: 0.00";
+            // 
+            // btnGenerarFactura
+            // 
+            this.btnGenerarFactura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnGenerarFactura.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnGenerarFactura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGenerarFactura.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGenerarFactura.ForeColor = System.Drawing.Color.White;
+            this.btnGenerarFactura.Location = new System.Drawing.Point(172, 112);
+            this.btnGenerarFactura.Name = "btnGenerarFactura";
+            this.btnGenerarFactura.Size = new System.Drawing.Size(110, 35);
+            this.btnGenerarFactura.TabIndex = 24;
+            this.btnGenerarFactura.Text = "💰 Generar";
+            this.btnGenerarFactura.UseVisualStyleBackColor = false;
+            // 
+            // btnVistaPrevia
+            // 
+            this.btnVistaPrevia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnVistaPrevia.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnVistaPrevia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVistaPrevia.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnVistaPrevia.ForeColor = System.Drawing.Color.White;
+            this.btnVistaPrevia.Location = new System.Drawing.Point(172, 153);
+            this.btnVistaPrevia.Name = "btnVistaPrevia";
+            this.btnVistaPrevia.Size = new System.Drawing.Size(110, 35);
+            this.btnVistaPrevia.TabIndex = 25;
+            this.btnVistaPrevia.Text = "👁️ Vista Previa";
+            this.btnVistaPrevia.UseVisualStyleBackColor = false;
             // 
             // FormGenFactu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(896, 621);
-            this.Controls.Add(this.btnBuscadorClientes);
-            this.Controls.Add(this.btnBuscadorOrdenTrabajo);
-            this.Controls.Add(this.lstClientes);
-            this.Controls.Add(this.txtNumDoc);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.txtTelefono);
-            this.Controls.Add(this.txtDireccion);
-            this.Controls.Add(this.txtNombre);
-            this.Controls.Add(this.txtTipoDoc);
-            this.Controls.Add(this.btnNuevoCliente);
-            this.Controls.Add(this.txtBuscarCliente);
-            this.Controls.Add(this.rbConsumidorFinal);
-            this.Controls.Add(this.rbNuevoCliente);
-            this.Controls.Add(this.rbClienteExistente);
-            this.Controls.Add(this.btnCargarItemsOT);
-            this.Controls.Add(this.lstOTResultados);
-            this.Controls.Add(this.txtBuscarOT);
-            this.Controls.Add(this.rbVentaDirecta);
-            this.Controls.Add(this.rbDesdeOT);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.guna2Panel2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.guna2Panel1);
+            this.ClientSize = new System.Drawing.Size(896, 767);
+            this.Controls.Add(this.guna2PanelTotales);
             this.Controls.Add(this.dgvItems);
+            this.Controls.Add(this.tabControlPrincipal);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormGenFactu";
-            this.Text = "Generacion de Facturas";
+            this.Text = "Generación de Facturas";
             this.Load += new System.EventHandler(this.FormGenFactu_Load);
+            this.tabControlPrincipal.ResumeLayout(false);
+            this.tabPageOT.ResumeLayout(false);
+            this.panelOTInfo.ResumeLayout(false);
+            this.panelOTInfo.PerformLayout();
+            this.tabPageVentaDirecta.ResumeLayout(false);
+            this.panelVDInfo.ResumeLayout(false);
+            this.panelVDInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
-            this.guna2Panel2.ResumeLayout(false);
-            this.guna2Panel2.PerformLayout();
+            this.guna2PanelTotales.ResumeLayout(false);
+            this.guna2PanelTotales.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
-        #endregion
+        // Declaración de controles
+        private Guna.UI2.WinForms.Guna2TabControl tabControlPrincipal;
+        private System.Windows.Forms.TabPage tabPageOT;
+        private System.Windows.Forms.TabPage tabPageVentaDirecta;
 
-        private System.Windows.Forms.RadioButton rbDesdeOT;
-        private System.Windows.Forms.RadioButton rbVentaDirecta;
+        // Controles Tab OT
+        private System.Windows.Forms.Panel panelOTInfo;
+        private System.Windows.Forms.Label labelOT_Titulo;
+        private System.Windows.Forms.Label labelOT_Buscar;
         private System.Windows.Forms.TextBox txtBuscarOT;
+        private FontAwesome.Sharp.IconButton btnBuscadorOrdenTrabajo;
         private System.Windows.Forms.ListBox lstOTResultados;
         private System.Windows.Forms.Button btnCargarItemsOT;
-        private System.Windows.Forms.RadioButton rbClienteExistente;
-        private System.Windows.Forms.RadioButton rbNuevoCliente;
-        private System.Windows.Forms.RadioButton rbConsumidorFinal;
-        private System.Windows.Forms.TextBox txtBuscarCliente;
-        private System.Windows.Forms.ListBox lstClientes;
-        private System.Windows.Forms.Button btnNuevoCliente;
-        private System.Windows.Forms.TextBox txtTipoDoc;
-        private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.TextBox txtDireccion;
-        private System.Windows.Forms.TextBox txtNumDoc;
-        private System.Windows.Forms.TextBox txtTelefono;
-        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.Label labelOT_TipoDoc;
+        private System.Windows.Forms.Label labelOT_NumDoc;
+        private System.Windows.Forms.Label labelOT_Nombre;
+        private System.Windows.Forms.Label labelOT_Direccion;
+        private System.Windows.Forms.Label labelOT_Telefono;
+        private System.Windows.Forms.Label labelOT_Email;
+        private System.Windows.Forms.TextBox txtTipoDocOT;
+        private System.Windows.Forms.TextBox txtNumDocOT;
+        private System.Windows.Forms.TextBox txtNombreOT;
+        private System.Windows.Forms.TextBox txtDireccionOT;
+        private System.Windows.Forms.TextBox txtTelefonoOT;
+        private System.Windows.Forms.TextBox txtEmailOT;
+        private System.Windows.Forms.Button btnConfirmarReceptorOT;
+
+        // Controles Tab Venta Directa
+        private System.Windows.Forms.Panel panelVDInfo;
+        private System.Windows.Forms.Label labelVD_Titulo;
+        private System.Windows.Forms.RadioButton rbClienteExistenteVD;
+        private System.Windows.Forms.RadioButton rbNuevoClienteVD;
+        private System.Windows.Forms.RadioButton rbConsumidorFinalVD;
+        private System.Windows.Forms.Label labelVD_Buscar;
+        private System.Windows.Forms.TextBox txtBuscarClienteVD;
+        private FontAwesome.Sharp.IconButton btnBuscadorClientesVD;
+        private System.Windows.Forms.ListBox lstClientesVD;
+        private System.Windows.Forms.Button btnNuevoClienteVD;
+        private System.Windows.Forms.Label labelVD_TipoDoc;
+        private System.Windows.Forms.Label labelVD_NumDoc;
+        private System.Windows.Forms.Label labelVD_Nombre;
+        private System.Windows.Forms.Label labelVD_Direccion;
+        private System.Windows.Forms.Label labelVD_Telefono;
+        private System.Windows.Forms.Label labelVD_Email;
+        private System.Windows.Forms.TextBox txtTipoDocVD;
+        private System.Windows.Forms.TextBox txtNumDocVD;
+        private System.Windows.Forms.TextBox txtNombreVD;
+        private System.Windows.Forms.TextBox txtDireccionVD;
+        private System.Windows.Forms.TextBox txtTelefonoVD;
+        private System.Windows.Forms.TextBox txtEmailVD;
+
+        // Controles comunes
+        private Guna.UI2.WinForms.Guna2DataGridView dgvItems;
+        private Guna.UI2.WinForms.Guna2Panel guna2PanelTotales;
         private System.Windows.Forms.Button btnAddItem;
         private System.Windows.Forms.Button btnDelItem;
         private System.Windows.Forms.ComboBox cmbImpuesto;
@@ -665,20 +943,12 @@
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnGenerarFactura;
         private System.Windows.Forms.Button btnVistaPrevia;
-        private System.Windows.Forms.Label label2;
+
+        // Controles de descuentos
+        private Guna.UI2.WinForms.Guna2ComboBox cmbDescuentoItem;
+        private System.Windows.Forms.Button btnAplicarDescuento;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private Guna.UI2.WinForms.Guna2DataGridView dgvItems;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
-        private FontAwesome.Sharp.IconButton btnBuscadorOrdenTrabajo;
-        private FontAwesome.Sharp.IconButton btnBuscadorClientes;
+        private System.Windows.Forms.Label lblDescuentoInfo;
     }
+
 }

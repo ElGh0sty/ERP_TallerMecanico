@@ -311,17 +311,7 @@ ORDER BY k.fecha DESC, k.id DESC;
            
 
             
-            if (lblTotal != null)
-            {
-                
-                lblTotal.ForeColor = Color.FromArgb(40, 40, 40);
-            }
-
-            if (lblProductoSel != null)
-            {
-                
-                lblProductoSel.ForeColor = Color.FromArgb(40, 40, 40);
-            }
+            
         }
 
         private void EstilizarGridKardex()

@@ -143,8 +143,10 @@
             // 
             // btnBuscadorOrden
             // 
+            this.btnBuscadorOrden.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscadorOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscadorOrden.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorOrden.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorOrden.IconColor = System.Drawing.Color.White;
             this.btnBuscadorOrden.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadorOrden.IconSize = 30;
             this.btnBuscadorOrden.Location = new System.Drawing.Point(349, 96);
@@ -156,8 +158,10 @@
             // 
             // btnBuscadorServicios
             // 
+            this.btnBuscadorServicios.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscadorServicios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscadorServicios.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadorServicios.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadorServicios.IconColor = System.Drawing.Color.White;
             this.btnBuscadorServicios.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadorServicios.IconSize = 30;
             this.btnBuscadorServicios.Location = new System.Drawing.Point(649, 96);
@@ -285,8 +289,10 @@
             // 
             // btnBuscadoProductos
             // 
+            this.btnBuscadoProductos.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnBuscadoProductos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscadoProductos.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnBuscadoProductos.IconColor = System.Drawing.Color.Black;
+            this.btnBuscadoProductos.IconColor = System.Drawing.Color.White;
             this.btnBuscadoProductos.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnBuscadoProductos.IconSize = 30;
             this.btnBuscadoProductos.Location = new System.Drawing.Point(398, 65);

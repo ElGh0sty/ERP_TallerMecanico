@@ -33,9 +33,18 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
+            ConfigurarEventosDescuentos();
+            ConfigurarEventosPromociones();
+
+            // Cargar datos
+            Descuento_Cargar();
+            Promocion_Cargar();
+
             DataGridViewEstilo.AplicarEstiloDashboard(dgvImpuestos);
             DataGridViewEstilo.AplicarEstiloDashboard(dgvMetodosPago);
             DataGridViewEstilo.AplicarEstiloDashboard(dgvSecuenciales);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvPromociones);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvDescuentos);
             InicializarValidaciones();
 
             this.Load += FormConfiguracion_Load;
@@ -1348,5 +1357,481 @@ AND (@id=0 OR id<>@id);";
 
 
         }
+
+        // ==================== DESCUENTOS ====================
+
+        private long _descuentoId = 0;
+
+        private void ConfigurarEventosDescuentos()
+        {
+            // Agregar eventos para los controles de descuentos
+            btnDescuentoNuevo.Click += (s, e) => Descuento_Nuevo();
+            btnDescuentoGuardar.Click += (s, e) => Descuento_Guardar();
+            btnDescuentoEliminar.Click += (s, e) => Descuento_Eliminar();
+            btnDescuentoBuscar.Click += (s, e) => Descuento_Cargar();
+            btnDescuentoLimpiar.Click += (s, e) => { txtDescuentoBuscar.Text = ""; Descuento_Cargar(); };
+            dgvDescuentos.CellClick += Descuento_GridClick;
+        }
+
+        private void Descuento_Nuevo()
+        {
+            _descuentoId = 0;
+            txtDescuentoNombre.Text = "";
+            cmbDescuentoTipo.SelectedIndex = 0;
+            nudDescuentoPorcentaje.Value = 0;
+            dtpDescuentoInicio.Value = DateTime.Now;
+            dtpDescuentoFin.Value = DateTime.Now.AddMonths(1);
+            swDescuentoActivo.Checked = true;
+            HabilitarControlesDescuento(true);
+            txtDescuentoNombre.Focus();
+        }
+
+        private void Descuento_Guardar()
+        {
+            if (string.IsNullOrWhiteSpace(txtDescuentoNombre.Text))
+            {
+                MessageBox.Show("Ingrese un nombre para el descuento.");
+                return;
+            }
+
+            if (nudDescuentoPorcentaje.Value <= 0 || nudDescuentoPorcentaje.Value > 100)
+            {
+                MessageBox.Show("El porcentaje debe estar entre 1 y 100.");
+                return;
+            }
+
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    if (_descuentoId == 0)
+                    {
+                        string sql = @"INSERT INTO Descuentos (nombre, tipo_aplicacion, porcentaje, fecha_inicio, fecha_fin, activo)
+                               VALUES (@nombre, @tipo, @porcentaje, @inicio, @fin, @activo)";
+                        using (var cmd = new SqlCommand(sql, cn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombre", txtDescuentoNombre.Text.Trim());
+                            cmd.Parameters.AddWithValue("@tipo", cmbDescuentoTipo.SelectedItem.ToString());
+                            cmd.Parameters.AddWithValue("@porcentaje", nudDescuentoPorcentaje.Value);
+                            cmd.Parameters.AddWithValue("@inicio", dtpDescuentoInicio.Value.Date);
+                            cmd.Parameters.AddWithValue("@fin", dtpDescuentoFin.Value.Date);
+                            cmd.Parameters.AddWithValue("@activo", swDescuentoActivo.Checked ? 1 : 0);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        string sql = @"UPDATE Descuentos SET nombre=@nombre, tipo_aplicacion=@tipo, porcentaje=@porcentaje,
+                               fecha_inicio=@inicio, fecha_fin=@fin, activo=@activo WHERE id=@id";
+                        using (var cmd = new SqlCommand(sql, cn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombre", txtDescuentoNombre.Text.Trim());
+                            cmd.Parameters.AddWithValue("@tipo", cmbDescuentoTipo.SelectedItem.ToString());
+                            cmd.Parameters.AddWithValue("@porcentaje", nudDescuentoPorcentaje.Value);
+                            cmd.Parameters.AddWithValue("@inicio", dtpDescuentoInicio.Value.Date);
+                            cmd.Parameters.AddWithValue("@fin", dtpDescuentoFin.Value.Date);
+                            cmd.Parameters.AddWithValue("@activo", swDescuentoActivo.Checked ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@id", _descuentoId);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                MessageBox.Show("Descuento guardado correctamente.");
+                Descuento_Cargar();
+                Descuento_Nuevo();
+                HabilitarControlesDescuento(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar: " + ex.Message);
+            }
+        }
+
+        private void Descuento_Eliminar()
+        {
+            if (_descuentoId == 0) return;
+
+            var result = MessageBox.Show("¿Eliminar este descuento?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("DELETE FROM Descuentos WHERE id=@id", cn))
+                {
+                    cmd.Parameters.AddWithValue("@id", _descuentoId);
+                    cmd.ExecuteNonQuery();
+                }
+                Descuento_Cargar();
+                Descuento_Nuevo();
+                HabilitarControlesDescuento(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
+            }
+        }
+
+        private void Descuento_Cargar()
+        {
+            try
+            {
+                string buscar = txtDescuentoBuscar.Text.Trim();
+                string sql = @"SELECT id, nombre, tipo_aplicacion, porcentaje, fecha_inicio, fecha_fin, 
+                              CASE WHEN activo=1 THEN 'Activo' ELSE 'Inactivo' END AS estado
+                       FROM Descuentos 
+                       WHERE @b='' OR nombre LIKE '%' + @b + '%'
+                       ORDER BY id DESC";
+
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand(sql, cn))
+                {
+                    cmd.Parameters.AddWithValue("@b", buscar);
+                    var dt = new DataTable();
+                    new SqlDataAdapter(cmd).Fill(dt);
+                    dgvDescuentos.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar descuentos: " + ex.Message);
+            }
+        }
+
+        private void Descuento_GridClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvDescuentos.Rows[e.RowIndex];
+
+            _descuentoId = Convert.ToInt32(row.Cells["id"].Value);
+            txtDescuentoNombre.Text = row.Cells["nombre"].Value?.ToString() ?? "";
+
+            string tipo = row.Cells["tipo_aplicacion"].Value?.ToString() ?? "";
+            cmbDescuentoTipo.SelectedItem = tipo;
+
+            nudDescuentoPorcentaje.Value = Convert.ToDecimal(row.Cells["porcentaje"].Value ?? 0);
+            dtpDescuentoInicio.Value = Convert.ToDateTime(row.Cells["fecha_inicio"].Value ?? DateTime.Now);
+            dtpDescuentoFin.Value = Convert.ToDateTime(row.Cells["fecha_fin"].Value ?? DateTime.Now);
+            swDescuentoActivo.Checked = row.Cells["estado"].Value?.ToString() == "Activo";
+
+            HabilitarControlesDescuento(true);
+            btnDescuentoEliminar.Enabled = true;
+        }
+
+        private void HabilitarControlesDescuento(bool habilitar)
+        {
+            txtDescuentoNombre.Enabled = habilitar;
+            cmbDescuentoTipo.Enabled = habilitar;
+            nudDescuentoPorcentaje.Enabled = habilitar;
+            dtpDescuentoInicio.Enabled = habilitar;
+            dtpDescuentoFin.Enabled = habilitar;
+            swDescuentoActivo.Enabled = habilitar;
+            btnDescuentoGuardar.Enabled = habilitar;
+
+            if (!habilitar)
+            {
+                btnDescuentoEliminar.Enabled = false;
+            }
+        }
+
+        // ==================== PROMOCIONES ====================
+
+        private long _promocionId = 0;
+
+        private void ConfigurarEventosPromociones()
+        {
+            btnPromocionNuevo.Click += (s, e) => Promocion_Nuevo();
+            btnPromocionGuardar.Click += (s, e) => Promocion_Guardar();
+            btnPromocionEliminar.Click += (s, e) => Promocion_Eliminar();
+            btnPromocionBuscar.Click += (s, e) => Promocion_Cargar();
+            btnPromocionLimpiar.Click += (s, e) => { txtPromocionBuscar.Text = ""; Promocion_Cargar(); };
+            dgvPromociones.CellClick += Promocion_GridClick;
+
+            cmbPromocionTipo.SelectedIndexChanged += (s, e) => Promocion_CambiarTipo();
+        }
+
+        private void Promocion_CambiarTipo()
+        {
+            string tipo = cmbPromocionTipo.SelectedItem?.ToString() ?? "";
+
+            
+        }
+
+        private void Promocion_Nuevo()
+        {
+            _promocionId = 0;
+            txtPromocionNombre.Text = "";
+            txtPromocionDescripcion.Text = "";
+            cmbPromocionTipo.SelectedIndex = 0;
+
+            // Resetear Combo
+            cmbPromocionDiaSemana.SelectedIndex = 0;
+            dtpPromocionFechaEspecifica.Value = DateTime.Now;
+
+            // Resetear Combo
+            cmbPromocionProductoPrincipal.SelectedIndex = -1;
+            cmbPromocionServicioPrincipal.SelectedIndex = -1;
+            cmbPromocionProductoObsequio.SelectedIndex = -1;
+            cmbPromocionServicioObsequio.SelectedIndex = -1;
+            nudPromocionCantidadObsequio.Value = 1;
+
+            dtpPromocionInicio.Value = DateTime.Now;
+            dtpPromocionFin.Value = DateTime.Now.AddMonths(3);
+            swPromocionActivo.Checked = true;
+
+            Promocion_CambiarTipo();
+            HabilitarControlesPromocion(true);
+            txtPromocionNombre.Focus();
+        }
+
+        private void Promocion_Guardar()
+        {
+            if (string.IsNullOrWhiteSpace(txtPromocionNombre.Text))
+            {
+                MessageBox.Show("Ingrese un nombre para la promoción.");
+                return;
+            }
+
+            string tipo = cmbPromocionTipo.SelectedItem?.ToString() ?? "";
+
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                {
+                    if (_promocionId == 0)
+                    {
+                        string sql = @"INSERT INTO Promociones (nombre, descripcion, tipo, dia_semana, fecha_especifica,
+                               producto_principal_id, servicio_principal_id, producto_obsequio_id, 
+                               servicio_obsequio_id, cantidad_obsequio, fecha_inicio, fecha_fin, activo)
+                               VALUES (@nombre, @descripcion, @tipo, @diaSemana, @fechaEsp, @prodPrincipal, 
+                               @servPrincipal, @prodObsequio, @servObsequio, @cantObsequio, @inicio, @fin, @activo)";
+
+                        using (var cmd = new SqlCommand(sql, cn))
+                        {
+                            AgregarParametrosPromocion(cmd, tipo);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        string sql = @"UPDATE Promociones SET nombre=@nombre, descripcion=@descripcion, tipo=@tipo, 
+                               dia_semana=@diaSemana, fecha_especifica=@fechaEsp, producto_principal_id=@prodPrincipal,
+                               servicio_principal_id=@servPrincipal, producto_obsequio_id=@prodObsequio,
+                               servicio_obsequio_id=@servObsequio, cantidad_obsequio=@cantObsequio,
+                               fecha_inicio=@inicio, fecha_fin=@fin, activo=@activo WHERE id=@id";
+
+                        using (var cmd = new SqlCommand(sql, cn))
+                        {
+                            AgregarParametrosPromocion(cmd, tipo);
+                            cmd.Parameters.AddWithValue("@id", _promocionId);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                MessageBox.Show("Promoción guardada correctamente.");
+                Promocion_Cargar();
+                Promocion_Nuevo();
+                HabilitarControlesPromocion(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar: " + ex.Message);
+            }
+        }
+
+        private void AgregarParametrosPromocion(SqlCommand cmd, string tipo)
+        {
+            cmd.Parameters.AddWithValue("@nombre", txtPromocionNombre.Text.Trim());
+            cmd.Parameters.AddWithValue("@descripcion", (object)txtPromocionDescripcion.Text.Trim() ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@tipo", tipo);
+
+            // DiaSemana
+            int? diaSemana = tipo == "DiaSemana" ? cmbPromocionDiaSemana.SelectedIndex + 1 : (int?)null;
+            cmd.Parameters.AddWithValue("@diaSemana", (object)diaSemana ?? DBNull.Value);
+
+            // FechaEspecifica
+            DateTime? fechaEsp = tipo == "FechaEspecifica" ? dtpPromocionFechaEspecifica.Value.Date : (DateTime?)null;
+            cmd.Parameters.AddWithValue("@fechaEsp", (object)fechaEsp ?? DBNull.Value);
+
+            // Combo
+            long? prodPrincipal = cmbPromocionProductoPrincipal.SelectedValue != null ?
+                Convert.ToInt64(cmbPromocionProductoPrincipal.SelectedValue) : (long?)null;
+            long? servPrincipal = cmbPromocionServicioPrincipal.SelectedValue != null ?
+                Convert.ToInt64(cmbPromocionServicioPrincipal.SelectedValue) : (long?)null;
+            long? prodObsequio = cmbPromocionProductoObsequio.SelectedValue != null ?
+                Convert.ToInt64(cmbPromocionProductoObsequio.SelectedValue) : (long?)null;
+            long? servObsequio = cmbPromocionServicioObsequio.SelectedValue != null ?
+                Convert.ToInt64(cmbPromocionServicioObsequio.SelectedValue) : (long?)null;
+
+            cmd.Parameters.AddWithValue("@prodPrincipal", (object)prodPrincipal ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@servPrincipal", (object)servPrincipal ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@prodObsequio", (object)prodObsequio ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@servObsequio", (object)servObsequio ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@cantObsequio", nudPromocionCantidadObsequio.Value);
+            cmd.Parameters.AddWithValue("@inicio", dtpPromocionInicio.Value.Date);
+            cmd.Parameters.AddWithValue("@fin", dtpPromocionFin.Value.Date);
+            cmd.Parameters.AddWithValue("@activo", swPromocionActivo.Checked ? 1 : 0);
+        }
+
+        private void Promocion_Eliminar()
+        {
+            if (_promocionId == 0) return;
+
+            var result = MessageBox.Show("¿Eliminar esta promoción?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("DELETE FROM Promociones WHERE id=@id", cn))
+                {
+                    cmd.Parameters.AddWithValue("@id", _promocionId);
+                    cmd.ExecuteNonQuery();
+                }
+                Promocion_Cargar();
+                Promocion_Nuevo();
+                HabilitarControlesPromocion(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
+            }
+        }
+
+        private void Promocion_Cargar()
+        {
+            try
+            {
+                string buscar = txtPromocionBuscar.Text.Trim();
+                string sql = @"SELECT id, nombre, descripcion, tipo, 
+                              CASE 
+                                  WHEN tipo='DiaSemana' THEN 
+                                      CASE dia_semana 
+                                          WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes' WHEN 3 THEN 'Miércoles'
+                                          WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes' WHEN 6 THEN 'Sábado'
+                                          WHEN 7 THEN 'Domingo' ELSE ''
+                                      END
+                                  WHEN tipo='FechaEspecifica' THEN CONVERT(VARCHAR, fecha_especifica, 103)
+                                  WHEN tipo='Combo' THEN 'Combo'
+                                  ELSE ''
+                              END AS detalle,
+                              fecha_inicio, fecha_fin,
+                              CASE WHEN activo=1 THEN 'Activo' ELSE 'Inactivo' END AS estado
+                       FROM Promociones 
+                       WHERE @b='' OR nombre LIKE '%' + @b + '%'
+                       ORDER BY id DESC";
+
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand(sql, cn))
+                {
+                    cmd.Parameters.AddWithValue("@b", buscar);
+                    var dt = new DataTable();
+                    new SqlDataAdapter(cmd).Fill(dt);
+                    dgvPromociones.DataSource = dt;
+                }
+
+                // Cargar combos de productos y servicios para promociones
+                CargarCombosPromocion();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar promociones: " + ex.Message);
+            }
+        }
+
+        private void CargarCombosPromocion()
+        {
+            try
+            {
+                // Productos
+                DataTable dtProductos = new DataTable();
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT id, nombre FROM Productos ORDER BY nombre", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtProductos);
+                }
+
+                cmbPromocionProductoPrincipal.DataSource = dtProductos.Copy();
+                cmbPromocionProductoPrincipal.DisplayMember = "nombre";
+                cmbPromocionProductoPrincipal.ValueMember = "id";
+
+                cmbPromocionProductoObsequio.DataSource = dtProductos.Copy();
+                cmbPromocionProductoObsequio.DisplayMember = "nombre";
+                cmbPromocionProductoObsequio.ValueMember = "id";
+
+                // Servicios
+                DataTable dtServicios = new DataTable();
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand("SELECT id, nombre FROM Servicios WHERE activo=1 ORDER BY nombre", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dtServicios);
+                }
+
+                cmbPromocionServicioPrincipal.DataSource = dtServicios.Copy();
+                cmbPromocionServicioPrincipal.DisplayMember = "nombre";
+                cmbPromocionServicioPrincipal.ValueMember = "id";
+
+                cmbPromocionServicioObsequio.DataSource = dtServicios.Copy();
+                cmbPromocionServicioObsequio.DisplayMember = "nombre";
+                cmbPromocionServicioObsequio.ValueMember = "id";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error cargando combos: " + ex.Message);
+            }
+        }
+
+        private void Promocion_GridClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = dgvPromociones.Rows[e.RowIndex];
+
+            _promocionId = Convert.ToInt32(row.Cells["id"].Value);
+            txtPromocionNombre.Text = row.Cells["nombre"].Value?.ToString() ?? "";
+            txtPromocionDescripcion.Text = row.Cells["descripcion"].Value?.ToString() ?? "";
+
+            string tipo = row.Cells["tipo"].Value?.ToString() ?? "";
+            cmbPromocionTipo.SelectedItem = tipo;
+
+            Promocion_CambiarTipo();
+
+            // Cargar datos específicos según tipo (necesitarías cargar desde BD los valores)
+            HabilitarControlesPromocion(true);
+            btnPromocionEliminar.Enabled = true;
+        }
+
+        private void HabilitarControlesPromocion(bool habilitar)
+        {
+            txtPromocionNombre.Enabled = habilitar;
+            txtPromocionDescripcion.Enabled = habilitar;
+            cmbPromocionTipo.Enabled = habilitar;
+            dtpPromocionInicio.Enabled = habilitar;
+            dtpPromocionFin.Enabled = habilitar;
+            swPromocionActivo.Enabled = habilitar;
+            btnPromocionGuardar.Enabled = habilitar;
+
+            if (!habilitar)
+            {
+                btnPromocionEliminar.Enabled = false;
+            }
+        }
+
+        private void cmbPromocionProductoPrincipal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbPromocionServicioPrincipal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }

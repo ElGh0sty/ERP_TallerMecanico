@@ -35,6 +35,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
 
             DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
             DataGridViewEstilo.AplicarEstiloDashboard(dgvServicios);
+            DataGridViewEstilo.ConfigurarBotonEliminar(dgvServicios, "btnEliminar", 90);
+            DataGridViewEstilo.ConfigurarBotonEliminar(dgvItems, "btnEliminar", 90);
 
             PrepararGrids();
             AplicarEstilos();
@@ -87,6 +89,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
                     lstServicios.Visible = false;
                 }
             };
+            EstilizarBotonesAccionGrid();
         }
 
         private void AplicarEstilos()
@@ -223,7 +226,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
                 HeaderText = "Acción",
                 Text = "Eliminar",
                 UseColumnTextForButtonValue = true,
-                Width = 100
+                Width = 100,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None
             });
 
             dgvServicios.DataSource = dtServicios;
@@ -278,6 +282,37 @@ namespace PROYECTOMECANICO.Modulo_Taller
             nudCantidad.Value = 1;
         }
 
+        private void EstilizarBotonesAccionGrid()
+        {
+            
+
+            if (dgvItems.Columns.Contains("btnEliminarItem"))
+            {
+                var c = dgvItems.Columns["btnEliminarItem"] as DataGridViewButtonColumn;
+                c.FlatStyle = FlatStyle.Flat;
+                c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                c.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(255, 235, 235);
+                c.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(160, 0, 0);
+                c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(255, 210, 210);
+                c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(120, 0, 0);
+                c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+                c.Width = 95;
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
+            if (dgvServicios.Columns.Contains("btnEliminarServicio"))
+            {
+                var c = dgvServicios.Columns["btnEliminarServicio"] as DataGridViewButtonColumn;
+                c.FlatStyle = FlatStyle.Flat;
+                c.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                c.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(255, 235, 235);
+                c.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(160, 0, 0);
+                c.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(255, 210, 210);
+                c.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(120, 0, 0);
+                c.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+                c.Width = 95;
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
+        }
         private void CargarProductos()
         {
             try
@@ -1082,6 +1117,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
         {
             DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
             DataGridViewEstilo.AplicarEstiloDashboard(dgvServicios);
+            DataGridViewEstilo.ConfigurarBotonEliminar(dgvServicios, "btnEliminar", 90);
+            DataGridViewEstilo.ConfigurarBotonEliminar(dgvItems, "btnEliminar", 90);
         }
     }
 }
