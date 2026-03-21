@@ -18,6 +18,8 @@ namespace PROYECTOMECANICO.Modulo_Taller
         {
             InitializeComponent();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvHistorial);
+
             this.usuarioId = usuarioId;
             this.rolUsuario = rolUsuario;
 
@@ -293,6 +295,11 @@ ORDER BY h.fecha DESC;";
                     }
                 }
             }
+        }
+
+        private void FormHistorial_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvHistorial);
         }
     }
 }

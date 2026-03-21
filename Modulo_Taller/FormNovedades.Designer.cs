@@ -65,7 +65,7 @@
             // lblOrden
             // 
             this.lblOrden.AutoSize = true;
-            this.lblOrden.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblOrden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.lblOrden.ForeColor = System.Drawing.Color.White;
             this.lblOrden.Location = new System.Drawing.Point(43, 26);
             this.lblOrden.Name = "lblOrden";
@@ -95,6 +95,7 @@
             // chkRequiereExtra
             // 
             this.chkRequiereExtra.AutoSize = true;
+            this.chkRequiereExtra.ForeColor = System.Drawing.Color.White;
             this.chkRequiereExtra.Location = new System.Drawing.Point(46, 482);
             this.chkRequiereExtra.Name = "chkRequiereExtra";
             this.chkRequiereExtra.Size = new System.Drawing.Size(156, 17);
@@ -117,6 +118,10 @@
             // 
             // btnNuevaNovedad
             // 
+            this.btnNuevaNovedad.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnNuevaNovedad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevaNovedad.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevaNovedad.ForeColor = System.Drawing.Color.White;
             this.btnNuevaNovedad.Location = new System.Drawing.Point(46, 342);
             this.btnNuevaNovedad.Name = "btnNuevaNovedad";
             this.btnNuevaNovedad.Size = new System.Drawing.Size(130, 55);
@@ -163,7 +168,7 @@
             // lblPendientes
             // 
             this.lblPendientes.AutoSize = true;
-            this.lblPendientes.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblPendientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.lblPendientes.ForeColor = System.Drawing.Color.White;
             this.lblPendientes.Location = new System.Drawing.Point(753, 34);
             this.lblPendientes.Name = "lblPendientes";
@@ -175,6 +180,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(43, 526);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(135, 17);
@@ -191,6 +197,7 @@
             // lblRepuesto
             // 
             this.lblRepuesto.AutoSize = true;
+            this.lblRepuesto.ForeColor = System.Drawing.Color.White;
             this.lblRepuesto.Location = new System.Drawing.Point(525, 363);
             this.lblRepuesto.Name = "lblRepuesto";
             this.lblRepuesto.Size = new System.Drawing.Size(104, 13);
@@ -208,6 +215,7 @@
             // lblProductoSel
             // 
             this.lblProductoSel.AutoSize = true;
+            this.lblProductoSel.ForeColor = System.Drawing.Color.White;
             this.lblProductoSel.Location = new System.Drawing.Point(715, 363);
             this.lblProductoSel.Name = "lblProductoSel";
             this.lblProductoSel.Size = new System.Drawing.Size(118, 13);
@@ -244,7 +252,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.panel1.Location = new System.Drawing.Point(-1, -5);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(911, 79);
@@ -254,6 +262,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.btnBuscadorOrden);
             this.Controls.Add(this.nudMontoExtra);
@@ -278,6 +287,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormNovedades";
             this.Text = "Novedades";
+            this.Load += new System.EventHandler(this.FormNovedades_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvNovedades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidadExtra)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoExtra)).EndInit();

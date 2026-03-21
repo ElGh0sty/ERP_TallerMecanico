@@ -27,7 +27,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
 
             this.usuarioId = usuarioId;
             this.rolUsuario = rolUsuario;
-
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvNovedades);
             // Inicializar ErrorProvider
             errorProvider = new ErrorProvider();
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
@@ -820,7 +820,7 @@ VALUES
 
         private void EstilizarBotones()
         {
-            EstiloBoton(btnNuevaNovedad, Color.DarkSlateBlue); // Azul del programa
+             // Azul del programa
             EstiloBoton(btnGuardar, Color.FromArgb(40, 167, 69));      // Verde guardar
             EstiloBoton(btnCancelar, Color.FromArgb(108, 117, 125));   // Gris cancelar
             EstiloBoton(btnAceptar, Color.FromArgb(0, 123, 255));      // Azul aceptar
@@ -944,6 +944,11 @@ VALUES
                     }
                 }
             }
+        }
+
+        private void FormNovedades_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvNovedades);
         }
     }
 }

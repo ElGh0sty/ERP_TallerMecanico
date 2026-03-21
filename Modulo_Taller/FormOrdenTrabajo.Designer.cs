@@ -61,9 +61,9 @@
             // 
             // btnCambiarEstado
             // 
-            this.btnCambiarEstado.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.btnCambiarEstado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.btnCambiarEstado.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCambiarEstado.FlatAppearance.BorderSize = 0;
+            this.btnCambiarEstado.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.btnCambiarEstado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCambiarEstado.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCambiarEstado.ForeColor = System.Drawing.Color.White;
@@ -77,9 +77,10 @@
             // 
             // rtbDescripcion
             // 
-            this.rtbDescripcion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.rtbDescripcion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.rtbDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbDescripcion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbDescripcion.ForeColor = System.Drawing.Color.LightGray;
             this.rtbDescripcion.Location = new System.Drawing.Point(21, 367);
             this.rtbDescripcion.Name = "rtbDescripcion";
             this.rtbDescripcion.ReadOnly = true;
@@ -92,6 +93,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(14, 327);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(315, 37);
@@ -102,6 +104,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rtbDescripcion);
@@ -111,6 +114,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormOrdenTrabajo";
             this.Text = "Orden Trabajo";
+            this.Load += new System.EventHandler(this.FormOrdenTrabajo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdenes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

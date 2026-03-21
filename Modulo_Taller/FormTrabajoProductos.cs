@@ -33,6 +33,9 @@ namespace PROYECTOMECANICO.Modulo_Taller
             lstProductos.SelectionMode = SelectionMode.One;
             lstProductos.SelectedIndexChanged += lstProductos_SelectedIndexChanged;
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvServicios);
+
             PrepararGrids();
             AplicarEstilos();
 
@@ -1073,6 +1076,12 @@ namespace PROYECTOMECANICO.Modulo_Taller
             {
                 con.Cerrar();
             }
+        }
+
+        private void FormTrabajoProductos_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvServicios);
         }
     }
 }

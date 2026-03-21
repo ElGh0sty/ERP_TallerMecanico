@@ -51,7 +51,7 @@
             // 
             // cmbVehiculo
             // 
-            this.cmbVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.cmbVehiculo.BackColor = System.Drawing.Color.White;
             this.cmbVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbVehiculo.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbVehiculo.FormattingEnabled = true;
@@ -200,6 +200,7 @@
             this.txtNombreOrden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.txtNombreOrden.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNombreOrden.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNombreOrden.ForeColor = System.Drawing.Color.Gray;
             this.txtNombreOrden.Location = new System.Drawing.Point(55, 307);
             this.txtNombreOrden.Name = "txtNombreOrden";
             this.txtNombreOrden.ReadOnly = true;
@@ -209,7 +210,7 @@
             // 
             // txtDescripcion
             // 
-            this.txtDescripcion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.txtDescripcion.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDescripcion.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDescripcion.Location = new System.Drawing.Point(55, 416);
@@ -250,7 +251,7 @@
             // cmbMecanico
             // 
             this.cmbMecanico.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbMecanico.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
+            this.cmbMecanico.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cmbMecanico.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbMecanico.FormattingEnabled = true;
             this.cmbMecanico.Location = new System.Drawing.Point(611, 353);

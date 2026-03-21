@@ -46,7 +46,7 @@
             // 
             // cmbTipoDoc
             // 
-            this.cmbTipoDoc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.cmbTipoDoc.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cmbTipoDoc.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmbTipoDoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbTipoDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -59,7 +59,7 @@
             // 
             // txtNumDoc
             // 
-            this.txtNumDoc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtNumDoc.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtNumDoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNumDoc.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNumDoc.Location = new System.Drawing.Point(480, 108);
@@ -69,7 +69,7 @@
             // 
             // txtNombre
             // 
-            this.txtNombre.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtNombre.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNombre.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombre.Location = new System.Drawing.Point(193, 216);
@@ -79,7 +79,7 @@
             // 
             // txtTelefono
             // 
-            this.txtTelefono.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtTelefono.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtTelefono.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTelefono.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTelefono.Location = new System.Drawing.Point(480, 216);
@@ -89,7 +89,7 @@
             // 
             // txtEmail
             // 
-            this.txtEmail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEmail.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmail.Location = new System.Drawing.Point(193, 339);
@@ -99,7 +99,7 @@
             // 
             // txtDireccion
             // 
-            this.txtDireccion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.txtDireccion.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtDireccion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDireccion.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDireccion.Location = new System.Drawing.Point(480, 339);

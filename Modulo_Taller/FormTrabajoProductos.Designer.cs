@@ -77,22 +77,23 @@
             this.TabControl1.TabButtonHoverState.ForeColor = System.Drawing.Color.White;
             this.TabControl1.TabButtonHoverState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
             this.TabControl1.TabButtonIdleState.BorderColor = System.Drawing.Color.Empty;
-            this.TabControl1.TabButtonIdleState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabButtonIdleState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.TabControl1.TabButtonIdleState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
             this.TabControl1.TabButtonIdleState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(160)))), ((int)(((byte)(167)))));
-            this.TabControl1.TabButtonIdleState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabButtonIdleState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.TabControl1.TabButtonSelectedState.BorderColor = System.Drawing.Color.Empty;
-            this.TabControl1.TabButtonSelectedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(102)))), ((int)(((byte)(244)))));
+            this.TabControl1.TabButtonSelectedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.TabControl1.TabButtonSelectedState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
             this.TabControl1.TabButtonSelectedState.ForeColor = System.Drawing.Color.White;
             this.TabControl1.TabButtonSelectedState.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(132)))), ((int)(((byte)(255)))));
             this.TabControl1.TabButtonSize = new System.Drawing.Size(180, 40);
             this.TabControl1.TabIndex = 2;
-            this.TabControl1.TabMenuBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.TabControl1.TabMenuBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.TabControl1.TabMenuOrientation = Guna.UI2.WinForms.TabMenuOrientation.HorizontalTop;
             // 
             // tabControl3
             // 
+            this.tabControl3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.tabControl3.Controls.Add(this.dgvServicios);
             this.tabControl3.Controls.Add(this.panel1);
             this.tabControl3.Location = new System.Drawing.Point(4, 44);
@@ -101,7 +102,6 @@
             this.tabControl3.Size = new System.Drawing.Size(900, 555);
             this.tabControl3.TabIndex = 2;
             this.tabControl3.Text = "Añadir Servicios";
-            this.tabControl3.UseVisualStyleBackColor = true;
             // 
             // dgvServicios
             // 
@@ -116,7 +116,7 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.panel1.Controls.Add(this.lstServicios);
             this.panel1.Controls.Add(this.btnBuscadorOrden);
             this.panel1.Controls.Add(this.btnBuscadorServicios);
@@ -171,7 +171,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.LightSlateGray;
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(436, 52);
@@ -184,7 +184,7 @@
             // lblOrdenInfo
             // 
             this.lblOrdenInfo.AutoSize = true;
-            this.lblOrdenInfo.BackColor = System.Drawing.Color.LightSlateGray;
+            this.lblOrdenInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.lblOrdenInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOrdenInfo.ForeColor = System.Drawing.Color.White;
             this.lblOrdenInfo.Location = new System.Drawing.Point(119, 52);
@@ -197,24 +197,32 @@
             // btnAgregarServicio
             // 
             this.btnAgregarServicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAgregarServicio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnAgregarServicio.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnAgregarServicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAgregarServicio.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarServicio.ForeColor = System.Drawing.Color.White;
             this.btnAgregarServicio.Location = new System.Drawing.Point(443, 172);
             this.btnAgregarServicio.Name = "btnAgregarServicio";
             this.btnAgregarServicio.Size = new System.Drawing.Size(173, 70);
             this.btnAgregarServicio.TabIndex = 1;
             this.btnAgregarServicio.Text = "Agregar Servicio";
-            this.btnAgregarServicio.UseVisualStyleBackColor = true;
+            this.btnAgregarServicio.UseVisualStyleBackColor = false;
             this.btnAgregarServicio.Click += new System.EventHandler(this.btnAgregarServicio_Click);
             // 
             // btnCargarOrden
             // 
+            this.btnCargarOrden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnCargarOrden.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnCargarOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCargarOrden.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCargarOrden.ForeColor = System.Drawing.Color.White;
             this.btnCargarOrden.Location = new System.Drawing.Point(123, 172);
             this.btnCargarOrden.Name = "btnCargarOrden";
             this.btnCargarOrden.Size = new System.Drawing.Size(173, 70);
             this.btnCargarOrden.TabIndex = 4;
             this.btnCargarOrden.Text = "Cargar Orden";
-            this.btnCargarOrden.UseVisualStyleBackColor = true;
+            this.btnCargarOrden.UseVisualStyleBackColor = false;
             this.btnCargarOrden.Click += new System.EventHandler(this.btnCargarOrden_Click);
             // 
             // txtBuscarServicio
@@ -238,6 +246,7 @@
             // 
             // tabControl4
             // 
+            this.tabControl4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.tabControl4.Controls.Add(this.dgvItems);
             this.tabControl4.Controls.Add(this.panel2);
             this.tabControl4.Location = new System.Drawing.Point(4, 44);
@@ -246,7 +255,6 @@
             this.tabControl4.Size = new System.Drawing.Size(900, 555);
             this.tabControl4.TabIndex = 3;
             this.tabControl4.Text = "Añadir Productos";
-            this.tabControl4.UseVisualStyleBackColor = true;
             // 
             // dgvItems
             // 
@@ -262,7 +270,7 @@
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.panel2.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.panel2.Controls.Add(this.btnBuscadoProductos);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.lstProductos);
@@ -291,6 +299,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.label1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(436, 21);
@@ -329,6 +338,7 @@
             // lblStock
             // 
             this.lblStock.AutoSize = true;
+            this.lblStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.lblStock.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStock.ForeColor = System.Drawing.Color.White;
             this.lblStock.Location = new System.Drawing.Point(182, 16);
@@ -339,25 +349,30 @@
             // 
             // btnAgregarProducto
             // 
+            this.btnAgregarProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnAgregarProducto.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnAgregarProducto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAgregarProducto.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarProducto.ForeColor = System.Drawing.Color.White;
             this.btnAgregarProducto.Location = new System.Drawing.Point(413, 126);
             this.btnAgregarProducto.Name = "btnAgregarProducto";
             this.btnAgregarProducto.Size = new System.Drawing.Size(180, 54);
             this.btnAgregarProducto.TabIndex = 3;
             this.btnAgregarProducto.Text = "Agregar Producto";
-            this.btnAgregarProducto.UseVisualStyleBackColor = true;
+            this.btnAgregarProducto.UseVisualStyleBackColor = false;
             this.btnAgregarProducto.Click += new System.EventHandler(this.btnAgregarProducto_Click);
             // 
             // FormTrabajoProductos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 603);
             this.Controls.Add(this.TabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormTrabajoProductos";
             this.Text = "Asignar Trabajo y Productos";
+            this.Load += new System.EventHandler(this.FormTrabajoProductos_Load);
             this.TabControl1.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvServicios)).EndInit();

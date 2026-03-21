@@ -34,9 +34,9 @@
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.lblTotal = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnEliminarHistorial = new System.Windows.Forms.Button();
-            this.btnBuscadorOrden = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -60,14 +60,14 @@
             // 
             // btnRefrescar
             // 
-            this.btnRefrescar.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnRefrescar.FlatAppearance.BorderSize = 0;
+            this.btnRefrescar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnRefrescar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
             this.btnRefrescar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefrescar.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefrescar.ForeColor = System.Drawing.Color.White;
-            this.btnRefrescar.Location = new System.Drawing.Point(25, 174);
+            this.btnRefrescar.Location = new System.Drawing.Point(34, 169);
             this.btnRefrescar.Name = "btnRefrescar";
-            this.btnRefrescar.Size = new System.Drawing.Size(112, 48);
+            this.btnRefrescar.Size = new System.Drawing.Size(112, 61);
             this.btnRefrescar.TabIndex = 2;
             this.btnRefrescar.Text = "Refrescar";
             this.btnRefrescar.UseVisualStyleBackColor = false;
@@ -94,7 +94,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(45)))), ((int)(((byte)(86)))));
             this.panel1.Controls.Add(this.btnBuscadorOrden);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnEliminarHistorial);
@@ -106,31 +106,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(303, 238);
             this.panel1.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(125, 94);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 25);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Tipo:";
-            // 
-            // btnEliminarHistorial
-            // 
-            this.btnEliminarHistorial.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnEliminarHistorial.FlatAppearance.BorderSize = 0;
-            this.btnEliminarHistorial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEliminarHistorial.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEliminarHistorial.ForeColor = System.Drawing.Color.White;
-            this.btnEliminarHistorial.Location = new System.Drawing.Point(167, 174);
-            this.btnEliminarHistorial.Name = "btnEliminarHistorial";
-            this.btnEliminarHistorial.Size = new System.Drawing.Size(112, 48);
-            this.btnEliminarHistorial.TabIndex = 5;
-            this.btnEliminarHistorial.Text = "Eliminar Historial";
-            this.btnEliminarHistorial.UseVisualStyleBackColor = false;
             // 
             // btnBuscadorOrden
             // 
@@ -145,17 +120,43 @@
             this.btnBuscadorOrden.UseVisualStyleBackColor = true;
             this.btnBuscadorOrden.Click += new System.EventHandler(this.btnBuscadorOrden_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(125, 94);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 25);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Tipo:";
+            // 
+            // btnEliminarHistorial
+            // 
+            this.btnEliminarHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
+            this.btnEliminarHistorial.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(83)))), ((int)(((byte)(255)))));
+            this.btnEliminarHistorial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminarHistorial.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEliminarHistorial.ForeColor = System.Drawing.Color.White;
+            this.btnEliminarHistorial.Location = new System.Drawing.Point(167, 169);
+            this.btnEliminarHistorial.Name = "btnEliminarHistorial";
+            this.btnEliminarHistorial.Size = new System.Drawing.Size(112, 61);
+            this.btnEliminarHistorial.TabIndex = 5;
+            this.btnEliminarHistorial.Text = "Eliminar Historial";
+            this.btnEliminarHistorial.UseVisualStyleBackColor = false;
+            // 
             // FormHistorial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(27)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(908, 632);
             this.Controls.Add(this.dgvHistorial);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormHistorial";
             this.Text = "Historial de Estados";
+            this.Load += new System.EventHandler(this.FormHistorial_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

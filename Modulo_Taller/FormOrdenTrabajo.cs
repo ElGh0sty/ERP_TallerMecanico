@@ -20,6 +20,7 @@ namespace PROYECTOMECANICO.Modulo_Taller
             EstiloGrid();
             this.usuarioId = usuarioId;
             this.rolUsuario = rolUsuario;
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvOrdenes);
         }
 
         private void CargarOrdenes()
@@ -346,6 +347,11 @@ ORDER BY ot.fecha_ingreso DESC;";
         private void rtbDescripcion_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void FormOrdenTrabajo_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvOrdenes);
         }
     }
 }
