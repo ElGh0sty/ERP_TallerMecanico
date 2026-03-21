@@ -21,6 +21,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             InitializeComponent();
             this.usuarioId = usuarioId;
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvFacturas);
+
+
             // eventos
             this.Load += CobroCaja_Load;
             btnBuscar.Click += (s, e) => CargarFacturasPendientes(txtBuscar.Text.Trim());
@@ -331,6 +334,10 @@ VALUES (@facturaId, @metodoId, @monto, @referencia, @usuarioId);
 
         }
 
-        
+        private void CobroCaja_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvFacturas);
+
+        }
     }
 }

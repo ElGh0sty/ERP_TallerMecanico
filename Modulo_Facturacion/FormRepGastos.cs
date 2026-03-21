@@ -31,6 +31,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         {
             InitializeComponent();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvGastos);
+
+
             this.Load += FormRepGastos_Load;
             btnBuscar.Click += (s, e) => CargarReporte();
             btnLimpiar.Click += (s, e) => LimpiarFiltros();
@@ -1033,6 +1036,12 @@ ORDER BY MIN(Fecha);";
                 visor.WindowState = FormWindowState.Maximized;
                 visor.ShowDialog(this);
             }
+        }
+
+        private void FormRepGastos_Load_1(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvGastos);
+
         }
     }
 }

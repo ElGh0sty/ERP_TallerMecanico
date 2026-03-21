@@ -64,6 +64,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             InitializeComponent();
             this.usuarioId = usuarioId;
             InitCommon(usuarioId);
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+
+
         }
 
         private void InitCommon(long usuarioId)
@@ -1719,9 +1722,14 @@ ORDER BY id DESC";
             return ("001", "001");
         }
 
+        private void FormGenFactu_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+
+        }
 
 
-        // Método para generar el siguiente secuencial (versión mejorada)
+
 
     }
 }

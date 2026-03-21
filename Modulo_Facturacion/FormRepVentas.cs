@@ -32,7 +32,7 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
         public FormRepVentas()
         {
             InitializeComponent();
-
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvVentas);
             this.Load += FormRepVentas_Load;
             btnBuscar.Click += (s, e) => CargarReporte();
             btnLimpiar.Click += (s, e) => LimpiarFiltros();
@@ -168,6 +168,9 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             var hoy = DateTime.Today;
             dtpHasta.Value = DateTime.Today;
             AjustarDesdeAlMesActual();
+
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvVentas);
+
 
             EstilizarGrid();
             InicializarChart();
