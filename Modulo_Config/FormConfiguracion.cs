@@ -33,6 +33,12 @@ namespace PROYECTOMECANICO
         {
             InitializeComponent();
 
+            this.Load += (s, e) =>
+            {
+                Emp_Cargar();
+                CargarEmpresaEnLabel();
+            };
+
             ConfigurarEventosDescuentos();
             ConfigurarEventosPromociones();
 
@@ -1044,7 +1050,7 @@ SET nombre = @n,
     telefono = @t, 
     email = @e,
     logo = @logo
-WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
+WHERE id = 1;";  // Cambiado: usar id = 1 directamente
 
                         using (var cmd = new SqlCommand(upd, cn))
                         {
@@ -1061,9 +1067,11 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
 
                 LogoEmpresa.ActualizarLogo(_imagenEmpresaBytes);
 
-                MessageBox.Show("Empresa actualizada.", "Empresa",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Emp_Cargar();
+                MessageBox.Show("Empresa actualizada correctamente.\n" +
+                                (_imagenEmpresaBytes != null ? "Logo guardado." : "Sin logo."),
+                                "Empresa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                Emp_Cargar();  // Recargar datos para confirmar
                 CargarEmpresaEnLabel();
             }
             catch (Exception ex)
@@ -1089,6 +1097,7 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                         txtEmpTelefono.Text = rd["telefono"]?.ToString() ?? "";
                         txtEmpEmail.Text = rd["email"]?.ToString() ?? "";
 
+                        // Cargar imagen
                         if (rd["logo"] != DBNull.Value)
                         {
                             _imagenEmpresaBytes = (byte[])rd["logo"];
@@ -1096,24 +1105,20 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                             {
                                 picEmpresa.Image = Image.FromStream(ms);
                             }
+                            Console.WriteLine("Logo cargado desde BD: " + _imagenEmpresaBytes.Length + " bytes");
                         }
                         else
                         {
                             picEmpresa.Image = null;
                             picEmpresa.BackColor = Color.LightGray;
                             _imagenEmpresaBytes = null;
+                            Console.WriteLine("No hay logo en BD");
                         }
                     }
                     else
                     {
-                        txtEmpNombre.Text = "";
-                        txtEmpRuc.Text = "";
-                        txtEmpDireccion.Text = "";
-                        txtEmpTelefono.Text = "";
-                        txtEmpEmail.Text = "";
-                        picEmpresa.Image = null;
-                        picEmpresa.BackColor = Color.LightGray;
-                        _imagenEmpresaBytes = null;
+                        LimpiarCamposEmpresa();
+                        Console.WriteLine("No hay datos de empresa");
                     }
                 }
             }
@@ -1122,6 +1127,18 @@ WHERE id = (SELECT TOP 1 id FROM Empresa ORDER BY id);";
                 MessageBox.Show("Error al cargar empresa:\n" + ex.Message, "Empresa",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LimpiarCamposEmpresa()
+        {
+            txtEmpNombre.Text = "";
+            txtEmpRuc.Text = "";
+            txtEmpDireccion.Text = "";
+            txtEmpTelefono.Text = "";
+            txtEmpEmail.Text = "";
+            picEmpresa.Image = null;
+            picEmpresa.BackColor = Color.LightGray;
+            _imagenEmpresaBytes = null;
         }
 
         private void CargarEmpresaEnLabel()
