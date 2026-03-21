@@ -24,6 +24,9 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             CargarProductos();
             ConfigurarFiltros();
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvKardex);
+
+
             btnFiltrar.Click += (s, e) => CargarKardex();
             btnRefrescar.Click += (s, e) =>
             {
@@ -61,7 +64,6 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             AplicarEstilosGenerales();
             EstilizarControles();
             EstilizarGridKardex();
-            EstilizarBotones();
             EstilizarListaBuscador();
 
         }
@@ -468,6 +470,7 @@ ORDER BY k.fecha DESC, k.id DESC;
 
         private void FormKardex_Load(object sender, EventArgs e)
         {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvKardex);
 
         }
 

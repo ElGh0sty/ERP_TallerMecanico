@@ -19,6 +19,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             ConfigurarGrid();
             CargarFiltros();
             CargarCatalogo();
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvCatalogo);
+
 
             txtBuscar.TextChanged += (s, e) => AplicarFiltrosLocal();
             cmbTipo.SelectedIndexChanged += (s, e) => AplicarFiltrosLocal();
@@ -252,7 +254,7 @@ ORDER BY p.nombre ASC;";
 
         private void AplicarEstilosGenerales()
         {
-            BackColor = Color.FromArgb(245, 246, 250);
+            
             Font = new Font("Segoe UI", 10F, FontStyle.Regular);
         }
 
@@ -270,7 +272,7 @@ ORDER BY p.nombre ASC;";
             if (lblTotal != null)
             {
                 lblTotal.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-                lblTotal.ForeColor = Color.FromArgb(40, 40, 40);
+                
             }
         }
 
@@ -343,18 +345,14 @@ ORDER BY p.nombre ASC;";
 
         private void EstilizarBotones()
         {
-            EstiloBoton(btnRefrescar, Color.DarkSlateBlue);             
-            EstiloBoton(btnVerDetalle, Color.FromArgb(0, 123, 255));    
+            
         }
 
         private void EstiloBoton(Button btn, Color color)
         {
             if (btn == null) return;
 
-            btn.BackColor = color;
-            btn.ForeColor = Color.White;
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
+            
             btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             
             btn.Cursor = Cursors.Hand;
@@ -369,6 +367,11 @@ ORDER BY p.nombre ASC;";
             btn.MouseLeave += (s, e) => btn.BackColor = color;
         }
 
+        private void FormCalogProd_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvCatalogo);
+
+        }
     }
 }
 

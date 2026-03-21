@@ -15,7 +15,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
         public FormProvee()
         {
             InitializeComponent();
-
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvProveedores);
             ConfigurarGrid();
             AplicarEstilos();
 
@@ -47,30 +47,10 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
             txtBuscar.BorderStyle = BorderStyle.FixedSingle;
 
-            EstiloBoton(btnAgregar, Color.FromArgb(0, 123, 255));
-            EstiloBoton(btnEditar, Color.DarkSlateBlue);
+            
         }
 
-        private void EstiloBoton(Button btn, Color color)
-        {
-            if (btn == null) return;
-
-            btn.BackColor = color;
-            btn.ForeColor = Color.White;
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
-            btn.Height = Math.Max(btn.Height, 40);
-            btn.Cursor = Cursors.Hand;
-
-            Color hover = Color.FromArgb(
-                Math.Min(color.R + 15, 255),
-                Math.Min(color.G + 15, 255),
-                Math.Min(color.B + 15, 255)
-            );
-
-            btn.MouseEnter += (s, e) => btn.BackColor = hover;
-            btn.MouseLeave += (s, e) => btn.BackColor = color;
-        }
+        
 
         private void ConfigurarGrid()
         {
@@ -265,6 +245,12 @@ ORDER BY nombre_empresa;";
 
         private void lblTotal_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void FormProvee_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvProveedores);
 
         }
     }

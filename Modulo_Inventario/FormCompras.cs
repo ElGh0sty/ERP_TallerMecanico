@@ -37,6 +37,8 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             InitializeComponent();
             this.usuarioId = usuarioId;
 
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+
             InicializarValidaciones();
             PrepararTablaItems();
             PrepararTablaSugerencias();
@@ -231,7 +233,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
 
         private void AplicarEstilos()
         {
-            BackColor = Color.FromArgb(245, 246, 250);
+            
             Font = new GdiFont("Segoe UI", 10F);
 
             cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -250,10 +252,7 @@ namespace PROYECTOMECANICO.Modulo_Inventario
             nudCosto.Value = 0;
 
             // Botones
-            EstiloBoton(btnGuardarCompra, Color.FromArgb(0, 123, 255));
-            EstiloBoton(btnAgregarItem, Color.MediumSlateBlue);
-            EstiloBoton(btnLimpiar, Color.FromArgb(60, 60, 60));
-            EstiloBoton(btnNuevoProducto, Color.FromArgb(40, 167, 69));
+            
 
             // Listbox
             lstProductos.BorderStyle = BorderStyle.FixedSingle;
@@ -1566,6 +1565,12 @@ namespace PROYECTOMECANICO.Modulo_Inventario
         private void lblTotal_Click(object sender, EventArgs e) { }
         private void lblIVA_Click(object sender, EventArgs e) { }
         private void lblSubtotal_Click(object sender, EventArgs e) { }
+
+        private void FormCompras_Load(object sender, EventArgs e)
+        {
+            DataGridViewEstilo.AplicarEstiloDashboard(dgvItems);
+
+        }
     }
 }
 
