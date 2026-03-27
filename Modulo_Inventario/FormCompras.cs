@@ -1014,13 +1014,14 @@ namespace PROYECTOMECANICO.Modulo_Inventario
                             }
 
                             using (SqlCommand cmdK = new SqlCommand(@"
-                        INSERT INTO Kardex(producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad)
-                        VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant);", con.leer, tx))
+    INSERT INTO Kardex(producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad, fecha, precio_costo)
+    VALUES(@p, @u, 'ENTRADA', 'COMPRA', @ref, @cant, GETDATE(), @costo);", con.leer, tx))
                             {
                                 cmdK.Parameters.AddWithValue("@p", prodId);
                                 cmdK.Parameters.AddWithValue("@u", usuarioId);
                                 cmdK.Parameters.AddWithValue("@ref", compraId);
                                 cmdK.Parameters.AddWithValue("@cant", cant);
+                                cmdK.Parameters.AddWithValue("@costo", costo);  // ← Agregar el costo de compra
                                 cmdK.ExecuteNonQuery();
                             }
                         }

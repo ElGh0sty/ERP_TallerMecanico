@@ -116,12 +116,15 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             }
         }
 
+
+         
         private void AplicarBotonesRedondos()
         {
             BotonRedondo(button1, 20);
             BotonRedondo(button2, 20);
             BotonRedondo(button3, 20);
             BotonRedondo(button4, 20);
+            BotonRedondo(button5, 20);
         }
 
 
@@ -145,5 +148,25 @@ namespace PROYECTOMECANICO.Modulo_Facturacion
             btn.FlatAppearance.BorderSize = 0;
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (!PuedeUsarEsteModulo())
+            {
+                MessageBox.Show(
+                    "Esta acción no corresponde a tu rol de trabajo.",
+                    "Acceso restringido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+            Form1 objetoPadre = (Form1)this.ParentForm;
+            if (objetoPadre != null)
+            {
+                objetoPadre.AbrirFormularioEnPanel(
+                    new FormNotaCredito(usuarioId, rolUsuario)
+                    );
+            }
+        }
     }
 }

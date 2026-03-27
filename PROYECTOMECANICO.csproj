@@ -217,6 +217,12 @@
     <Compile Include="Modulo_Facturacion\FormItemPicker.Designer.cs">
       <DependentUpon>FormItemPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modulo_Facturacion\FormNotaCredito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo_Facturacion\FormNotaCredito.Designer.cs">
+      <DependentUpon>FormNotaCredito.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modulo_Facturacion\FormRepGastos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -397,6 +403,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormItemPicker.resx">
       <DependentUpon>FormItemPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo_Facturacion\FormNotaCredito.resx">
+      <DependentUpon>FormNotaCredito.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo_Facturacion\FormRepGastos.resx">
       <DependentUpon>FormRepGastos.cs</DependentUpon>

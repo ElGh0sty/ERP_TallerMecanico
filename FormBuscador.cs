@@ -16,7 +16,8 @@ namespace PROYECTOMECANICO
             Productos,
             Servicios,
             Vehiculos,
-            OrdenesTrabajo
+            OrdenesTrabajo,
+            Facturas
         }
 
         private TipoBusqueda tipo;
@@ -40,6 +41,17 @@ namespace PROYECTOMECANICO
             btnSeleccionar.Click += (s, e) => Seleccionar();
 
             CargarDatos();
+            // En el constructor de FormBuscador, después de CargarDatos(), agrega:
+            if (tipo == TipoBusqueda.Facturas)
+            {
+                dgvDatos.Columns["id"].Visible = false;
+                dgvDatos.Columns["secuencial"].HeaderText = "Secuencial";
+                dgvDatos.Columns["fecha"].HeaderText = "Fecha";
+                dgvDatos.Columns["cliente_nombre"].HeaderText = "Cliente";
+                dgvDatos.Columns["total_final"].HeaderText = "Total";
+                dgvDatos.Columns["total_final"].DefaultCellStyle.Format = "C2";
+            }
+            
 
             switch (tipo)
             {
@@ -124,6 +136,23 @@ namespace PROYECTOMECANICO
                                 INNER JOIN Clientes c ON v.cliente_id = c.id
                                 WHERE ot.facturada = 0
                                 ORDER BY ot.id DESC";
+                        break;
+                    case TipoBusqueda.Facturas:
+                        sql = @"
+        SELECT 
+            f.id, 
+            f.secuencial,
+            f.establecimiento,
+            f.punto_emision,
+            f.clave_acceso,
+            f.fecha,
+            f.cliente_nombre_snap AS cliente_nombre,
+            f.cliente_numero_documento_snap AS cliente_documento,
+            f.total_final,
+            f.estado
+        FROM Facturas f
+        WHERE f.estado = 'PENDIENTE'
+        ORDER BY f.id DESC";
                         break;
                 }
 

@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.Charts.WinForms;
-using PROYECTOMECANICO;
-using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-// Alias para resolver ambigüedades
-using GdiPen = System.Drawing.Pen;
-using GdiFont = System.Drawing.Font;
+using PROYECTOMECANICO;
+using GdiBitmap = System.Drawing.Bitmap;
 using GdiBrush = System.Drawing.SolidBrush;
+using GdiColor = System.Drawing.Color;
+using GdiFont = System.Drawing.Font;
 using GdiGraphics = System.Drawing.Graphics;
 using GdiImage = System.Drawing.Image;
-using GdiBitmap = System.Drawing.Bitmap;
-using GdiColor = System.Drawing.Color;
+// Alias para resolver ambigüedades
+using GdiPen = System.Drawing.Pen;
 using GdiPointF = System.Drawing.PointF;
 
 namespace PROYECTOMECANICO.Modulo_Reportes
@@ -205,26 +205,30 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                 string tipoFiltro = cmbTipo.SelectedItem.ToString();
 
                 string sql = @"
-            SELECT
-                k.fecha AS Fecha,
-                k.tipo_movimiento AS Tipo,
-                k.cantidad AS Cantidad,
-                p.precio_costo AS CostoUnitario,  -- ← NUEVO: Traer el costo del producto
-                (k.cantidad * p.precio_costo) AS CostoTotalMov, -- ← NUEVO: Calcular costo total del movimiento
-                SUM(k.cantidad) OVER (PARTITION BY k.producto_id ORDER BY k.fecha, k.id ROWS UNBOUNDED PRECEDING) AS StockResultante,
-                CASE 
-                    WHEN k.origen = 'COMPRA' THEN CONCAT('Compra #', k.referencia_id)
-                    WHEN k.origen = 'VENTA' THEN CONCAT('Factura #', (SELECT secuencial FROM Facturas WHERE id = k.referencia_id))
-                    ELSE k.origen
-                END AS Documento,
-                u.nombre_usuario AS Usuario
-            FROM Kardex k
-            INNER JOIN Productos p ON k.producto_id = p.id  -- ← Aseguramos el JOIN
-            INNER JOIN Usuarios u ON k.usuario_id = u.id
-            WHERE k.producto_id = @productoId
-              AND k.fecha >= @desde AND k.fecha < @hasta
-              AND (@tipo = 'TODOS' OR k.tipo_movimiento = @tipo)
-            ORDER BY k.fecha DESC, k.id DESC;";
+SELECT
+    k.fecha AS Fecha,
+    k.tipo_movimiento AS Tipo,
+    k.cantidad AS Cantidad,
+    k.precio_costo AS CostoUnitario,  -- ← AHORA USA EL COSTO HISTÓRICO DEL MOVIMIENTO
+    (k.cantidad * k.precio_costo) AS CostoTotalMov,
+    SUM(CASE 
+        WHEN k.tipo_movimiento = 'ENTRADA' THEN k.cantidad 
+        WHEN k.tipo_movimiento = 'SALIDA' THEN -k.cantidad 
+        ELSE 0 
+    END) OVER (PARTITION BY k.producto_id ORDER BY k.fecha, k.id ROWS UNBOUNDED PRECEDING) AS StockResultante,
+    CASE 
+        WHEN k.origen = 'COMPRA' THEN CONCAT('Compra #', k.referencia_id)
+        WHEN k.origen = 'FACTURA' THEN CONCAT('Factura #', (SELECT secuencial FROM Facturas WHERE id = k.referencia_id))
+        WHEN k.origen = 'OBSEQUIO' THEN CONCAT('Obsequio - Factura #', (SELECT secuencial FROM Facturas WHERE id = k.referencia_id))
+        ELSE k.origen
+    END AS Documento,
+    u.nombre_usuario AS Usuario
+FROM Kardex k
+INNER JOIN Usuarios u ON k.usuario_id = u.id
+WHERE k.producto_id = @productoId
+  AND k.fecha >= @desde AND k.fecha < @hasta
+  AND (@tipo = 'TODOS' OR k.tipo_movimiento = @tipo)
+ORDER BY k.fecha DESC, k.id DESC;";
 
                 using (var cn = con.CrearConexionAbierta())
                 using (var cmd = new SqlCommand(sql, cn))
@@ -366,7 +370,7 @@ namespace PROYECTOMECANICO.Modulo_Reportes
             var empresa = ObtenerEmpresa();
             byte[] logoBytes = ObtenerLogoEmpresa();
 
-            // ===== ENCABEZADO (igual que antes) =====
+            // ===== ENCABEZADO =====
             PdfPTable head = new PdfPTable(logoBytes != null ? 3 : 2);
             head.WidthPercentage = 100;
             if (logoBytes != null)
@@ -409,14 +413,16 @@ namespace PROYECTOMECANICO.Modulo_Reportes
             Paragraph rango = new Paragraph(filtros, bodyFont) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 20 };
             doc.Add(rango);
 
-            // ===== GRÁFICO DE STOCK Y EVOLUCIÓN DE COSTO (Opcional: podrías hacer dos gráficos) =====
+            // ===== GRÁFICO DE STOCK Y EVOLUCIÓN DE COSTO =====
             DataTable dtGrafico = ObtenerDatosGraficoStock();
             if (dtGrafico.Rows.Count > 0)
             {
-                Paragraph chartTitle = new Paragraph("EVOLUCIÓN DEL STOCK Y COSTO", subtitleFont) { SpacingAfter = 10 };
+                Paragraph chartTitle = new Paragraph("EVOLUCIÓN DEL STOCK Y COSTO UNITARIO", subtitleFont) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 15 };
                 doc.Add(chartTitle);
+
                 try
                 {
+                    // Crear gráfico con dimensiones más grandes
                     using (var chartImage = GenerarGraficoStockConDrawing(dtGrafico))
                     {
                         if (chartImage != null)
@@ -426,9 +432,12 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                                 chartImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                                 ms.Position = 0;
                                 iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(ms.ToArray());
-                                img.ScaleToFit(700, 300);
+
+                                // Aumentar tamaño del gráfico para mejor visualización
+                                float pageWidth = doc.PageSize.Width - 40;
+                                img.ScaleToFit(pageWidth, 350); // Aumentado de 300 a 350
                                 img.Alignment = Element.ALIGN_CENTER;
-                                img.SpacingAfter = 20;
+                                img.SpacingAfter = 25;
                                 doc.Add(img);
                             }
                         }
@@ -436,7 +445,7 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                 }
                 catch (Exception ex)
                 {
-                    doc.Add(new Paragraph("No se pudo generar la imagen del gráfico: " + ex.Message, bodyFont) { SpacingAfter = 20 });
+                    doc.Add(new Paragraph($"No se pudo generar la imagen del gráfico: {ex.Message}", bodyFont) { SpacingAfter = 20 });
                 }
             }
             else
@@ -444,8 +453,8 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                 doc.Add(new Paragraph("No hay datos suficientes para generar el gráfico de stock.", bodyFont) { SpacingAfter = 20 });
             }
 
-            // ===== TABLA DE MOVIMIENTOS (AHORA CON COSTOS) =====
-            Paragraph tableTitle = new Paragraph("DETALLE DE MOVIMIENTOS", subtitleFont) { SpacingAfter = 10 };
+            // ===== TABLA DE MOVIMIENTOS =====
+            Paragraph tableTitle = new Paragraph("DETALLE DE MOVIMIENTOS", subtitleFont) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 15 };
             doc.Add(tableTitle);
 
             // Definir las columnas que queremos mostrar
@@ -494,14 +503,25 @@ namespace PROYECTOMECANICO.Modulo_Reportes
             // ===== RESUMEN CON VALOR DEL INVENTARIO =====
             var resumen = CalcularResumen();
             doc.Add(new Paragraph(" "));
-            Paragraph resumenFinal = new Paragraph(
-                $"Stock Actual: {resumen.stockActual:N0}   |   " +
-                $"Valor del Inventario: {resumen.valorTotalInventario:C2}   |   " +  // ← NUEVO
-                $"Total Entradas: {resumen.totalEntradas:N0}   |   " +
-                $"Total Salidas: {resumen.totalSalidas:N0}",
-                headerFont)
-            { Alignment = Element.ALIGN_RIGHT, SpacingBefore = 15 };
-            doc.Add(resumenFinal);
+
+            // Crear tabla de resumen
+            PdfPTable resumenTable = new PdfPTable(2);
+            resumenTable.WidthPercentage = 50;
+            resumenTable.HorizontalAlignment = Element.ALIGN_RIGHT;
+            resumenTable.SetWidths(new float[] { 60, 40 });
+
+            void AddResumenRow(string label, string value)
+            {
+                resumenTable.AddCell(new PdfPCell(new Phrase(label, headerFont)) { Padding = 6, Border = Rectangle.BOX });
+                resumenTable.AddCell(new PdfPCell(new Phrase(value, headerFont)) { Padding = 6, Border = Rectangle.BOX, HorizontalAlignment = Element.ALIGN_RIGHT });
+            }
+
+            AddResumenRow("Stock Actual:", resumen.stockActual.ToString("N0"));
+            AddResumenRow("Valor del Inventario:", resumen.valorTotalInventario.ToString("C2"));
+            AddResumenRow("Total Entradas:", resumen.totalEntradas.ToString("N0"));
+            AddResumenRow("Total Salidas:", resumen.totalSalidas.ToString("N0"));
+
+            doc.Add(resumenTable);
 
             doc.Close();
         }
@@ -523,15 +543,15 @@ namespace PROYECTOMECANICO.Modulo_Reportes
 
             try
             {
-                int width = 800, height = 400;
-                int marginLeft = 80, marginRight = 60, marginTop = 50, marginBottom = 70;
+                int width = 900, height = 450;
+                int marginLeft = 80, marginRight = 80, marginTop = 60, marginBottom = 70;
                 int graphWidth = width - marginLeft - marginRight;
                 int graphHeight = height - marginTop - marginBottom;
 
                 if (graphWidth <= 0 || graphHeight <= 0)
                 {
-                    graphWidth = 600;
-                    graphHeight = 250;
+                    graphWidth = 700;
+                    graphHeight = 300;
                 }
 
                 GdiBitmap bmp = new GdiBitmap(width, height);
@@ -541,27 +561,36 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                     g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                     g.Clear(GdiColor.White);
 
-                    // ===== CALCULAR VALORES MÁXIMOS PARA AMBAS ESCALAS =====
-                    double maxStock = dtGrafico.AsEnumerable().Max(r => Convert.ToDouble(r["Stock"]));
-                    double maxCosto = dtGrafico.AsEnumerable().Max(r => Convert.ToDouble(r["CostoUnitario"]));
+                    // ===== OBTENER VALORES =====
+                    List<double> valoresStock = new List<double>();
+                    List<double> valoresCosto = new List<double>();
+                    List<string> fechas = new List<string>();
 
-                    // Ajustar para dar un poco de espacio arriba
+                    foreach (DataRow row in dtGrafico.Rows)
+                    {
+                        valoresStock.Add(Convert.ToDouble(row["Stock"]));
+                        valoresCosto.Add(Convert.ToDouble(row["CostoUnitario"]));
+                        fechas.Add(row["Fecha"].ToString());
+                    }
+
+                    double maxStock = valoresStock.Max();
+                    double maxCosto = valoresCosto.Max();
+
+                    // Ajustar escalas
                     if (maxStock <= 0) maxStock = 100;
-                    else maxStock = Math.Ceiling(maxStock * 1.1 / 10) * 10;
+                    else maxStock = Math.Ceiling(maxStock * 1.15);
 
                     if (maxCosto <= 0) maxCosto = 10;
-                    else maxCosto = Math.Ceiling(maxCosto * 1.1);
+                    else maxCosto = Math.Ceiling(maxCosto * 1.15);
 
                     // ===== ÁREA DEL GRÁFICO =====
                     using (var brush = new GdiBrush(GdiColor.FromArgb(250, 250, 255)))
                         g.FillRectangle(brush, marginLeft, marginTop, graphWidth, graphHeight);
-
                     using (var pen = new System.Drawing.Pen(GdiColor.FromArgb(200, 200, 200)))
                         g.DrawRectangle(pen, marginLeft, marginTop, graphWidth, graphHeight);
 
-                    // ===== LÍNEAS DE GRID HORIZONTALES =====
-                    using (var pen = new System.Drawing.Pen(GdiColor.FromArgb(220, 220, 220))
-                    { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
+                    // ===== LÍNEAS DE GRID =====
+                    using (var pen = new System.Drawing.Pen(GdiColor.FromArgb(220, 220, 220)) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
                     {
                         int numLineas = 5;
                         for (int i = 0; i <= numLineas; i++)
@@ -569,12 +598,10 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                             float y = marginTop + (graphHeight * i / numLineas);
                             g.DrawLine(pen, marginLeft, y, marginLeft + graphWidth, y);
 
-                            // Etiquetas del eje Y (Stock - lado izquierdo)
                             double valorStock = maxStock * (1 - (double)i / numLineas);
                             g.DrawString(valorStock.ToString("N0"), new GdiFont("Arial", 8),
                                 System.Drawing.Brushes.Gray, marginLeft - 50, y - 6);
 
-                            // Etiquetas del eje Y secundario (Costo - lado derecho)
                             double valorCosto = maxCosto * (1 - (double)i / numLineas);
                             g.DrawString(valorCosto.ToString("C0"), new GdiFont("Arial", 8),
                                 System.Drawing.Brushes.Gray, marginLeft + graphWidth + 5, y - 6);
@@ -584,31 +611,35 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                     // ===== EJES =====
                     using (var pen = new System.Drawing.Pen(GdiColor.Black, 2))
                     {
-                        g.DrawLine(pen, marginLeft, marginTop, marginLeft, marginTop + graphHeight); // Eje Y izquierdo
-                        g.DrawLine(pen, marginLeft + graphWidth, marginTop, marginLeft + graphWidth, marginTop + graphHeight); // Eje Y derecho
-                        g.DrawLine(pen, marginLeft, marginTop + graphHeight, marginLeft + graphWidth, marginTop + graphHeight); // Eje X
+                        g.DrawLine(pen, marginLeft, marginTop, marginLeft, marginTop + graphHeight);
+                        g.DrawLine(pen, marginLeft + graphWidth, marginTop, marginLeft + graphWidth, marginTop + graphHeight);
+                        g.DrawLine(pen, marginLeft, marginTop + graphHeight, marginLeft + graphWidth, marginTop + graphHeight);
                     }
 
                     // ===== DIBUJAR LÍNEA DE STOCK =====
-                    int numPuntos = dtGrafico.Rows.Count;
+                    int numPuntos = valoresStock.Count;
                     float pasoX = graphWidth / (float)(Math.Max(numPuntos - 1, 1));
 
-                    if (numPuntos > 1)
+                    if (numPuntos >= 2)
                     {
                         GdiPointF[] puntosStock = new GdiPointF[numPuntos];
                         for (int i = 0; i < numPuntos; i++)
                         {
-                            double stock = Convert.ToDouble(dtGrafico.Rows[i]["Stock"]);
-                            float x = marginLeft + i * pasoX;
+                            double stock = valoresStock[i];
+                            float x = marginLeft + (i * pasoX);
+                            // CORRECCIÓN: Asegurar que Y esté dentro del área del gráfico
                             float y = marginTop + graphHeight - (float)((stock / maxStock) * graphHeight);
+
+                            // Asegurar que Y no se salga del área
+                            if (y < marginTop) y = marginTop;
+                            if (y > marginTop + graphHeight) y = marginTop + graphHeight;
+
                             puntosStock[i] = new GdiPointF(x, y);
                         }
 
-                        // Línea de stock (azul)
                         using (var pen = new System.Drawing.Pen(GdiColor.FromArgb(97, 101, 244), 3))
                             g.DrawLines(pen, puntosStock);
 
-                        // Puntos de stock
                         using (var brush = new GdiBrush(GdiColor.FromArgb(97, 101, 244)))
                         using (var whitePen = new System.Drawing.Pen(GdiColor.White, 2))
                         {
@@ -621,25 +652,27 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                     }
 
                     // ===== DIBUJAR LÍNEA DE COSTO =====
-                    if (numPuntos > 1)
+                    if (numPuntos >= 2)
                     {
                         GdiPointF[] puntosCosto = new GdiPointF[numPuntos];
                         for (int i = 0; i < numPuntos; i++)
                         {
-                            double costo = Convert.ToDouble(dtGrafico.Rows[i]["CostoUnitario"]);
-                            float x = marginLeft + i * pasoX;
+                            double costo = valoresCosto[i];
+                            float x = marginLeft + (i * pasoX);
                             float y = marginTop + graphHeight - (float)((costo / maxCosto) * graphHeight);
+
+                            if (y < marginTop) y = marginTop;
+                            if (y > marginTop + graphHeight) y = marginTop + graphHeight;
+
                             puntosCosto[i] = new GdiPointF(x, y);
                         }
 
-                        // Línea de costo (verde) - discontinua para distinguirla
                         using (var pen = new System.Drawing.Pen(GdiColor.FromArgb(76, 175, 80), 2))
                         {
                             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                             g.DrawLines(pen, puntosCosto);
                         }
 
-                        // Puntos de costo
                         using (var brush = new GdiBrush(GdiColor.FromArgb(76, 175, 80)))
                         using (var whitePen = new System.Drawing.Pen(GdiColor.White, 2))
                         {
@@ -649,38 +682,35 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                                 g.DrawEllipse(whitePen, punto.X - 4, punto.Y - 4, 8, 8);
                             }
                         }
-
-                        // Etiquetas de valores de costo (solo para algunos puntos para no saturar)
-                        using (var valorFont = new GdiFont("Arial", 7))
-                        {
-                            for (int i = 0; i < numPuntos; i += Math.Max(1, numPuntos / 5))
-                            {
-                                double costo = Convert.ToDouble(dtGrafico.Rows[i]["CostoUnitario"]);
-                                g.DrawString(costo.ToString("C0"), valorFont, System.Drawing.Brushes.DarkGreen,
-                                    puntosCosto[i].X - 20, puntosCosto[i].Y - 25);
-                            }
-                        }
                     }
 
                     // ===== LEYENDA =====
                     int leyendaX = marginLeft + 10;
                     int leyendaY = marginTop + 10;
 
-                    // Leyenda de Stock
                     using (var brush = new GdiBrush(GdiColor.FromArgb(97, 101, 244)))
                         g.FillRectangle(brush, leyendaX, leyendaY, 20, 10);
-                    g.DrawString("Stock", new GdiFont("Arial", 9), System.Drawing.Brushes.Black, leyendaX + 25, leyendaY - 2);
+                    g.DrawString("Stock", new GdiFont("Arial", 9, System.Drawing.FontStyle.Bold),
+                        System.Drawing.Brushes.Black, leyendaX + 25, leyendaY - 2);
 
-                    // Leyenda de Costo
                     using (var brush = new GdiBrush(GdiColor.FromArgb(76, 175, 80)))
                         g.FillRectangle(brush, leyendaX + 80, leyendaY, 20, 10);
-                    g.DrawString("Costo Unit.", new GdiFont("Arial", 9), System.Drawing.Brushes.Black, leyendaX + 105, leyendaY - 2);
+                    g.DrawString("Costo Unitario", new GdiFont("Arial", 9, System.Drawing.FontStyle.Bold),
+                        System.Drawing.Brushes.Black, leyendaX + 105, leyendaY - 2);
 
                     // ===== ETIQUETAS DE LOS EJES =====
                     using (var axisFont = new GdiFont("Arial", 9, System.Drawing.FontStyle.Bold))
                     {
-                        g.DrawString("Stock (unidades)", axisFont, System.Drawing.Brushes.Black, marginLeft - 70, marginTop - 20);
-                        g.DrawString("Costo ($)", axisFont, System.Drawing.Brushes.Black, marginLeft + graphWidth + 10, marginTop - 20);
+                        g.TranslateTransform(marginLeft - 45, marginTop + graphHeight / 2);
+                        g.RotateTransform(-90);
+                        g.DrawString("Stock (unidades)", axisFont, System.Drawing.Brushes.Black, 0, 0);
+                        g.ResetTransform();
+
+                        g.DrawString("Costo ($)", axisFont, System.Drawing.Brushes.Black,
+                            marginLeft + graphWidth + 20, marginTop + graphHeight / 2 - 10);
+
+                        g.DrawString("Fecha", axisFont, System.Drawing.Brushes.Black,
+                            marginLeft + graphWidth / 2 - 20, marginTop + graphHeight + 35);
                     }
 
                     // ===== ETIQUETAS DEL EJE X =====
@@ -688,23 +718,23 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                     {
                         for (int i = 0; i < numPuntos; i += Math.Max(1, numPuntos / 6))
                         {
-                            string fecha = dtGrafico.Rows[i]["Fecha"].ToString();
-                            float x = marginLeft + i * pasoX;
-                            g.DrawString(fecha, fechaFont, System.Drawing.Brushes.Black,
-                                x - 20, marginTop + graphHeight + 5);
+                            float x = marginLeft + (i * pasoX);
+                            g.DrawString(fechas[i], fechaFont, System.Drawing.Brushes.Black,
+                                x - 20, marginTop + graphHeight + 12);
                         }
                     }
 
-                    // ===== TÍTULO DEL GRÁFICO =====
+                    // ===== TÍTULO =====
                     using (var titleFont = new GdiFont("Arial", 12, System.Drawing.FontStyle.Bold))
                         g.DrawString("Evolución del Stock y Costo Unitario", titleFont,
-                            System.Drawing.Brushes.Black, width / 2 - 130, 10);
+                            System.Drawing.Brushes.Black, width / 2 - 150, 12);
 
-                    // ===== INFORMACIÓN ADICIONAL =====
+                    // ===== INFORMACIÓN =====
                     using (var infoFont = new GdiFont("Arial", 8))
                     {
-                        string info = $"Stock máximo: {maxStock:N0} unidades | Costo máximo: {maxCosto:C2} | Período: {dtpDesde.Value:dd/MM/yyyy} - {dtpHasta.Value:dd/MM/yyyy}";
-                        g.DrawString(info, infoFont, System.Drawing.Brushes.Gray, 20, height - 20);
+                        string info = $"Stock máximo: {maxStock:N0} | Stock actual: {(numPuntos > 0 ? valoresStock.Last() : 0):N0} | " +
+                                      $"Costo máximo: {maxCosto:C2} | Período: {dtpDesde.Value:dd/MM/yyyy} - {dtpHasta.Value:dd/MM/yyyy}";
+                        g.DrawString(info, infoFont, System.Drawing.Brushes.Gray, 20, height - 25);
                     }
                 }
 
@@ -716,9 +746,7 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                 using (GdiGraphics g = GdiGraphics.FromImage(bmpError))
                 {
                     g.Clear(GdiColor.White);
-                    g.DrawString($"Error al generar gráfico: {ex.Message}",
-                        new GdiFont("Arial", 10), System.Drawing.Brushes.Red,
-                        new System.Drawing.PointF(50, 180));
+                    g.DrawString($"Error: {ex.Message}", new GdiFont("Arial", 10), System.Drawing.Brushes.Red, new System.Drawing.PointF(50, 180));
                 }
                 return bmpError;
             }
@@ -734,15 +762,20 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                 using (var cn = con.CrearConexionAbierta())
                 {
                     string sql = @"
-                SELECT TOP 20
-                    CONCAT(DATEPART(day, k.fecha), '/', DATEPART(month, k.fecha)) AS Fecha,
-                    SUM(k.cantidad) OVER (PARTITION BY k.producto_id ORDER BY k.fecha, k.id ROWS UNBOUNDED PRECEDING) AS Stock,
-                    p.precio_costo AS CostoUnitario
-                FROM Kardex k
-                INNER JOIN Productos p ON k.producto_id = p.id
-                WHERE k.producto_id = @productoId
-                  AND k.fecha >= @desde AND k.fecha < @hasta
-                ORDER BY k.fecha;";
+SELECT 
+    FORMAT(k.fecha, 'dd/MM/yyyy') AS Fecha,
+    SUM(CASE 
+        WHEN k.tipo_movimiento = 'ENTRADA' THEN k.cantidad 
+        WHEN k.tipo_movimiento = 'SALIDA' THEN -k.cantidad 
+        ELSE 0 
+    END) OVER (PARTITION BY k.producto_id ORDER BY k.fecha, k.id ROWS UNBOUNDED PRECEDING) AS Stock,
+    k.precio_costo AS CostoUnitario,
+    k.fecha AS FechaOriginal
+FROM Kardex k
+WHERE k.producto_id = @productoId
+  AND k.fecha >= @desde AND k.fecha < @hasta
+  AND k.precio_costo IS NOT NULL
+ORDER BY k.fecha;";
 
                     using (var cmd = new SqlCommand(sql, cn))
                     {
@@ -755,6 +788,31 @@ namespace PROYECTOMECANICO.Modulo_Reportes
                             da.Fill(dt);
                         }
                     }
+                }
+
+                // Eliminar duplicados de fecha para que el gráfico sea más limpio
+                if (dt.Rows.Count > 1)
+                {
+                    DataTable dtLimpio = dt.Clone();
+                    string fechaAnterior = "";
+                    decimal costoAnterior = -1;
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string fechaActual = row["Fecha"].ToString();
+                        decimal costoActual = Convert.ToDecimal(row["CostoUnitario"]);
+
+                        // Solo guardamos cuando cambia la fecha o el costo
+                        if (fechaActual != fechaAnterior || costoActual != costoAnterior)
+                        {
+                            dtLimpio.ImportRow(row);
+                            fechaAnterior = fechaActual;
+                            costoAnterior = costoActual;
+                        }
+                    }
+
+                    if (dtLimpio.Rows.Count > 1)
+                        dt = dtLimpio;
                 }
             }
             catch (Exception ex)

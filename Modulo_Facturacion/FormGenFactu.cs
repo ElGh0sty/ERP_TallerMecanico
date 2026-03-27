@@ -1480,22 +1480,10 @@ VALUES
                             cmd.Parameters.Add("@punto", SqlDbType.Char, 3).Value = _puntoEmisionActual;
                             cmd.Parameters.Add("@est", SqlDbType.Char, 3).Value = _establecimientoActual;
                             cmd.Parameters.Add("@sec", SqlDbType.Char, 9).Value = secuencialGenerado;
-                            //await AplicarPromocionesAutomaticas();
-
-                            // Recalcular totales después de promociones
-                            RecalcularTotales();
-
-                            // Actualizar subtotal, iva y total
-                            subtotal = dtItems.AsEnumerable().Sum(r => Convert.ToDecimal(r["subtotal"]));
-                            iva = Math.Round(subtotal * pct, 4);
-                            total = Math.Round(subtotal + iva, 4);
-
-                            // Actualizar parámetros de la factura
-                            cmd.Parameters["@sub15"].Value = subtotal;
-                            cmd.Parameters["@iva"].Value = iva;
-                            cmd.Parameters["@total"].Value = total;
+                            cmd.Parameters.Add("@sub15", SqlDbType.Decimal).Value = subtotal;
                             cmd.Parameters.Add("@sub0", SqlDbType.Decimal).Value = 0m;
-                            
+                            cmd.Parameters.Add("@iva", SqlDbType.Decimal).Value = iva;
+                            cmd.Parameters.Add("@total", SqlDbType.Decimal).Value = total;
                             cmd.Parameters.Add("@cliente", SqlDbType.BigInt).Value = (object)clienteId ?? DBNull.Value;
                             cmd.Parameters.Add("@tdoc", SqlDbType.NVarChar, 10).Value = tipoDoc;
                             cmd.Parameters.Add("@ndoc", SqlDbType.NVarChar, 13).Value = numDoc;
@@ -1538,7 +1526,7 @@ VALUES
                             }
                         }
 
-                        // Descontar stock
+                        // Descontar stock (esto es rápido)
                         if (dtItems.Rows.Count > 0)
                         {
                             DescontarStockProductos(tx, dtItems, facturaId);
@@ -1557,6 +1545,7 @@ VALUES
                         tx.Commit();
                         facturaIdGenerada = facturaId;
 
+                        // Generar PDF fuera de la transacción
                         string pdfPath = GenerarPdfFactura();
                         GuardarPdfEnFactura(facturaId, pdfPath);
 
@@ -1784,10 +1773,7 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
 
                     if (cantidad <= 0) continue;
 
-                    // SI ES UN OBSEQUIO (precio = 0), IGUAL DESCONTAMOS STOCK
-                    // Porque el obsequio sale del inventario igualmente
-
-                    // Verificar stock disponible
+                    // Verificar stock disponible (rápido)
                     string sqlCheckStock = @"SELECT stock FROM Productos WITH (UPDLOCK, ROWLOCK) WHERE id = @productoId";
                     using (var cmdCheck = new SqlCommand(sqlCheckStock, tx.Connection, tx))
                     {
@@ -1811,12 +1797,48 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
                         cmdUpdate.ExecuteNonQuery();
                     }
 
-                    // Registrar en Kardex (incluir nota si es obsequio)
-                    string origen = precioUnitario == 0 ? "OBSEQUIO" : "FACTURA";
-                    RegistrarMovimientoKardex(tx, productoId, "SALIDA", origen, facturaId, cantidad, usuarioId);
+                    // Obtener costo unitario (una sola consulta)
+                    decimal costoUnitario = ObtenerCostoUnitarioProducto(productoId);
+
+                    // Registrar en Kardex
+                    RegistrarMovimientoKardex(tx, productoId, "SALIDA",
+                        precioUnitario == 0 ? "OBSEQUIO" : "FACTURA",
+                        facturaId, cantidad, usuarioId, costoUnitario);
                 }
             }
         }
+
+        // Método auxiliar para obtener el costo unitario actual
+        private decimal ObtenerCostoUnitarioProducto(long productoId)
+        {
+            try
+            {
+                using (var cn = con.CrearConexionAbierta())
+                using (var cmd = new SqlCommand(@"
+            SELECT ISNULL(precio_costo, 0) as precio_costo 
+            FROM Productos WHERE id = @id", cn))
+                {
+                    cmd.Parameters.AddWithValue("@id", productoId);
+                    var result = cmd.ExecuteScalar();
+                    decimal costo = result != null ? Convert.ToDecimal(result) : 0;
+
+                    // Si el costo es 0, mostrar advertencia
+                    if (costo == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"ADVERTENCIA: Producto ID {productoId} tiene costo 0");
+                    }
+
+                    return costo;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error obteniendo costo: {ex.Message}");
+                return 0;
+            }
+        }
+
+
 
         private string ObtenerNombreProducto(long productoId)
         {
@@ -1832,11 +1854,22 @@ SELECT @nuevaSecuencia AS NuevaSecuencia;";
             catch { return "Producto desconocido"; }
         }
 
-        private void RegistrarMovimientoKardex(SqlTransaction tx, long productoId, string tipoMovimiento, string origen, long? referenciaId, int cantidad, long usuarioId)
+        private void RegistrarMovimientoKardex(SqlTransaction tx, long productoId,
+    string tipoMovimiento, string origen, long? referenciaId, int cantidad, long usuarioId,
+    decimal? precioCosto = null)  // ← Nuevo parámetro
         {
+            // Si no se especificó precioCosto, obtenerlo
+            if (!precioCosto.HasValue)
+            {
+                precioCosto = ObtenerCostoUnitarioProducto(productoId);
+            }
+
+            // Asegurar que precioCosto nunca sea null
+            decimal costoFinal = precioCosto ?? 0;
+
             string sql = @"
-INSERT INTO Kardex (producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad, fecha)
-VALUES (@productoId, @usuarioId, @tipoMovimiento, @origen, @referenciaId, @cantidad, GETDATE())";
+INSERT INTO Kardex (producto_id, usuario_id, tipo_movimiento, origen, referencia_id, cantidad, fecha, precio_costo)
+VALUES (@productoId, @usuarioId, @tipoMovimiento, @origen, @referenciaId, @cantidad, GETDATE(), @precioCosto)";
 
             using (var cmd = new SqlCommand(sql, tx.Connection, tx))
             {
@@ -1846,6 +1879,8 @@ VALUES (@productoId, @usuarioId, @tipoMovimiento, @origen, @referenciaId, @canti
                 cmd.Parameters.AddWithValue("@origen", origen);
                 cmd.Parameters.AddWithValue("@referenciaId", (object)referenciaId ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@cantidad", cantidad);
+                cmd.Parameters.AddWithValue("@precioCosto", costoFinal);
+
                 cmd.ExecuteNonQuery();
             }
         }
